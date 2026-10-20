@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans antialiased text-slate-900 bg-slate-50;
+  }
+
+  /* Universal accessible focus ring for keyboard navigation (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 3px solid #059669;
+    outline-offset: 2px;
+  }
+
+  /* Accessible form elements */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 3px solid #047857;
+    outline-offset: 2px;
+  }
+}
+
+/* Accessible text sizing modes */
+html.text-large {
+  font-size: 112.5%; /* 18px base */
+}
+
+html.text-xlarge {
+  font-size: 125%; /* 20px base */
+}
+
+/* Reduced motion preference (WCAG 2.3.3) */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Custom smooth transitions */
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.85; transform: scale(1.02); }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 2s infinite ease-in-out;
+}
+
+@keyframes wave {
+  0%, 100% { height: 6px; }
+  50% { height: 24px; }
+}
+
+.soundwave-bar {
+  animation: wave 1.2s infinite ease-in-out;
+}
+
+/* Accessibility High Contrast Mode (WCAG AAA contrast >= 7:1) */
+.high-contrast {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast body {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.high-contrast header,
+.high-contrast footer,
+.high-contrast main,
+.high-contrast section,
+.high-contrast article,
+.high-contrast div {
+  border-color: #111827 !important;
+}
+
+.high-contrast button {
+  border: 2px solid #000000 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid #000000 !important;
+  color: #000000 !important;
+  background-color: #ffffff !important;
+}
+
+.high-contrast a {
+  text-decoration: underline !important;
+  font-weight: 700 !important;
+}
