@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
+import { getEducationResponse } from '../data/educationChat';
 import { demonstrationResources } from '../data/resources';
 import { 
   Bot, 
@@ -39,6 +40,8 @@ interface ChatMessage {
   };
   recommendedResourceIds?: string[];
   suggestedFollowUps?: string[];
+  nextStepInsights?: string[];
+  sourceLinks?: Array<{ label: string; url: string }>;
 }
 
 interface AILLMConsoleProps {
@@ -127,8 +130,20 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       let intentCategory = 'Community Navigation';
       let followUps: string[] = [];
 
+      // Education answers use local prototype scripts with official source links.
+      const selectedPersonaName = personaTag || fictionalPersonas.find(p => p.id === activePersonaId)?.name;
+      const educationAnswer = getEducationResponse(text, currentLanguage, selectedPersonaName);
+      let nextStepInsights: string[] = [];
+      let sourceLinks: Array<{ label: string; url: string }> = [];
+
       // Detect topic & ground with demonstration data
-      if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) {
+      if (educationAnswer) {
+        replyText = educationAnswer.text;
+        intentCategory = educationAnswer.intent;
+        nextStepInsights = educationAnswer.nextStepInsights;
+        followUps = educationAnswer.followUps;
+        sourceLinks = educationAnswer.sources;
+      } else if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) {
         matchedResIds = ['res-food-1', 'res-food-2'];
         intentCategory = 'Food Access & Stigma-Free Groceries';
         if (currentLanguage === 'en') {
@@ -207,11 +222,15 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ragTrace: {
           intent: intentCategory,
           retrievedResources: matchedResIds,
-          guardrailsPassed: ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
-          confidence: 98
+          guardrailsPassed: educationAnswer
+            ? ['OfficialSourceLinksAttached', 'EligibilityNotDetermined', 'NoSensitiveDataRequested']
+            : ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
+          confidence: educationAnswer ? 90 : 98
         },
-        recommendedResourceIds: matchedResIds,
-        suggestedFollowUps: followUps
+        recommendedResourceIds: educationAnswer ? [] : matchedResIds,
+        suggestedFollowUps: followUps,
+        nextStepInsights,
+        sourceLinks
       };
 
       setMessages(prev => [...prev, llmMsg]);
@@ -247,12 +266,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {t.aiCopilot.title}
               </h2>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                {t.aiCopilot.badge}
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                {currentLanguage === 'en' ? 'Prototype' : 'Prototipo'}
               </span>
             </div>
             <p className="text-xs text-slate-400">
-              {t.aiCopilot.systemStatus}
+              {currentLanguage === 'en' ? 'Simulated prototype · education answers include official links' : 'Prototipo simulado · las respuestas de educación incluyen enlaces oficiales'}
             </p>
           </div>
         </div>
@@ -393,6 +412,32 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
                   {msg.text}
                 </div>
+
+                {isLlm && msg.nextStepInsights && msg.nextStepInsights.length > 0 && (
+                  <section className="mt-4 rounded-xl border border-amber-700/50 bg-amber-950/30 p-3" aria-label={currentLanguage === 'en' ? 'NextStep Insights' : 'Ideas para el siguiente paso'}>
+                    <h3 className="mb-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-300">
+                      {currentLanguage === 'en' ? 'Things to Keep in Mind' : 'Cosas para tener en cuenta'}
+                    </h3>
+                    <ul className="list-disc space-y-1 pl-4 text-[11px] text-slate-200">
+                      {msg.nextStepInsights.map((insight, idx) => <li key={idx}>{insight}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {isLlm && msg.sourceLinks && msg.sourceLinks.length > 0 && (
+                  <div className="mt-4 border-t border-slate-700/60 pt-3">
+                    <span className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      {currentLanguage === 'en' ? 'Official source links' : 'Enlaces oficiales'}
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {msg.sourceLinks.map((source) => (
+                        <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="rounded-lg border border-emerald-700/60 bg-emerald-950/40 px-2.5 py-1.5 text-[11px] font-semibold text-emerald-300 hover:bg-emerald-900/60 underline underline-offset-2">
+                          {source.label} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* RAG Reasoning & Guardrail Trace (For LLM responses) */}
                 {isLlm && msg.ragTrace && (
