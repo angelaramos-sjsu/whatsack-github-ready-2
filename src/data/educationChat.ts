@@ -222,8 +222,10 @@ function makeResponse(key: string, language: Language, sources: EducationChatSou
 export function getEducationResponse(input: string, language: Language, personaName?: string): EducationChatResponse | null {
   const q = input.toLowerCase();
   const persona = (personaName || '').toLowerCase();
-  const isSofia = persona.includes('sofia') || /\bsofia\b|\bcollege\b|\buniversity\b|\bfafsa\b|\bcal grant\b|\btransfer\b|\bscholarship\b|\bfinancial aid\b|\bcommunity college\b|\buniversidad\b|\bcolegio\b|\bmatr[ií]cula\b|\bbeca\b|\btransferencia\b/.test(q);
-  const isDaniel = persona.includes('daniel') || /\bdaniel\b|\bla[id] off\b|\bretrain\w*\b|\btraining\b|\bworkforce\b|\bjob\b|\bcareer\b|\bcapacitaci[oó]n\b|\bempleo\b|\bdespido\b|\bcarrera\b/.test(q);
+  const personaIsSofia = persona.includes('sofia');
+  const personaIsDaniel = persona.includes('daniel');
+  const isSofia = personaIsSofia || (!personaIsDaniel && /\bsofia\b|\bcollege\b|\buniversity\b|\bfafsa\b|\bcal grant\b|\btransfer\b|\bscholarship\b|\bfinancial aid\b|\bcommunity college\b|\buniversidad\b|\bcolegio\b|\bmatr[ií]cula\b|\bbeca\b|\btransferencia\b/.test(q));
+  const isDaniel = personaIsDaniel || (!personaIsSofia && /\bdaniel\b|\bla[id] off\b|\bretrain\w*\b|\btraining\b|\bworkforce\b|\bjob\b|\bcareer\b|\bcapacitaci[oó]n\b|\bempleo\b|\bdespido\b|\bcarrera\b/.test(q));
   if (!isSofia && !isDaniel) return null;
 
   if (/this week|start this week|first step|qué puedo hacer esta semana|esta semana|primer paso|comenzar esta semana/.test(q)) {
