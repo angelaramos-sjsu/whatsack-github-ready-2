@@ -29,9 +29,10 @@
 
 ### 3. Civic AI LLM Platform Suite
 - **Civic-LLM Copilot (`AILLMConsole.tsx`)**:
-  - Grounded multi-turn conversational AI specialized in Santa Clara & San Mateo County public benefits.
-  - **Explainable RAG Traces**: Inspect identified intent, retrieved database vectors, and safety guardrail passes.
-  - **Phone Rehearsal Mode (Roleplay)**: Practice an intake phone conversation with a supportive simulated coordinator (*Elena*) to de-escalate bureaucracy anxiety.
+  - Simulated, local conversational prototype with scripted persona journeys and official source links for education and workforce questions.
+  - **NextStep Insights**: Offers optional, practical follow-up suggestions alongside the response.
+  - **No live model connection**: Education answers use curated local response scripts; the prototype does not send prompts to an LLM service or backend.
+  - **Phone Rehearsal Mode (Roleplay)**: Practice an intake conversation with a simulated coordinator (*Elena*).
 - **AI Architecture & RAG Pipeline Inspector (`AIEngineInspectorModal.tsx`)**:
   - Visual breakdown of the 4-step pipeline: Ingestion $\to$ Dense Vector Retrieval $\to$ Policy Guardrails $\to$ Grounded Synthesis.
   - Model parameter tuning (Temperature, Strict Citation Enforcement).
