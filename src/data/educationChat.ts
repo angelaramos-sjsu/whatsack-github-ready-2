@@ -246,7 +246,7 @@ export function getEducationResponse(input: string, language: Language, personaN
     return makeResponse(isSofia ? 'sofiaWeek' : 'danielWeek', language,
       isSofia ? [sourceLinks.csac, sourceLinks.fafsa] : [sourceLinks.ajcc, sourceLinks.edd]);
   }
-  if (/who can help|where can i talk|talk to.*(advis|counsel)|advis|counsel|asesor|consejer|orientaci[oó]n/.test(q)) {
+  if (/who can help|where can i talk|talk to.*(advis|counsel)|qui[eé]n.*puede ayudar|d[oó]nde.*hablar|advis|counsel|asesor|consejer|orientaci[oó]n/.test(q)) {
     return makeResponse(isSofia ? 'sofiaAdviser' : 'danielAdviser', language,
       isSofia ? [sourceLinks.csac, sourceLinks.fafsa] : [sourceLinks.ajcc, sourceLinks.edd]);
   }
