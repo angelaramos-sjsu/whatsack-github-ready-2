@@ -112,6 +112,20 @@ const responses: Record<string, Omit<EducationChatResponse, 'sources'>> = {
 
 function makeResponse(key: string, language: Language, sources: EducationChatSource[]): EducationChatResponse {
   const response = responses[key];
+  const localizedSources = language === 'es'
+    ? sources.map((source) => {
+        const labels: Record<string, string> = {
+          'Federal Student Aid: FAFSA': 'Federal Student Aid: solicitud FAFSA',
+          'Federal Student Aid: FAFSA deadlines': 'Federal Student Aid: fechas límite de FAFSA',
+          'California Student Aid Commission: Apply for aid': 'Comisión de Ayuda Estudiantil de California: solicitar ayuda',
+          'California Community Colleges: Associate Degree for Transfer': 'Colegios Comunitarios de California: título de transferencia',
+          'California EDD: Training resources for job seekers': 'EDD de California: capacitación para personas que buscan empleo',
+          'California EDD: Eligible Training Provider List': 'EDD de California: lista de proveedores de capacitación elegibles',
+          'America’s Job Center of California': 'Centros de Empleo de California',
+        };
+        return { ...source, label: labels[source.label] || source.label };
+      })
+    : sources;
   const spanish: Record<string, Partial<EducationChatResponse>> = {
     sofiaStart: {
       intent: 'Sofía: explorar opciones universitarias y costos',
@@ -213,10 +227,10 @@ function makeResponse(key: string, language: Language, sources: EducationChatSou
       text: localized.text || response.text,
       nextStepInsights: localized.nextStepInsights || response.nextStepInsights,
       followUps: localized.followUps || response.followUps,
-      sources,
+      sources: localizedSources,
     };
   }
-  return { ...response, sources };
+  return { ...response, sources: localizedSources };
 }
 
 export function getEducationResponse(input: string, language: Language, personaName?: string): EducationChatResponse | null {
