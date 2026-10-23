@@ -72,21 +72,21 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
-        ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
-        : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
+        ? `Welcome to WhatSack, a community-resource navigation prototype. I can demonstrate sample journeys for college, financial aid, workforce training, food, mental health, and community resources. Education answers include official links and suggested next steps. This demo uses local scripted responses; it is not connected to a live AI service.`
+        : `Te damos la bienvenida a WhatSack, un prototipo para buscar recursos comunitarios. Puedo mostrar ejemplos sobre universidad, ayuda financiera, capacitación laboral, alimentos, salud mental y conexión comunitaria. Las respuestas educativas incluyen enlaces oficiales y próximos pasos sugeridos. Esta demostración usa respuestas guionadas localmente; no se conecta a un servicio de IA en vivo.`,
       timestamp: 'Just now',
       suggestedFollowUps: currentLanguage === 'en'
         ? [
-            'Where can I get groceries in East San Jose without an ID?',
-            'How can laid-off workers get free tech certificates in Milpitas?',
-            'What mental health support is confidential for teens in Sunnyvale?',
-            'Practice intake call for food pantry'
+            'Sofia: I want to go to college, but my family does not have much money. What are my options?',
+            'Daniel: I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?',
+            'What mental health support can a teen explore?',
+            'Practice an intake conversation'
           ]
         : [
-            '¿Dónde consigo despensa en el Este de San José sin identificación?',
-            '¿Cómo recibir cursos de tecnología gratuitos tras un despido en Milpitas?',
-            '¿Qué apoyo emocional para jóvenes es confidencial en Sunnyvale?',
-            'Practicar llamada para pedir despensa'
+            'Sofía: Quiero ir a la universidad, pero mi familia no tiene mucho dinero. ¿Qué opciones tengo?',
+            'Daniel: Perdí mi trabajo y quiero explorar una nueva carrera. ¿Hay capacitación asequible?',
+            '¿Qué apoyo de salud mental puede explorar un adolescente?',
+            'Practicar una conversación de admisión'
           ]
     }
   ];
