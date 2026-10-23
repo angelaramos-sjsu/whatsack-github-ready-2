@@ -255,7 +255,7 @@ export function getEducationResponse(input: string, language: Language, personaN
   if (/requirement|prerequisite|before applying|before i apply|requisito|prerrequisito|antes de solicitar/.test(q) && isDaniel) {
     return makeResponse('requirements', language, [sourceLinks.etpl, sourceLinks.edd]);
   }
-  if (/near me|available near|nearby|programs are available|training program|training options|cerca de m[ií]|cercan[oa]|programas.*(disponible|capacitaci[oó]n)/.test(q) && isDaniel && !/just lost my job|laid off|retraining/.test(q)) {
+  if (/near me|available near|nearby|programs are available|training program|training options|cerca de m[ií]|cercan[oa]|programas.*(disponible|capacitaci[oó]n)/.test(q) && isDaniel && !/just lost my job|laid off|retraining|perd[ií] mi trabajo|me despidieron|nueva carrera|quiero explorar/.test(q)) {
     return makeResponse('programs', language, [sourceLinks.etpl, sourceLinks.ajcc]);
   }
   if (isSofia && (/what are my options|how to pay|family.*money|don't have much money|do not have much money|quiero ir a la universidad|no tenemos mucho dinero|opciones/.test(q))) {
