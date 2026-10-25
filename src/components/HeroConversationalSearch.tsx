@@ -46,44 +46,37 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   const t = translations[currentLanguage];
 
   const quickPrompts = [
-    {
-      label: currentLanguage === 'en' ? '🍏 Groceries without ID' : '🍏 Despensa sin identificación',
-      query: currentLanguage === 'en' 
-        ? 'Where can I get groceries in East San Jose without showing an ID or SSN?'
-        : '¿Dónde puedo conseguir despensa en el Este de San José sin mostrar identificación ni Seguro Social?'
-    },
-    {
-      label: currentLanguage === 'en' ? '💼 Retraining for laid-off workers' : '💼 Becas por despido reciente',
-      query: currentLanguage === 'en'
-        ? 'How can a laid-off manufacturing worker get free cloud IT certificates in Santa Clara County?'
-        : '¿Cómo puede un trabajador manufacturero despedido obtener cursos de IT gratuitos en Santa Clara?'
-    },
-    {
-      label: currentLanguage === 'en' ? '🎓 Free college tuition (Promise)' : '🎓 Matrícula universitaria gratuita',
-      query: currentLanguage === 'en'
-        ? 'How does the California College Promise grant work at De Anza and Foothill?'
-        : '¿Cómo funciona la beca California College Promise en De Anza y Foothill?'
-    },
-    {
-      label: currentLanguage === 'en' ? '🧠 Confidential youth text line' : '🧠 Línea de texto para jóvenes',
-      query: currentLanguage === 'en'
-        ? 'Is there a free confidential text line for teens feeling overwhelmed in Sunnyvale?'
-        : '¿Hay una línea de texto gratuita y confidencial para jóvenes en Sunnyvale?'
-    },
-    {
-      label: currentLanguage === 'en' ? '👵 Spanish senior hot lunches' : '👵 Almuerzos para adultos mayores',
-      query: currentLanguage === 'en'
-        ? 'Where are Spanish-language senior clubs with hot lunch in Redwood City?'
-        : '¿Dónde hay clubes de la tercera edad en español con almuerzo caliente en Redwood City?'
-    }
-  ];
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      onExecuteSearch(searchQuery);
-    }
-  };
+  {
+    label: currentLanguage === 'en' ? '🎓 College options & costs' : '🎓 Opciones y costos universitarios',
+    query: currentLanguage === 'en'
+      ? 'I want to go to college, but my family does not have much money. What are my options?'
+      : 'Quiero ir a la universidad, pero mi familia no tiene mucho dinero. ¿Qué opciones tengo?'
+  },
+  {
+    label: currentLanguage === 'en' ? '💼 Affordable career training' : '💼 Capacitación laboral asequible',
+    query: currentLanguage === 'en'
+      ? 'I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?'
+      : 'Perdí mi trabajo y quiero explorar una nueva carrera. ¿Hay programas de capacitación asequibles que puedan ayudarme a encontrar trabajo?'
+  },
+  {
+    label: currentLanguage === 'en' ? '🍏 Groceries without ID' : '🍏 Despensa sin identificación',
+    query: currentLanguage === 'en'
+      ? 'Where can I get groceries in East San Jose without showing an ID or SSN?'
+      : '¿Dónde puedo conseguir despensa en el Este de San José sin mostrar identificación ni Seguro Social?'
+  },
+  {
+    label: currentLanguage === 'en' ? '🧠 Confidential youth text line' : '🧠 Línea de texto para jóvenes',
+    query: currentLanguage === 'en'
+      ? 'Is there a free confidential text line for teens feeling overwhelmed in Sunnyvale?'
+      : '¿Hay una línea de texto gratuita y confidencial para jóvenes en Sunnyvale?'
+  },
+  {
+    label: currentLanguage === 'en' ? '👵 Spanish senior hot lunches' : '👵 Almuerzos para adultos mayores',
+    query: currentLanguage === 'en'
+      ? 'Where are Spanish-language senior clubs with hot lunch in Redwood City?'
+      : '¿Dónde hay clubes para adultos mayores con almuerzo caliente en Redwood City?'
+  }
+];
 
   return (
     <section aria-labelledby="hero-title" className="relative bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
