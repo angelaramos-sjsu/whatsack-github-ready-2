@@ -34,6 +34,8 @@ export interface NextStepInsight {
 export interface DemonstrationResource {
   id: string;
   categoryId: CategoryId;
+  /** Direct official provider link, when available; never a simulated contact URL. */
+  officialUrl?: string;
   title: { en: string; es: string };
   organization: { en: string; es: string };
   description: { en: string; es: string };
