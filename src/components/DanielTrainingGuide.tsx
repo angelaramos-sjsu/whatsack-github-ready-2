@@ -231,7 +231,7 @@ export function DanielTrainingGuide({ isOpen, onClose, onAskCopilot, initialQues
       initialQuestion.trim() || 'I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?',
       'My topic is: ' + (tracks.find(item => item.id === track)?.label || 'workforce retraining') + '.',
       ...selectionDetails,
-      'What are my next steps? Compare Tesla MDP and SSBA if relevant and do not guarantee employment, funding or stipends.',
+      'What are the next steps for the program or concern I selected? Explain eligibility and current details to verify. Do not guarantee employment, funding or stipends.',
     ].join(' '));
   };
 
