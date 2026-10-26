@@ -3,6 +3,7 @@ import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
+import { answerSofiaEducationQuestion, isSofiaEducationQuestion } from '../data/sofiaAssistant';
 import { 
   Bot, 
   Send, 
@@ -39,6 +40,8 @@ interface ChatMessage {
   };
   recommendedResourceIds?: string[];
   suggestedFollowUps?: string[];
+  officialSources?: Array<{title: string; url: string}>;
+  responseMode?: 'live' | 'demo';
 }
 
 interface AILLMConsoleProps {
@@ -47,6 +50,7 @@ interface AILLMConsoleProps {
   onOpenInsights: (resource: DemonstrationResource) => void;
   onOpenArchitectureModal: () => void;
   onOpenDecoderModal: () => void;
+  initialQuestion?: string;
 }
 
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
@@ -54,7 +58,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   userProfile,
   onOpenInsights,
   onOpenArchitectureModal,
-  onOpenDecoderModal
+  onOpenDecoderModal,
+  initialQuestion = ''
 }) => {
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
@@ -63,6 +68,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
   const [expandedTraceId, setExpandedTraceId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sofiaContextRef = useRef(false);
+
+  useEffect(() => {
+    if (initialQuestion.trim()) setInputText(initialQuestion);
+  }, [initialQuestion]);
 
   const initialMessages: ChatMessage[] = [
     {
@@ -76,6 +86,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ? [
             'Where can I get groceries in East San Jose without an ID?',
             'How can laid-off workers get free tech certificates in Milpitas?',
+            'I want to go to college but my family has little money. What are my options?',
             'What mental health support is confidential for teens in Sunnyvale?',
             'Practice intake call for food pantry'
           ]
