@@ -78,6 +78,13 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   }
 ];
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      onExecuteSearch(searchQuery);
+    }
+  };
+
   return (
     <section aria-labelledby="hero-title" className="relative bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
       <div className="max-w-4xl mx-auto text-center">
