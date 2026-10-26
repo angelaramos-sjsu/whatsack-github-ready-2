@@ -228,14 +228,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           followUps = ['¿Debo mostrar comprobante de domicilio?', '¿Tienen pañales o leche infantil?', 'Ensayar la conversación de llegada'];
         }
       } else if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) {
-        matchedResIds = ['res-work-1', 'res-work-2'];
-        intentCategory = 'Workforce Retraining & WIOA Dislocated Worker Grants';
+        matchedResIds = ['res-work-mdp', 'res-work-ssba'];
+        intentCategory = 'Workforce retraining demonstration — source links require review';
         if (currentLanguage === 'en') {
-          replyText = `**If you experienced a recent layoff or workforce reduction in Silicon Valley, you have access to substantial state retraining funds:**\n\n- **NOVAworks Dislocated Worker Program:** Offers vouchers up to **$8,000** for approved certificates in CompTIA Security+, Cloud Operations (AWS), and Network Support.\n- **Crucial Protection:** Enrolling in approved California Training Benefits (CTB) allows you to continue receiving weekly EDD unemployment benefits without having to submit weekly job search logs.\n\n**Actionable Next Step:** Sign up for the 45-minute virtual WIOA orientation held every Wednesday at 10:00 AM. Bring your EDD determination letter.`;
-          followUps = ['Will this affect my weekly EDD unemployment check?', 'Are evening classes available for adults?', 'Practice interview with a career navigator'];
+          replyText = 'WhatSack can help you explore employer-connected training, workforce assistance and your transferable skills.\n\n' +
+            'Two Ohlone-connected examples are Tesla Manufacturing Development Program (MDP), which describes a potential full-time Production Associate transition for successful participants, and Semiconductor Skills Bridge Academy (SSBA), where documented cohorts advertised a $1,500 completion stipend. Neither means every applicant is eligible or guaranteed an offer, stipend, or job.\n\n' +
+            'Ask the program about upcoming cohorts, experience and eligibility requirements, and benefit conditions. For WIOA training funds, contact a local workforce professional. For unemployment while studying, follow California EDD Training Benefits rules.';
+          followUps = ['Compare Tesla MDP and SSBA', 'Can someone age 45 apply for Tesla MDP?', 'Does SSBA still offer a stipend?', 'Where can I meet a workforce counselor?'];
         } else {
-          replyText = `**Si recientemente fue despedido o redujeron su jornada en Silicon Valley, tiene acceso a importantes becas estatales:**\n\n- **Programa NOVAworks para Trabajadores Desplazados:** Otorga vales de hasta **$8,000** para certificaciones en CompTIA Security+, Nube (AWS) y Soporte de Redes.\n- **Protección Clave:** Al inscribirse en cursos avalados por California Training Benefits (CTB), continúa recibiendo sus cheques de desempleo del EDD sin la obligación de buscar empleo semanalmente.\n\n**Siguiente Paso Recomendado:** Inscríbase a la orientación virtual de 45 minutos que se realiza todos los miércoles a las 10:00 AM. Tenga a la mano su carta del EDD.`;
-          followUps = ['¿Afectará mis cheques de desempleo semanales?', '¿Hay clases nocturnas para adultos?', 'Practicar entrevista con un asesor laboral'];
+          replyText = 'WhatSack puede ayudarle a explorar capacitación laboral y programas de manufactura.\n\n' +
+            'Tesla MDP describe una posible transición a un puesto de tiempo completo al completar el programa con éxito. Ohlone SSBA anunció un estipendio de $1,500 para cohortes documentadas. No se garantizan admisión, estipendio ni empleo.\n\n' +
+            'Confirme los requisitos, las fechas y las condiciones directamente con el programa. Consulte con un asesor laboral sobre fondos WIOA y con EDD sobre capacitación mientras recibe beneficios.';
+          followUps = ['Comparar Tesla MDP y SSBA', '¿Hay estipendio en SSBA?', '¿Dónde consultar sobre fondos WIOA?'];
         }
       } else if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula')) {
         matchedResIds = ['res-work-3', 'res-comm-2'];
