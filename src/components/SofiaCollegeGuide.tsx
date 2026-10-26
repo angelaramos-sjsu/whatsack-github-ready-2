@@ -154,10 +154,11 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   initialQuestion?: string;
+  onAskCopilot?: (question: string) => void;
 }
 
 /** Scripted research prototype: no LLM, backend, or personal-data storage. */
-export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '' }: Props) {
+export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '', onAskCopilot }: Props) {
   const [track, setTrack] = useState<Track | null>(null);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
@@ -198,6 +199,23 @@ export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '' }: Pro
   const back = () => {
     if (step > 0) setStep(previous => previous - 1);
     else { setTrack(null); setAnswers({}); }
+  };
+  const askCopilotAboutResults = () => {
+    if (!track || !onAskCopilot) return;
+    const selections = questions[track]
+      .filter(question => Boolean(answers[question.id]) && answers[question.id] !== 'skip')
+      .map(question => {
+        const selected = question.options.find(option => option.value === answers[question.id]);
+        return question.prompt + ' ' + (selected?.label || 'Not specified');
+      });
+    const context = [
+      'I am exploring college as Sofia, a fictional 17-year-old first-generation high-school senior near Fremont.',
+      initialQuestion.trim() || 'My family has limited money, and I want to understand my college options.',
+      'My topic: ' + (tracks.find(option => option.id === track)?.label || 'College planning') + '.',
+      ...selections,
+      'Please explain my next steps clearly, offer official starting points, and tell me what to verify with a counselor.'
+    ].join(' ');
+    onAskCopilot(context);
   };
 
   return (
@@ -269,6 +287,11 @@ export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '' }: Pro
               </div>
               <p className="flex items-start gap-2 text-xs text-slate-600"><ShieldCheck size={17} className="shrink-0"/> This is a scripted academic prototype, not a live AI system. Links are to official starting points; check current requirements, dates, program status, and eligibility directly with each provider. No answers are saved or sent to a server.</p>
               <div className="flex flex-wrap gap-2 pt-1">
+                {onAskCopilot && (
+                  <button type="button" onClick={askCopilotAboutResults} className="inline-flex items-center gap-2 rounded-xl bg-slate-900 text-white font-bold px-4 py-3 hover:bg-slate-800">
+                    <Sparkles size={17}/> Ask the Copilot about these results
+                  </button>
+                )}
                 <button type="button" onClick={() => { setTrack(null); setStep(0); setAnswers({}); }} className="inline-flex items-center gap-2 rounded-xl bg-emerald-700 text-white font-bold px-4 py-3 hover:bg-emerald-800"><RotateCcw size={17}/> Explore another pathway</button>
                 <button type="button" onClick={back} className="rounded-xl border border-slate-300 px-4 py-3 font-bold text-sm">Change last answer</button>
               </div>
