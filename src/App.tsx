@@ -53,6 +53,7 @@ export function App() {
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
   const [isSofiaGuideOpen, setIsSofiaGuideOpen] = useState<boolean>(false);
+  const [copilotStartQuestion, setCopilotStartQuestion] = useState<string>('');
 
   // Modals & Drawers
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState<boolean>(false);
@@ -242,6 +243,7 @@ export function App() {
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
           onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
+          initialQuestion={copilotStartQuestion}
         />
       ) : activeView === 'extension' ? (
         <SimulatedExtensionSidebar
@@ -259,7 +261,7 @@ export function App() {
             onExecuteSearch={(q) => setSearchQuery(q)}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
             onSelectPrompt={(p) => setSearchQuery(p)}
-            onOpenCopilot={() => setActiveView('copilot')}
+            onOpenCopilot={() => { setCopilotStartQuestion(''); setActiveView('copilot'); }}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
             userProfile={userProfile}
@@ -450,7 +452,7 @@ export function App() {
       {activeView !== 'copilot' && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
-            onClick={() => setActiveView('copilot')}
+            onClick={() => { setCopilotStartQuestion(''); setActiveView('copilot'); }}
             className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-emerald-700 to-teal-600 hover:from-emerald-800 hover:to-teal-700 text-white font-bold text-xs sm:text-sm rounded-full shadow-xl shadow-emerald-900/30 hover:scale-105 transition-all ring-4 ring-emerald-500/20"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
@@ -479,6 +481,11 @@ export function App() {
         isOpen={isSofiaGuideOpen}
         onClose={() => setIsSofiaGuideOpen(false)}
         initialQuestion={searchQuery}
+        onAskCopilot={(question) => {
+          setCopilotStartQuestion(question);
+          setIsSofiaGuideOpen(false);
+          setActiveView('copilot');
+        }}
       />
 
       {/* Introduction Assessment Modal */}
