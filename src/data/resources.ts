@@ -694,93 +694,72 @@ export const demonstrationResources: DemonstrationResource[] = [
   {
     id: 'res-work-1',
     categoryId: 'workforce',
-    title: {
-      en: 'NOVAworks Dislocated Worker & Tech Reskilling Program',
-      es: 'Programa NOVAworks de Reconversión Laboral y Tecnología'
-    },
-    organization: {
-      en: 'NOVAworks Workforce Board (Santa Clara & San Mateo Counties)',
-      es: 'Junta de Desarrollo Laboral NOVAworks (Condados de Santa Clara y San Mateo)'
-    },
+    officialUrl: 'https://novaworks.org/career-seekers/training/',
+    title: { en: 'NOVAworks Career Advising & Training Scholarship Process', es: 'NOVAworks: orientación profesional y proceso de becas para capacitación' },
+    organization: { en: 'NOVAworks Workforce Development', es: 'NOVAworks: desarrollo de la fuerza laboral' },
     description: {
-      en: 'Comprehensive federally funded retraining grants (WIOA) offering up to $8,000 for industry credentials in IT Support, Cloud Computing, Cybersecurity, and Data Analytics.',
-      es: 'Becas federales de capacitación (WIOA) de hasta $8,000 para certificaciones en Soporte IT, Computación en la Nube, Ciberseguridad y Análisis de Datos.'
+      en: 'Free career advice and workshops for eligible job seekers in NOVAworks service areas. A limited number of training scholarships may be available depending on eligibility, program approval, and available funding. There is no universal $8,000 voucher or automatic tuition guarantee.',
+      es: 'Asesoría y talleres profesionales gratuitos. Algunas becas limitadas de capacitación pueden estar disponibles según requisitos, aprobación del programa y fondos; no se garantiza un monto fijo ni el pago de todos los costos.'
     },
     location: {
-      city: 'Milpitas / Sunnyvale',
+      city: 'Sunnyvale',
       county: 'Santa Clara County',
-      transitNote: {
-        en: 'Locations in Sunnyvale (near Mathilda Ave) and Milpitas Library Job Center',
-        es: 'Sedes en Sunnyvale (cerca de Mathilda Ave) y Centro de Empleo en Biblioteca de Milpitas'
-      },
-      addressSimulated: '505 W Olive Ave, Suite 550, Sunnyvale, CA 94086 (Simulated)'
+      transitNote: { en: 'Check NOVAworks for current accessibility, transportation and remote workshop arrangements.', es: 'Consulte con NOVAworks opciones de transporte, accesibilidad y talleres virtuales.' },
+      addressSimulated: '456 West Olive Avenue, Sunnyvale, CA (official office address; confirm before visiting)'
     },
-    schedule: {
-      en: 'Monday – Friday: 8:00 AM – 5:00 PM; Virtual orientations every Wednesday 10 AM',
-      es: 'Lunes a viernes: 8:00 AM – 5:00 PM; Orientaciones virtuales cada miércoles 10 AM'
-    },
+    schedule: { en: 'Office hours and orientation dates: check the official NOVAworks schedule.', es: 'Consulte horarios de atención y orientación en el sitio oficial de NOVAworks.' },
     costType: 'Subsidized',
-    languagesSupported: ['English', 'Español', 'Vietnamese', 'Tagalog'],
+    languagesSupported: ['English (ask about additional language assistance)'],
     eligibilityHighlight: {
-      en: 'Individuals recently laid off, manufacturing workers impacted by reductions, or long-term unemployed.',
-      es: 'Trabajadores despedidos recientemente, personal manufacturero afectado o desempleados.'
+      en: 'Service-area and scholarship eligibility are determined by NOVAworks. Training funds are limited and not automatic.',
+      es: 'NOVAworks determina la elegibilidad y los fondos para capacitación son limitados.'
     },
     noIdRequired: false,
-    confidential: true,
-    tags: ['WIOA Grants up to $8k', 'Mid-Career Pivot', 'Certifications (CompTIA/AWS)', '1-on-1 Career Advisor'],
+    confidential: false,
+    tags: ['NOVAworks', 'Workforce training', 'WIOA', 'Career guidance', 'Training scholarships', 'Limited funding', 'Sunnyvale'],
     nextStepInsight: {
       explanation: {
-        en: 'Designed specifically to bridge mid-career manufacturing technicians into modern IT infrastructure and cloud operational roles without taking on student loan debt.',
-        es: 'Diseñado específicamente para ayudar a técnicos con experiencia manufacturera a ingresar a roles en IT y nube sin deudas estudiantiles.'
+        en: 'Start with free career advising, a skills assessment, and discussion of available approved training. A counselor must review funding options and fit; training benefits are not guaranteed.',
+        es: 'Comience con asesoría gratuita, evaluación de habilidades y revisión de capacitación aprobada. Un asesor debe confirmar fondos y requisitos.'
       },
-      confidenceRating: 98,
-      sourceOrganization: {
-        en: 'California Workforce Development Board Benchmark 2026',
-        es: 'Junta de Desarrollo de la Fuerza Laboral de California 2026'
-      },
-      simulatedVerificationDate: 'October 2026',
-      dataSourceLabel: {
-        en: 'Federal Workforce Innovation and Opportunity Act (WIOA) Registry',
-        es: 'Registro Federal de Innovación y Oportunidades Laborales (WIOA)'
-      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'NOVAworks official Career Seekers and Training pages', es: 'Sitios oficiales de NOVAworks de servicios de carrera y capacitación' },
+      simulatedVerificationDate: 'Source reviewed October 2026; scholarship funding can change',
+      dataSourceLabel: { en: 'https://novaworks.org/career-seekers/training/', es: 'https://novaworks.org/career-seekers/training/' },
       documentsNeeded: [
-        { en: 'Layoff notice letter / EDD Unemployment Insurance Determination Notice', es: 'Carta de despido o Notificación de Seguro de Desempleo EDD' },
-        { en: 'California Driver License or State ID', es: 'Licencia de conducir de California o identificación estatal' },
-        { en: 'Current resume draft detailing past manufacturing or technical experience', es: 'Borrador de currículum detallando experiencia previa' }
+        { en: 'Ask what proof of employment history, address, and eligibility is required.', es: 'Consulte qué pruebas de experiencia laboral y elegibilidad se requieren.' },
+        { en: 'Prepare a summary of your previous work, skills, and training goals.', es: 'Prepare un resumen de su experiencia, habilidades y metas.' }
       ],
       actionItems: [
         {
-          id: 'work-act-1',
-          title: { en: 'Sign up for the 45-minute virtual WIOA orientation', es: 'Inscribirse a la orientación virtual de 45 minutos de WIOA' },
-          description: { en: 'Orientations explain grant eligibility rules and approved IT training provider catalogs.', es: 'Explica los requisitos de las becas y el catálogo de escuelas de tecnología aprobadas.' },
-          estimatedMinutes: 45
+          id: 'work-ask-adviser',
+          title: { en: 'Register for NOVAworks career guidance', es: 'Inscribirse para recibir orientación laboral de NOVAworks' },
+          description: { en: 'Ask about the initial career advising and training scholarship process.', es: 'Consulte la asesoría inicial y el proceso de becas para capacitación.' }
         },
         {
-          id: 'work-act-2',
-          title: { en: 'Schedule 1-on-1 intake interview with a Career Navigator', es: 'Agendar cita individual con un asesor laboral' },
-          description: { en: 'Review certificate pathways (CompTIA Security+, AWS Cloud Practitioner, Google IT Support).', es: 'Revisar opciones de certificados (CompTIA Security+, AWS Cloud, Soporte Google IT).' },
-          estimatedMinutes: 60
+          id: 'work-check-etpl',
+          title: { en: 'Explore the California Eligible Training Provider List', es: 'Explorar la lista de proveedores de capacitación elegibles' },
+          description: { en: 'An ETPL listing alone does not guarantee funding. Confirm providers with the NOVAworks training adviser.', es: 'Aparecer en la lista no garantiza fondos; confirme con un asesor.' }
         },
         {
-          id: 'work-act-3',
-          title: { en: 'Submit training voucher paperwork for 100% tuition coverage', es: 'Enviar solicitud de vale de capacitación para 100% de colegiatura' },
-          description: { en: 'Voucher pays training provider directly; no out-of-pocket tuition.', es: 'El vale paga directamente al instituto; sin desembolso de colegiatura.' },
-          estimatedMinutes: 30
+          id: 'work-check-edd',
+          title: { en: 'Ask EDD about California Training Benefits if receiving unemployment', es: 'Consultar con EDD sobre beneficios de capacitación si recibe desempleo' },
+          description: { en: 'CTB is about UI eligibility during training; it does not pay tuition or automatically waive reporting requirements.', es: 'CTB se refiere a la elegibilidad de beneficios durante capacitación; no paga matrícula.' }
         }
       ],
       commonMisconceptions: {
-        en: 'Enrolling in approved WIOA training does NOT cancel your weekly EDD unemployment benefits under California Training Benefits (CTB).',
-        es: 'Inscribirse en capacitación WIOA aprobada NO cancela sus cheques de desempleo del EDD gracias al programa California Training Benefits.'
+        en: 'Career advising may be free, but training scholarships and CTB approval are not automatic. California EDD does not pay tuition through CTB.',
+        es: 'La orientación laboral puede ser gratuita, pero las becas y CTB no son automáticos; CTB no cubre matrícula.'
       },
       accessibilityNotes: {
-        en: 'Assisted listening systems and screen reading workstations at both job center facilities.',
-        es: 'Sistemas de apoyo auditivo y computadoras adaptadas para lectura en ambas sedes.'
+        en: 'Contact NOVAworks for current accessibility and accommodation options.',
+        es: 'Póngase en contacto con NOVAworks para consultar adaptaciones de accesibilidad.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-NOVA (Simulated)',
-      intakeMethod: { en: 'Online orientation registration or phone intake', es: 'Registro en línea a orientación o llamada telefónica' },
-      websiteDomainSimulated: 'novaworks-prototype.local'
+      phone: '408-730-7232 (official NOVAworks number; confirm current)',
+      intakeMethod: { en: 'Register and contact an adviser through NOVAworks career-seeker pages.', es: 'Inscríbase y consulte con asesores a través de NOVAworks.' },
+      websiteDomainSimulated: 'https://novaworks.org/career-seekers/training/'
     }
   },
   {
