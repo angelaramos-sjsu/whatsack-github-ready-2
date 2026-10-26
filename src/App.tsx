@@ -14,6 +14,7 @@ import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
 import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
+import { SofiaCollegeGuide } from './components/SofiaCollegeGuide';
 import { ResourceCard } from './components/ResourceCard';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
@@ -51,6 +52,7 @@ export function App() {
   // Resident Introduction Profile State
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
+  const [isSofiaGuideOpen, setIsSofiaGuideOpen] = useState<boolean>(false);
 
   // Modals & Drawers
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState<boolean>(false);
@@ -265,6 +267,19 @@ export function App() {
             onClearSearch={() => setSearchQuery('')}
           />
 
+          {/* Optional step-by-step college guidance, without changing the existing search */}
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white border border-emerald-200 rounded-2xl p-4 shadow-sm">
+              <div>
+                <p className="font-extrabold text-slate-900 text-sm">Explore college and financial-aid options step by step</p>
+                <p className="text-xs text-slate-600 mt-1">A guided, optional research demonstration — no account or personal documents needed.</p>
+              </div>
+              <button type="button" onClick={() => setIsSofiaGuideOpen(true)} className="shrink-0 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm px-4 py-3 focus-visible:ring-2 focus-visible:ring-emerald-900">
+                Start guided college search
+              </button>
+            </div>
+          </div>
+
           {/* Active Intake Assessment Bar (When resident filled profile) */}
           {userProfile && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -458,6 +473,12 @@ export function App() {
           window.scrollTo({ top: 500, behavior: 'smooth' });
         }}
         onOpenExtension={() => setActiveView('extension')}
+      />
+
+      <SofiaCollegeGuide
+        isOpen={isSofiaGuideOpen}
+        onClose={() => setIsSofiaGuideOpen(false)}
+        initialQuestion={searchQuery}
       />
 
       {/* Introduction Assessment Modal */}
