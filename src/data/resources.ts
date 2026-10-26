@@ -23,7 +23,7 @@ export const categoriesData: CategoryInfo[] = [
     tagline: { en: 'Tech retraining, community college grants & FAFSA assistance', es: 'Becas de capacitación, colegio comunitario y ayuda estudiantil' },
     icon: 'GraduationCap',
     badgeColor: 'indigo',
-    count: 4
+    count: 6
   },
   {
     id: 'community',
@@ -1021,6 +1021,151 @@ export const demonstrationResources: DemonstrationResource[] = [
       phone: '(408) 555-YEAR (Simulated)',
       intakeMethod: { en: 'Online interest application and virtual interview', es: 'Solicitud en línea y entrevista virtual' },
       websiteDomainSimulated: 'yearup-sv-prototype.local'
+    }
+  },
+
+
+  // Source-linked employer training examples. Current cohorts/eligibility/benefits are NOT verified.
+  {
+    id: 'res-work-mdp',
+    categoryId: 'workforce',
+    officialUrl: 'https://www.tesla.com/careers/manufacturing-development-program',
+    title: { en: 'Tesla Manufacturing Development Program (MDP) — Ohlone pathway', es: 'Programa de Desarrollo de Manufactura de Tesla (MDP) — Ohlone' },
+    organization: { en: 'Tesla / Ohlone College', es: 'Tesla / Ohlone College' },
+    description: {
+      en: 'Employer-connected advanced-manufacturing training. Tesla describes a pathway for successful graduates to transition into a full-time Production Associate role. Ohlone has described full-time job offers in its program cohorts. This is not a guaranteed offer for every applicant, and mid-career eligibility must be confirmed.',
+      es: 'Capacitación de manufactura avanzada con conexión a Tesla. El programa describe una posible transición a un puesto de Asociado de Producción de tiempo completo tras completarlo con éxito. La oferta de empleo y la elegibilidad para adultos deben confirmarse directamente.'
+    },
+    location: {
+      city: 'Fremont',
+      county: 'Alameda County',
+      transitNote: { en: 'Check program website for current campus, factory and transportation requirements.', es: 'Consulte el sitio oficial para confirmar instalaciones, ubicación y transporte.' },
+      addressSimulated: 'Exact training location varies by cohort; check official program details.'
+    },
+    schedule: { en: 'Cohort dates, hours and application status: confirm with Tesla/Ohlone.', es: 'Fechas, horario y estado de solicitudes: confirme con Tesla/Ohlone.' },
+    costType: 'Subsidized',
+    languagesSupported: ['English (verify additional language support)'],
+    eligibilityHighlight: {
+      en: 'Tesla describes the target audience as graduating high-school seniors and early-career individuals. Daniel, 45, must confirm current mid-career eligibility.',
+      es: 'Tesla describe un público de graduados de preparatoria y personas al inicio de su carrera. Daniel, de 45 años, debe confirmar los requisitos actuales.'
+    },
+    noIdRequired: false,
+    confidential: false,
+    tags: ['Tesla MDP', 'Manufacturing', 'Ohlone', 'Employer-connected training', 'Full-time Production Associate opportunity', 'Eligibility check required'],
+    nextStepInsight: {
+      explanation: {
+        en: 'Potential Tesla employment pathway after successful completion. Verify that the current program admits experienced adult applicants and learn the exact employment-offer conditions before applying.',
+        es: 'Posible trayectoria de empleo en Tesla al completar el programa. Verifique si admite a personas adultas con experiencia y las condiciones de contratación.'
+      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'Tesla official Manufacturing Development Program', es: 'Sitio oficial del programa MDP de Tesla' },
+      simulatedVerificationDate: 'Source reviewed October 2026; current cohort unverified',
+      dataSourceLabel: { en: 'https://www.tesla.com/careers/manufacturing-development-program', es: 'https://www.tesla.com/careers/manufacturing-development-program' },
+      documentsNeeded: [
+        { en: 'Check the current application instructions for required information.', es: 'Consulte la solicitud actual para conocer los documentos necesarios.' },
+        { en: 'Prepare questions about experience, age-related cohort criteria and prior manufacturing skills.', es: 'Prepare preguntas sobre experiencia y requisitos de admisión.' }
+      ],
+      actionItems: [
+        {
+          id: 'mdp-check-eligibility',
+          title: { en: 'Ask whether mid-career adults are eligible for the current MDP cohort', es: 'Confirmar elegibilidad de personas adultas para MDP' },
+          description: { en: 'Daniel is 45; do not assume that historical cohorts or broad marketing language guarantee access.', es: 'Daniel tiene 45 años; no se debe suponer su elegibilidad.' }
+        },
+        {
+          id: 'mdp-check-offer',
+          title: { en: 'Confirm the conditions of a full-time Production Associate job offer', es: 'Confirmar las condiciones de una oferta de empleo de tiempo completo' },
+          description: { en: 'Ask what successful completion means and what employment transition or offer is currently provided.', es: 'Pregunte qué se considera completar el programa y cuáles son las condiciones de empleo.' }
+        },
+        {
+          id: 'mdp-schedule',
+          title: { en: 'Check current cohort dates, costs and time commitments', es: 'Confirmar fechas, costos y horarios de la cohorte' },
+          description: { en: 'Verify training location and schedule before planning around household obligations.', es: 'Verifique lugar y horario antes de organizar sus responsabilidades familiares.' }
+        }
+      ],
+      commonMisconceptions: {
+        en: 'A program employment pathway does not mean every visitor or applicant is guaranteed enrollment or a job offer.',
+        es: 'Una trayectoria laboral no garantiza la admisión ni una oferta de empleo para todos.'
+      },
+      accessibilityNotes: {
+        en: 'Ask Tesla/Ohlone about current accessibility arrangements and accommodation procedures.',
+        es: 'Consulte con Tesla/Ohlone sobre accesibilidad y adaptaciones.'
+      }
+    },
+    contactSimulated: {
+      phone: 'Not provided — use official program page',
+      intakeMethod: { en: 'Use the official Tesla/Ohlone program pages; current application requirements vary.', es: 'Use los sitios oficiales de Tesla/Ohlone; los requisitos pueden variar.' },
+      websiteDomainSimulated: 'https://www.tesla.com/careers/manufacturing-development-program'
+    }
+  },
+  {
+    id: 'res-work-ssba',
+    categoryId: 'workforce',
+    officialUrl: 'https://www.ohlone.edu/ssba',
+    title: { en: 'Semiconductor Skills Bridge Academy (SSBA) — Ohlone College', es: 'Academia Puente de Habilidades de Semiconductores (SSBA) — Ohlone' },
+    organization: { en: 'Ohlone College / Semiconductor Skills Bridge Academy', es: 'Ohlone College / Academia Puente de Semiconductores' },
+    description: {
+      en: 'Short-term semiconductor and smart-manufacturing skills training with hands-on and job-readiness activities. Documented cohorts advertised a $1,500 stipend after successful completion. Confirm whether that stipend is available for the next cohort. Employment is not guaranteed.',
+      es: 'Capacitación en manufactura inteligente y semiconductores con preparación laboral. Algunas cohortes anunciaron un estipendio de $1,500 al completar el programa. Verifique la disponibilidad para la siguiente cohorte. No se garantiza empleo.'
+    },
+    location: {
+      city: 'Fremont',
+      county: 'Alameda County',
+      transitNote: { en: 'Check Ohlone for current classroom locations and any hybrid or employer-training arrangements.', es: 'Confirme con Ohlone los salones de clase y posibles actividades híbridas o laborales.' },
+      addressSimulated: 'Exact cohort location not confirmed; see official program details.'
+    },
+    schedule: { en: 'Dates, duration and class times vary by cohort; confirm before applying.', es: 'Fechas, duración y horarios sujetos a cada cohorte; confirme antes de solicitar.' },
+    costType: 'Subsidized',
+    languagesSupported: ['English (verify additional language support)'],
+    eligibilityHighlight: {
+      en: 'Current enrollment, applicant requirements and completion stipend availability must be confirmed with Ohlone College.',
+      es: 'Se deben confirmar la inscripción, los requisitos y la disponibilidad del estipendio con Ohlone College.'
+    },
+    noIdRequired: false,
+    confidential: false,
+    tags: ['SSBA', 'Semiconductor', 'Smart Manufacturing', 'Ohlone', '$1500 completion stipend in prior cohorts', 'Job-readiness training'],
+    nextStepInsight: {
+      explanation: {
+        en: 'SSBA may help Daniel build semiconductor-related skills. A $1,500 completion stipend was advertised for documented cohorts, not guaranteed for every future participant.',
+        es: 'SSBA podría ayudar a Daniel a desarrollar habilidades en semiconductores. El estipendio de $1,500 se anunció para cohortes documentadas, pero no está garantizado en otras.'
+      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'Ohlone College / City of Fremont workforce training references', es: 'Ohlone College / referencias de capacitación de Fremont' },
+      simulatedVerificationDate: 'Source reviewed October 2026; current cohort stipend unverified',
+      dataSourceLabel: { en: 'https://www.ohlone.edu/ssba', es: 'https://www.ohlone.edu/ssba' },
+      documentsNeeded: [
+        { en: 'Ask Ohlone what application and eligibility documents are needed.', es: 'Pregunte a Ohlone qué documentos requiere la solicitud.' },
+        { en: 'Check whether stipend conditions require attendance or program completion.', es: 'Confirme las condiciones de asistencia y finalización del estipendio.' }
+      ],
+      actionItems: [
+        {
+          id: 'ssba-check-stipend',
+          title: { en: 'Confirm the $1,500 stipend for the next cohort', es: 'Confirmar el estipendio de $1,500 para la próxima cohorte' },
+          description: { en: 'Ask whether it is currently funded, how to qualify, and when it would be paid.', es: 'Pregunte si hay fondos, quién califica y cuándo se paga.' }
+        },
+        {
+          id: 'ssba-check-training',
+          title: { en: 'Review curriculum, schedule and entry requirements', es: 'Revisar materias, horario y requisitos de ingreso' },
+          description: { en: 'Compare the training against Daniel’s manufacturing background and family schedule.', es: 'Compare el programa con la experiencia manufacturera y horarios familiares de Daniel.' }
+        },
+        {
+          id: 'ssba-workforce-contact',
+          title: { en: 'Ask about career advising and employer connections', es: 'Consultar asesoría profesional y contactos con empleadores' },
+          description: { en: 'Learn what employment assistance is currently offered without assuming a job guarantee.', es: 'Conozca el apoyo para buscar empleo sin asumir una garantía de contratación.' }
+        }
+      ],
+      commonMisconceptions: {
+        en: 'A completion stipend and employer-connected workshops do not mean that SSBA guarantees admission, stipend eligibility, or employment.',
+        es: 'Un estipendio y los talleres laborales no garantizan admisión, ayuda económica ni empleo.'
+      },
+      accessibilityNotes: {
+        en: 'Ask Ohlone about available accessibility and language accommodations for this cohort.',
+        es: 'Consulte con Ohlone sobre adaptaciones de accesibilidad e idioma.'
+      }
+    },
+    contactSimulated: {
+      phone: 'Not provided — use official Ohlone page',
+      intakeMethod: { en: 'See Ohlone SSBA site or contact its Career Education office for current cohorts.', es: 'Visite SSBA o consulte con la oficina de Educación Profesional de Ohlone.' },
+      websiteDomainSimulated: 'https://www.ohlone.edu/ssba'
     }
   },
 
