@@ -449,7 +449,29 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   {msg.text}
                 </div>
 
-                {/* RAG Reasoning & Guardrail Trace (For LLM responses) */}
+                {isLlm && msg.responseMode && (
+                  <div role="status" className="mt-3 text-xs text-amber-200 font-semibold">
+                    {msg.responseMode === 'live'
+                      ? 'AI-generated draft • Verify facts on official websites. This question and recent chat context were processed by an AI provider.'
+                      : 'Scripted college demo • No live AI or real-time verification is being used.'}
+                  </div>
+                )}
+
+                {isLlm && msg.officialSources && msg.officialSources.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-slate-700/60">
+                    <p className="text-[11px] text-slate-300 font-bold mb-2">Official starting points — check current details</p>
+                    <div className="flex flex-col gap-2">
+                      {msg.officialSources.map(source => (
+                        <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer"
+                          className="text-sm text-emerald-300 underline underline-offset-2 hover:text-emerald-100">
+                          {source.title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Simulation-only reasoning trace for legacy responses */}
                 {isLlm && msg.ragTrace && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <button
@@ -457,7 +479,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       className="text-[11px] font-bold text-indigo-300 hover:text-indigo-200 flex items-center gap-1.5 transition-colors"
                     >
                       <Brain className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>{currentLanguage === 'en' ? 'Civic RAG Retrieval Trace' : 'Traza de Recuperación RAG Cívico'} ({msg.ragTrace.confidence}% confidence)</span>
+                      <span>{currentLanguage === 'en' ? 'Simulated routing trace' : 'Traza de enrutamiento simulada'}</span>
                       {isTraceExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
 
@@ -468,7 +490,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           <span className="text-indigo-200">{msg.ragTrace.intent}</span>
                         </div>
                         <div>
-                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Safety Guardrails Passed:</strong>
+                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Prototype guardrail labels (not independently tested):</strong>
                           <div className="flex flex-wrap gap-1 mt-0.5">
                             {msg.ragTrace.guardrailsPassed.map((g, idx) => (
                               <span key={idx} className="bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-1.5 py-0.5 rounded text-[10px]">
@@ -624,8 +646,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         <p className="text-center text-xs text-slate-400 font-medium mt-2.5">
           {currentLanguage === 'en'
-            ? 'WhatSack Civic-LLM grounds outputs strictly in demonstration records. No personal data collected or stored.'
-            : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
+            ? 'College answers are scripted unless a server-side AI key is configured. With live AI enabled, your question and recent chat context go to the AI provider. Do not enter private details.'
+            : 'Las respuestas son una demostración salvo que se configure IA en vivo. Si está activa, se envían las preguntas al proveedor de IA. No comparta datos personales.'}
         </p>
       </div>
     </div>
