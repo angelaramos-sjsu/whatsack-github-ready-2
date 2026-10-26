@@ -4,6 +4,7 @@ import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
 import { answerSofiaEducationQuestion, isSofiaEducationQuestion } from '../data/sofiaAssistant';
+import { answerDanielQuestion, isDanielQuestion } from '../data/danielAssistant';
 import { 
   Bot, 
   Send, 
@@ -69,6 +70,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [expandedTraceId, setExpandedTraceId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const sofiaContextRef = useRef(false);
+  const danielContextRef = useRef(false);
 
   useEffect(() => {
     if (initialQuestion.trim()) setInputText(initialQuestion);
@@ -86,6 +88,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ? [
             'Where can I get groceries in East San Jose without an ID?',
             'How can laid-off workers get free tech certificates in Milpitas?',
+            'Compare Ohlone Tesla MDP and SSBA training options.',
             'I want to go to college but my family has little money. What are my options?',
             'What mental health support is confidential for teens in Sunnyvale?',
             'Practice intake call for food pantry'
@@ -129,6 +132,37 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     setMessages(prev => [...prev, userMessage]);
     if (!textToSend) setInputText('');
     setIsGenerating(true);
+
+    // Daniel answers are intentionally scripted; no API call is made for his demo.
+    // Explicit college admissions/aid questions can still start Sofia's pathway.
+    const explicitDaniel = isDanielQuestion(text, false);
+    const explicitSofia = isSofiaEducationQuestion(text, false);
+    const danielQuestion = !/sofia/i.test(personaTag || '') &&
+      ( /daniel/i.test(personaTag || '') || (
+        isDanielQuestion(text, danielContextRef.current) &&
+        (!explicitSofia || explicitDaniel)
+      ));
+    danielContextRef.current = danielQuestion;
+    if (danielQuestion) {
+      sofiaContextRef.current = false;
+      const prepared = answerDanielQuestion(text, true);
+      if (prepared) {
+        setTimeout(() => {
+          setMessages(previous => [...previous, {
+            id: 'daniel-' + Date.now(),
+            sender: 'llm',
+            text: prepared.text,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            recommendedResourceIds: prepared.recommendedResourceIds,
+            suggestedFollowUps: prepared.followUps,
+            officialSources: prepared.sources,
+            responseMode: 'demo'
+          }]);
+          setIsGenerating(false);
+        }, 300);
+        return;
+      }
+    }
 
     // College questions keep their topic across follow-ups. Live AI is optional.
     const previousCollegeContext = sofiaContextRef.current;
