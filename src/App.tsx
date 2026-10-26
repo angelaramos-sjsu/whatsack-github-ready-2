@@ -15,6 +15,7 @@ import { HeroConversationalSearch } from './components/HeroConversationalSearch'
 import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { SofiaCollegeGuide } from './components/SofiaCollegeGuide';
+import { DanielTrainingGuide } from './components/DanielTrainingGuide';
 import { ResourceCard } from './components/ResourceCard';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
@@ -53,6 +54,7 @@ export function App() {
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
   const [isSofiaGuideOpen, setIsSofiaGuideOpen] = useState<boolean>(false);
+  const [isDanielGuideOpen, setIsDanielGuideOpen] = useState<boolean>(false);
   const [copilotStartQuestion, setCopilotStartQuestion] = useState<string>('');
 
   // Modals & Drawers
@@ -282,6 +284,20 @@ export function App() {
             </div>
           </div>
 
+          {/* Optional research-informed Daniel workforce training journey */}
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-indigo-200 bg-white p-4 shadow-sm">
+              <div>
+                <p className="font-extrabold text-slate-900 text-sm">Explore career retraining after a layoff</p>
+                <p className="text-xs text-slate-600 mt-1">Daniel's interactive demo compares Tesla MDP, Ohlone SSBA, training funding and job-search support.</p>
+              </div>
+              <button type="button" onClick={() => setIsDanielGuideOpen(true)}
+                className="shrink-0 rounded-xl bg-indigo-700 px-4 py-3 text-sm font-extrabold text-white hover:bg-indigo-800 focus-visible:ring-2 focus-visible:ring-indigo-900">
+                Start guided career search
+              </button>
+            </div>
+          </div>
+
           {/* Active Intake Assessment Bar (When resident filled profile) */}
           {userProfile && (
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -484,6 +500,17 @@ export function App() {
         onAskCopilot={(question) => {
           setCopilotStartQuestion(question);
           setIsSofiaGuideOpen(false);
+          setActiveView('copilot');
+        }}
+      />
+
+      <DanielTrainingGuide
+        isOpen={isDanielGuideOpen}
+        onClose={() => setIsDanielGuideOpen(false)}
+        initialQuestion={searchQuery}
+        onAskCopilot={(question) => {
+          setCopilotStartQuestion(question);
+          setIsDanielGuideOpen(false);
           setActiveView('copilot');
         }}
       />
