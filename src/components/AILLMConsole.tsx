@@ -130,7 +130,51 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!textToSend) setInputText('');
     setIsGenerating(true);
 
-    // Simulated RAG Pipeline & Civic LLM Generation
+    // College questions keep their topic across follow-ups. Live AI is optional.
+    const previousCollegeContext = sofiaContextRef.current;
+    const collegeQuestion = isSofiaEducationQuestion(text, previousCollegeContext) ||
+      /sofia/i.test(personaTag || '');
+    sofiaContextRef.current = collegeQuestion;
+    if (collegeQuestion) {
+      const preparedAnswer = answerSofiaEducationQuestion(text, true);
+      if (preparedAnswer) {
+        const recentContext = messages.slice(-6)
+          .map(message => (message.sender === 'user' ? 'Student: ' : 'WhatSack: ') + message.text.slice(0, 450))
+          .join('\n');
+        const requestAnswer = async (): Promise<{ answer: string; live: boolean }> => {
+          try {
+            const response = await fetch('/api/sofia-chat', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ question: text, context: recentContext }),
+              signal: AbortSignal.timeout(23000)
+            });
+            if (!response.ok) throw new Error('Optional AI service unavailable');
+            const result = await response.json() as { mode?: string; answer?: string };
+            if (result.mode !== 'live' || !result.answer?.trim()) throw new Error('Empty AI answer');
+            return { answer: result.answer.trim(), live: true };
+          } catch {
+            return { answer: preparedAnswer.text, live: false };
+          }
+        };
+        void requestAnswer().then(({ answer, live }) => {
+          const response: ChatMessage = {
+            id: 'sofia-' + Date.now(),
+            sender: 'llm',
+            text: answer,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            officialSources: preparedAnswer.sources,
+            suggestedFollowUps: preparedAnswer.followUps,
+            responseMode: live ? 'live' : 'demo'
+          };
+          setMessages(previous => [...previous, response]);
+          setIsGenerating(false);
+        }).catch(() => setIsGenerating(false));
+        return;
+      }
+    }
+
+    // Existing category responses remain scripted prototype interactions.
     setTimeout(() => {
       const lower = text.toLowerCase();
       let matchedResIds: string[] = [];
