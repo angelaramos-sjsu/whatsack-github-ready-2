@@ -71,6 +71,38 @@ export function findNextStepInsight(question: string, persona?: InsightPersona):
   });
   if (embedded) return { entry: embedded, score: 0.99 };
 
+  // Frequent, high-intent paraphrases from the team's persona testing. Keep these
+  // narrowly scoped so a vague question is never mistaken for an eligibility finding.
+  let specificId: string | undefined;
+  const q = normalized;
+  if (persona === 'Daniel') {
+    const tesla = /\btesla\b|\bmdp\b|manufacturing development program/.test(q);
+    const ssba = /\bssba\b|semiconductor skills bridge/.test(q);
+    if (tesla && /\b45\b|older|age|mid career|eligible|eligibility|qualify/.test(q)) specificId = 'D1.2';
+    else if (tesla && /salary|wage|paid|pay rate|compensation/.test(q)) specificId = 'D1.6';
+    else if (tesla && /job offer|full time job|hiring|hire me|employment/.test(q)) specificId = 'D1.1';
+    else if (tesla && /schedule|shift|night|weekend/.test(q)) specificId = 'D1.4';
+    else if (ssba && /stipend|1500|paid|money/.test(q)) specificId = 'D1.8';
+    else if (ssba && /train|learn|course|curriculum|teach|skill/.test(q)) specificId = 'D1.7';
+    else if (/\bedd\b|unemployment|\bctb\b/.test(q) && /train|school|class|studying/.test(q)) specificId = 'D3.2';
+    else if (/\bwioa\b/.test(q) && /fund|tuition|pay|grant|cost/.test(q)) specificId = 'D3.5';
+    else if (/layoff|laid off|lost my job/.test(q) && /first|today|yesterday|just happened|what do/.test(q)) specificId = 'D0.2';
+    else if (/resume|interview/.test(q) && /help|workshop|job search|find/.test(q)) specificId = 'D5.1';
+  } else if (persona === 'Sofia') {
+    if (/fafsa/.test(q) && /parent|ssn|social security/.test(q)) specificId = 'S2.3';
+    else if (/scholarship/.test(q) && /scam|fraud|bank|credit card|suspicious|pay a fee/.test(q)) specificId = 'S2.11';
+    else if (/scholarship/.test(q) && /first gen|latina|bay area|where|find|money/.test(q)) specificId = 'S2.8';
+    else if (/\bohlone\b/.test(q) && /free|price|cost|tuition/.test(q)) specificId = 'S1.1';
+    else if (/cal state|\bcsu\b/.test(q) && /application|deadline|due|apply/.test(q)) specificId = 'S4.1';
+    else if (/\buc\b|university of california/.test(q) && /application|deadline|due|apply/.test(q)) specificId = 'S4.2';
+    else if (/college/.test(q) && /work full time|work and school|work while/.test(q)) specificId = 'S1.5';
+    else if (/family|dad|parent/.test(q) && /lost job|laid off|cut hours|income dropped/.test(q)) specificId = 'S2.6';
+  }
+  if (specificId) {
+    const found = getNextStepInsight(specificId);
+    if (found) return { entry: found, score: 0.95 };
+  }
+
   const inputTokens = tokens(question);
   if (inputTokens.size < 2) return null;
   let best: MatchedInsight | null = null;
