@@ -5,6 +5,9 @@ import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
 import { answerSofiaEducationQuestion, isSofiaEducationQuestion } from '../data/sofiaAssistant';
 import { answerDanielQuestion, isDanielQuestion } from '../data/danielAssistant';
+import { nextStepInsightEntries, type NextStepInsightEntry } from '../data/nextStepInsights';
+import { findNextStepInsight } from '../data/nextStepInsightsRouting';
+import { NextStepInsightCard } from './NextStepInsightCard';
 import { 
   Bot, 
   Send, 
@@ -43,6 +46,7 @@ interface ChatMessage {
   suggestedFollowUps?: string[];
   officialSources?: Array<{title: string; url: string}>;
   responseMode?: 'live' | 'demo';
+  nextStepInsight?: NextStepInsightEntry;
 }
 
 interface AILLMConsoleProps {
@@ -133,15 +137,32 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!textToSend) setInputText('');
     setIsGenerating(true);
 
-    // Daniel answers are intentionally scripted; no API call is made for his demo.
-    // Explicit college admissions/aid questions can still start Sofia's pathway.
+    // Match the 103 researched questions before the older, generic keyword scripts.
+    // Persona selection takes precedence for ambiguous questions. No remote AI is needed.
+    const sofiaMatch = findNextStepInsight(text, 'Sofia');
+    const danielMatch = findNextStepInsight(text, 'Daniel');
+    const namedDaniel = /daniel/i.test(personaTag || '');
+    const namedSofia = /sofia/i.test(personaTag || '');
+    const activeDaniel = namedDaniel || activePersonaId === 'daniel-45';
+    const activeSofia = namedSofia || activePersonaId === 'sofia-17';
+    let matrixMatch: NextStepInsightEntry | undefined;
+    if (namedDaniel) matrixMatch = danielMatch?.entry;
+    else if (namedSofia) matrixMatch = sofiaMatch?.entry;
+    else if (sofiaMatch?.score === 1 || danielMatch?.score === 1) {
+      matrixMatch = (sofiaMatch?.score || 0) >= (danielMatch?.score || 0) ? sofiaMatch?.entry : danielMatch?.entry;
+    } else if (activeDaniel && !activeSofia) matrixMatch = danielMatch?.entry;
+    else if (activeSofia && !activeDaniel) matrixMatch = sofiaMatch?.entry;
+    else if (sofiaMatch && danielMatch) {
+      if (Math.abs(sofiaMatch.score - danielMatch.score) >= 0.07) {
+        matrixMatch = sofiaMatch.score > danielMatch.score ? sofiaMatch.entry : danielMatch.entry;
+      }
+    } else matrixMatch = sofiaMatch?.entry || danielMatch?.entry;
+
     const explicitDaniel = isDanielQuestion(text, false);
     const explicitSofia = isSofiaEducationQuestion(text, false);
-    const danielQuestion = !/sofia/i.test(personaTag || '') &&
-      ( /daniel/i.test(personaTag || '') || (
-        isDanielQuestion(text, danielContextRef.current) &&
-        (!explicitSofia || explicitDaniel)
-      ));
+    const danielQuestion = !namedSofia && (namedDaniel ||
+      (matrixMatch?.persona === 'Daniel') ||
+      (isDanielQuestion(text, danielContextRef.current) && (!explicitSofia || explicitDaniel)));
     danielContextRef.current = danielQuestion;
     if (danielQuestion) {
       sofiaContextRef.current = false;
@@ -156,6 +177,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             recommendedResourceIds: prepared.recommendedResourceIds,
             suggestedFollowUps: prepared.followUps,
             officialSources: prepared.sources,
+            nextStepInsight: matrixMatch?.persona === 'Daniel' ? matrixMatch : undefined,
             responseMode: 'demo'
           }]);
           setIsGenerating(false);
@@ -167,43 +189,27 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     // College questions keep their topic across follow-ups. Live AI is optional.
     const previousCollegeContext = sofiaContextRef.current;
     const collegeQuestion = isSofiaEducationQuestion(text, previousCollegeContext) ||
-      /sofia/i.test(personaTag || '');
+      namedSofia || matrixMatch?.persona === 'Sofia';
     sofiaContextRef.current = collegeQuestion;
     if (collegeQuestion) {
       const preparedAnswer = answerSofiaEducationQuestion(text, true);
       if (preparedAnswer) {
-        const recentContext = messages.slice(-6)
-          .map(message => (message.sender === 'user' ? 'Student: ' : 'WhatSack: ') + message.text.slice(0, 450))
-          .join('\n');
-        const requestAnswer = async (): Promise<{ answer: string; live: boolean }> => {
-          try {
-            const response = await fetch('/api/sofia-chat', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ question: text, context: recentContext }),
-              signal: AbortSignal.timeout(23000)
-            });
-            if (!response.ok) throw new Error('Optional AI service unavailable');
-            const result = await response.json() as { mode?: string; answer?: string };
-            if (result.mode !== 'live' || !result.answer?.trim()) throw new Error('Empty AI answer');
-            return { answer: result.answer.trim(), live: true };
-          } catch {
-            return { answer: preparedAnswer.text, live: false };
-          }
-        };
-        void requestAnswer().then(({ answer, live }) => {
+        // The teacher approved a visual prototype and no API spending is required.
+        // Keep Sofia's replies local and scripted, just like Daniel's.
+        setTimeout(() => {
           const response: ChatMessage = {
             id: 'sofia-' + Date.now(),
             sender: 'llm',
-            text: answer,
+            text: preparedAnswer.text,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
             officialSources: preparedAnswer.sources,
             suggestedFollowUps: preparedAnswer.followUps,
-            responseMode: live ? 'live' : 'demo'
+            nextStepInsight: matrixMatch?.persona === 'Sofia' ? matrixMatch : undefined,
+            responseMode: 'demo'
           };
           setMessages(previous => [...previous, response]);
           setIsGenerating(false);
-        }).catch(() => setIsGenerating(false));
+        }, 300);
         return;
       }
     }
@@ -442,6 +448,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         )}
       </div>
 
+      {/* Optional interactive library of all 103 research-backed question examples. */}
+      <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-3 grid gap-2 sm:grid-cols-2" aria-label="Try researched questions">
+        {(['Sofia', 'Daniel'] as const).map(persona => (
+          <details key={persona} className="rounded-xl border border-slate-700 bg-slate-800/70">
+            <summary className="cursor-pointer select-none text-sm font-bold text-emerald-100 px-4 py-3 hover:bg-slate-800 rounded-xl">
+              Try {persona}'s researched questions ({nextStepInsightEntries.filter(entry => entry.persona === persona).length})
+            </summary>
+            <div className="max-h-56 overflow-y-auto px-3 pb-3 space-y-1">
+              {nextStepInsightEntries.filter(entry => entry.persona === persona).map(entry => (
+                <button key={entry.id} type="button" disabled={isGenerating}
+                  onClick={() => handleSendMessage(entry.question, persona)}
+                  className="w-full p-2 text-left text-xs rounded-lg border border-slate-700 hover:border-emerald-500 hover:bg-slate-700 disabled:opacity-50">
+                  <span className="font-bold text-emerald-300 mr-2">{entry.id}</span>{entry.question}
+                </button>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+
       {/* Main Chat Stream Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
@@ -490,8 +516,14 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.responseMode && (
                   <div role="status" className="mt-3 text-xs text-amber-200 font-semibold">
                     {msg.responseMode === 'live'
-                      ? 'AI-generated draft • Verify facts on official websites. This question and recent chat context were processed by an AI provider.'
-                      : 'Scripted college demo • No live AI or real-time verification is being used.'}
+                      ? 'AI-generated draft • Verify facts on official websites.'
+                      : 'Scripted WhatSack demo • No live AI, paid API or real-time verification.'}
+                  </div>
+                )}
+
+                {isLlm && msg.nextStepInsight && (
+                  <div className="mt-4">
+                    <NextStepInsightCard entry={msg.nextStepInsight} variant="chat" />
                   </div>
                 )}
 
