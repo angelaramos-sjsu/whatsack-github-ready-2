@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, ExternalLink, GraduationCap, RotateCcw, ShieldCheck, Sparkles, X } from 'lucide-react';
+import { selectGuidedInsights } from '../data/nextStepInsightsRouting';
+import { NextStepInsightCard } from './NextStepInsightCard';
 
 type Track = 'colleges' | 'aid' | 'compare' | 'apply';
 type Answer = { value: string; label: string };
@@ -187,6 +189,7 @@ export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '', onAsk
   const activeQuestions = track ? questions[track] : [];
   const finished = track !== null && step >= activeQuestions.length;
   const recommendation = useMemo(() => track ? getRecommendations(track, answers) : null, [track, answers]);
+  const guidedInsights = useMemo(() => track ? selectGuidedInsights('Sofia', track, answers) : [], [track, answers]);
   if (!isOpen) return null;
 
   const selectTrack = (selected: Track) => { setTrack(selected); setStep(0); setAnswers({}); };
@@ -279,11 +282,15 @@ export function SofiaCollegeGuide({ isOpen, onClose, initialQuestion = '', onAsk
                   ))}
                 </div>
               </div>
-              <div className="bg-emerald-50 rounded-2xl p-5 border border-emerald-200">
-                <h3 className="flex items-center gap-2 text-emerald-950 font-extrabold mb-3"><BookOpen size={20}/> NextStep Insights</h3>
-                <ul className="space-y-2">
-                  {recommendation.insights.map((insight, index) => <li key={index} className="flex gap-2 text-sm leading-relaxed"><CheckCircle2 size={17} className="shrink-0 mt-0.5 text-emerald-700"/><span>{insight}</span></li>)}
-                </ul>
+              <div className="space-y-3">
+                <h3 className="flex items-center gap-2 text-emerald-950 font-extrabold"><BookOpen size={20}/> NextStep Insights — based on your choices</h3>
+                {guidedInsights.length > 0 ? guidedInsights.map(insight => (
+                  <NextStepInsightCard key={insight.id} entry={insight} variant="sofia" />
+                )) : (
+                  <ul className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 space-y-2">
+                    {recommendation.insights.map((item,index) => <li key={index} className="text-sm">{item}</li>)}
+                  </ul>
+                )}
               </div>
               <p className="flex items-start gap-2 text-xs text-slate-600"><ShieldCheck size={17} className="shrink-0"/> This is a scripted academic prototype, not a live AI system. Links are to official starting points; check current requirements, dates, program status, and eligibility directly with each provider. No answers are saved or sent to a server.</p>
               <div className="flex flex-wrap gap-2 pt-1">
