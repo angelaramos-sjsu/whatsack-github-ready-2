@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, BriefcaseBusiness, CheckCircle2, ExternalLink, GraduationCap, RotateCcw, ShieldCheck, Sparkles, X } from 'lucide-react';
 import { danielSources } from '../data/danielAssistant';
+import { selectGuidedInsights } from '../data/nextStepInsightsRouting';
+import { NextStepInsightCard } from './NextStepInsightCard';
 
-type Track = 'employer' | 'training' | 'funding' | 'career' | 'family';
+type Track = 'employer' | 'training' | 'funding' | 'career' | 'immediate' | 'family';
 type Question = { id: string; prompt: string; detail?: string; options: Array<{value: string; label: string}> };
 type SourceKey = keyof typeof danielSources;
 
@@ -12,6 +14,7 @@ const tracks: Array<{ id: Track; label: string; description: string }> = [
   { id: 'training', label: 'Find affordable training', description: 'Compare skills, schedules and local programs.' },
   { id: 'funding', label: 'Find help paying for training', description: 'Explore workforce funding and California EDD resources.' },
   { id: 'career', label: 'Explore a new career', description: 'Build on your previous manufacturing experience.' },
+  { id: 'immediate', label: 'Find work as soon as possible', description: 'Start with job-search help, résumé workshops and local workforce centers.' },
   { id: 'family', label: 'Find support for my household', description: 'Optional connection to Maria’s food-assistance journey.' },
 ];
 const questions: Record<Track, Question[]> = {
@@ -77,6 +80,20 @@ const questions: Record<Track, Question[]> = {
     { id: 'duration', prompt: 'How long could you realistically train?', options: options([
       ['weeks', 'A few weeks'], ['months', 'Three to six months'],
       ['year', 'Six to twelve months'], ['flexible', 'I am still deciding'],
+    ]) },
+  ],
+  immediate: [
+    { id: 'urgency', prompt: 'What is your immediate priority?', options: options([
+      ['apply', 'Apply for jobs now'], ['resume', 'Improve my résumé or interviewing skills'],
+      ['advisor', 'Find a career counselor'], ['training', 'Train while looking for jobs'],
+    ]) },
+    { id: 'location', prompt: 'Where could you work or attend services?', options: options([
+      ['milpitas', 'Milpitas / North San Jose'], ['santaclara', 'Other Santa Clara County cities'],
+      ['fremont', 'Fremont / Alameda County'], ['remote', 'Remote or flexible'],
+    ]) },
+    { id: 'support', prompt: 'What would help you most this week?', options: options([
+      ['workshop', 'Free job-search or résumé workshop'], ['assessment', 'Skills assessment'],
+      ['training', 'Explore employer-connected training'], ['adviser', 'Speak to a career adviser'],
     ]) },
   ],
   family: [
@@ -152,6 +169,14 @@ function getResults(track: Track, answers: Record<string, string>) {
       'Check employer requirements, schedules and local demand for roles of interest.',
       'Compare a short bridge program with a longer certificate or degree pathway.',
     ];
+  } else if (track === 'immediate') {
+    names.push('jobseekers', 'nova', 'alameda', 'careeronestop');
+    intro = 'If income or employment is urgent, you can begin job searching and ask a workforce center for free career help while deciding whether training fits your timing.';
+    insights = [
+      'Check California EDD unemployment guidance and report new earnings as required.',
+      'Contact a workforce center serving your area for current résumé workshops, job-search resources, and referrals.',
+      'Use current official job listings to explore roles before committing to paid training.',
+    ];
   } else {
     names.push('food', 'jobseekers', 'alameda');
     intro = answers.groceries === 'no' || answers.groceries === 'skip'
@@ -206,6 +231,7 @@ export function DanielTrainingGuide({ isOpen, onClose, onAskCopilot, initialQues
   const activeQuestions = track ? questions[track] : [];
   const finished = Boolean(track) && step >= activeQuestions.length;
   const result = useMemo(() => track ? getResults(track, answers) : null, [track, answers]);
+  const guidedInsights = useMemo(() => track ? selectGuidedInsights('Daniel', track, answers) : [], [track, answers]);
   if (!isOpen) return null;
 
   const choose = (value: string) => {
@@ -317,13 +343,15 @@ export function DanielTrainingGuide({ isOpen, onClose, onAskCopilot, initialQues
                   ))}
                 </div>
               </div>
-              <div className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5">
-                <h3 className="font-extrabold mb-3">NextStep Insights</h3>
-                <ul className="space-y-2">
-                  {result.insights.map((insight,index) => (
-                    <li key={index} className="flex gap-2 text-sm"><CheckCircle2 size={17} className="shrink-0 text-indigo-700 mt-0.5"/><span>{insight}</span></li>
-                  ))}
-                </ul>
+              <div className="space-y-3">
+                <h3 className="font-extrabold">NextStep Insights — based on your choices</h3>
+                {guidedInsights.length > 0 ? guidedInsights.map(insight => (
+                  <NextStepInsightCard key={insight.id} entry={insight} variant="daniel" />
+                )) : (
+                  <ul className="rounded-2xl border border-indigo-200 bg-indigo-50 p-5 space-y-2">
+                    {result.insights.map((item,index) => <li key={index} className="text-sm">{item}</li>)}
+                  </ul>
+                )}
               </div>
               <p className="text-xs text-slate-600 flex items-start gap-2"><ShieldCheck size={17} className="shrink-0"/> Scripted academic demonstration, not a live AI search. Current program dates, fees, eligibility, job offers, stipends, and funding must be confirmed with the provider. Your answers stay in this browser session.</p>
               <div className="flex gap-2 flex-wrap pt-1">
