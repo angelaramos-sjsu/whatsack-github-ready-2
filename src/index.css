@@ -7,9 +7,9 @@
     @apply font-sans antialiased text-slate-900 bg-slate-50;
   }
 
-  /* Universal accessible focus ring for keyboard navigation (WCAG 2.4.7) */
+  /* Purple keyboard focus rings retain strong visible focus for accessibility. */
   :focus-visible {
-    outline: 3px solid #059669;
+    outline: 3px solid #9333ea;
     outline-offset: 2px;
   }
 
@@ -19,7 +19,7 @@
   textarea:focus-visible,
   button:focus-visible,
   a:focus-visible {
-    outline: 3px solid #047857;
+    outline: 3px solid #7e22ce;
     outline-offset: 2px;
   }
 }
