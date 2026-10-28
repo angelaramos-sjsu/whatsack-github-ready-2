@@ -106,97 +106,97 @@ export const fictionalPersonas: Persona[] = [
     name: 'Daniel',
     age: 45,
     tagline: {
-      en: 'Laid-off electronics assembly worker pivoting to cloud & IT certifications',
-      es: 'Trabajador de ensamble electrónico despedido preparándose para certificaciones IT y nube'
+      en: 'Recently laid-off manufacturing worker exploring affordable technical retraining',
+      es: 'Trabajador manufacturero despedido que explora capacitación técnica asequible'
     },
     location: 'Milpitas / North San Jose, CA',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
     categoryFocus: 'workforce',
     background: {
-      en: 'After 18 years on the manufacturing line in a Milpitas semiconductor facility, Daniel was impacted by workforce reductions. He has strong mechanical skills but needs subsidized computer literacy and certified credentials to re-enter the Silicon Valley job market.',
-      es: 'Tras 18 años en la línea de ensamble en una planta de Milpitas, Daniel fue despedido. Posee excelentes habilidades técnicas manuales, pero requiere certificaciones y capacitación digital para reinsertarse en el mercado laboral local.'
+      en: 'After 18 years in electronics and semiconductor manufacturing in Milpitas, Daniel was laid off. He wants to build on his technical skills, retrain affordably and find reliable work while managing family expenses.',
+      es: 'Después de 18 años en manufactura electrónica y de semiconductores en Milpitas, Daniel fue despedido. Quiere aprovechar su experiencia, capacitarse a un costo accesible y encontrar empleo mientras atiende sus gastos familiares.'
     },
     primaryGoals: [
       {
-        en: 'Enroll in free or state-subsidized WIOA workforce training programs',
-        es: 'Inscribirse en programas de capacitación laboral WIOA gratuitos o subsidiados por el estado'
+        en: 'Compare employer-connected Ohlone training, including Tesla MDP and the Semiconductor Skills Bridge Academy',
+        es: 'Comparar programas de Ohlone vinculados con empleadores, como Tesla MDP y SSBA'
       },
       {
-        en: 'Obtain CompTIA or Cloud Support certifications with evening or asynchronous options',
-        es: 'Obtener certificaciones de soporte técnico (CompTIA/Nube) con horarios vespertinos'
+        en: 'Explore WIOA training assistance, California EDD guidance and any available program stipend',
+        es: 'Explorar ayuda WIOA, orientación de EDD y posibles estipendios'
       },
       {
-        en: 'Receive resume remodeling tailored to mid-career tech transition',
-        es: 'Recibir asesoría de currículum adaptada para profesionales en transición a mitad de carrera'
+        en: 'Meet with a workforce professional about career fit, eligibility and employment pathways',
+        es: 'Consultar con un asesor laboral sobre opciones, requisitos y trayectorias profesionales'
       }
     ],
     barriers: [
       {
-        en: 'Uncertainty about eligibility for California WIOA retraining grants',
-        es: 'Dudas sobre elegibilidad para becas de reentrenamiento WIOA de California'
+        en: 'Uncertainty about workforce funding, completion stipend rules and current program eligibility',
+        es: 'Dudas sobre fondos, estipendios al completar programas y requisitos de ingreso'
       },
       {
-        en: 'Apprehension about competing with younger tech graduates',
-        es: 'Inseguridad al competir contra graduados universitarios jóvenes en tecnología'
+        en: 'Tesla markets MDP primarily to recent high-school graduates and early-career applicants; Daniel must check whether mid-career adults are eligible',
+        es: 'Tesla orienta MDP a graduados recientes y trabajadores al inicio de su carrera; Daniel debe consultar si admite a personas con más experiencia'
       },
       {
-        en: 'Need to balance unemployment benefits (EDD) reporting with study schedules',
-        es: 'Necesidad de compaginar el seguro de desempleo (EDD) con las horas de estudio'
+        en: 'Need to balance EDD unemployment requirements, training schedules and household expenses',
+        es: 'Necesidad de compaginar las reglas de EDD, el horario de capacitación y los gastos familiares'
       }
     ],
     sampleQuestions: [
       {
-        en: 'How can a laid-off manufacturing worker get free cloud IT certificates in Santa Clara County?',
-        es: '¿Cómo puede un trabajador manufacturero despedido obtener cursos de IT gratuitos en Santa Clara?'
+        en: 'I just lost my manufacturing job. Could Tesla MDP or SSBA help me retrain and find work?',
+        es: 'Perdí mi trabajo en manufactura. ¿Pueden Tesla MDP o SSBA ayudarme a capacitarme?'
       },
       {
-        en: 'Where can I meet a WIOA career counselor in Milpitas or North San Jose?',
-        es: '¿Dónde puedo consultar con un asesor de carreras WIOA en Milpitas o San José norte?'
+        en: 'Does Tesla MDP lead to a full-time job offer, and can someone who is 45 apply?',
+        es: '¿Tesla MDP ofrece una oportunidad de trabajo de tiempo completo y pueden postularse personas de 45 años?'
       },
       {
-        en: 'Are there tech apprenticeship programs accepting candidates over 40?',
-        es: '¿Existen programas de pasantías tecnológicas que acepten a mayores de 40 años?'
+        en: 'Does Ohlone SSBA still offer a $1,500 stipend after completion?',
+        es: '¿Ohlone SSBA todavía ofrece un estipendio de $1,500 al completar el programa?'
       }
     ],
-    recommendedResourceIds: ['res-work-1', 'res-work-2', 'res-work-3'],
+    recommendedResourceIds: ['res-work-mdp', 'res-work-ssba', 'res-work-1'],
     journeySteps: [
       {
         stepNumber: 1,
-        title: { en: 'Grant Discovery', es: 'Descubrimiento de Becas' },
+        title: { en: 'Compare Manufacturing Training', es: 'Comparación de Capacitación Manufacturera' },
         narrative: {
-          en: 'Daniel discovers the NOVAworks Workforce Board portal through WhatSack, decoding that recent layoffs qualify for up to $8,000 in federal training vouchers.',
-          es: 'Daniel descubre el portal de NOVAworks a través de WhatSack, enterándose de que despidos recientes califican para hasta $8,000 en vales de capacitación.'
+          en: 'WhatSack introduces Daniel to Tesla MDP and Ohlone SSBA. He learns that MDP has an employer-connected full-time Production Associate transition for successful participants, while SSBA has offered a $1,500 completion stipend in documented cohorts.',
+          es: 'WhatSack presenta Tesla MDP y SSBA. MDP tiene una posible trayectoria a un empleo de tiempo completo para participantes que terminen con éxito, mientras que SSBA ha ofrecido un estipendio de $1,500 en algunas cohortes.'
         },
-        recommendedResourceId: 'res-work-1',
+        recommendedResourceId: 'res-work-mdp',
         keyTakeaway: {
-          en: 'Dislocated worker status unlocks 100% tuition coverage for vetted tech certificates.',
-          es: 'El estatus de trabajador desplazado desbloquea cobertura del 100% de colegiatura en certificaciones avaladas.'
+          en: 'Confirm the current employment-offer terms and whether a mid-career applicant like Daniel is eligible.',
+          es: 'Confirmar los términos de las ofertas de empleo y la elegibilidad de Daniel como trabajador con experiencia.'
         }
       },
       {
         stepNumber: 2,
-        title: { en: 'Document Assembly', es: 'Recopilación de Documentos' },
+        title: { en: 'Check SSBA Funding and Availability', es: 'Comprobar Fondos y Disponibilidad de SSBA' },
         narrative: {
-          en: 'WhatSack generates his document checklist: EDD notice letter, CA Driver License, and resume draft.',
-          es: 'WhatSack genera su lista de documentos: carta de notificación de despido/EDD, licencia de conducir de CA y borrador de currículum.'
+          en: 'Daniel reviews the SSBA source and learns that a $1,500 completion stipend was advertised for documented cohorts. WhatSack prompts him to check upcoming dates, eligibility, training costs and whether the stipend is offered again.',
+          es: 'Daniel revisa SSBA y conoce el estipendio de $1,500 anunciado en cohortes anteriores. WhatSack recomienda confirmar fechas, costos, requisitos y disponibilidad.'
         },
-        recommendedResourceId: 'res-work-1',
+        recommendedResourceId: 'res-work-ssba',
         keyTakeaway: {
-          en: 'Having the EDD determination letter expedites WIOA enrollment by two weeks.',
-          es: 'Tener la carta de EDD acelera el proceso de inscripción en WIOA por dos semanas.'
+          en: 'A prior advertised stipend is not proof that the next cohort will provide the same amount.',
+          es: 'Un estipendio anunciado anteriormente no garantiza el mismo beneficio en la próxima cohorte.'
         }
       },
       {
         stepNumber: 3,
-        title: { en: 'Intake Orientation Booking', es: 'Reserva de Orientación' },
+        title: { en: 'Talk with a Workforce Professional', es: 'Consultar con un Asesor Laboral' },
         narrative: {
-          en: 'He books a simulated virtual orientation session and starts reviewing the 16-week Cybersecurity Operations pathway.',
-          es: 'Agenda una sesión de orientación virtual simulada y comienza a revisar el programa de 16 semanas en Operaciones de Ciberseguridad.'
+          en: 'WhatSack directs Daniel to a workforce center serving his area to discuss WIOA funding, approved training, EDD rules and job search. It also offers an optional transition to Maria’s food-support scenario if the household needs assistance.',
+          es: 'WhatSack dirige a Daniel a un centro laboral para consultar sobre WIOA, capacitación aprobada, reglas de EDD y búsqueda de trabajo. También ofrece una opción para explorar el escenario de apoyo alimentario de Maria.'
         },
         recommendedResourceId: 'res-work-1',
         keyTakeaway: {
-          en: 'Cohort classes feature dedicated 1-on-1 industry mentor pairings for career pivoters.',
-          es: 'Los programas incluyen mentores individuales de la industria para personas cambiando de carrera.'
+          en: 'Training funding, unemployment benefits, stipends and employment outcomes must be verified separately; none is guaranteed.',
+          es: 'La financiación, los beneficios de desempleo, los estipendios y el empleo requieren confirmación individual; ninguno está garantizado.'
         }
       }
     ]

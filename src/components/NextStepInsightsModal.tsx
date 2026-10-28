@@ -120,7 +120,7 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
                   <span>{t.insights.title}</span>
                 </span>
                 <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-950/60 text-emerald-100 border border-emerald-400/30">
-                  {insight.confidenceRating}% {t.insights.confidence}
+                  {resource.officialUrl ? (currentLanguage === 'en' ? 'Check current program details' : 'Confirme detalles del programa') : insight.confidenceRating + '% prototype match'}
                 </span>
               </div>
               <h2 id="insights-modal-title" className="text-xl sm:text-2xl font-extrabold tracking-tight">
@@ -307,7 +307,7 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
                 {t.insights.sourceInfo}
               </span>
               <span className="text-xs bg-slate-200 text-slate-800 px-2.5 py-0.5 rounded-md font-bold border border-slate-300">
-                {t.insights.simulatedVerified}: {insight.simulatedVerificationDate}
+                {resource.officialUrl ? (currentLanguage === 'en' ? 'Review status' : 'Estado de revisión') : t.insights.simulatedVerified}: {insight.simulatedVerificationDate}
               </span>
             </div>
             <p className="text-xs text-slate-700">
@@ -319,6 +319,13 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
               {insight.dataSourceLabel[currentLanguage]}
             </p>
           </div>
+
+          {resource.officialUrl && (
+            <a href={resource.officialUrl} target="_blank" rel="noopener noreferrer"
+              className="block rounded-xl border border-indigo-300 bg-indigo-50 p-3 text-center text-sm font-extrabold text-indigo-900 hover:bg-indigo-100">
+              {currentLanguage === 'en' ? 'Open official program information' : 'Abrir información oficial del programa'} ↗
+            </a>
+          )}
 
           {/* Simulated Contact Caution */}
           <div className="p-4 rounded-2xl bg-slate-100 border border-slate-300 text-xs text-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
