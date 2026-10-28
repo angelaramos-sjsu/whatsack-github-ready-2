@@ -110,7 +110,7 @@ export function answerSofiaEducationQuestion(message: string, educationContext =
       ['aid','csac','cost']);
   }
   return make('College planning follow-up',
-    'I can help with affordable colleges, FAFSA/CADAA, grants and scholarships, transfers, choosing a major, admissions, and college application steps. Which of these would you like to explore? I can share official starting points, but I cannot promise aid or admission.',
+    'I can help with affordable colleges, FAFSA/CADAA, grants and scholarships, transfers, choosing a major, admissions, and college application steps. **Ohlone College’s tuition is $46/unit for California residents.** Which of these would you like to explore? I can share official starting points, but I cannot promise aid or admission.',
     ['How can I afford college?', 'Can I transfer from community college?', 'Where can I get help applying?'],
     ['cc','aid','ohlone']);
 }
