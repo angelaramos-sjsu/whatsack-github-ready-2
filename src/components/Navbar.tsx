@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
 import { 
@@ -10,7 +11,9 @@ import {
   Eye, 
   AlertTriangle,
   FileText,
-  Type
+  Type,
+  Menu,
+  X
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -53,6 +56,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveView
 }) => {
   const t = translations[currentLanguage];
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const goHome = () => {
+    setActiveView('home');
+    setIsMenuOpen(false);
+    window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
+  };
+
+  const goToSection = (id: string) => {
+    setActiveView('home');
+    setIsMenuOpen(false);
+    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+  };
 
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
@@ -101,7 +117,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Brand */}
         <div className="flex items-center gap-3">
           <button 
-            onClick={() => setActiveView('home')}
+            onClick={goHome}
             className="flex items-center gap-3 text-left group focus-visible:ring-2 focus-visible:ring-emerald-600 rounded-2xl p-1"
             aria-label="WhatSack Home"
           >
@@ -179,6 +195,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action Controls & Accessibility Tools */}
         <div className="flex items-center gap-2 sm:gap-2.5">
+          <button
+            type="button"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            className="lg:hidden p-2 rounded-xl bg-slate-100 text-slate-800 border border-slate-200"
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
           {/* Text Size Scaler (WCAG Accessibility Tool) */}
           <button
             onClick={onCycleTextSize}
@@ -278,6 +304,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
       </nav>
+
+      {isMenuOpen && (
+        <div id="mobile-navigation" className="lg:hidden border-t border-slate-200 bg-white px-4 py-4 shadow-lg">
+          <div className="grid grid-cols-2 gap-2 text-sm font-bold">
+            <button onClick={goHome} className="rounded-xl bg-emerald-700 px-3 py-3 text-white text-left">Explore resources</button>
+            <button onClick={() => { setActiveView('copilot'); setIsMenuOpen(false); }} className="rounded-xl bg-slate-900 px-3 py-3 text-white text-left">AI Copilot</button>
+            <button onClick={() => goToSection('categories-heading')} className="rounded-xl bg-slate-100 px-3 py-3 text-slate-900 text-left">Categories</button>
+            <button onClick={() => { onOpenIntroductionForm(); setIsMenuOpen(false); }} className="rounded-xl bg-slate-100 px-3 py-3 text-slate-900 text-left">My introduction</button>
+            <button onClick={() => { onToggleExtensionView(); setIsMenuOpen(false); }} className="rounded-xl bg-indigo-50 px-3 py-3 text-indigo-950 text-left">Browser companion</button>
+            <button onClick={() => { onOpenSavedDrawer(); setIsMenuOpen(false); }} className="rounded-xl bg-slate-100 px-3 py-3 text-slate-900 text-left">Saved resources ({savedCount})</button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

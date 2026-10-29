@@ -41,7 +41,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
   const totalCount = Object.values(resourceCounts).reduce((a, b) => a + b, 0);
 
   return (
-    <section aria-labelledby="categories-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <section id="categories" aria-labelledby="categories-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 id="categories-heading" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -63,7 +63,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
           aria-selected={selectedCategory === 'all'}
           aria-controls="resource-grid"
           onClick={() => onSelectCategory('all')}
-          className={`p-4 rounded-3xl border-2 text-left transition-all flex flex-col justify-between min-h-[110px] ${
+          className={`category-card group p-4 rounded-3xl border-2 text-left transition-all flex flex-col justify-between min-h-[110px] ${
             selectedCategory === 'all'
               ? 'bg-slate-900 text-white border-slate-900 shadow-md ring-3 ring-emerald-500/40'
               : 'bg-white hover:bg-slate-50 text-slate-900 border-slate-300 shadow-xs'
@@ -108,7 +108,7 @@ export const CategoryTabs: React.FC<CategoryTabsProps> = ({
               aria-selected={isSelected}
               aria-controls="resource-grid"
               onClick={() => onSelectCategory(cat.id)}
-              className={`p-4 rounded-3xl border-2 text-left transition-all flex flex-col justify-between min-h-[110px] ${
+              className={`category-card group p-4 rounded-3xl border-2 text-left transition-all flex flex-col justify-between min-h-[110px] ${
                 isSelected
                   ? 'bg-white border-emerald-700 shadow-md ring-3 ring-emerald-700/25'
                   : 'bg-white hover:bg-slate-50 text-slate-900 border-slate-300 shadow-xs'
