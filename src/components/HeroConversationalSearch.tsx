@@ -11,7 +11,9 @@ import {
   MessageSquare,
   ClipboardList,
   Bot,
-  Brain
+  Brain,
+  ListChecks,
+  ArrowUpRight
 } from 'lucide-react';
 
 interface HeroConversationalSearchProps {
@@ -86,7 +88,9 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   };
 
   return (
-    <section aria-labelledby="hero-title" className="relative bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
+    <section aria-labelledby="hero-title" className="hero-section relative overflow-hidden bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 pt-10 pb-12 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
+      <div className="hero-orb hero-orb-one" aria-hidden="true" />
+      <div className="hero-orb hero-orb-two" aria-hidden="true" />
       <div className="max-w-4xl mx-auto text-center">
         {/* Civic Tagline */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-300 mb-4 text-xs font-bold text-emerald-900 shadow-2xs">
@@ -103,6 +107,27 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
         <p className="text-base sm:text-lg text-slate-700 max-w-2xl mx-auto mb-7 leading-relaxed font-normal">
           {t.hero.subtitle}
         </p>
+
+        <div className="max-w-3xl mx-auto mb-8 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
+          {[
+            { icon: <MessageSquare className="w-5 h-5" />, title: currentLanguage === 'en' ? 'Tell us what you need' : 'Díganos qué necesita', body: currentLanguage === 'en' ? 'Ask naturally—no special keywords needed.' : 'Pregunte naturalmente, sin palabras especiales.' },
+            { icon: <ListChecks className="w-5 h-5" />, title: currentLanguage === 'en' ? 'Compare local options' : 'Compare opciones locales', body: currentLanguage === 'en' ? 'Review cost, location, transit, and requirements.' : 'Revise costo, ubicación, transporte y requisitos.' },
+            { icon: <ArrowUpRight className="w-5 h-5" />, title: currentLanguage === 'en' ? 'Take your next step' : 'Tome el siguiente paso', body: currentLanguage === 'en' ? 'Save a plan or open a helpful checklist.' : 'Guarde un plan o abra una lista útil.' }
+          ].map((step, index) => (
+            <div key={step.title} className="hero-step-card group rounded-2xl border border-purple-200/80 bg-white/85 p-4 shadow-sm backdrop-blur-sm">
+              <div className="flex items-start gap-3">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-purple-100 text-purple-700 transition-transform duration-300 group-hover:-translate-y-1 group-hover:rotate-3">
+                  {step.icon}
+                </div>
+                <div>
+                  <span className="mb-1 block text-[10px] font-extrabold uppercase tracking-[0.16em] text-purple-700">0{index + 1}</span>
+                  <h2 className="text-sm font-extrabold text-slate-900">{step.title}</h2>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">{step.body}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* Intake Assessment Card (Clean, accessible, high contrast) */}
         <div className="max-w-2xl mx-auto mb-7">

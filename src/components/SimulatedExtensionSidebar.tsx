@@ -44,6 +44,8 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
     }
   ]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const portals = {
     calfresh: {
@@ -149,14 +151,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
   };
 
   return (
-    <div className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
+    <div className={`extension-shell bg-slate-900 min-h-screen text-slate-100 flex flex-col ${isMinimized ? 'extension-minimized' : ''} ${isExpanded ? 'extension-expanded' : ''}`}>
       {/* Top Extension Demo Header */}
-      <div className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div className="extension-header bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-red-500" />
             <span className="w-3 h-3 rounded-full bg-yellow-500" />
-            <span className="w-3 h-3 rounded-full bg-green-500" />
+            <span className="w-3 h-3 rounded-full bg-brand-500" />
           </div>
           <div className="h-4 w-px bg-slate-700 hidden sm:block" />
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
@@ -170,6 +172,22 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setIsMinimized((value) => !value)}
+            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+            title={isMinimized ? 'Restore extension preview' : 'Minimize extension preview'}
+            aria-label={isMinimized ? 'Restore extension preview' : 'Minimize extension preview'}
+          >
+            {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
+          </button>
+          <button
+            onClick={() => setIsExpanded((value) => !value)}
+            className="hidden sm:block p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+            title={isExpanded ? 'Use compact extension layout' : 'Expand extension layout'}
+            aria-label={isExpanded ? 'Use compact extension layout' : 'Expand extension layout'}
+          >
+            {isExpanded ? <Minimize2 className="w-4 h-4" /> : <Maximize2 className="w-4 h-4" />}
+          </button>
+          <button
             onClick={onNavigateHome}
             className="text-xs font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1.5 transition-colors"
           >
@@ -180,7 +198,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
       </div>
 
       {/* Portal Selection Tabs (Demonstrating WhatSack scanning different government pages) */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2 flex items-center justify-between gap-2 overflow-x-auto">
+      <div className="extension-portalbar bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2 flex items-center justify-between gap-2 overflow-x-auto">
         <div className="flex items-center gap-2 shrink-0">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">
             {currentLanguage === 'en' ? 'Simulated Websites:' : 'Páginas Web Simuladas:'}
@@ -227,7 +245,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
       </div>
 
       {/* Dual Workspace View: Simulated Website (Left 65%) + WhatSack Extension Sidebar (Right 35%) */}
-      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+      <div className="extension-workspace flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* LEFT PANE: Simulated Government Webpage */}
         <div className="flex-1 bg-white text-slate-900 p-6 sm:p-8 overflow-y-auto">
           {/* Simulated Browser Address Bar */}
@@ -309,7 +327,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         </div>
 
         {/* RIGHT PANE: The Simulated WhatSack Extension Sidebar */}
-        <div className="w-full lg:w-[420px] bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 flex flex-col h-full overflow-hidden">
+        <div className={`w-full ${isExpanded ? 'lg:w-[520px]' : 'lg:w-[420px]'} bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 flex flex-col h-full overflow-hidden transition-[width] duration-300`}>
           {/* Extension Header */}
           <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -432,7 +450,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
           </div>
 
           {/* Extension Footer */}
-          <div className="p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+          <div className="extension-footer p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
             <span className="text-[11px]">WhatSack Browser Companion</span>
             <button
               onClick={onNavigateHome}

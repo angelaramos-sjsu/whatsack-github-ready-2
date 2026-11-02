@@ -254,9 +254,17 @@ export function App() {
             currentLanguage={currentLanguage}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
-            onExecuteSearch={(q) => setSearchQuery(q)}
+            onExecuteSearch={(q) => {
+              setSearchQuery(q);
+              window.setTimeout(() => {
+                document.getElementById('resources')?.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'start'
+                });
+              }, 0);
+            }}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
-            onSelectPrompt={(p) => setSearchQuery(p)}
+            onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
             onOpenCopilot={() => setActiveView('copilot')}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
@@ -392,7 +400,8 @@ export function App() {
           </section>
 
           {/* Demonstration Resources Grid */}
-          <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <section id="resources" aria-labelledby="resources-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
+            <h2 id="resources-heading" className="sr-only">{currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}</h2>
             {filteredResources.length === 0 ? (
               <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 max-w-xl mx-auto my-8">
                 <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl">
@@ -432,7 +441,7 @@ export function App() {
       )}
 
       {/* Floating AI Copilot summon pill */}
-      {activeView !== 'copilot' && (
+      {activeView === 'home' && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
             onClick={() => setActiveView('copilot')}
@@ -449,16 +458,18 @@ export function App() {
       )}
 
       {/* Footer */}
-      <Footer
-        currentLanguage={currentLanguage}
-        onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
-        onNavigateCategory={(cat) => {
-          setSelectedCategory(cat);
-          setActiveView('home');
-          window.scrollTo({ top: 500, behavior: 'smooth' });
-        }}
-        onOpenExtension={() => setActiveView('extension')}
-      />
+      {activeView !== 'extension' && (
+        <Footer
+          currentLanguage={currentLanguage}
+          onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
+          onNavigateCategory={(cat) => {
+            setSelectedCategory(cat);
+            setActiveView('home');
+            window.setTimeout(() => document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+          }}
+          onOpenExtension={() => setActiveView('extension')}
+        />
+      )}
 
       {/* Introduction Assessment Modal */}
       {isIntroductionFormOpen && (

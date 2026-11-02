@@ -65,7 +65,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
   return (
     <article 
       aria-labelledby={`resource-title-${resource.id}`}
-      className="bg-white rounded-3xl border-2 border-slate-200 hover:border-emerald-600 transition-all duration-200 shadow-sm hover:shadow-md flex flex-col justify-between overflow-hidden"
+      className="resource-card bg-white rounded-3xl border-2 border-slate-200 hover:border-emerald-600 transition-all duration-300 shadow-sm hover:shadow-md flex flex-col justify-between overflow-hidden"
     >
       {/* Top Academic Record Indicator */}
       <div className="px-5 py-2 bg-slate-100/90 border-b border-slate-200 flex items-center justify-between text-xs text-slate-700">
