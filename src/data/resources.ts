@@ -23,7 +23,7 @@ export const categoriesData: CategoryInfo[] = [
     tagline: { en: 'Tech retraining, community college grants & FAFSA assistance', es: 'Becas de capacitación, colegio comunitario y ayuda estudiantil' },
     icon: 'GraduationCap',
     badgeColor: 'indigo',
-    count: 4
+    count: 6
   },
   {
     id: 'community',
@@ -694,93 +694,72 @@ export const demonstrationResources: DemonstrationResource[] = [
   {
     id: 'res-work-1',
     categoryId: 'workforce',
-    title: {
-      en: 'NOVAworks Dislocated Worker & Tech Reskilling Program',
-      es: 'Programa NOVAworks de Reconversión Laboral y Tecnología'
-    },
-    organization: {
-      en: 'NOVAworks Workforce Board (Santa Clara & San Mateo Counties)',
-      es: 'Junta de Desarrollo Laboral NOVAworks (Condados de Santa Clara y San Mateo)'
-    },
+    officialUrl: 'https://novaworks.org/career-seekers/training/',
+    title: { en: 'NOVAworks Career Advising & Training Scholarship Process', es: 'NOVAworks: orientación profesional y proceso de becas para capacitación' },
+    organization: { en: 'NOVAworks Workforce Development', es: 'NOVAworks: desarrollo de la fuerza laboral' },
     description: {
-      en: 'Comprehensive federally funded retraining grants (WIOA) offering up to $8,000 for industry credentials in IT Support, Cloud Computing, Cybersecurity, and Data Analytics.',
-      es: 'Becas federales de capacitación (WIOA) de hasta $8,000 para certificaciones en Soporte IT, Computación en la Nube, Ciberseguridad y Análisis de Datos.'
+      en: 'Free career advice and workshops for eligible job seekers in NOVAworks service areas. A limited number of training scholarships may be available depending on eligibility, program approval, and available funding. There is no universal $8,000 voucher or automatic tuition guarantee.',
+      es: 'Asesoría y talleres profesionales gratuitos. Algunas becas limitadas de capacitación pueden estar disponibles según requisitos, aprobación del programa y fondos; no se garantiza un monto fijo ni el pago de todos los costos.'
     },
     location: {
-      city: 'Milpitas / Sunnyvale',
+      city: 'Sunnyvale',
       county: 'Santa Clara County',
-      transitNote: {
-        en: 'Locations in Sunnyvale (near Mathilda Ave) and Milpitas Library Job Center',
-        es: 'Sedes en Sunnyvale (cerca de Mathilda Ave) y Centro de Empleo en Biblioteca de Milpitas'
-      },
-      addressSimulated: '505 W Olive Ave, Suite 550, Sunnyvale, CA 94086 (Simulated)'
+      transitNote: { en: 'Check NOVAworks for current accessibility, transportation and remote workshop arrangements.', es: 'Consulte con NOVAworks opciones de transporte, accesibilidad y talleres virtuales.' },
+      addressSimulated: '456 West Olive Avenue, Sunnyvale, CA (official office address; confirm before visiting)'
     },
-    schedule: {
-      en: 'Monday – Friday: 8:00 AM – 5:00 PM; Virtual orientations every Wednesday 10 AM',
-      es: 'Lunes a viernes: 8:00 AM – 5:00 PM; Orientaciones virtuales cada miércoles 10 AM'
-    },
+    schedule: { en: 'Office hours and orientation dates: check the official NOVAworks schedule.', es: 'Consulte horarios de atención y orientación en el sitio oficial de NOVAworks.' },
     costType: 'Subsidized',
-    languagesSupported: ['English', 'Español', 'Vietnamese', 'Tagalog'],
+    languagesSupported: ['English (ask about additional language assistance)'],
     eligibilityHighlight: {
-      en: 'Individuals recently laid off, manufacturing workers impacted by reductions, or long-term unemployed.',
-      es: 'Trabajadores despedidos recientemente, personal manufacturero afectado o desempleados.'
+      en: 'Service-area and scholarship eligibility are determined by NOVAworks. Training funds are limited and not automatic.',
+      es: 'NOVAworks determina la elegibilidad y los fondos para capacitación son limitados.'
     },
     noIdRequired: false,
-    confidential: true,
-    tags: ['WIOA Grants up to $8k', 'Mid-Career Pivot', 'Certifications (CompTIA/AWS)', '1-on-1 Career Advisor'],
+    confidential: false,
+    tags: ['NOVAworks', 'Workforce training', 'WIOA', 'Career guidance', 'Training scholarships', 'Limited funding', 'Sunnyvale'],
     nextStepInsight: {
       explanation: {
-        en: 'Designed specifically to bridge mid-career manufacturing technicians into modern IT infrastructure and cloud operational roles without taking on student loan debt.',
-        es: 'Diseñado específicamente para ayudar a técnicos con experiencia manufacturera a ingresar a roles en IT y nube sin deudas estudiantiles.'
+        en: 'Start with free career advising, a skills assessment, and discussion of available approved training. A counselor must review funding options and fit; training benefits are not guaranteed.',
+        es: 'Comience con asesoría gratuita, evaluación de habilidades y revisión de capacitación aprobada. Un asesor debe confirmar fondos y requisitos.'
       },
-      confidenceRating: 98,
-      sourceOrganization: {
-        en: 'California Workforce Development Board Benchmark 2026',
-        es: 'Junta de Desarrollo de la Fuerza Laboral de California 2026'
-      },
-      simulatedVerificationDate: 'October 2026',
-      dataSourceLabel: {
-        en: 'Federal Workforce Innovation and Opportunity Act (WIOA) Registry',
-        es: 'Registro Federal de Innovación y Oportunidades Laborales (WIOA)'
-      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'NOVAworks official Career Seekers and Training pages', es: 'Sitios oficiales de NOVAworks de servicios de carrera y capacitación' },
+      simulatedVerificationDate: 'Source reviewed October 2026; scholarship funding can change',
+      dataSourceLabel: { en: 'https://novaworks.org/career-seekers/training/', es: 'https://novaworks.org/career-seekers/training/' },
       documentsNeeded: [
-        { en: 'Layoff notice letter / EDD Unemployment Insurance Determination Notice', es: 'Carta de despido o Notificación de Seguro de Desempleo EDD' },
-        { en: 'California Driver License or State ID', es: 'Licencia de conducir de California o identificación estatal' },
-        { en: 'Current resume draft detailing past manufacturing or technical experience', es: 'Borrador de currículum detallando experiencia previa' }
+        { en: 'Ask what proof of employment history, address, and eligibility is required.', es: 'Consulte qué pruebas de experiencia laboral y elegibilidad se requieren.' },
+        { en: 'Prepare a summary of your previous work, skills, and training goals.', es: 'Prepare un resumen de su experiencia, habilidades y metas.' }
       ],
       actionItems: [
         {
-          id: 'work-act-1',
-          title: { en: 'Sign up for the 45-minute virtual WIOA orientation', es: 'Inscribirse a la orientación virtual de 45 minutos de WIOA' },
-          description: { en: 'Orientations explain grant eligibility rules and approved IT training provider catalogs.', es: 'Explica los requisitos de las becas y el catálogo de escuelas de tecnología aprobadas.' },
-          estimatedMinutes: 45
+          id: 'work-ask-adviser',
+          title: { en: 'Register for NOVAworks career guidance', es: 'Inscribirse para recibir orientación laboral de NOVAworks' },
+          description: { en: 'Ask about the initial career advising and training scholarship process.', es: 'Consulte la asesoría inicial y el proceso de becas para capacitación.' }
         },
         {
-          id: 'work-act-2',
-          title: { en: 'Schedule 1-on-1 intake interview with a Career Navigator', es: 'Agendar cita individual con un asesor laboral' },
-          description: { en: 'Review certificate pathways (CompTIA Security+, AWS Cloud Practitioner, Google IT Support).', es: 'Revisar opciones de certificados (CompTIA Security+, AWS Cloud, Soporte Google IT).' },
-          estimatedMinutes: 60
+          id: 'work-check-etpl',
+          title: { en: 'Explore the California Eligible Training Provider List', es: 'Explorar la lista de proveedores de capacitación elegibles' },
+          description: { en: 'An ETPL listing alone does not guarantee funding. Confirm providers with the NOVAworks training adviser.', es: 'Aparecer en la lista no garantiza fondos; confirme con un asesor.' }
         },
         {
-          id: 'work-act-3',
-          title: { en: 'Submit training voucher paperwork for 100% tuition coverage', es: 'Enviar solicitud de vale de capacitación para 100% de colegiatura' },
-          description: { en: 'Voucher pays training provider directly; no out-of-pocket tuition.', es: 'El vale paga directamente al instituto; sin desembolso de colegiatura.' },
-          estimatedMinutes: 30
+          id: 'work-check-edd',
+          title: { en: 'Ask EDD about California Training Benefits if receiving unemployment', es: 'Consultar con EDD sobre beneficios de capacitación si recibe desempleo' },
+          description: { en: 'CTB is about UI eligibility during training; it does not pay tuition or automatically waive reporting requirements.', es: 'CTB se refiere a la elegibilidad de beneficios durante capacitación; no paga matrícula.' }
         }
       ],
       commonMisconceptions: {
-        en: 'Enrolling in approved WIOA training does NOT cancel your weekly EDD unemployment benefits under California Training Benefits (CTB).',
-        es: 'Inscribirse en capacitación WIOA aprobada NO cancela sus cheques de desempleo del EDD gracias al programa California Training Benefits.'
+        en: 'Career advising may be free, but training scholarships and CTB approval are not automatic. California EDD does not pay tuition through CTB.',
+        es: 'La orientación laboral puede ser gratuita, pero las becas y CTB no son automáticos; CTB no cubre matrícula.'
       },
       accessibilityNotes: {
-        en: 'Assisted listening systems and screen reading workstations at both job center facilities.',
-        es: 'Sistemas de apoyo auditivo y computadoras adaptadas para lectura en ambas sedes.'
+        en: 'Contact NOVAworks for current accessibility and accommodation options.',
+        es: 'Póngase en contacto con NOVAworks para consultar adaptaciones de accesibilidad.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-NOVA (Simulated)',
-      intakeMethod: { en: 'Online orientation registration or phone intake', es: 'Registro en línea a orientación o llamada telefónica' },
-      websiteDomainSimulated: 'novaworks-prototype.local'
+      phone: '408-730-7232 (official NOVAworks number; confirm current)',
+      intakeMethod: { en: 'Register and contact an adviser through NOVAworks career-seeker pages.', es: 'Inscríbase y consulte con asesores a través de NOVAworks.' },
+      websiteDomainSimulated: 'https://novaworks.org/career-seekers/training/'
     }
   },
   {
@@ -1021,6 +1000,151 @@ export const demonstrationResources: DemonstrationResource[] = [
       phone: '(408) 555-YEAR (Simulated)',
       intakeMethod: { en: 'Online interest application and virtual interview', es: 'Solicitud en línea y entrevista virtual' },
       websiteDomainSimulated: 'yearup-sv-prototype.local'
+    }
+  },
+
+
+  // Source-linked employer training examples. Current cohorts/eligibility/benefits are NOT verified.
+  {
+    id: 'res-work-mdp',
+    categoryId: 'workforce',
+    officialUrl: 'https://www.tesla.com/careers/manufacturing-development-program',
+    title: { en: 'Tesla Manufacturing Development Program (MDP) — Ohlone pathway', es: 'Programa de Desarrollo de Manufactura de Tesla (MDP) — Ohlone' },
+    organization: { en: 'Tesla / Ohlone College', es: 'Tesla / Ohlone College' },
+    description: {
+      en: 'Employer-connected advanced-manufacturing training. Tesla describes a pathway for successful graduates to transition into a full-time Production Associate role. Ohlone has described full-time job offers in its program cohorts. This is not a guaranteed offer for every applicant, and mid-career eligibility must be confirmed.',
+      es: 'Capacitación de manufactura avanzada con conexión a Tesla. El programa describe una posible transición a un puesto de Asociado de Producción de tiempo completo tras completarlo con éxito. La oferta de empleo y la elegibilidad para adultos deben confirmarse directamente.'
+    },
+    location: {
+      city: 'Fremont',
+      county: 'Alameda County',
+      transitNote: { en: 'Check program website for current campus, factory and transportation requirements.', es: 'Consulte el sitio oficial para confirmar instalaciones, ubicación y transporte.' },
+      addressSimulated: 'Exact training location varies by cohort; check official program details.'
+    },
+    schedule: { en: 'Cohort dates, hours and application status: confirm with Tesla/Ohlone.', es: 'Fechas, horario y estado de solicitudes: confirme con Tesla/Ohlone.' },
+    costType: 'Subsidized',
+    languagesSupported: ['English (verify additional language support)'],
+    eligibilityHighlight: {
+      en: 'Tesla describes the target audience as graduating high-school seniors and early-career individuals. Daniel, 45, must confirm current mid-career eligibility.',
+      es: 'Tesla describe un público de graduados de preparatoria y personas al inicio de su carrera. Daniel, de 45 años, debe confirmar los requisitos actuales.'
+    },
+    noIdRequired: false,
+    confidential: false,
+    tags: ['Tesla MDP', 'Manufacturing', 'Ohlone', 'Employer-connected training', 'Full-time Production Associate opportunity', 'Eligibility check required'],
+    nextStepInsight: {
+      explanation: {
+        en: 'Potential Tesla employment pathway after successful completion. Verify that the current program admits experienced adult applicants and learn the exact employment-offer conditions before applying.',
+        es: 'Posible trayectoria de empleo en Tesla al completar el programa. Verifique si admite a personas adultas con experiencia y las condiciones de contratación.'
+      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'Tesla official Manufacturing Development Program', es: 'Sitio oficial del programa MDP de Tesla' },
+      simulatedVerificationDate: 'Source reviewed October 2026; current cohort unverified',
+      dataSourceLabel: { en: 'https://www.tesla.com/careers/manufacturing-development-program', es: 'https://www.tesla.com/careers/manufacturing-development-program' },
+      documentsNeeded: [
+        { en: 'Check the current application instructions for required information.', es: 'Consulte la solicitud actual para conocer los documentos necesarios.' },
+        { en: 'Prepare questions about experience, age-related cohort criteria and prior manufacturing skills.', es: 'Prepare preguntas sobre experiencia y requisitos de admisión.' }
+      ],
+      actionItems: [
+        {
+          id: 'mdp-check-eligibility',
+          title: { en: 'Ask whether mid-career adults are eligible for the current MDP cohort', es: 'Confirmar elegibilidad de personas adultas para MDP' },
+          description: { en: 'Daniel is 45; do not assume that historical cohorts or broad marketing language guarantee access.', es: 'Daniel tiene 45 años; no se debe suponer su elegibilidad.' }
+        },
+        {
+          id: 'mdp-check-offer',
+          title: { en: 'Confirm the conditions of a full-time Production Associate job offer', es: 'Confirmar las condiciones de una oferta de empleo de tiempo completo' },
+          description: { en: 'Ask what successful completion means and what employment transition or offer is currently provided.', es: 'Pregunte qué se considera completar el programa y cuáles son las condiciones de empleo.' }
+        },
+        {
+          id: 'mdp-schedule',
+          title: { en: 'Check current cohort dates, costs and time commitments', es: 'Confirmar fechas, costos y horarios de la cohorte' },
+          description: { en: 'Verify training location and schedule before planning around household obligations.', es: 'Verifique lugar y horario antes de organizar sus responsabilidades familiares.' }
+        }
+      ],
+      commonMisconceptions: {
+        en: 'A program employment pathway does not mean every visitor or applicant is guaranteed enrollment or a job offer.',
+        es: 'Una trayectoria laboral no garantiza la admisión ni una oferta de empleo para todos.'
+      },
+      accessibilityNotes: {
+        en: 'Ask Tesla/Ohlone about current accessibility arrangements and accommodation procedures.',
+        es: 'Consulte con Tesla/Ohlone sobre accesibilidad y adaptaciones.'
+      }
+    },
+    contactSimulated: {
+      phone: 'Not provided — use official program page',
+      intakeMethod: { en: 'Use the official Tesla/Ohlone program pages; current application requirements vary.', es: 'Use los sitios oficiales de Tesla/Ohlone; los requisitos pueden variar.' },
+      websiteDomainSimulated: 'https://www.tesla.com/careers/manufacturing-development-program'
+    }
+  },
+  {
+    id: 'res-work-ssba',
+    categoryId: 'workforce',
+    officialUrl: 'https://www.ohlone.edu/ssba',
+    title: { en: 'Semiconductor Skills Bridge Academy (SSBA) — Ohlone College', es: 'Academia Puente de Habilidades de Semiconductores (SSBA) — Ohlone' },
+    organization: { en: 'Ohlone College / Semiconductor Skills Bridge Academy', es: 'Ohlone College / Academia Puente de Semiconductores' },
+    description: {
+      en: 'Short-term semiconductor and smart-manufacturing skills training with hands-on and job-readiness activities. Documented cohorts advertised a $1,500 stipend after successful completion. Confirm whether that stipend is available for the next cohort. Employment is not guaranteed.',
+      es: 'Capacitación en manufactura inteligente y semiconductores con preparación laboral. Algunas cohortes anunciaron un estipendio de $1,500 al completar el programa. Verifique la disponibilidad para la siguiente cohorte. No se garantiza empleo.'
+    },
+    location: {
+      city: 'Fremont',
+      county: 'Alameda County',
+      transitNote: { en: 'Check Ohlone for current classroom locations and any hybrid or employer-training arrangements.', es: 'Confirme con Ohlone los salones de clase y posibles actividades híbridas o laborales.' },
+      addressSimulated: 'Exact cohort location not confirmed; see official program details.'
+    },
+    schedule: { en: 'Dates, duration and class times vary by cohort; confirm before applying.', es: 'Fechas, duración y horarios sujetos a cada cohorte; confirme antes de solicitar.' },
+    costType: 'Subsidized',
+    languagesSupported: ['English (verify additional language support)'],
+    eligibilityHighlight: {
+      en: 'Current enrollment, applicant requirements and completion stipend availability must be confirmed with Ohlone College.',
+      es: 'Se deben confirmar la inscripción, los requisitos y la disponibilidad del estipendio con Ohlone College.'
+    },
+    noIdRequired: false,
+    confidential: false,
+    tags: ['SSBA', 'Semiconductor', 'Smart Manufacturing', 'Ohlone', '$1500 completion stipend in prior cohorts', 'Job-readiness training'],
+    nextStepInsight: {
+      explanation: {
+        en: 'SSBA may help Daniel build semiconductor-related skills. A $1,500 completion stipend was advertised for documented cohorts, not guaranteed for every future participant.',
+        es: 'SSBA podría ayudar a Daniel a desarrollar habilidades en semiconductores. El estipendio de $1,500 se anunció para cohortes documentadas, pero no está garantizado en otras.'
+      },
+      confidenceRating: 0,
+      sourceOrganization: { en: 'Ohlone College / City of Fremont workforce training references', es: 'Ohlone College / referencias de capacitación de Fremont' },
+      simulatedVerificationDate: 'Source reviewed October 2026; current cohort stipend unverified',
+      dataSourceLabel: { en: 'https://www.ohlone.edu/ssba', es: 'https://www.ohlone.edu/ssba' },
+      documentsNeeded: [
+        { en: 'Ask Ohlone what application and eligibility documents are needed.', es: 'Pregunte a Ohlone qué documentos requiere la solicitud.' },
+        { en: 'Check whether stipend conditions require attendance or program completion.', es: 'Confirme las condiciones de asistencia y finalización del estipendio.' }
+      ],
+      actionItems: [
+        {
+          id: 'ssba-check-stipend',
+          title: { en: 'Confirm the $1,500 stipend for the next cohort', es: 'Confirmar el estipendio de $1,500 para la próxima cohorte' },
+          description: { en: 'Ask whether it is currently funded, how to qualify, and when it would be paid.', es: 'Pregunte si hay fondos, quién califica y cuándo se paga.' }
+        },
+        {
+          id: 'ssba-check-training',
+          title: { en: 'Review curriculum, schedule and entry requirements', es: 'Revisar materias, horario y requisitos de ingreso' },
+          description: { en: 'Compare the training against Daniel’s manufacturing background and family schedule.', es: 'Compare el programa con la experiencia manufacturera y horarios familiares de Daniel.' }
+        },
+        {
+          id: 'ssba-workforce-contact',
+          title: { en: 'Ask about career advising and employer connections', es: 'Consultar asesoría profesional y contactos con empleadores' },
+          description: { en: 'Learn what employment assistance is currently offered without assuming a job guarantee.', es: 'Conozca el apoyo para buscar empleo sin asumir una garantía de contratación.' }
+        }
+      ],
+      commonMisconceptions: {
+        en: 'A completion stipend and employer-connected workshops do not mean that SSBA guarantees admission, stipend eligibility, or employment.',
+        es: 'Un estipendio y los talleres laborales no garantizan admisión, ayuda económica ni empleo.'
+      },
+      accessibilityNotes: {
+        en: 'Ask Ohlone about available accessibility and language accommodations for this cohort.',
+        es: 'Consulte con Ohlone sobre adaptaciones de accesibilidad e idioma.'
+      }
+    },
+    contactSimulated: {
+      phone: 'Not provided — use official Ohlone page',
+      intakeMethod: { en: 'See Ohlone SSBA site or contact its Career Education office for current cohorts.', es: 'Visite SSBA o consulte con la oficina de Educación Profesional de Ohlone.' },
+      websiteDomainSimulated: 'https://www.ohlone.edu/ssba'
     }
   },
 

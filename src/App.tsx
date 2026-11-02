@@ -14,6 +14,8 @@ import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
 import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
+import { SofiaCollegeGuide } from './components/SofiaCollegeGuide';
+import { DanielTrainingGuide } from './components/DanielTrainingGuide';
 import { ResourceCard } from './components/ResourceCard';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
@@ -51,6 +53,9 @@ export function App() {
   // Resident Introduction Profile State
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
+  const [isSofiaGuideOpen, setIsSofiaGuideOpen] = useState<boolean>(false);
+  const [isDanielGuideOpen, setIsDanielGuideOpen] = useState<boolean>(false);
+  const [copilotStartQuestion, setCopilotStartQuestion] = useState<string>('');
 
   // Modals & Drawers
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState<boolean>(false);
@@ -240,6 +245,7 @@ export function App() {
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
           onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
+          initialQuestion={copilotStartQuestion}
         />
       ) : activeView === 'extension' ? (
         <SimulatedExtensionSidebar
@@ -257,13 +263,40 @@ export function App() {
             onExecuteSearch={(q) => setSearchQuery(q)}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
             onSelectPrompt={(p) => setSearchQuery(p)}
-            onOpenCopilot={() => setActiveView('copilot')}
+            onOpenCopilot={() => { setCopilotStartQuestion(''); setActiveView('copilot'); }}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
             userProfile={userProfile}
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
           />
+
+          {/* Optional step-by-step college guidance, without changing the existing search */}
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 mb-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white border border-emerald-200 rounded-2xl p-4 shadow-sm">
+              <div>
+                <p className="font-extrabold text-slate-900 text-sm">Explore college and financial-aid options step by step</p>
+                <p className="text-xs text-slate-600 mt-1">A guided, optional research demonstration — no account or personal documents needed.</p>
+              </div>
+              <button type="button" onClick={() => setIsSofiaGuideOpen(true)} className="shrink-0 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm px-4 py-3 focus-visible:ring-2 focus-visible:ring-emerald-900">
+                Start guided college search
+              </button>
+            </div>
+          </div>
+
+          {/* Optional research-informed Daniel workforce training journey */}
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mb-5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 rounded-2xl border border-indigo-200 bg-white p-4 shadow-sm">
+              <div>
+                <p className="font-extrabold text-slate-900 text-sm">Explore career retraining after a layoff</p>
+                <p className="text-xs text-slate-600 mt-1">Daniel's interactive demo compares Tesla MDP, Ohlone SSBA, training funding and job-search support.</p>
+              </div>
+              <button type="button" onClick={() => setIsDanielGuideOpen(true)}
+                className="shrink-0 rounded-xl bg-indigo-700 px-4 py-3 text-sm font-extrabold text-white hover:bg-indigo-800 focus-visible:ring-2 focus-visible:ring-indigo-900">
+                Start guided career search
+              </button>
+            </div>
+          </div>
 
           {/* Active Intake Assessment Bar (When resident filled profile) */}
           {userProfile && (
@@ -435,7 +468,7 @@ export function App() {
       {activeView !== 'copilot' && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
-            onClick={() => setActiveView('copilot')}
+            onClick={() => { setCopilotStartQuestion(''); setActiveView('copilot'); }}
             className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-emerald-700 to-teal-600 hover:from-emerald-800 hover:to-teal-700 text-white font-bold text-xs sm:text-sm rounded-full shadow-xl shadow-emerald-900/30 hover:scale-105 transition-all ring-4 ring-emerald-500/20"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
@@ -458,6 +491,28 @@ export function App() {
           window.scrollTo({ top: 500, behavior: 'smooth' });
         }}
         onOpenExtension={() => setActiveView('extension')}
+      />
+
+      <SofiaCollegeGuide
+        isOpen={isSofiaGuideOpen}
+        onClose={() => setIsSofiaGuideOpen(false)}
+        initialQuestion={searchQuery}
+        onAskCopilot={(question) => {
+          setCopilotStartQuestion(question);
+          setIsSofiaGuideOpen(false);
+          setActiveView('copilot');
+        }}
+      />
+
+      <DanielTrainingGuide
+        isOpen={isDanielGuideOpen}
+        onClose={() => setIsDanielGuideOpen(false)}
+        initialQuestion={searchQuery}
+        onAskCopilot={(question) => {
+          setCopilotStartQuestion(question);
+          setIsDanielGuideOpen(false);
+          setActiveView('copilot');
+        }}
       />
 
       {/* Introduction Assessment Modal */}

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
+import { getNextStepInsight } from '../data/nextStepInsights';
+import { findNextStepInsight } from '../data/nextStepInsightsRouting';
+import { NextStepInsightCard } from './NextStepInsightCard';
 import { 
   SidebarClose, 
   Sparkles, 
@@ -35,12 +38,13 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
   const t = translations[currentLanguage];
   const [selectedPortal, setSelectedPortal] = useState<'calfresh' | 'edd' | 'deanza'>('calfresh');
   const [extensionChatInput, setExtensionChatInput] = useState('');
+  const [extensionMatchedInsightId, setExtensionMatchedInsightId] = useState<string | null>(null);
   const [extensionMessages, setExtensionMessages] = useState<Array<{ sender: 'user' | 'assistant'; text: string }>>([
     {
       sender: 'assistant',
       text: currentLanguage === 'en'
-        ? 'Hi! I am WhatSack Companion. I am scanning this county portal for you. Notice section 3 asks for SAR 7 reporting? You only need to report if your income changed by more than $100.'
-        : '¡Hola! Soy el Compañero WhatSack. Estoy analizando este portal para usted. ¿Ve que la sección 3 pide informe SAR 7? Solo debe reportar si sus ingresos cambiaron más de $100.'
+        ? 'Hi! This is a simulated browser-extension demonstration. Requirements depend on your specific situation. You can ask questions and open official guidance, but this preview does not verify benefits or forms.'
+        : '¡Hola! Esta es una demostración simulada. Los requisitos dependen de cada caso. Consulte las instrucciones oficiales antes de presentar formularios.'
     }
   ]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -54,20 +58,20 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         ? 'Pursuant to Welfare and Institutions Code § 18901.3, gross income determinations require verification of all non-exempt earned income, dependent care deductions, and utility standard allowances (SUA).'
         : 'Conforme al Código de Bienestar § 18901.3, las determinaciones de ingreso bruto exigen verificación de ingresos ganados no exentos y deducciones de servicios públicos (SUA).',
       decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: You just need to show one recent pay stub or written statement of how much you earned this month. Utilities like phone or electric bills actually lower your income on paper so you get MORE food assistance!'
-        : 'En palabras sencillas: Solo necesita mostrar un talón de cheque reciente o una carta simple de lo que ganó este mes. ¡Sus recibos de luz o teléfono ayudan a que le den MÁS dinero de despensa!',
+        ? 'CalFresh may ask for income and household information. The documents and deductions that apply depend on the household. Confirm the current verification requirements and any deductions with your county benefits office.'
+        : 'CalFresh puede pedir información sobre ingresos y personas en el hogar. Los documentos y deducciones dependen del caso. Confirme los requisitos actuales con el condado.',
       hiddenBarriers: [
         {
           label: currentLanguage === 'en' ? 'Public Charge Rumor' : 'Mito de Carga Pública',
           desc: currentLanguage === 'en'
-            ? 'Safe to apply: CalFresh benefits for citizen children do NOT count toward immigration public charge tests.'
-            : 'Seguro de solicitar: Los beneficios de CalFresh para hijos ciudadanos NO afectan el historial migratorio.'
+            ? 'Public charge rules are complicated and can change. Check current USCIS guidance or speak with a qualified legal service provider rather than relying on a blanket assurance.'
+            : 'Las reglas de carga pública son complejas. Revise las normas actuales de USCIS o consulte asesoría legal competente.'
         },
         {
           label: currentLanguage === 'en' ? 'Expedited 3-Day Service' : 'Servicio Urgente de 3 Días',
           desc: currentLanguage === 'en'
-            ? 'If your household has less than $100 on hand, you qualify for emergency benefits within 3 days instead of 30 days.'
-            : 'Si su familia tiene menos de $100 disponibles, califica para recibir despensa urgente en 3 días en vez de 30.'
+            ? 'Some households may qualify for expedited CalFresh processing within three days, but eligibility depends on multiple criteria. Ask the county about expedited service.'
+            : 'Algunos hogares pueden calificar para CalFresh acelerado en tres días, según varios requisitos. Consulte con el condado.'
         }
       ],
       requiredDocsSummary: currentLanguage === 'en'
@@ -75,21 +79,21 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         : ['Cualquier identificación con su foto o nombre', '1 talón de cheque o carta de trabajo', 'Recibo de servicios (PG&E o teléfono)']
     },
     edd: {
-      url: 'https://edd.ca.gov/unemployment-benefits/dislocated-worker-retraining',
+      url: 'https://edd.ca.gov/CTB/',
       name: currentLanguage === 'en' ? 'California EDD Unemployment & Retraining Portal' : 'Portal de Desempleo y Reentrenamiento EDD de California',
       headline: currentLanguage === 'en' ? 'California Training Benefits (CTB) & WIOA Dislocated Worker Program' : 'Beneficios de Capacitación de California (CTB) y Programa WIOA',
       jargonSnippet: currentLanguage === 'en'
         ? 'Claimants electing Title I-B training must establish eligibility under Section 1269 before exhausting 16th week of standard UI entitlement.'
         : 'Los solicitantes de capacitación Título I-B deben acreditar elegibilidad bajo la Sección 1269 antes de la semana 16 de beneficios UI.',
       decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: If you apply for tech or manufacturing retraining before your 16th week of unemployment, California EDD lets you collect your full weekly check while going to school, without having to search for other jobs!'
-        : 'En palabras sencillas: Si solicita cursos de tecnología antes de su semana 16 de desempleo, el estado le sigue pagando su cheque semanal mientras estudia, ¡sin obligarlo a buscar otro trabajo!',
+        ? 'California Training Benefits may permit an eligible unemployment claimant to continue receiving benefits during approved training. CTB does not pay tuition. Ask EDD about training rules, possible extension deadlines and reporting before enrolling.'
+        : 'California Training Benefits puede permitir beneficios durante capacitación aprobada, si cumple los requisitos. CTB no paga matrícula. Consulte con EDD sobre plazos y reglas de declaración.',
       hiddenBarriers: [
         {
           label: currentLanguage === 'en' ? 'NOVAworks Grant Voucher' : 'Vales de Beca NOVAworks',
           desc: currentLanguage === 'en'
-            ? 'You do not pay for books or tuition. The workforce grant pays up to $8,000 directly to approved schools.'
-            : 'Usted no paga libros ni colegiatura. La beca cubre hasta $8,000 directo a las escuelas aprobadas.'
+            ? 'WIOA may fund approved training when eligibility and funding are confirmed by a workforce counselor. There is no automatic fixed voucher or guaranteed full tuition coverage.'
+            : 'WIOA puede financiar ciertos programas aprobados, según elegibilidad y fondos. No existe una beca fija automática ni garantía de cubrir todos los gastos.'
         }
       ],
       requiredDocsSummary: currentLanguage === 'en'
@@ -97,21 +101,21 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         : ['Carta de Concesión de Desempleo EDD', 'Licencia de CA o ID Estatal', 'Borrador de currículum']
     },
     deanza: {
-      url: 'https://fhda.edu/admissions/college-promise-ab19',
+      url: 'https://www.deanza.edu/financialaid/',
       name: currentLanguage === 'en' ? 'Foothill-De Anza College District Enrollment Portal' : 'Portal de Inscripción del Distrito Colegial Foothill-De Anza',
       headline: currentLanguage === 'en' ? 'AB 19 College Promise Tuition Waiver & AB 540 Nonresident Exemption' : 'Exención de Matrícula AB 19 College Promise y Ley AB 540',
       jargonSnippet: currentLanguage === 'en'
         ? 'Statutory compliance requires student certification of full-time quarter standing (>= 12.0 institutional units) and submission of FAFSA/CADAA prior to census date.'
         : 'El cumplimiento legal requiere acreditación de tiempo completo (>= 12 unidades) y envío de FAFSA/CADAA antes de la fecha de censo.',
       decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: High school graduates who take 4 classes get 2 full years of college 100% free! Undocumented students submit CADAA instead of FAFSA with complete legal privacy.'
-        : 'En palabras sencillas: ¡Los graduados de preparatoria que toman 4 clases tienen 2 años completos de universidad 100% gratis! Estudiantes indocumentados envían CADAA con privacidad absoluta protegida por la ley.',
+        ? 'Community college fee waivers and Promise programs have different eligibility requirements. They may not cover books, housing and other expenses. Confirm the appropriate FAFSA or CADAA application route using official guidance.'
+        : 'Las exenciones de inscripción y los programas Promise tienen requisitos distintos. No siempre cubren libros, vivienda u otros gastos. Consulte FAFSA o CADAA en fuentes oficiales.',
       hiddenBarriers: [
         {
           label: currentLanguage === 'en' ? 'Textbook Voucher Available' : 'Vales para Libros de Texto',
           desc: currentLanguage === 'en'
-            ? 'Ask the First-Gen desk for the $500 quarterly campus bookstore voucher.'
-            : 'Solicite en el módulo de Primera Generación el vale de $500 por trimestre para libros.'
+            ? 'Ask the college financial-aid office whether textbook grants, emergency aid, or other verified assistance is currently available.'
+            : 'Pregunte a la oficina de ayuda financiera sobre apoyos actuales para libros u otras necesidades.'
         }
       ],
       requiredDocsSummary: currentLanguage === 'en'
@@ -121,21 +125,30 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
   };
 
   const currentPortalData = portals[selectedPortal];
+  const activeExtensionInsight = getNextStepInsight(
+    extensionMatchedInsightId || (selectedPortal === 'edd' ? 'D3.2' : selectedPortal === 'deanza' ? 'S2.5' : 'D6.1')
+  );
 
   const handleSendExtensionChat = (e: React.FormEvent) => {
     e.preventDefault();
     if (!extensionChatInput.trim()) return;
 
     const userText = extensionChatInput;
+    const matched = findNextStepInsight(userText, selectedPortal === 'deanza' ? 'Sofia' : 'Daniel');
+    setExtensionMatchedInsightId(matched?.entry.id || null);
     setExtensionMessages((prev) => [...prev, { sender: 'user', text: userText }]);
     setExtensionChatInput('');
 
     setTimeout(() => {
       let response = '';
-      if (currentLanguage === 'en') {
-        response = `Regarding "${userText}": On this ${selectedPortal.toUpperCase()} portal, WhatSack confirms you only need basic proof of residency and no credit checks are performed. Look at the highlighted section on the right for your immediate next step.`;
+      if (matched) {
+        response = currentLanguage === 'en'
+          ? 'I matched your question with a research-informed NextStep Insight below. Please use its official links to verify any requirements.'
+          : 'Encontré una sugerencia relacionada con su pregunta. Consulte los enlaces oficiales para verificar los requisitos.';
       } else {
-        response = `Respecto a "${userText}": En este portal de ${selectedPortal.toUpperCase()}, WhatSack confirma que solo se requiere comprobante de domicilio básico y no se revisa crédito. Revise la sección resaltada a la derecha para su siguiente paso inmediato.`;
+        response = currentLanguage === 'en'
+          ? 'This is a scripted demonstration, not a live page scan. For an eligibility or document question, consult the official provider. You can also try a question from the Sofia or Daniel research matrix.'
+          : 'Esta demostración es simulada, no revisa páginas en tiempo real. Para requisitos o documentos, consulte al proveedor oficial.';
       }
       setExtensionMessages((prev) => [...prev, { sender: 'assistant', text: response }]);
     }, 600);
@@ -186,7 +199,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             {currentLanguage === 'en' ? 'Simulated Websites:' : 'Páginas Web Simuladas:'}
           </span>
           <button
-            onClick={() => setSelectedPortal('calfresh')}
+            onClick={() => { setSelectedPortal('calfresh'); setExtensionMatchedInsightId(null); }}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               selectedPortal === 'calfresh'
                 ? 'bg-emerald-600 text-white shadow-xs'
@@ -196,7 +209,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             🍎 {currentLanguage === 'en' ? 'Santa Clara CalFresh' : 'Condado Santa Clara CalFresh'}
           </button>
           <button
-            onClick={() => setSelectedPortal('edd')}
+            onClick={() => { setSelectedPortal('edd'); setExtensionMatchedInsightId(null); }}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               selectedPortal === 'edd'
                 ? 'bg-indigo-600 text-white shadow-xs'
@@ -206,7 +219,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             💼 {currentLanguage === 'en' ? 'CA EDD Retraining' : 'Reentrenamiento EDD'}
           </button>
           <button
-            onClick={() => setSelectedPortal('deanza')}
+            onClick={() => { setSelectedPortal('deanza'); setExtensionMatchedInsightId(null); }}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               selectedPortal === 'deanza'
                 ? 'bg-purple-600 text-white shadow-xs'
@@ -368,6 +381,11 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               ))}
             </div>
 
+            {/* Source-linked NextStep Insight: matched question or sensible topic default */}
+            {activeExtensionInsight && (
+              <NextStepInsightCard entry={activeExtensionInsight} variant="chat" />
+            )}
+
             {/* What You Actually Need Today Checklist */}
             <div className="p-3.5 rounded-2xl bg-slate-800 border border-slate-700">
               <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
@@ -390,7 +408,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
                   {currentLanguage === 'en' ? 'Ask Extension About This Page' : 'Preguntar a la Extensión'}
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">AI v2.6</span>
+                <span className="text-[10px] text-emerald-400 font-mono">Scripted demo</span>
               </div>
 
               <div className="space-y-2 max-h-40 overflow-y-auto pr-1">

@@ -3,6 +3,11 @@ import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
+import { answerSofiaEducationQuestion, isSofiaEducationQuestion } from '../data/sofiaAssistant';
+import { answerDanielQuestion, isDanielQuestion } from '../data/danielAssistant';
+import { nextStepInsightEntries, type NextStepInsightEntry } from '../data/nextStepInsights';
+import { findNextStepInsight } from '../data/nextStepInsightsRouting';
+import { NextStepInsightCard } from './NextStepInsightCard';
 import { 
   Bot, 
   Send, 
@@ -39,6 +44,9 @@ interface ChatMessage {
   };
   recommendedResourceIds?: string[];
   suggestedFollowUps?: string[];
+  officialSources?: Array<{title: string; url: string}>;
+  responseMode?: 'live' | 'demo';
+  nextStepInsight?: NextStepInsightEntry;
 }
 
 interface AILLMConsoleProps {
@@ -47,6 +55,7 @@ interface AILLMConsoleProps {
   onOpenInsights: (resource: DemonstrationResource) => void;
   onOpenArchitectureModal: () => void;
   onOpenDecoderModal: () => void;
+  initialQuestion?: string;
 }
 
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
@@ -54,7 +63,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   userProfile,
   onOpenInsights,
   onOpenArchitectureModal,
-  onOpenDecoderModal
+  onOpenDecoderModal,
+  initialQuestion = ''
 }) => {
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
@@ -63,6 +73,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
   const [expandedTraceId, setExpandedTraceId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const sofiaContextRef = useRef(false);
+  const danielContextRef = useRef(false);
+
+  useEffect(() => {
+    if (initialQuestion.trim()) setInputText(initialQuestion);
+  }, [initialQuestion]);
 
   const initialMessages: ChatMessage[] = [
     {
@@ -76,6 +92,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ? [
             'Where can I get groceries in East San Jose without an ID?',
             'How can laid-off workers get free tech certificates in Milpitas?',
+            'Compare Ohlone Tesla MDP and SSBA training options.',
+            'I want to go to college but my family has little money. What are my options?',
             'What mental health support is confidential for teens in Sunnyvale?',
             'Practice intake call for food pantry'
           ]
@@ -119,7 +137,84 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!textToSend) setInputText('');
     setIsGenerating(true);
 
-    // Simulated RAG Pipeline & Civic LLM Generation
+    // Match the 103 researched questions before the older, generic keyword scripts.
+    // Persona selection takes precedence for ambiguous questions. No remote AI is needed.
+    const sofiaMatch = findNextStepInsight(text, 'Sofia');
+    const danielMatch = findNextStepInsight(text, 'Daniel');
+    const namedDaniel = /daniel/i.test(personaTag || '');
+    const namedSofia = /sofia/i.test(personaTag || '');
+    const activeDaniel = namedDaniel || activePersonaId === 'daniel-45';
+    const activeSofia = namedSofia || activePersonaId === 'sofia-17';
+    let matrixMatch: NextStepInsightEntry | undefined;
+    if (namedDaniel) matrixMatch = danielMatch?.entry;
+    else if (namedSofia) matrixMatch = sofiaMatch?.entry;
+    else if (sofiaMatch?.score === 1 || danielMatch?.score === 1) {
+      matrixMatch = (sofiaMatch?.score || 0) >= (danielMatch?.score || 0) ? sofiaMatch?.entry : danielMatch?.entry;
+    } else if (activeDaniel && !activeSofia) matrixMatch = danielMatch?.entry;
+    else if (activeSofia && !activeDaniel) matrixMatch = sofiaMatch?.entry;
+    else if (sofiaMatch && danielMatch) {
+      if (Math.abs(sofiaMatch.score - danielMatch.score) >= 0.07) {
+        matrixMatch = sofiaMatch.score > danielMatch.score ? sofiaMatch.entry : danielMatch.entry;
+      }
+    } else matrixMatch = sofiaMatch?.entry || danielMatch?.entry;
+
+    const explicitDaniel = isDanielQuestion(text, false);
+    const explicitSofia = isSofiaEducationQuestion(text, false);
+    const danielQuestion = !namedSofia && (namedDaniel ||
+      (matrixMatch?.persona === 'Daniel') ||
+      (isDanielQuestion(text, danielContextRef.current) && (!explicitSofia || explicitDaniel)));
+    danielContextRef.current = danielQuestion;
+    if (danielQuestion) {
+      sofiaContextRef.current = false;
+      const prepared = answerDanielQuestion(text, true);
+      if (prepared) {
+        setTimeout(() => {
+          setMessages(previous => [...previous, {
+            id: 'daniel-' + Date.now(),
+            sender: 'llm',
+            text: prepared.text,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            recommendedResourceIds: prepared.recommendedResourceIds,
+            suggestedFollowUps: prepared.followUps,
+            officialSources: prepared.sources,
+            nextStepInsight: matrixMatch?.persona === 'Daniel' ? matrixMatch : undefined,
+            responseMode: 'demo'
+          }]);
+          setIsGenerating(false);
+        }, 300);
+        return;
+      }
+    }
+
+    // College questions keep their topic across follow-ups. Live AI is optional.
+    const previousCollegeContext = sofiaContextRef.current;
+    const collegeQuestion = isSofiaEducationQuestion(text, previousCollegeContext) ||
+      namedSofia || matrixMatch?.persona === 'Sofia';
+    sofiaContextRef.current = collegeQuestion;
+    if (collegeQuestion) {
+      const preparedAnswer = answerSofiaEducationQuestion(text, true);
+      if (preparedAnswer) {
+        // The teacher approved a visual prototype and no API spending is required.
+        // Keep Sofia's replies local and scripted, just like Daniel's.
+        setTimeout(() => {
+          const response: ChatMessage = {
+            id: 'sofia-' + Date.now(),
+            sender: 'llm',
+            text: preparedAnswer.text,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            officialSources: preparedAnswer.sources,
+            suggestedFollowUps: preparedAnswer.followUps,
+            nextStepInsight: matrixMatch?.persona === 'Sofia' ? matrixMatch : undefined,
+            responseMode: 'demo'
+          };
+          setMessages(previous => [...previous, response]);
+          setIsGenerating(false);
+        }, 300);
+        return;
+      }
+    }
+
+    // Existing category responses remain scripted prototype interactions.
     setTimeout(() => {
       const lower = text.toLowerCase();
       let matchedResIds: string[] = [];
@@ -139,14 +234,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           followUps = ['¿Debo mostrar comprobante de domicilio?', '¿Tienen pañales o leche infantil?', 'Ensayar la conversación de llegada'];
         }
       } else if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) {
-        matchedResIds = ['res-work-1', 'res-work-2'];
-        intentCategory = 'Workforce Retraining & WIOA Dislocated Worker Grants';
+        matchedResIds = ['res-work-mdp', 'res-work-ssba'];
+        intentCategory = 'Workforce retraining demonstration — source links require review';
         if (currentLanguage === 'en') {
-          replyText = `**If you experienced a recent layoff or workforce reduction in Silicon Valley, you have access to substantial state retraining funds:**\n\n- **NOVAworks Dislocated Worker Program:** Offers vouchers up to **$8,000** for approved certificates in CompTIA Security+, Cloud Operations (AWS), and Network Support.\n- **Crucial Protection:** Enrolling in approved California Training Benefits (CTB) allows you to continue receiving weekly EDD unemployment benefits without having to submit weekly job search logs.\n\n**Actionable Next Step:** Sign up for the 45-minute virtual WIOA orientation held every Wednesday at 10:00 AM. Bring your EDD determination letter.`;
-          followUps = ['Will this affect my weekly EDD unemployment check?', 'Are evening classes available for adults?', 'Practice interview with a career navigator'];
+          replyText = 'WhatSack can help you explore employer-connected training, workforce assistance and your transferable skills.\n\n' +
+            'Two Ohlone-connected examples are Tesla Manufacturing Development Program (MDP), which describes a potential full-time Production Associate transition for successful participants, and Semiconductor Skills Bridge Academy (SSBA), where documented cohorts advertised a $1,500 completion stipend. Neither means every applicant is eligible or guaranteed an offer, stipend, or job.\n\n' +
+            'Ask the program about upcoming cohorts, experience and eligibility requirements, and benefit conditions. For WIOA training funds, contact a local workforce professional. For unemployment while studying, follow California EDD Training Benefits rules.';
+          followUps = ['Compare Tesla MDP and SSBA', 'Can someone age 45 apply for Tesla MDP?', 'Does SSBA still offer a stipend?', 'Where can I meet a workforce counselor?'];
         } else {
-          replyText = `**Si recientemente fue despedido o redujeron su jornada en Silicon Valley, tiene acceso a importantes becas estatales:**\n\n- **Programa NOVAworks para Trabajadores Desplazados:** Otorga vales de hasta **$8,000** para certificaciones en CompTIA Security+, Nube (AWS) y Soporte de Redes.\n- **Protección Clave:** Al inscribirse en cursos avalados por California Training Benefits (CTB), continúa recibiendo sus cheques de desempleo del EDD sin la obligación de buscar empleo semanalmente.\n\n**Siguiente Paso Recomendado:** Inscríbase a la orientación virtual de 45 minutos que se realiza todos los miércoles a las 10:00 AM. Tenga a la mano su carta del EDD.`;
-          followUps = ['¿Afectará mis cheques de desempleo semanales?', '¿Hay clases nocturnas para adultos?', 'Practicar entrevista con un asesor laboral'];
+          replyText = 'WhatSack puede ayudarle a explorar capacitación laboral y programas de manufactura.\n\n' +
+            'Tesla MDP describe una posible transición a un puesto de tiempo completo al completar el programa con éxito. Ohlone SSBA anunció un estipendio de $1,500 para cohortes documentadas. No se garantizan admisión, estipendio ni empleo.\n\n' +
+            'Confirme los requisitos, las fechas y las condiciones directamente con el programa. Consulte con un asesor laboral sobre fondos WIOA y con EDD sobre capacitación mientras recibe beneficios.';
+          followUps = ['Comparar Tesla MDP y SSBA', '¿Hay estipendio en SSBA?', '¿Dónde consultar sobre fondos WIOA?'];
         }
       } else if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula')) {
         matchedResIds = ['res-work-3', 'res-comm-2'];
@@ -349,6 +448,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         )}
       </div>
 
+      {/* Optional interactive library of all 103 research-backed question examples. */}
+      <div className="max-w-5xl w-full mx-auto px-4 sm:px-6 py-3 grid gap-2 sm:grid-cols-2" aria-label="Try researched questions">
+        {(['Sofia', 'Daniel'] as const).map(persona => (
+          <details key={persona} className="rounded-xl border border-slate-700 bg-slate-800/70">
+            <summary className="cursor-pointer select-none text-sm font-bold text-emerald-100 px-4 py-3 hover:bg-slate-800 rounded-xl">
+              Try {persona}'s researched questions ({nextStepInsightEntries.filter(entry => entry.persona === persona).length})
+            </summary>
+            <div className="max-h-56 overflow-y-auto px-3 pb-3 space-y-1">
+              {nextStepInsightEntries.filter(entry => entry.persona === persona).map(entry => (
+                <button key={entry.id} type="button" disabled={isGenerating}
+                  onClick={() => handleSendMessage(entry.question, persona)}
+                  className="w-full p-2 text-left text-xs rounded-lg border border-slate-700 hover:border-emerald-500 hover:bg-slate-700 disabled:opacity-50">
+                  <span className="font-bold text-emerald-300 mr-2">{entry.id}</span>{entry.question}
+                </button>
+              ))}
+            </div>
+          </details>
+        ))}
+      </div>
+
       {/* Main Chat Stream Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
@@ -394,7 +513,35 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   {msg.text}
                 </div>
 
-                {/* RAG Reasoning & Guardrail Trace (For LLM responses) */}
+                {isLlm && msg.responseMode && (
+                  <div role="status" className="mt-3 text-xs text-amber-200 font-semibold">
+                    {msg.responseMode === 'live'
+                      ? 'AI-generated draft • Verify facts on official websites.'
+                      : 'Scripted WhatSack demo • No live AI, paid API or real-time verification.'}
+                  </div>
+                )}
+
+                {isLlm && msg.nextStepInsight && (
+                  <div className="mt-4">
+                    <NextStepInsightCard entry={msg.nextStepInsight} variant="chat" />
+                  </div>
+                )}
+
+                {isLlm && msg.officialSources && msg.officialSources.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-slate-700/60">
+                    <p className="text-[11px] text-slate-300 font-bold mb-2">Official starting points — check current details</p>
+                    <div className="flex flex-col gap-2">
+                      {msg.officialSources.map(source => (
+                        <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer"
+                          className="text-sm text-emerald-300 underline underline-offset-2 hover:text-emerald-100">
+                          {source.title}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Simulation-only reasoning trace for legacy responses */}
                 {isLlm && msg.ragTrace && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <button
@@ -402,7 +549,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       className="text-[11px] font-bold text-indigo-300 hover:text-indigo-200 flex items-center gap-1.5 transition-colors"
                     >
                       <Brain className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>{currentLanguage === 'en' ? 'Civic RAG Retrieval Trace' : 'Traza de Recuperación RAG Cívico'} ({msg.ragTrace.confidence}% confidence)</span>
+                      <span>{currentLanguage === 'en' ? 'Simulated routing trace' : 'Traza de enrutamiento simulada'}</span>
                       {isTraceExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                     </button>
 
@@ -413,7 +560,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           <span className="text-indigo-200">{msg.ragTrace.intent}</span>
                         </div>
                         <div>
-                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Safety Guardrails Passed:</strong>
+                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Prototype guardrail labels (not independently tested):</strong>
                           <div className="flex flex-wrap gap-1 mt-0.5">
                             {msg.ragTrace.guardrailsPassed.map((g, idx) => (
                               <span key={idx} className="bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-1.5 py-0.5 rounded text-[10px]">
@@ -569,8 +716,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         <p className="text-center text-xs text-slate-400 font-medium mt-2.5">
           {currentLanguage === 'en'
-            ? 'WhatSack Civic-LLM grounds outputs strictly in demonstration records. No personal data collected or stored.'
-            : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
+            ? 'College answers are scripted unless a server-side AI key is configured. With live AI enabled, your question and recent chat context go to the AI provider. Do not enter private details.'
+            : 'Las respuestas son una demostración salvo que se configure IA en vivo. Si está activa, se envían las preguntas al proveedor de IA. No comparta datos personales.'}
         </p>
       </div>
     </div>
