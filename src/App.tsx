@@ -6,6 +6,7 @@ import {
   IntakeProfile 
 } from './types';
 import { demonstrationResources } from './data/resources';
+import { directoryEntries } from './data/directory';
 import { translations } from './data/translations';
 
 // Components
@@ -15,6 +16,7 @@ import { HeroConversationalSearch } from './components/HeroConversationalSearch'
 import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { ResourceCard } from './components/ResourceCard';
+import { CommunityDirectory } from './components/CommunityDirectory';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
 import { VoiceAssistantModal } from './components/VoiceAssistantModal';
@@ -190,8 +192,8 @@ export function App() {
       workforce: 0,
       community: 0
     };
-    demonstrationResources.forEach((r) => {
-      counts[r.categoryId] = (counts[r.categoryId] || 0) + 1;
+    directoryEntries.forEach((entry) => {
+      counts[entry.categoryId] = (counts[entry.categoryId] || 0) + 1;
     });
     return counts;
   }, []);
@@ -319,6 +321,14 @@ export function App() {
             resourceCounts={categoryCounts}
           />
 
+          {/* Full community resource directory (real listings) */}
+          <CommunityDirectory
+            currentLanguage={currentLanguage}
+            selectedCategory={selectedCategory}
+            selectedCity={selectedCity}
+            searchQuery={searchQuery}
+          />
+
           {/* Filter Bar & Results Header */}
           <section aria-labelledby="filters-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2">
             <h2 id="filters-heading" className="sr-only">
@@ -437,6 +447,7 @@ export function App() {
               </div>
             )}
           </section>
+
         </main>
       )}
 
