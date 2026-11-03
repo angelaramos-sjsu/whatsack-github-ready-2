@@ -15,6 +15,7 @@ import { HeroConversationalSearch } from './components/HeroConversationalSearch'
 import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { ResourceCard } from './components/ResourceCard';
+import { CommunityDirectory } from './components/CommunityDirectory';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
 import { VoiceAssistantModal } from './components/VoiceAssistantModal';
@@ -428,6 +429,14 @@ export function App() {
               </div>
             )}
           </section>
+
+          {/* Full community resource directory (real listings) */}
+          <CommunityDirectory
+            currentLanguage={currentLanguage}
+            selectedCategory={selectedCategory}
+            selectedCity={selectedCity}
+            searchQuery={searchQuery}
+          />
         </main>
       )}
 
