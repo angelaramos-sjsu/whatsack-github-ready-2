@@ -312,6 +312,14 @@ export function App() {
             resourceCounts={categoryCounts}
           />
 
+          {/* Full community resource directory (real listings) */}
+          <CommunityDirectory
+            currentLanguage={currentLanguage}
+            selectedCategory={selectedCategory}
+            selectedCity={selectedCity}
+            searchQuery={searchQuery}
+          />
+
           {/* Filter Bar & Results Header */}
           <section aria-labelledby="filters-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2">
             <h2 id="filters-heading" className="sr-only">
@@ -430,13 +438,6 @@ export function App() {
             )}
           </section>
 
-          {/* Full community resource directory (real listings) */}
-          <CommunityDirectory
-            currentLanguage={currentLanguage}
-            selectedCategory={selectedCategory}
-            selectedCity={selectedCity}
-            searchQuery={searchQuery}
-          />
         </main>
       )}
 
