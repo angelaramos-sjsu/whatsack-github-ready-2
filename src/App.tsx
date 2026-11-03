@@ -6,6 +6,7 @@ import {
   IntakeProfile 
 } from './types';
 import { demonstrationResources } from './data/resources';
+import { directoryEntries } from './data/directory';
 import { translations } from './data/translations';
 
 // Components
@@ -191,8 +192,8 @@ export function App() {
       workforce: 0,
       community: 0
     };
-    demonstrationResources.forEach((r) => {
-      counts[r.categoryId] = (counts[r.categoryId] || 0) + 1;
+    directoryEntries.forEach((entry) => {
+      counts[entry.categoryId] = (counts[entry.categoryId] || 0) + 1;
     });
     return counts;
   }, []);
