@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CategoryId, Language } from '../types';
 import { directoryEntries } from '../data/directory';
-import { MapPin, ExternalLink, Building2 } from 'lucide-react';
+import { MapPin, ExternalLink, Building2, FileText } from 'lucide-react';
+import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
 
 interface CommunityDirectoryProps {
   currentLanguage: Language;
@@ -38,6 +39,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   selectedCity,
   searchQuery
 }) => {
+  const [isOhloneAidOpen, setIsOhloneAidOpen] = useState(false);
   const words = searchQuery.toLowerCase().trim().split(/\s+/).filter((w) => w.length > 2);
 
   const matches = directoryEntries.filter((entry) => {
@@ -89,12 +91,12 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         ) : (
           <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
             {matches.map((entry) => (
-              <li key={entry.id}>
+              <li key={entry.id} className="flex flex-col gap-2">
                 <a
                   href={entry.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group flex flex-col h-full rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition-colors p-4 bg-white"
+                  className="group flex flex-col flex-1 rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition-colors p-4 bg-white"
                 >
                   <span className={`self-start text-[11px] font-extrabold px-2.5 py-0.5 rounded-md border mb-2 ${categoryBadgeClass[entry.categoryId]}`}>
                     {categoryLabels[entry.categoryId][currentLanguage]}
@@ -109,11 +111,25 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
                     {currentLanguage === 'en' ? 'Visit website' : 'Visitar sitio web'}
                   </span>
                 </a>
+                {entry.id === 'dir-ohlone-college-24' && (
+                  <button
+                    type="button"
+                    onClick={() => setIsOhloneAidOpen(true)}
+                    aria-haspopup="dialog"
+                    className="flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-700 text-emerald-900 hover:bg-emerald-50 font-extrabold text-xs min-h-[44px] px-3 transition-colors focus-visible:ring-3 focus-visible:ring-emerald-950"
+                  >
+                    <FileText className="w-4 h-4" aria-hidden="true" />
+                    {currentLanguage === 'en' ? 'Financial aid guide, contacts & hours' : 'Guía de ayuda financiera, contactos y horario'}
+                  </button>
+                )}
               </li>
             ))}
           </ul>
         )}
       </div>
+      {isOhloneAidOpen && (
+        <OhloneFinancialAidDialog currentLanguage={currentLanguage} onClose={() => setIsOhloneAidOpen(false)} />
+      )}
     </section>
   );
 };
