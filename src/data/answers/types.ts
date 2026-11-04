@@ -38,6 +38,8 @@ export interface ScriptedAnswer {
   context: BilingualText[];
   links?: OfficialResourceLink[];
   nextStep?: ScriptedNextStep;
+  /** A closing set of NextStep Insights, shown as an ordered list. */
+  nextSteps?: ScriptedNextStep[];
   /** Grounded demonstration resources rendered under the answer. */
   resourceIds?: string[];
   /** Only ids that resolve to another implemented answer are displayed. */

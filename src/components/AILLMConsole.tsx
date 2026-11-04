@@ -3,12 +3,13 @@ import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
-import { CollegePathwayDemo } from './CollegePathwayDemo';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
 import {
   buildUnscriptedFallback,
   getScriptedAnswer,
   resolveFollowUps,
+  routeSaraCollegeQuestion,
+  saraCollegeStageIds,
   topicEntryAnswerIds
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
@@ -59,6 +60,8 @@ interface AILLMConsoleProps {
   onOpenInsights: (resource: DemonstrationResource) => void;
   onOpenArchitectureModal: () => void;
   onOpenDecoderModal: () => void;
+  /** A question submitted from the homepage; the copilot opens already answered. */
+  initialQuestion?: { text: string; key: number } | null;
 }
 
 const topicIntents: Record<AnswerTopic, string> = {
@@ -89,18 +92,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   onSavePlanAction,
   onOpenInsights,
   onOpenArchitectureModal,
-  onOpenDecoderModal
+  onOpenDecoderModal,
+  initialQuestion
 }) => {
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [activePersonaId, setActivePersonaId] = useState<string | null>(null);
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
-  const [isCollegeDemoActive, setIsCollegeDemoActive] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const initialMessages: ChatMessage[] = [
-    {
+  const greetingMessage: ChatMessage = {
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
@@ -113,10 +115,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         'ans-mental-confidential-teens',
         'ans-roleplay-intake-open'
       ]
-    }
-  ];
-
-  const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+  };
 
   /** Turn an approved scripted answer into a chat bubble. */
   const buildAnswerMessage = (answer: ScriptedAnswer): ChatMessage => ({
@@ -134,6 +133,48 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     followUpIds: answer.followUpIds,
     scriptedAnswer: answer
   });
+
+  /**
+   * One approved answer per question. College questions enter Sara's scripted
+   * college journey at the stage that answers them; persona questions keep
+   * their own topic entry answer.
+   */
+  const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
+    const lower = text.toLowerCase();
+    const topic = detectTopic(lower, isRoleplayMode);
+    const saraStageId =
+      topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
+    const answer = saraStageId
+      ? getScriptedAnswer(saraStageId)
+      : topic
+        ? getScriptedAnswer(topicEntryAnswerIds[topic])
+        : undefined;
+
+    // No approved answer exists for this question: say so instead of inventing one.
+    return answer ?? buildUnscriptedFallback({ en: text, es: text });
+  };
+
+  const [messages, setMessages] = useState<ChatMessage[]>([greetingMessage]);
+
+  // A question submitted from the homepage opens the copilot already answered.
+  const seededQuestionKeyRef = useRef<number | null>(null);
+  useEffect(() => {
+    const seededQuestion = initialQuestion?.text.trim();
+    const seededKey = initialQuestion?.key;
+    if (!seededQuestion || seededKey === undefined || seededQuestionKeyRef.current === seededKey) return;
+    seededQuestionKeyRef.current = seededKey;
+
+    setMessages(prev => [
+      ...prev,
+      {
+        id: `usr-seed-${seededKey}`,
+        sender: 'user',
+        text: seededQuestion,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      },
+      buildAnswerMessage(resolveAnswer(seededQuestion))
+    ]);
+  }, [initialQuestion]);
 
   /**
    * A follow-up button replays its own approved answer by id, so two different
@@ -184,13 +225,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
     // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      const topic = detectTopic(text.toLowerCase(), isRoleplayMode);
-      const entryAnswer = topic ? getScriptedAnswer(topicEntryAnswerIds[topic]) : undefined;
-
-      // No approved answer exists for this question: say so instead of inventing one.
-      const answer = entryAnswer ?? buildUnscriptedFallback({ en: text, es: text });
-
-      setMessages(prev => [...prev, buildAnswerMessage(answer)]);
+      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)))]);
       setIsGenerating(false);
     }, 900);
   };
@@ -278,15 +313,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       {/* Persona Quick Simulator Bar */}
       <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2.5 flex items-center gap-2 overflow-x-auto">
         <button
-          onClick={() => setIsCollegeDemoActive(true)}
-          className={`px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border mr-1 ${
-            isCollegeDemoActive
-              ? 'bg-emerald-600 text-white border-emerald-500 shadow-xs'
-              : 'bg-slate-800 hover:bg-slate-700 text-emerald-300 border-emerald-700/50'
-          }`}
+          onClick={() => handleFollowUpClick(saraCollegeStageIds.start)}
+          className="px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border mr-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 border-emerald-700/50"
         >
           <Sparkles className="w-3.5 h-3.5" />
-          <span>{currentLanguage === 'en' ? 'College pathway demo' : 'Demo: camino universitario'}</span>
+          <span>{currentLanguage === 'en' ? "Start Sara's college story" : 'Iniciar la historia de Sara'}</span>
         </button>
 
         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
@@ -339,13 +370,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
       {/* Main Chat Stream Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
-        {isCollegeDemoActive ? (
-          <CollegePathwayDemo
-            currentLanguage={currentLanguage}
-            onExit={() => setIsCollegeDemoActive(false)}
-          />
-        ) : (
-        <>
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
 
@@ -500,12 +524,9 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         )}
 
         <div ref={messagesEndRef} />
-        </>
-        )}
       </div>
 
       {/* Input Bar Form */}
-      {!isCollegeDemoActive && (
       <div className="bg-slate-950 border-t border-slate-800 p-4 sm:p-5">
         <form
           onSubmit={(e) => {
@@ -548,7 +569,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
         </p>
       </div>
-      )}
     </div>
   );
 };

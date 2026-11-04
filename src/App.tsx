@@ -30,6 +30,8 @@ import { Bot } from 'lucide-react';
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
   const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension'>('home');
+  // A question submitted from the homepage opens the copilot already answered.
+  const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
   
@@ -57,6 +59,11 @@ export function App() {
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
 
   const t = translations[currentLanguage];
+
+  // The homepage question seeds the copilot once, then clears when you leave it.
+  useEffect(() => {
+    if (activeView !== 'copilot') setCopilotQuestion(null);
+  }, [activeView]);
 
   // High contrast mode effect
   useEffect(() => {
@@ -229,6 +236,7 @@ export function App() {
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
           onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
+          initialQuestion={copilotQuestion}
         />
       ) : activeView === 'extension' ? (
         <SimulatedExtensionSidebar
@@ -245,12 +253,8 @@ export function App() {
             onSearchChange={setSearchQuery}
             onExecuteSearch={(q) => {
               setSearchQuery(q);
-              window.setTimeout(() => {
-                document.getElementById('directory')?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }, 0);
+              setCopilotQuestion({ text: q, key: Date.now() });
+              setActiveView('copilot');
             }}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
             onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
