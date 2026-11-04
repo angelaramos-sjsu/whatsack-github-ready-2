@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
+import { getEducationResponse } from '../data/educationChat';
 import { demonstrationResources } from '../data/resources';
 import { 
   Bot, 
@@ -39,6 +40,8 @@ interface ChatMessage {
   };
   recommendedResourceIds?: string[];
   suggestedFollowUps?: string[];
+  nextStepInsights?: string[];
+  sourceLinks?: Array<{ label: string; url: string }>;
 }
 
 interface AILLMConsoleProps {
@@ -69,21 +72,21 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
-        ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
-        : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
+        ? `Welcome to WhatSack, a community-resource navigation prototype. I can demonstrate sample journeys for college, financial aid, workforce training, food, mental health, and community resources. Education answers include official links and suggested next steps. This demo uses local scripted responses; it is not connected to a live AI service.`
+        : `Te damos la bienvenida a WhatSack, un prototipo para buscar recursos comunitarios. Puedo mostrar ejemplos sobre universidad, ayuda financiera, capacitación laboral, alimentos, salud mental y conexión comunitaria. Las respuestas educativas incluyen enlaces oficiales y próximos pasos sugeridos. Esta demostración usa respuestas guionadas localmente; no se conecta a un servicio de IA en vivo.`,
       timestamp: 'Just now',
       suggestedFollowUps: currentLanguage === 'en'
         ? [
-            'Where can I get groceries in East San Jose without an ID?',
-            'How can laid-off workers get free tech certificates in Milpitas?',
-            'What mental health support is confidential for teens in Sunnyvale?',
-            'Practice intake call for food pantry'
+            'Sofia: I want to go to college, but my family does not have much money. What are my options?',
+            'Daniel: I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?',
+            'What mental health support can a teen explore?',
+            'Practice an intake conversation'
           ]
         : [
-            '¿Dónde consigo despensa en el Este de San José sin identificación?',
-            '¿Cómo recibir cursos de tecnología gratuitos tras un despido en Milpitas?',
-            '¿Qué apoyo emocional para jóvenes es confidencial en Sunnyvale?',
-            'Practicar llamada para pedir despensa'
+            'Sofía: Quiero ir a la universidad, pero mi familia no tiene mucho dinero. ¿Qué opciones tengo?',
+            'Daniel: Perdí mi trabajo y quiero explorar una nueva carrera. ¿Hay capacitación asequible?',
+            '¿Qué apoyo de salud mental puede explorar un adolescente?',
+            'Practicar una conversación de admisión'
           ]
     }
   ];
@@ -127,8 +130,20 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       let intentCategory = 'Community Navigation';
       let followUps: string[] = [];
 
+      // Education answers use local prototype scripts with official source links.
+      const selectedPersonaName = personaTag || fictionalPersonas.find(p => p.id === activePersonaId)?.name;
+      const educationAnswer = getEducationResponse(text, currentLanguage, selectedPersonaName);
+      let nextStepInsights: string[] = [];
+      let sourceLinks: Array<{ label: string; url: string }> = [];
+
       // Detect topic & ground with demonstration data
-      if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) {
+      if (educationAnswer) {
+        replyText = educationAnswer.text;
+        intentCategory = educationAnswer.intent;
+        nextStepInsights = educationAnswer.nextStepInsights;
+        followUps = educationAnswer.followUps;
+        sourceLinks = educationAnswer.sources;
+      } else if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) {
         matchedResIds = ['res-food-1', 'res-food-2'];
         intentCategory = 'Food Access & Stigma-Free Groceries';
         if (currentLanguage === 'en') {
@@ -207,11 +222,15 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ragTrace: {
           intent: intentCategory,
           retrievedResources: matchedResIds,
-          guardrailsPassed: ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
-          confidence: 98
+          guardrailsPassed: educationAnswer
+            ? ['OfficialSourceLinksAttached', 'EligibilityNotDetermined', 'NoSensitiveDataRequested']
+            : ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
+          confidence: educationAnswer ? 90 : 98
         },
-        recommendedResourceIds: matchedResIds,
-        suggestedFollowUps: followUps
+        recommendedResourceIds: educationAnswer ? [] : matchedResIds,
+        suggestedFollowUps: followUps,
+        nextStepInsights,
+        sourceLinks
       };
 
       setMessages(prev => [...prev, llmMsg]);
@@ -247,12 +266,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {t.aiCopilot.title}
               </h2>
               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                {t.aiCopilot.badge}
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                {currentLanguage === 'en' ? 'Prototype' : 'Prototipo'}
               </span>
             </div>
             <p className="text-xs text-slate-400">
-              {t.aiCopilot.systemStatus}
+              {currentLanguage === 'en' ? 'Simulated prototype · education answers include official links' : 'Prototipo simulado · las respuestas de educación incluyen enlaces oficiales'}
             </p>
           </div>
         </div>
@@ -393,6 +412,32 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
                   {msg.text}
                 </div>
+
+                {isLlm && msg.nextStepInsights && msg.nextStepInsights.length > 0 && (
+                  <section className="mt-4 rounded-xl border border-amber-700/50 bg-amber-950/30 p-3" aria-label={currentLanguage === 'en' ? 'NextStep Insights' : 'Ideas para el siguiente paso'}>
+                    <h3 className="mb-1.5 text-[11px] font-extrabold uppercase tracking-wider text-amber-300">
+                      {currentLanguage === 'en' ? 'Things to Keep in Mind' : 'Cosas para tener en cuenta'}
+                    </h3>
+                    <ul className="list-disc space-y-1 pl-4 text-[11px] text-slate-200">
+                      {msg.nextStepInsights.map((insight, idx) => <li key={idx}>{insight}</li>)}
+                    </ul>
+                  </section>
+                )}
+
+                {isLlm && msg.sourceLinks && msg.sourceLinks.length > 0 && (
+                  <div className="mt-4 border-t border-slate-700/60 pt-3">
+                    <span className="mb-2 block text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                      {currentLanguage === 'en' ? 'Official source links' : 'Enlaces oficiales'}
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {msg.sourceLinks.map((source) => (
+                        <a key={source.url} href={source.url} target="_blank" rel="noreferrer" className="rounded-lg border border-emerald-700/60 bg-emerald-950/40 px-2.5 py-1.5 text-[11px] font-semibold text-emerald-300 hover:bg-emerald-900/60 underline underline-offset-2">
+                          {source.label} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* RAG Reasoning & Guardrail Trace (For LLM responses) */}
                 {isLlm && msg.ragTrace && (

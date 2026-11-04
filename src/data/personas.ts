@@ -106,15 +106,15 @@ export const fictionalPersonas: Persona[] = [
     name: 'Daniel',
     age: 45,
     tagline: {
-      en: 'Laid-off electronics assembly worker pivoting to cloud & IT certifications',
-      es: 'Trabajador de ensamble electrónico despedido preparándose para certificaciones IT y nube'
+      en: 'Recently laid-off Silicon Valley adult exploring affordable retraining',
+      es: 'Adulto de Silicon Valley recientemente despedido que explora capacitación asequible'
     },
-    location: 'Milpitas / North San Jose, CA',
+    location: 'Silicon Valley, CA',
     avatarUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
     categoryFocus: 'workforce',
     background: {
-      en: 'After 18 years on the manufacturing line in a Milpitas semiconductor facility, Daniel was impacted by workforce reductions. He has strong mechanical skills but needs subsidized computer literacy and certified credentials to re-enter the Silicon Valley job market.',
-      es: 'Tras 18 años en la línea de ensamble en una planta de Milpitas, Daniel fue despedido. Posee excelentes habilidades técnicas manuales, pero requiere certificaciones y capacitación digital para reinsertarse en el mercado laboral local.'
+      en: 'Daniel recently lost his job and wants to explore a new career. He is comparing affordable training options and needs clear information about program fit, cost, schedule, and possible funding.',
+      es: 'Daniel perdió su trabajo recientemente y quiere explorar una nueva carrera. Compara opciones de capacitación asequibles y necesita información clara sobre la compatibilidad, el costo, el horario y los posibles fondos.'
     },
     primaryGoals: [
       {
@@ -146,8 +146,8 @@ export const fictionalPersonas: Persona[] = [
     ],
     sampleQuestions: [
       {
-        en: 'How can a laid-off manufacturing worker get free cloud IT certificates in Santa Clara County?',
-        es: '¿Cómo puede un trabajador manufacturero despedido obtener cursos de IT gratuitos en Santa Clara?'
+        en: 'I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?',
+        es: 'Perdí mi trabajo y quiero explorar una nueva carrera. ¿Hay programas de capacitación asequibles que puedan ayudarme a encontrar trabajo?'
       },
       {
         en: 'Where can I meet a WIOA career counselor in Milpitas or North San Jose?',
@@ -209,7 +209,7 @@ export const fictionalPersonas: Persona[] = [
       en: 'First-generation high school senior mapping college financial aid & transfer pathways',
       es: 'Estudiante de último año de preparatoria de 1ra generación explorando ayuda universitaria y transferencias'
     },
-    location: 'Mountain View, CA',
+    location: 'Fremont, CA',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
     categoryFocus: 'workforce',
     background: {
@@ -246,8 +246,8 @@ export const fictionalPersonas: Persona[] = [
     ],
     sampleQuestions: [
       {
-        en: 'How does the California College Promise grant work at De Anza and Foothill?',
-        es: '¿Cómo funciona la beca California College Promise en De Anza y Foothill?'
+        en: 'I want to go to college, but my family does not have much money. What are my options?',
+        es: 'Quiero ir a la universidad, pero mi familia no tiene mucho dinero. ¿Qué opciones tengo?'
       },
       {
         en: 'Where can a high school senior get free 1-on-1 FAFSA / Dream Act help in Mountain View?',
