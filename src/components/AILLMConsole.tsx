@@ -4,6 +4,14 @@ import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
 import { CollegePathwayDemo } from './CollegePathwayDemo';
+import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
+import {
+  buildUnscriptedFallback,
+  getScriptedAnswer,
+  resolveFollowUps,
+  topicEntryAnswerIds
+} from '../data/answers';
+import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { 
   Bot, 
   Send, 
@@ -37,20 +45,48 @@ interface ChatMessage {
     confidence: number;
   };
   recommendedResourceIds?: string[];
-  suggestedFollowUps?: string[];
+  /** Follow-up buttons, always one unique answer id each. */
+  followUpIds?: string[];
+  /** The approved scripted answer behind this message. */
+  scriptedAnswer?: ScriptedAnswer;
 }
 
 interface AILLMConsoleProps {
   currentLanguage: Language;
   userProfile?: any;
+  savedResourceIds?: string[];
+  onSavePlanAction?: (resourceId: string) => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
   onOpenArchitectureModal: () => void;
   onOpenDecoderModal: () => void;
 }
 
+const topicIntents: Record<AnswerTopic, string> = {
+  food: 'Food Access & Stigma-Free Groceries',
+  work: 'Workforce Retraining & WIOA Dislocated Worker Grants',
+  college: 'Higher Education Grants & College Promise',
+  mental: 'Youth Mental Health & Confidential Minor Consent',
+  senior: 'Senior Cultural Circles & Nutrition Programs',
+  roleplay: 'Intake Rehearsal & Anxiety De-escalation'
+};
+
+/** Free-text routing only picks a topic; the approved answer comes from its id. */
+const detectTopic = (lower: string, isRoleplayMode: boolean): AnswerTopic | null => {
+  if (isRoleplayMode) return 'roleplay';
+  if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) return 'food';
+  if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) return 'work';
+  if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula') || lower.includes('colegiatura') || lower.includes('fafsa') || lower.includes('cadaa') || lower.includes('promise')) return 'college';
+  if (lower.includes('teen') || lower.includes('anxiety') || lower.includes('mateo') || lower.includes('mental') || lower.includes('joven') || lower.includes('estrés') || lower.includes('confidencial')) return 'mental';
+  if (lower.includes('senior') || lower.includes('rosa') || lower.includes('abuela') || lower.includes('lunch') || lower.includes('almuerzo') || lower.includes('mayor')) return 'senior';
+  if (lower.includes('roleplay') || lower.includes('practice') || lower.includes('ensayar') || lower.includes('practicar')) return 'roleplay';
+  return null;
+};
+
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   currentLanguage,
   userProfile,
+  savedResourceIds = [],
+  onSavePlanAction,
   onOpenInsights,
   onOpenArchitectureModal,
   onOpenDecoderModal
@@ -71,23 +107,51 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
         : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
       timestamp: 'Just now',
-      suggestedFollowUps: currentLanguage === 'en'
-        ? [
-            'Where can I get groceries in East San Jose without an ID?',
-            'How can laid-off workers get free tech certificates in Milpitas?',
-            'What mental health support is confidential for teens in Sunnyvale?',
-            'Practice intake call for food pantry'
-          ]
-        : [
-            '¿Dónde consigo despensa en el Este de San José sin identificación?',
-            '¿Cómo recibir cursos de tecnología gratuitos tras un despido en Milpitas?',
-            '¿Qué apoyo emocional para jóvenes es confidencial en Sunnyvale?',
-            'Practicar llamada para pedir despensa'
-          ]
+      followUpIds: [
+        'ans-food-east-sj-groceries',
+        'ans-work-tech-certificates',
+        'ans-mental-confidential-teens',
+        'ans-roleplay-intake-open'
+      ]
     }
   ];
 
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
+
+  /** Turn an approved scripted answer into a chat bubble. */
+  const buildAnswerMessage = (answer: ScriptedAnswer): ChatMessage => ({
+    id: `llm-${Date.now()}-${answer.id}`,
+    sender: 'llm',
+    text: answer.answer[currentLanguage],
+    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    ragTrace: {
+      intent: answer.topic === 'fallback' ? 'Unscripted inquiry — no approved answer' : topicIntents[answer.topic],
+      retrievedResources: answer.resourceIds ?? [],
+      guardrailsPassed: ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
+      confidence: answer.topic === 'fallback' ? 0 : 100
+    },
+    recommendedResourceIds: answer.resourceIds,
+    followUpIds: answer.followUpIds,
+    scriptedAnswer: answer
+  });
+
+  /**
+   * A follow-up button replays its own approved answer by id, so two different
+   * questions never collapse into one generic reply.
+   */
+  const handleFollowUpClick = (answerId: string) => {
+    const answer = getScriptedAnswer(answerId);
+    if (!answer) return;
+
+    const questionMessage: ChatMessage = {
+      id: `usr-${Date.now()}`,
+      sender: 'user',
+      text: answer.question[currentLanguage],
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+
+    setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
+  };
 
   // Auto scroll to bottom
   useEffect(() => {
@@ -118,104 +182,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!textToSend) setInputText('');
     setIsGenerating(true);
 
-    // Simulated RAG Pipeline & Civic LLM Generation
+    // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      const lower = text.toLowerCase();
-      let matchedResIds: string[] = [];
-      let replyText = '';
-      let intentCategory = 'Community Navigation';
-      let followUps: string[] = [];
+      const topic = detectTopic(text.toLowerCase(), isRoleplayMode);
+      const entryAnswer = topic ? getScriptedAnswer(topicEntryAnswerIds[topic]) : undefined;
 
-      // Detect topic & ground with demonstration data
-      if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) {
-        matchedResIds = ['res-food-1', 'res-food-2'];
-        intentCategory = 'Food Access & Stigma-Free Groceries';
-        if (currentLanguage === 'en') {
-          replyText = `**I found 2 immediate, stigma-free food resources in East San Jose that fit your inquiry:**\n\n1. **Sacred Heart Saturday Community Food Pantry** (550 S 1st St, San Jose)\n   - **Schedule:** Every Saturday, 9:00 AM – 1:00 PM\n   - **ID Policy:** Zero ID, SSN, or income verification required. Self-attestation accepted.\n   - **Public Charge Clarification:** Community food pantries do **NOT** count toward federal public charge determinations under USCIS rules.\n\n2. **Second Harvest Mobile Produce Market** (Story Rd & King Rd)\n   - Fresh vegetables, farmer produce boxes, walk-up or drive-thru lanes.\n\n**Actionable Next Step:** Arrive at Sacred Heart around 8:40 AM this Saturday with 2 sturdy reusable bags. No pre-registration needed.`;
-          followUps = ['Do I need to show proof of address?', 'Are diapers or infant formula available?', 'Roleplay the greeting desk conversation with me'];
-        } else {
-          replyText = `**Encontré 2 opciones de despensa inmediata sin estigma en el Este de San José:**\n\n1. **Despensa Comunitaria de Sábados en Sacred Heart** (550 S 1st St, San José)\n   - **Horario:** Todos los sábados de 9:00 AM a 1:00 PM\n   - **Requisito de ID:** Cero identificación, sin Seguro Social ni comprobante de ingresos. Solo autodeclaración verbal.\n   - **Aclaración de Carga Pública:** Recibir alimentos de despensas comunitarias **NO** cuenta para la regla de carga pública de inmigración.\n\n2. **Mercado Móvil Second Harvest** (Story Rd y King Rd)\n   - Frutas y verduras frescas de temporada, fila peatonal y de autos.\n\n**Siguiente Paso Recomendado:** Llegue a Sacred Heart a las 8:40 AM este sábado con 2 bolsas reutilizables. No se requiere cita previa.`;
-          followUps = ['¿Debo mostrar comprobante de domicilio?', '¿Tienen pañales o leche infantil?', 'Ensayar la conversación de llegada'];
-        }
-      } else if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) {
-        matchedResIds = ['res-work-1', 'res-work-2'];
-        intentCategory = 'Workforce Retraining & WIOA Dislocated Worker Grants';
-        if (currentLanguage === 'en') {
-          replyText = `**If you experienced a recent layoff or workforce reduction in Silicon Valley, you have access to substantial state retraining funds:**\n\n- **NOVAworks Dislocated Worker Program:** Offers vouchers up to **$8,000** for approved certificates in CompTIA Security+, Cloud Operations (AWS), and Network Support.\n- **Crucial Protection:** Enrolling in approved California Training Benefits (CTB) allows you to continue receiving weekly EDD unemployment benefits without having to submit weekly job search logs.\n\n**Actionable Next Step:** Sign up for the 45-minute virtual WIOA orientation held every Wednesday at 10:00 AM. Bring your EDD determination letter.`;
-          followUps = ['Will this affect my weekly EDD unemployment check?', 'Are evening classes available for adults?', 'Practice interview with a career navigator'];
-        } else {
-          replyText = `**Si recientemente fue despedido o redujeron su jornada en Silicon Valley, tiene acceso a importantes becas estatales:**\n\n- **Programa NOVAworks para Trabajadores Desplazados:** Otorga vales de hasta **$8,000** para certificaciones en CompTIA Security+, Nube (AWS) y Soporte de Redes.\n- **Protección Clave:** Al inscribirse en cursos avalados por California Training Benefits (CTB), continúa recibiendo sus cheques de desempleo del EDD sin la obligación de buscar empleo semanalmente.\n\n**Siguiente Paso Recomendado:** Inscríbase a la orientación virtual de 45 minutos que se realiza todos los miércoles a las 10:00 AM. Tenga a la mano su carta del EDD.`;
-          followUps = ['¿Afectará mis cheques de desempleo semanales?', '¿Hay clases nocturnas para adultos?', 'Practicar entrevista con un asesor laboral'];
-        }
-      } else if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula')) {
-        matchedResIds = ['res-work-3', 'res-comm-2'];
-        intentCategory = 'Higher Education Grants & College Promise';
-        if (currentLanguage === 'en') {
-          replyText = `**Here is the exact breakdown for tuition-free college in Silicon Valley:**\n\n- **Foothill & De Anza College Promise (AB 19):** Covers **100% of tuition and mandatory fees for 2 full academic years** for California residents enrolled in 12+ units.\n- **AB 540 / Dream Act Safety:** Undocumented students submit the California Dream Act Application (CADAA). Under California state law, your financial aid records are confidential and never shared with federal immigration agencies.\n- **Book Support:** First-generation students can request a $500 quarterly bookstore voucher at the Student Success Center.\n\n**Actionable Next Step:** Complete your OpenCCC admissions application first to generate your student CWID, then submit CADAA/FAFSA.`;
-          followUps = ['How do I know whether to submit CADAA or FAFSA?', 'Can I visit a campus clinic for 1-on-1 help?', 'What GPA is required for the Promise grant?'];
-        } else {
-          replyText = `**Aquí tiene el desglose exacto para estudiar la universidad sin costo en Silicon Valley:**\n\n- **Foothill y De Anza College Promise (Ley AB 19):** Cubre el **100% de la colegiatura y cuotas durante 2 años completos** para residentes de California inscritos en 12+ créditos.\n- **Seguridad AB 540 / Dream Act:** Estudiantes indocumentados llenan la solicitud CADAA. Por ley de California, sus datos escolares son confidenciales y nunca se comparten con autoridades migratorias.\n- **Apoyo para Libros:** Estudiantes de 1ra generación pueden pedir un vale de $500 por trimestre para libros en el Centro de Éxito Estudiantil.\n\n**Siguiente Paso Recomendado:** Llene primero la solicitud de admisión en OpenCCC para obtener su número estudiantil CWID, y después envíe su CADAA o FAFSA.`;
-          followUps = ['¿Cómo sé si me corresponde CADAA o FAFSA?', '¿Hay asesoría personalizada presencial?', '¿Qué promedio de calificaciones se requiere?'];
-        }
-      } else if (lower.includes('teen') || lower.includes('anxiety') || lower.includes('mateo') || lower.includes('mental') || lower.includes('joven') || lower.includes('estrés')) {
-        matchedResIds = ['res-mental-1', 'res-mental-2'];
-        intentCategory = 'Youth Mental Health & Confidential Minor Consent';
-        if (currentLanguage === 'en') {
-          replyText = `**You have full legal rights to confidential support in California:**\n\n- **California Health & Safety Code § 124260:** Youth aged 12 and older can consent to outpatient mental health and peer counseling confidentially without parental notification.\n- **California Youth Crisis Text Line:** Text **HOPE** to **844-555-TEEN** (Simulated). 100% free, 24/7, anonymous. Texts are answered by trained young listeners who understand academic pressure.\n- **Sunnyvale Youth Wellness Hub:** Drop in after school (3:00 PM – 7:30 PM) for art therapy, quiet sensory pods, and peer listeners without insurance cards or school reporting.\n\n**Actionable Next Step:** Save the text code in your phone as "Peer Line". Reach out anytime you feel overwhelmed.`;
-          followUps = ['Will my school find out if I text this number?', 'What happens during a drop-in session?', 'Can I practice a simulated text chat?'];
-        } else {
-          replyText = `**Tienes plenos derechos legales a recibir apoyo confidencial en California:**\n\n- **Código de Salud de California § 124260:** Jóvenes de 12 años en adelante tienen derecho legal a solicitar consejería ambulatoria de forma confidencial sin aviso obligatorio a los padres.\n- **Línea de Texto de Crisis Juvenil de California:** Envía la palabra **HOPE** al **844-555-TEEN** (Simulado). 100% gratuito, anónimo y disponible 24/7 con jóvenes capacitados.\n- **Centro de Bienestar Juvenil de Sunnyvale:** Espacio libre después de clases (3:00 PM a 7:30 PM) con arte, zonas sensoriales y apoyo entre compañeros sin pedir seguro médico.\n\n**Siguiente Paso Recomendado:** Guarda el número como "Apoyo Amigo" en tu celular. Escribe en cualquier momento de estrés.`;
-          followUps = ['¿Se enterará mi escuela si envío un mensaje?', '¿Qué ocurre al visitar el centro juvenil?', '¿Puedo ensayar un mensaje de prueba?'];
-        }
-      } else if (lower.includes('senior') || lower.includes('rosa') || lower.includes('abuela') || lower.includes('lunch') || lower.includes('almuerzo') || lower.includes('mayor')) {
-        matchedResIds = ['res-comm-1', 'res-food-3'];
-        intentCategory = 'Senior Cultural Circles & Nutrition Programs';
-        if (currentLanguage === 'en') {
-          replyText = `**Here are wonderful Spanish-speaking senior gatherings in Redwood City & the Peninsula:**\n\n- **Casa Círculo Cultural Senior Circle:** Meets every Tuesday & Thursday (10:00 AM – 1:30 PM) in North Fair Oaks. Features traditional crafts, chair yoga, warm Mexican hot lunches, and music.\n- **Door-to-Door Transit Assistance:** Staff helps register you for **SamTrans Redi-Wheels**, which picks you up directly at your home and brings you to the center.\n- **Cost:** 100% Free. No fees, no membership requirements.\n\n**Actionable Next Step:** Call bilingual coordinator Carmen at (650) 555-CASA (Simulated) or arrive this Tuesday at 10:00 AM. Free welcome coffee and apron provided!`;
-          followUps = ['How does the door-to-door van work?', 'Can a daughter or caregiver accompany my mother?', 'Is there a hot lunch menu available?'];
-        } else {
-          replyText = `**Aquí tiene excelentes opciones de convivencia para adultos mayores en español en Redwood City:**\n\n- **Círculo de Adultos Mayores de Casa Círculo Cultural:** Se reúnen martes y jueves (10:00 AM a 1:30 PM) en North Fair Oaks. Disfrutan de manualidades, yoga en silla, música y un rico almuerzo caliente.\n- **Transporte Puerta a Puerta:** El personal le ayuda a tramitar **SamTrans Redi-Wheels**, una camioneta que pasa por usted hasta la puerta de su casa.\n- **Costo:** 100% Gratuito. Sin membresías ni mensualidades.\n\n**Siguiente Paso Recomendado:** Llame a la coordinadora Doña Carmen al (650) 555-CASA (Simulado) o llegue el martes a las 10:00 AM. ¡Recibirá café caliente y un mandil de bienvenida!`;
-          followUps = ['¿Cómo funciona la camioneta puerta a puerta?', '¿Puede acompañarme mi hija o cuidador?', '¿Qué días sirven almuerzo caliente?'];
-        }
-      } else if (isRoleplayMode || lower.includes('roleplay') || lower.includes('practice') || lower.includes('ensayar') || lower.includes('practicar')) {
-        intentCategory = 'Intake Rehearsal & Anxiety De-escalation';
-        if (currentLanguage === 'en') {
-          replyText = `**[Intake Specialist Roleplay Mode Active]**\n\n*"Good morning! Welcome to the Silicon Valley Community Support Desk. My name is Elena. Thank you for calling today — please take your time, we are here to support you without any judgment.* \n\n*Could you share with me what neighborhood you are calling from, and whether you are looking for groceries, job training, or health support today?"*\n\n*(Notice how warm and straightforward the intake is? Reply to me as you would on the phone to practice!)*`;
-          followUps = ['"I am calling from East San Jose and need groceries for my children"', '"I was laid off from my job in Milpitas and need to learn computers"', '"I feel really nervous and don\'t know where to start"'];
-        } else {
-          replyText = `**[Modo de Ensayo de Registro Activo]**\n\n*"¡Buenos días! Bienvenido a la Mesa de Apoyo Comunitario de Silicon Valley. Mi nombre es Elena. Gracias por comunicarse con nosotros hoy — tómese todo su tiempo, estamos aquí para servirle con respeto y sin juzgar.* \n\n*¿Podría decirme desde qué área nos llama y si busca alimentos, capacitación o apoyo emocional hoy?"*\n\n*(¿Ve qué sencillo y cálido es el trato? Respóndame como si estuviera en la llamada para seguir practicando).*`;
-          followUps = ['"Llamo del Este de San José y necesito despensa para mis hijos"', '"Me despidieron de mi trabajo en Milpitas y busco estudiar computación"', '"Estoy nervioso y no sé por dónde empezar"'];
-        }
-      } else {
-        matchedResIds = ['res-food-1', 'res-work-1', 'res-mental-1', 'res-comm-1'];
-        intentCategory = 'General Civic Resource Match';
-        if (currentLanguage === 'en') {
-          replyText = `I analyzed your inquiry: **"${text}"**.\n\nI found verified programs in Santa Clara and San Mateo counties that match. Explore the verified resource cards attached below, or let me know if you would like me to generate a personalized document checklist or simulate an intake call!`;
-          followUps = ['Show food assistance programs', 'Show free job training grants', 'Practice what to say on the phone'];
-        } else {
-          replyText = `Analicé su consulta: **"${text}"**.\n\nEl índice Civic-LLM de WhatSack recuperó programas verificados en Santa Clara y San Mateo que cuentan con:\n- **Sin requisito de identificación estatal ni Seguro Social**\n- **Protocolos de registro confidenciales**\n- **Excelente conectividad en transporte público (VTA / SamTrans)**\n\nConsulte las opciones verificadas abajo o indíqueme si desea que preparemos una lista de documentos o ensayemos una llamada de registro.`;
-          followUps = ['Ver despensas comunitarias', 'Ver becas de capacitación laboral', 'Ensayar qué decir en la llamada'];
-        }
-      }
+      // No approved answer exists for this question: say so instead of inventing one.
+      const answer = entryAnswer ?? buildUnscriptedFallback({ en: text, es: text });
 
-      const llmMsg: ChatMessage = {
-        id: `llm-${Date.now()}`,
-        sender: 'llm',
-        text: replyText,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        ragTrace: {
-          intent: intentCategory,
-          retrievedResources: matchedResIds,
-          guardrailsPassed: ['PublicChargeSafetyFilter', 'MinorConsentProtection§124260', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
-          confidence: 98
-        },
-        recommendedResourceIds: matchedResIds,
-        suggestedFollowUps: followUps
-      };
-
-      setMessages(prev => [...prev, llmMsg]);
+      setMessages(prev => [...prev, buildAnswerMessage(answer)]);
       setIsGenerating(false);
-    }, 1100);
+    }, 900);
   };
 
   const handleExportChat = () => {
@@ -456,20 +433,31 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   </div>
                 )}
 
-                {/* Suggested Follow-up chips */}
-                {isLlm && msg.suggestedFollowUps && msg.suggestedFollowUps.length > 0 && (
+                {/* Approved answer extras: context, official links, NextStep actions */}
+                {isLlm && msg.scriptedAnswer && (
+                  <ScriptedAnswerExtras
+                    answer={msg.scriptedAnswer}
+                    currentLanguage={currentLanguage}
+                    savedResourceIds={savedResourceIds}
+                    onSavePlan={(resourceId) => onSavePlanAction?.(resourceId)}
+                  />
+                )}
+
+                {/* Suggested follow-ups — only answers that actually exist are shown */}
+                {isLlm && !!msg.followUpIds?.length && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {msg.suggestedFollowUps.map((prompt, pIdx) => (
+                      {resolveFollowUps(msg.followUpIds).map((followUp) => (
                         <button
-                          key={pIdx}
-                          onClick={() => handleSendMessage(prompt)}
-                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 hover:border-emerald-400 text-left transition-colors"
+                          key={followUp.id}
+                          type="button"
+                          onClick={() => handleFollowUpClick(followUp.id)}
+                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 hover:border-emerald-400 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-400"
                         >
-                          💬 {prompt}
+                          💬 {followUp.question[currentLanguage]}
                         </button>
                       ))}
                     </div>

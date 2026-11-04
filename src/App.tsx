@@ -220,6 +220,12 @@ export function App() {
         <AILLMConsole
           currentLanguage={currentLanguage}
           userProfile={userProfile}
+          savedResourceIds={savedResourceIds}
+          onSavePlanAction={(resourceId) =>
+            setSavedResourceIds((prev) =>
+              prev.includes(resourceId) ? prev : [...prev, resourceId]
+            )
+          }
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
           onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
