@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
 import { CategoryId, Language } from '../types';
+import { translations } from '../data/translations';
 import { directoryEntries } from '../data/directory';
-import { MapPin, ExternalLink, Building2, FileText } from 'lucide-react';
 import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
 
 interface CommunityDirectoryProps {
   currentLanguage: Language;
   selectedCategory: CategoryId | 'all';
+  onSelectCategory: (category: CategoryId | 'all') => void;
   selectedCity: string;
+  onSelectCity: (city: string) => void;
+  availableCities: string[];
   searchQuery: string;
+  freeOnly: boolean;
+  onToggleFreeOnly: () => void;
+  noIdRequiredOnly: boolean;
+  onToggleNoIdRequired: () => void;
+  onResetFilters: () => void;
+  demonstrationCount: number;
+  isEntrySaved: (entryId: string) => boolean;
+  onToggleEntrySave: (entryId: string) => void;
 }
 
 const categoryLabels: Record<CategoryId, { en: string; es: string }> = {
@@ -16,13 +27,6 @@ const categoryLabels: Record<CategoryId, { en: string; es: string }> = {
   'mental-health': { en: 'Mental Health', es: 'Salud Mental' },
   workforce: { en: 'Education & Workforce', es: 'Educación y Trabajo' },
   community: { en: 'Community Support', es: 'Apoyo Comunitario' }
-};
-
-const categoryBadgeClass: Record<CategoryId, string> = {
-  food: 'bg-emerald-100 text-emerald-950 border-emerald-300',
-  'mental-health': 'bg-purple-100 text-purple-950 border-purple-300',
-  workforce: 'bg-indigo-100 text-indigo-950 border-indigo-300',
-  community: 'bg-amber-100 text-amber-950 border-amber-300'
 };
 
 const displayAddress = (address: string, language: Language) => {
@@ -36,9 +40,21 @@ const displayAddress = (address: string, language: Language) => {
 export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   currentLanguage,
   selectedCategory,
+  onSelectCategory,
   selectedCity,
-  searchQuery
+  onSelectCity,
+  availableCities,
+  searchQuery,
+  freeOnly,
+  onToggleFreeOnly,
+  noIdRequiredOnly,
+  onToggleNoIdRequired,
+  onResetFilters,
+  demonstrationCount,
+  isEntrySaved,
+  onToggleEntrySave
 }) => {
+  const t = translations[currentLanguage];
   const [isOhloneAidOpen, setIsOhloneAidOpen] = useState(false);
   const words = searchQuery.toLowerCase().trim().split(/\s+/).filter((w) => w.length > 2);
 
@@ -58,75 +74,133 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
-  return (
-    <section aria-labelledby="directory-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
-      <div className="rounded-3xl border-2 border-slate-200 bg-white p-5 sm:p-6">
-        <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-          <div className="flex items-start gap-3">
-            <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center shrink-0">
-              <Building2 className="w-5 h-5 text-slate-700" aria-hidden="true" />
-            </div>
-            <div>
-              <h2 id="directory-heading" className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {currentLanguage === 'en' ? 'Community Resource Directory' : 'Directorio de Recursos Comunitarios'}
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-700 font-medium mt-0.5">
-                {currentLanguage === 'en'
-                  ? 'Direct links to local organizations and public agencies. Visit each website for current programs and eligibility.'
-                  : 'Enlaces directos a organizaciones locales y agencias públicas. Consulte cada sitio para programas y requisitos vigentes.'}
-              </p>
-            </div>
-          </div>
-          <span aria-live="polite" className="text-xs font-extrabold text-slate-800 bg-slate-100 border border-slate-300 rounded-xl px-3 py-1.5">
-            {matches.length} {currentLanguage === 'en' ? 'listings' : 'registros'}
-          </span>
-        </div>
+  const eyebrow =
+    selectedCategory === 'all'
+      ? t.filters.allCities
+      : categoryLabels[selectedCategory][currentLanguage];
 
-        {matches.length === 0 ? (
-          <p className="text-sm text-slate-700 font-medium py-6 text-center">
-            {currentLanguage === 'en'
-              ? 'No directory listings match these filters yet.'
-              : 'Ningún registro del directorio coincide con estos filtros.'}
-          </p>
-        ) : (
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 list-none p-0 m-0">
-            {matches.map((entry) => (
-              <li key={entry.id} className="flex flex-col gap-2">
-                <a
-                  href={entry.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group flex flex-col flex-1 rounded-2xl border-2 border-slate-200 hover:border-emerald-600 transition-colors p-4 bg-white"
-                >
-                  <span className={`self-start text-[11px] font-extrabold px-2.5 py-0.5 rounded-md border mb-2 ${categoryBadgeClass[entry.categoryId]}`}>
-                    {categoryLabels[entry.categoryId][currentLanguage]}
-                  </span>
-                  <span className="font-bold text-sm text-slate-900 leading-snug">{entry.name}</span>
-                  <span className="flex items-start gap-1.5 text-xs text-slate-700 mt-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0 mt-0.5" aria-hidden="true" />
+  return (
+    <section id="directory" aria-labelledby="directory-heading" className="qc-sec qc-shell scroll-mt-28">
+      <div className="qc-eyebrow">{eyebrow}</div>
+      <h2 id="directory-heading" className="qc-h2">
+        {currentLanguage === 'en' ? 'Community Resource Directory' : 'Directorio de Recursos Comunitarios'}
+      </h2>
+      <p className="qc-dsub">
+        {currentLanguage === 'en'
+          ? 'Direct links to local organizations and public agencies. Visit each website for current programs and eligibility.'
+          : 'Enlaces directos a organizaciones locales y agencias públicas. Consulte cada sitio para programas y requisitos vigentes.'}
+      </p>
+
+      {/* Filters */}
+      <div className="qc-fs">
+        <span>{t.filters.filterBy}:</span>
+
+        <button
+          type="button"
+          onClick={() => {
+            onSelectCategory('all');
+            onSelectCity('all');
+          }}
+          aria-pressed={selectedCategory === 'all' && selectedCity === 'all'}
+          className={`qc-t min-h-0 ${selectedCategory === 'all' && selectedCity === 'all' ? 'on' : ''}`}
+        >
+          {t.filters.allCities}
+        </button>
+
+        <label>
+          <input type="checkbox" checked={freeOnly} onChange={onToggleFreeOnly} />
+          <span>{t.filters.freeOnly}</span>
+        </label>
+
+        <label>
+          <input type="checkbox" checked={noIdRequiredOnly} onChange={onToggleNoIdRequired} />
+          <span>{t.filters.noId}</span>
+        </label>
+
+        <button type="button" onClick={onResetFilters} className="qc-t min-h-0">
+          {t.filters.reset}
+        </button>
+
+        <span className="qc-cnt" aria-live="polite">
+          {matches.length} {currentLanguage === 'en' ? 'listings' : 'registros'} · {demonstrationCount}{' '}
+          {t.filters.resultsCount}
+        </span>
+      </div>
+
+      {/* City selector (kept from the existing filter set) */}
+      <div className="mt-4 text-[14px] text-[#5a5870]">
+        <label htmlFor="city-filter-dropdown" className="mr-2">
+          {t.filters.city}:
+        </label>
+        <select
+          id="city-filter-dropdown"
+          value={selectedCity}
+          onChange={(e) => onSelectCity(e.target.value)}
+          className="qc-select"
+        >
+          <option value="all">{t.filters.allCities}</option>
+          {availableCities.map((city) => (
+            <option key={city} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Listings */}
+      {matches.length === 0 ? (
+        <p className="py-10 text-[15px] text-[#5a5870]">
+          {currentLanguage === 'en'
+            ? 'No directory listings match these filters yet.'
+            : 'Ningún registro del directorio coincide con estos filtros.'}
+        </p>
+      ) : (
+        <div>
+          {matches.map((entry) => {
+            const saved = isEntrySaved(entry.id);
+            return (
+              <div key={entry.id} className="qc-row">
+                <div>
+                  <div className="qc-nm">{entry.name}</div>
+                  <div className="qc-mt">
                     <span>{displayAddress(entry.address, currentLanguage)}</span>
-                  </span>
-                  <span className="flex items-center gap-1.5 text-xs font-extrabold text-emerald-800 group-hover:text-emerald-950 mt-auto pt-3">
-                    <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                    <span>{categoryLabels[entry.categoryId][currentLanguage]}</span>
+                  </div>
+                </div>
+                <div className="qc-ac">
+                  {entry.id === 'dir-ohlone-college-24' && (
+                    <button
+                      type="button"
+                      onClick={() => setIsOhloneAidOpen(true)}
+                      aria-haspopup="dialog"
+                      className="min-h-0"
+                    >
+                      {currentLanguage === 'en' ? 'Financial aid guide' : 'Guía de ayuda financiera'}
+                    </button>
+                  )}
+                  <a href={entry.website} target="_blank" rel="noopener noreferrer">
                     {currentLanguage === 'en' ? 'Visit website' : 'Visitar sitio web'}
-                  </span>
-                </a>
-                {entry.id === 'dir-ohlone-college-24' && (
+                  </a>
                   <button
                     type="button"
-                    onClick={() => setIsOhloneAidOpen(true)}
-                    aria-haspopup="dialog"
-                    className="flex items-center justify-center gap-2 rounded-xl border-2 border-emerald-700 text-emerald-900 hover:bg-emerald-50 font-extrabold text-xs min-h-[44px] px-3 transition-colors focus-visible:ring-3 focus-visible:ring-emerald-950"
+                    onClick={() => onToggleEntrySave(entry.id)}
+                    aria-pressed={saved}
+                    className="qc-primary min-h-0"
+                    aria-label={saved
+                      ? `${currentLanguage === 'en' ? 'Saved' : 'Guardado'}: ${entry.name}`
+                      : `${currentLanguage === 'en' ? 'Save' : 'Guardar'}: ${entry.name}`}
                   >
-                    <FileText className="w-4 h-4" aria-hidden="true" />
-                    {currentLanguage === 'en' ? 'Financial aid guide, contacts & hours' : 'Guía de ayuda financiera, contactos y horario'}
+                    {saved
+                      ? (currentLanguage === 'en' ? 'Saved' : 'Guardado')
+                      : t.resourceCard.save}
                   </button>
-                )}
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {isOhloneAidOpen && (
         <OhloneFinancialAidDialog currentLanguage={currentLanguage} onClose={() => setIsOhloneAidOpen(false)} />
       )}

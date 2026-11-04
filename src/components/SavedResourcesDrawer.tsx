@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { DemonstrationResource, Language } from '../types';
+import { DirectoryEntry } from '../data/directory';
 import { translations } from '../data/translations';
 import { 
   X, 
@@ -19,6 +20,8 @@ interface SavedResourcesDrawerProps {
   onClose: () => void;
   currentLanguage: Language;
   savedResources: DemonstrationResource[];
+  savedDirectoryEntries?: DirectoryEntry[];
+  onRemoveDirectoryEntry?: (id: string) => void;
   onRemoveSaved: (id: string) => void;
   onClearAll: () => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
@@ -29,12 +32,15 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
   onClose,
   currentLanguage,
   savedResources,
+  savedDirectoryEntries = [],
+  onRemoveDirectoryEntry,
   onRemoveSaved,
   onClearAll,
   onOpenInsights
 }) => {
   const [copied, setCopied] = useState(false);
   const t = translations[currentLanguage];
+  const totalSaved = savedResources.length + savedDirectoryEntries.length;
 
   // Escape key listener
   useEffect(() => {
@@ -49,10 +55,10 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
   if (!isOpen) return null;
 
   const handleCopyAll = () => {
-    if (savedResources.length === 0) return;
+    if (totalSaved === 0) return;
 
     const content = [
-      `WhatSack Saved Community Resource Plan (${savedResources.length} items)`,
+      `WhatSack Saved Community Resource Plan (${totalSaved} items)`,
       `Academic Demonstration Reference - Silicon Valley`,
       '=========================================',
       '',
@@ -65,6 +71,12 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
         `   Phone (Simulated): ${r.contactSimulated.phone}`,
         `   Next Steps:`,
         ...r.nextStepInsight.actionItems.map((a) => `     - ${a.title[currentLanguage]}`),
+        ''
+      ].join('\n')),
+      ...savedDirectoryEntries.map((entry, i) => [
+        `${savedResources.length + i + 1}. ${entry.name}`,
+        `   Address: ${entry.address}`,
+        `   Website: ${entry.website}`,
         ''
       ].join('\n'))
     ].join('\n');
@@ -93,7 +105,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                 {t.savedDrawer.title}
               </h2>
               <span className="text-xs text-slate-700 font-bold">
-                {savedResources.length} {currentLanguage === 'en' ? 'saved programs' : 'programas guardados'}
+                {totalSaved} {currentLanguage === 'en' ? 'saved items' : 'elementos guardados'}
               </span>
             </div>
           </div>
@@ -110,7 +122,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
 
         {/* Drawer Body */}
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
-          {savedResources.length === 0 ? (
+          {totalSaved === 0 ? (
             <div className="text-center py-16 px-4">
               <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-3 text-2xl text-slate-500">
                 📑
@@ -120,7 +132,8 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
               </p>
             </div>
           ) : (
-            savedResources.map((resource) => (
+            <>
+            {savedResources.map((resource) => (
               <div
                 key={resource.id}
                 className="p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 shadow-2xs transition-all flex flex-col justify-between"
@@ -172,12 +185,49 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                   <span>{t.resourceCard.viewInsights}</span>
                 </button>
               </div>
-            ))
+            ))}
+
+            {savedDirectoryEntries.map((entry) => (
+              <div
+                key={entry.id}
+                className="p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 shadow-2xs transition-all"
+              >
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-300">
+                    {currentLanguage === 'en' ? 'Directory listing' : 'Registro del directorio'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => onRemoveDirectoryEntry?.(entry.id)}
+                    className="text-slate-500 hover:text-red-700 p-2 rounded-lg hover:bg-red-50 min-h-[40px] min-w-[40px] flex items-center justify-center transition-colors"
+                    title={currentLanguage === 'en' ? `Remove ${entry.name}` : `Quitar ${entry.name}`}
+                    aria-label={currentLanguage === 'en' ? `Remove ${entry.name}` : `Quitar ${entry.name}`}
+                  >
+                    <Trash2 className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                </div>
+
+                <h3 className="font-extrabold text-sm sm:text-base text-slate-900 mb-1">
+                  {entry.name}
+                </h3>
+                <p className="text-xs text-slate-700 mb-3">{entry.address}</p>
+
+                <a
+                  href={entry.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-900 underline"
+                >
+                  {currentLanguage === 'en' ? 'Visit website' : 'Visitar sitio web'}
+                </a>
+              </div>
+            ))}
+            </>
           )}
         </div>
 
         {/* Drawer Footer */}
-        {savedResources.length > 0 && (
+        {totalSaved > 0 && (
           <div className="p-4 border-t border-slate-200 bg-slate-50 space-y-2.5">
             <button
               type="button"

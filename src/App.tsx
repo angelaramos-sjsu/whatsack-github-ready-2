@@ -13,7 +13,6 @@ import { translations } from './data/translations';
 import { Navbar } from './components/Navbar';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
-import { CategoryTabs } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { ResourceCard } from './components/ResourceCard';
 import { CommunityDirectory } from './components/CommunityDirectory';
@@ -26,18 +25,7 @@ import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
 
-import { 
-  Filter, 
-  RotateCcw, 
-  CheckCircle, 
-  Search, 
-  SlidersHorizontal,
-  ChevronDown,
-  Bot,
-  Sparkles,
-  UserCheck,
-  X
-} from 'lucide-react';
+import { Bot } from 'lucide-react';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
@@ -64,6 +52,7 @@ export function App() {
 
   // Bookmarks & Accessibility
   const [savedResourceIds, setSavedResourceIds] = useState<string[]>(['res-food-1', 'res-work-1']);
+  const [savedDirectoryIds, setSavedDirectoryIds] = useState<string[]>([]);
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
 
@@ -94,6 +83,14 @@ export function App() {
       prev.includes(resourceId) 
         ? prev.filter((id) => id !== resourceId) 
         : [...prev, resourceId]
+    );
+  };
+
+  const handleToggleDirectorySave = (entryId: string) => {
+    setSavedDirectoryIds((prev) =>
+      prev.includes(entryId)
+        ? prev.filter((id) => id !== entryId)
+        : [...prev, entryId]
     );
   };
 
@@ -184,24 +181,14 @@ export function App() {
     searchQuery
   ]);
 
-  // Resource Counts per Category
-  const categoryCounts = useMemo(() => {
-    const counts: Record<string, number> = {
-      food: 0,
-      'mental-health': 0,
-      workforce: 0,
-      community: 0
-    };
-    directoryEntries.forEach((entry) => {
-      counts[entry.categoryId] = (counts[entry.categoryId] || 0) + 1;
-    });
-    return counts;
-  }, []);
-
   // Saved resources list
   const savedResourcesList = useMemo(() => {
     return demonstrationResources.filter((r) => savedResourceIds.includes(r.id));
   }, [savedResourceIds]);
+
+  const savedDirectoryList = useMemo(() => {
+    return directoryEntries.filter((entry) => savedDirectoryIds.includes(entry.id));
+  }, [savedDirectoryIds]);
 
   const resetAllFilters = () => {
     setSelectedCategory('all');
@@ -212,20 +199,14 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800 font-sans selection:bg-brand-500 selection:text-white">
+    <div className="qc min-h-screen flex flex-col selection:bg-[#4C1D95] selection:text-white">
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
         onLanguageChange={setCurrentLanguage}
-        onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
-        onToggleExtensionView={() => setActiveView(activeView === 'extension' ? 'home' : 'extension')}
         onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
         onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
-        onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
-        onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
-        onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
-        userProfile={userProfile}
-        savedCount={savedResourceIds.length}
+        savedCount={savedResourceIds.length + savedDirectoryIds.length}
         highContrast={highContrast}
         onToggleHighContrast={() => setHighContrast(!highContrast)}
         textSize={textSize}
@@ -251,7 +232,7 @@ export function App() {
         />
       ) : (
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
-          {/* Conversational AI Search Hero (Simplified & Warm) */}
+          {/* Conversational AI Search Hero */}
           <HeroConversationalSearch
             currentLanguage={currentLanguage}
             searchQuery={searchQuery}
@@ -259,7 +240,7 @@ export function App() {
             onExecuteSearch={(q) => {
               setSearchQuery(q);
               window.setTimeout(() => {
-                document.getElementById('resources')?.scrollIntoView({
+                document.getElementById('directory')?.scrollIntoView({
                   behavior: 'smooth',
                   block: 'start'
                 });
@@ -270,170 +251,58 @@ export function App() {
             onOpenCopilot={() => setActiveView('copilot')}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
+            onClearProfile={handleClearProfile}
             userProfile={userProfile}
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
-          />
-
-          {/* Active Intake Assessment Bar (When resident filled profile) */}
-          {userProfile && (
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-              <div className="p-4 rounded-2xl bg-emerald-50 border-2 border-emerald-300 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-2xs">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
-                    <UserCheck className="w-5 h-5 text-emerald-800" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <span className="font-extrabold text-slate-900 text-sm">
-                      {currentLanguage === 'en' ? `Intake Assessment Active: ${userProfile.name}` : `Evaluación Activa de: ${userProfile.name}`}
-                    </span>
-                    <span className="text-slate-700 font-medium block sm:inline sm:ml-2">
-                      ({userProfile.city} • {currentLanguage === 'en' ? 'Income' : 'Ingreso'}: {userProfile.monthlyIncome} • {userProfile.householdSize} {currentLanguage === 'en' ? 'household members' : 'integrantes'})
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    onClick={() => setIsIntroductionFormOpen(true)}
-                    className="font-extrabold text-emerald-900 hover:text-emerald-950 underline px-2.5 py-1.5 rounded-lg hover:bg-emerald-100/60 transition-colors"
-                  >
-                    {currentLanguage === 'en' ? 'Update Form' : 'Actualizar'}
-                  </button>
-                  <button
-                    onClick={handleClearProfile}
-                    className="text-slate-500 hover:text-slate-800 p-1.5 rounded-lg hover:bg-slate-200 transition-colors"
-                    title={currentLanguage === 'en' ? 'Clear profile' : 'Borrar perfil'}
-                    aria-label={currentLanguage === 'en' ? 'Clear active intake profile' : 'Borrar perfil de evaluación activo'}
-                  >
-                    <X className="w-4 h-4" aria-hidden="true" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* 4 Core Resource Categories */}
-          <CategoryTabs
-            currentLanguage={currentLanguage}
             selectedCategory={selectedCategory}
             onSelectCategory={setSelectedCategory}
-            resourceCounts={categoryCounts}
           />
 
-          {/* Full community resource directory (real listings) */}
+          {/* Community resource directory with filters */}
           <CommunityDirectory
             currentLanguage={currentLanguage}
             selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
             selectedCity={selectedCity}
+            onSelectCity={setSelectedCity}
+            availableCities={availableCities}
             searchQuery={searchQuery}
+            freeOnly={freeOnly}
+            onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
+            noIdRequiredOnly={noIdRequiredOnly}
+            onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
+            onResetFilters={resetAllFilters}
+            demonstrationCount={filteredResources.length}
+            isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
+            onToggleEntrySave={handleToggleDirectorySave}
           />
 
-          {/* Filter Bar & Results Header */}
-          <section aria-labelledby="filters-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-2">
-            <h2 id="filters-heading" className="sr-only">
-              {t.filters.filterBy}
+          {/* Demonstration resources */}
+          <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-16 scroll-mt-28">
+            <h2 id="resources-heading" className="sr-only">
+              {currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}
             </h2>
-            <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-2xs flex flex-wrap items-center justify-between gap-3">
-              <div className="flex items-center gap-2.5 flex-wrap text-xs">
-                <span className="font-bold text-slate-800 flex items-center gap-1.5 mr-1">
-                  <SlidersHorizontal className="w-4 h-4 text-slate-600" aria-hidden="true" />
-                  <span>{t.filters.filterBy}:</span>
-                </span>
-
-                {/* City Filter */}
-                <div className="relative">
-                  <label htmlFor="city-filter-dropdown" className="sr-only">
-                    {t.filters.filterBy} {t.filters.allCities}
-                  </label>
-                  <select
-                    id="city-filter-dropdown"
-                    value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.target.value)}
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold py-2 px-3 rounded-xl border border-slate-300 min-h-[42px] focus:outline-hidden focus:ring-2 focus:ring-emerald-600 transition-colors"
-                  >
-                    <option value="all">{t.filters.allCities}</option>
-                    {availableCities.map((city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Free Only Toggle */}
-                <button
-                  type="button"
-                  onClick={() => setFreeOnly(!freeOnly)}
-                  aria-pressed={freeOnly}
-                  className={`min-h-[42px] py-2 px-3.5 rounded-xl font-bold transition-all border flex items-center gap-1.5 ${
-                    freeOnly
-                      ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-600/30'
-                      : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border-slate-300'
-                  }`}
-                >
-                  <span>{t.filters.freeOnly}</span>
-                </button>
-
-                {/* No ID Required Toggle */}
-                <button
-                  type="button"
-                  onClick={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
-                  aria-pressed={noIdRequiredOnly}
-                  className={`min-h-[42px] py-2 px-3.5 rounded-xl font-bold transition-all border flex items-center gap-1.5 ${
-                    noIdRequiredOnly
-                      ? 'bg-emerald-700 text-white border-emerald-700 shadow-xs ring-2 ring-emerald-600/30'
-                      : 'bg-slate-100 text-slate-800 hover:bg-slate-200 border-slate-300'
-                  }`}
-                >
-                  <span>{t.filters.noId}</span>
-                </button>
-
-                {/* Reset Filters */}
-                {(selectedCategory !== 'all' || selectedCity !== 'all' || freeOnly || noIdRequiredOnly || searchQuery) && (
-                  <button
-                    type="button"
-                    onClick={resetAllFilters}
-                    className="min-h-[42px] py-2 px-3.5 rounded-xl font-bold text-slate-700 hover:text-slate-950 hover:bg-slate-100 border border-transparent hover:border-slate-300 transition-colors flex items-center gap-1.5"
-                  >
-                    <RotateCcw className="w-4 h-4 text-slate-600" aria-hidden="true" />
-                    <span>{t.filters.reset}</span>
-                  </button>
-                )}
-              </div>
-
-              {/* Counter with aria-live */}
-              <div aria-live="polite" className="text-xs text-slate-700 font-medium ml-auto">
-                <span className="font-extrabold text-slate-900 text-sm">{filteredResources.length}</span> {t.filters.resultsCount}
-              </div>
-            </div>
-          </section>
-
-          {/* Demonstration Resources Grid */}
-          <section id="resources" aria-labelledby="resources-heading" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-28">
-            <h2 id="resources-heading" className="sr-only">{currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}</h2>
             {filteredResources.length === 0 ? (
-              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 max-w-xl mx-auto my-8">
-                <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-4 text-2xl">
-                  🔍
-                </div>
-                <h3 className="text-lg font-bold text-slate-900 mb-2">
+              <div className="border-t border-[#f0eef8] py-16 text-center">
+                <h3 className="text-[18px] font-medium text-[#1A1A24]">
                   {currentLanguage === 'en' ? 'No matching demonstration resources found' : 'No se encontraron recursos de demostración'}
                 </h3>
-                <p className="text-xs text-slate-500 mb-6">
+                <p className="mt-2 text-[14px] text-[#5a5870]">
                   {currentLanguage === 'en'
                     ? 'Try broadening your search filters or resetting your inquiry.'
                     : 'Intente ampliar los filtros de búsqueda o restablecer la consulta.'}
                 </p>
                 <button
+                  type="button"
                   onClick={resetAllFilters}
-                  className="px-5 py-2.5 bg-emerald-700 text-white font-bold text-xs rounded-xl hover:bg-emerald-800 transition-colors"
+                  className="qc-btn-sm mt-6"
                 >
                   {t.filters.reset}
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {filteredResources.map((resource) => (
                   <ResourceCard
                     key={resource.id}
@@ -448,6 +317,35 @@ export function App() {
             )}
           </section>
 
+          {/* Advanced prototype tools */}
+          <section aria-labelledby="advanced-heading" className="qc-adv qc-shell">
+            <div className="qc-eyebrow">{currentLanguage === 'en' ? 'Advanced' : 'Avanzado'}</div>
+            <h2 id="advanced-heading" className="sr-only">
+              {currentLanguage === 'en' ? 'Advanced prototype tools' : 'Herramientas avanzadas del prototipo'}
+            </h2>
+            <div className="qc-advg">
+              <button type="button" className="min-h-0" onClick={() => setIsArchitectureModalOpen(true)}>
+                {currentLanguage === 'en' ? 'AI Architecture' : 'Arquitectura IA'}
+              </button>
+              <button type="button" className="min-h-0" onClick={() => setIsDecoderModalOpen(true)}>
+                {t.nav.docDecoder}
+              </button>
+              <button
+                type="button"
+                className="min-h-0"
+                onClick={() => setActiveView('extension')}
+              >
+                {t.nav.extension}
+              </button>
+              <button type="button" className="min-h-0" onClick={() => setIsVoiceModalOpen(true)}>
+                {t.nav.voice}
+              </button>
+              <button type="button" className="min-h-0" onClick={() => setIsIntroductionFormOpen(true)}>
+                {currentLanguage === 'en' ? 'Personalize My Search' : 'Personalizar mi búsqueda'}
+              </button>
+            </div>
+          </section>
+
         </main>
       )}
 
@@ -455,15 +353,13 @@ export function App() {
       {activeView === 'home' && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
+            type="button"
             onClick={() => setActiveView('copilot')}
-            className="flex items-center gap-2.5 px-4 py-3 bg-gradient-to-r from-emerald-700 to-teal-600 hover:from-emerald-800 hover:to-teal-700 text-white font-bold text-xs sm:text-sm rounded-full shadow-xl shadow-emerald-900/30 hover:scale-105 transition-all ring-4 ring-emerald-500/20"
+            className="flex items-center gap-2 rounded-full border border-[#e6e0fb] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(76,29,149,0.12)] transition-colors hover:border-[#4C1D95] hover:text-[#4C1D95]"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
-            <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
-              <Bot className="w-4 h-4 text-white" />
-            </div>
+            <Bot className="h-4 w-4 text-[#4C1D95]" aria-hidden="true" />
             <span>{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
-            <span className="w-2 h-2 rounded-full bg-emerald-300 animate-pulse" />
           </button>
         </aside>
       )}
@@ -476,9 +372,11 @@ export function App() {
           onNavigateCategory={(cat) => {
             setSelectedCategory(cat);
             setActiveView('home');
-            window.setTimeout(() => document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+            window.setTimeout(() => document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
           }}
           onOpenExtension={() => setActiveView('extension')}
+          onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
+          onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
         />
       )}
 
@@ -537,8 +435,13 @@ export function App() {
         onClose={() => setIsSavedDrawerOpen(false)}
         currentLanguage={currentLanguage}
         savedResources={savedResourcesList}
+        savedDirectoryEntries={savedDirectoryList}
+        onRemoveDirectoryEntry={handleToggleDirectorySave}
         onRemoveSaved={handleToggleSave}
-        onClearAll={() => setSavedResourceIds([])}
+        onClearAll={() => {
+          setSavedResourceIds([]);
+          setSavedDirectoryIds([]);
+        }}
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
     </div>

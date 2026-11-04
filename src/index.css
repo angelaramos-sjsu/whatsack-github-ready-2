@@ -3,47 +3,6 @@
 @tailwind utilities;
 
 @layer components {
-  .hero-orb {
-    position: absolute;
-    pointer-events: none;
-    border-radius: 9999px;
-    filter: blur(1px);
-    opacity: 0.6;
-    animation: float-orb 8s ease-in-out infinite;
-  }
-
-  .hero-orb-one {
-    width: 18rem;
-    height: 18rem;
-    top: -8rem;
-    right: -4rem;
-    background: radial-gradient(circle, rgb(168 85 247 / 0.22), rgb(168 85 247 / 0));
-  }
-
-  .hero-orb-two {
-    width: 14rem;
-    height: 14rem;
-    bottom: -8rem;
-    left: -5rem;
-    background: radial-gradient(circle, rgb(126 34 206 / 0.14), rgb(126 34 206 / 0));
-    animation-delay: -3s;
-  }
-
-  .resource-card {
-    transform: perspective(1000px) translateY(0) rotateX(0deg);
-    transform-style: preserve-3d;
-  }
-
-  .resource-card:hover {
-    transform: perspective(1000px) translateY(-5px) rotateX(0.6deg);
-    box-shadow: 0 18px 35px rgb(88 28 135 / 0.12);
-  }
-
-  .category-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgb(88 28 135 / 0.1);
-  }
-
   .extension-shell {
     animation: extension-enter 320ms ease-out both;
   }
@@ -126,16 +85,6 @@ html.text-xlarge {
 }
 
 /* Custom smooth transitions */
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.02); }
-}
-
-@keyframes float-orb {
-  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-12px, 10px, 0) scale(1.05); }
-}
-
 @keyframes extension-enter {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -144,10 +93,6 @@ html.text-xlarge {
 @keyframes extension-dock {
   from { opacity: 0; transform: translateY(12px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s infinite ease-in-out;
 }
 
 @keyframes wave {
