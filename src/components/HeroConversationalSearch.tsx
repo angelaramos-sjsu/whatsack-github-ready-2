@@ -52,11 +52,6 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   searchQuery,
   onSearchChange,
   onExecuteSearch,
-  onOpenVoiceModal,
-  onSelectPrompt,
-  onOpenIntroductionForm,
-  onClearProfile,
-  userProfile,
   matchedCount,
   onClearSearch,
   selectedCategory,
@@ -64,59 +59,11 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
 }) => {
   const t = translations[currentLanguage];
 
-  const quickPrompts = [
-    {
-      label: currentLanguage === 'en' ? 'College options & costs' : 'Opciones y costos universitarios',
-      query: currentLanguage === 'en'
-        ? 'I want to go to college, but my family does not have much money. What are my options?'
-        : 'Quiero ir a la universidad, pero mi familia no tiene mucho dinero. ¿Qué opciones tengo?'
-    },
-    {
-      label: currentLanguage === 'en' ? 'Affordable career training' : 'Capacitación laboral asequible',
-      query: currentLanguage === 'en'
-        ? 'I just lost my job and want to explore a new career. Are there affordable training programs that could help me find work?'
-        : 'Perdí mi trabajo y quiero explorar una nueva carrera. ¿Hay programas de capacitación asequibles que puedan ayudarme a encontrar trabajo?'
-    },
-    {
-      label: currentLanguage === 'en' ? 'Groceries without ID' : 'Despensa sin identificación',
-      query: currentLanguage === 'en'
-        ? 'Where can I get groceries in East San Jose without showing an ID or SSN?'
-        : '¿Dónde puedo conseguir despensa en el Este de San José sin mostrar identificación ni Seguro Social?'
-    },
-    {
-      label: currentLanguage === 'en' ? 'Confidential youth text line' : 'Línea de texto para jóvenes',
-      query: currentLanguage === 'en'
-        ? 'Is there a free confidential text line for teens feeling overwhelmed in Sunnyvale?'
-        : '¿Hay una línea de texto gratuita y confidencial para jóvenes en Sunnyvale?'
-    },
-    {
-      label: currentLanguage === 'en' ? 'Spanish senior hot lunches' : 'Almuerzos para adultos mayores',
-      query: currentLanguage === 'en'
-        ? 'Where are Spanish-language senior clubs with hot lunch in Redwood City?'
-        : '¿Dónde hay clubes para adultos mayores con almuerzo caliente en Redwood City?'
-    }
-  ];
-
   const categories: { id: CategoryId; label: string }[] = [
     { id: 'workforce', label: t.categories.workforce },
     { id: 'food', label: t.categories.food },
     { id: 'mental-health', label: t.categories.mentalHealth },
     { id: 'community', label: t.categories.community }
-  ];
-
-  const steps = [
-    {
-      title: currentLanguage === 'en' ? 'Tell us what you need' : 'Díganos qué necesita',
-      body: currentLanguage === 'en' ? 'Ask naturally—no special keywords needed.' : 'Pregunte naturalmente, sin palabras especiales.'
-    },
-    {
-      title: currentLanguage === 'en' ? 'Compare local options' : 'Compare opciones locales',
-      body: currentLanguage === 'en' ? 'Review cost, location, transit, and requirements.' : 'Revise costo, ubicación, transporte y requisitos.'
-    },
-    {
-      title: currentLanguage === 'en' ? 'Take your next step' : 'Tome el siguiente paso',
-      body: currentLanguage === 'en' ? 'Save a plan or open a helpful checklist.' : 'Guarde un plan o abra una lista útil.'
-    }
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -192,71 +139,6 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               <svg viewBox="0 0 24 24" aria-hidden="true">{categoryIcons[category.id]}</svg>
               <span>{category.label}</span>
             </button>
-          ))}
-        </div>
-
-        {/* Personalization & voice */}
-        <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-[15px] text-[#5a5870]">
-          {userProfile ? (
-            <span>
-              {userProfile.name} · {userProfile.city} · {currentLanguage === 'en' ? 'Income' : 'Ingreso'}{' '}
-              {userProfile.monthlyIncome} · {userProfile.householdSize}{' '}
-              {currentLanguage === 'en' ? 'household members' : 'integrantes'}
-            </span>
-          ) : (
-            <span>{currentLanguage === 'en' ? 'Want a personalized shortlist?' : '¿Desea una lista personalizada?'}</span>
-          )}
-          <button
-            type="button"
-            onClick={onOpenIntroductionForm}
-            className="qc-link min-h-0 text-[#4C1D95]"
-          >
-            {userProfile
-              ? (currentLanguage === 'en' ? 'Update details' : 'Actualizar datos')
-              : (currentLanguage === 'en' ? 'Get matched to local programs' : 'Reciba programas locales')}
-          </button>
-          {userProfile && (
-            <button
-              type="button"
-              onClick={onClearProfile}
-              className="qc-link min-h-0"
-              aria-label={currentLanguage === 'en' ? 'Clear active intake profile' : 'Borrar perfil de evaluación activo'}
-            >
-              {currentLanguage === 'en' ? 'Clear' : 'Borrar'}
-            </button>
-          )}
-          <button type="button" onClick={onOpenVoiceModal} className="qc-link min-h-0">
-            {t.nav.voice}
-          </button>
-        </div>
-
-        {/* Common resident inquiries */}
-        <div className="mt-8">
-          <span className="qc-eyebrow">
-            {currentLanguage === 'en' ? 'Common questions' : 'Consultas frecuentes'}
-          </span>
-          <div className="mt-3 flex flex-wrap gap-x-6 gap-y-3 text-[14px]">
-            {quickPrompts.map((prompt, index) => (
-              <button
-                key={index}
-                type="button"
-                onClick={() => onSelectPrompt(prompt.query)}
-                className={`qc-link min-h-0 text-left ${searchQuery === prompt.query ? 'on' : ''}`}
-              >
-                {prompt.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* How it works */}
-        <div className="mt-11 grid gap-8 border-t border-[#ece9f7] pt-8 sm:grid-cols-3">
-          {steps.map((step, index) => (
-            <div key={step.title}>
-              <span className="qc-eyebrow">0{index + 1}</span>
-              <p className="mt-2 text-[16px] font-medium text-[#1A1A24]">{step.title}</p>
-              <p className="mt-1 text-[14px] leading-relaxed text-[#5a5870]">{step.body}</p>
-            </div>
           ))}
         </div>
 
