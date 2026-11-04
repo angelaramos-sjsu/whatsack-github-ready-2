@@ -3,6 +3,7 @@ import { Language, Persona, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
+import { CollegePathwayDemo } from './CollegePathwayDemo';
 import { 
   Bot, 
   Send, 
@@ -59,6 +60,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [activePersonaId, setActivePersonaId] = useState<string | null>(null);
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
+  const [isCollegeDemoActive, setIsCollegeDemoActive] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const initialMessages: ChatMessage[] = [
@@ -298,6 +300,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
       {/* Persona Quick Simulator Bar */}
       <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2.5 flex items-center gap-2 overflow-x-auto">
+        <button
+          onClick={() => setIsCollegeDemoActive(true)}
+          className={`px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border mr-1 ${
+            isCollegeDemoActive
+              ? 'bg-emerald-600 text-white border-emerald-500 shadow-xs'
+              : 'bg-slate-800 hover:bg-slate-700 text-emerald-300 border-emerald-700/50'
+          }`}
+        >
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>{currentLanguage === 'en' ? 'College pathway demo' : 'Demo: camino universitario'}</span>
+        </button>
+
         <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
           <User className="w-3.5 h-3.5 text-indigo-400" />
           <span>{currentLanguage === 'en' ? 'Quick Profiles:' : 'Perfiles:'}</span>
@@ -348,6 +362,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
       {/* Main Chat Stream Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
+        {isCollegeDemoActive ? (
+          <CollegePathwayDemo
+            currentLanguage={currentLanguage}
+            onExit={() => setIsCollegeDemoActive(false)}
+          />
+        ) : (
+        <>
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
 
@@ -491,9 +512,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         )}
 
         <div ref={messagesEndRef} />
+        </>
+        )}
       </div>
 
       {/* Input Bar Form */}
+      {!isCollegeDemoActive && (
       <div className="bg-slate-950 border-t border-slate-800 p-4 sm:p-5">
         <form
           onSubmit={(e) => {
@@ -536,6 +560,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
         </p>
       </div>
+      )}
     </div>
   );
 };
