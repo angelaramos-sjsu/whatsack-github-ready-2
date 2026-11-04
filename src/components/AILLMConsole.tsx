@@ -21,8 +21,6 @@ import {
   PhoneCall,
   Activity,
   Sliders,
-  ChevronDown,
-  ChevronUp
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -61,7 +59,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [activePersonaId, setActivePersonaId] = useState<string | null>(null);
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
-  const [expandedTraceId, setExpandedTraceId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const initialMessages: ChatMessage[] = [
@@ -191,7 +188,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         matchedResIds = ['res-food-1', 'res-work-1', 'res-mental-1', 'res-comm-1'];
         intentCategory = 'General Civic Resource Match';
         if (currentLanguage === 'en') {
-          replyText = `I analyzed your inquiry: **"${text}"**.\n\nWhatSack's Civic-LLM index retrieved verified programs in Santa Clara and San Mateo counties with:\n- **No state ID or SSN barriers**\n- **Confidential intake protocols**\n- **High transit accessibility (VTA / SamTrans)**\n\nExplore the verified resource cards attached below, or let me know if you would like me to generate a personalized document checklist or simulate an intake call!`;
+          replyText = `I analyzed your inquiry: **"${text}"**.\n\nI found verified programs in Santa Clara and San Mateo counties that match. Explore the verified resource cards attached below, or let me know if you would like me to generate a personalized document checklist or simulate an intake call!`;
           followUps = ['Show food assistance programs', 'Show free job training grants', 'Practice what to say on the phone'];
         } else {
           replyText = `Analicé su consulta: **"${text}"**.\n\nEl índice Civic-LLM de WhatSack recuperó programas verificados en Santa Clara y San Mateo que cuentan con:\n- **Sin requisito de identificación estatal ni Seguro Social**\n- **Protocolos de registro confidenciales**\n- **Excelente conectividad en transporte público (VTA / SamTrans)**\n\nConsulte las opciones verificadas abajo o indíqueme si desea que preparemos una lista de documentos o ensayemos una llamada de registro.`;
@@ -353,7 +350,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
-          const isTraceExpanded = expandedTraceId === msg.id;
 
           return (
             <div
@@ -393,39 +389,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
                   {msg.text}
                 </div>
-
-                {/* RAG Reasoning & Guardrail Trace (For LLM responses) */}
-                {isLlm && msg.ragTrace && (
-                  <div className="mt-4 pt-3 border-t border-slate-700/60">
-                    <button
-                      onClick={() => setExpandedTraceId(isTraceExpanded ? null : msg.id)}
-                      className="text-[11px] font-bold text-indigo-300 hover:text-indigo-200 flex items-center gap-1.5 transition-colors"
-                    >
-                      <Brain className="w-3.5 h-3.5 text-indigo-400" />
-                      <span>{currentLanguage === 'en' ? 'Civic RAG Retrieval Trace' : 'Traza de Recuperación RAG Cívico'} ({msg.ragTrace.confidence}% confidence)</span>
-                      {isTraceExpanded ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                    </button>
-
-                    {isTraceExpanded && (
-                      <div className="mt-2.5 p-3 rounded-xl bg-slate-900/90 border border-slate-700 text-[11px] space-y-2 animate-in fade-in duration-150">
-                        <div>
-                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Identified Intent:</strong>
-                          <span className="text-indigo-200">{msg.ragTrace.intent}</span>
-                        </div>
-                        <div>
-                          <strong className="text-slate-400 uppercase tracking-wider text-[10px] block">Safety Guardrails Passed:</strong>
-                          <div className="flex flex-wrap gap-1 mt-0.5">
-                            {msg.ragTrace.guardrailsPassed.map((g, idx) => (
-                              <span key={idx} className="bg-emerald-950 text-emerald-300 border border-emerald-800/60 px-1.5 py-0.5 rounded text-[10px]">
-                                ✓ {g}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
 
                 {/* Grounded Resource Cards Preview */}
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
