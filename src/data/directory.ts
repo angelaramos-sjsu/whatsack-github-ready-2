@@ -428,5 +428,69 @@ export const directoryEntries: DirectoryEntry[] = [
     city: 'Statewide',
     address: 'Online statewide',
     website: 'https://studentaid.gov'
+  },
+  {
+    id: 'dir-san-jose-mental-health-53',
+    name: 'San Jose Mental Health',
+    categoryId: 'mental-health',
+    city: 'San Jose',
+    address: '1261 Lincoln Ave, San Jose, CA 95125',
+    website: 'https://sanjosementalhealth.org'
+  },
+  {
+    id: 'dir-santa-clara-county-mental-health-54',
+    name: 'Santa Clara County Mental Health — Behavioral Health Services',
+    categoryId: 'mental-health',
+    city: 'San Jose',
+    address: '1650 Las Plumas Ave # K, San Jose, CA 95133',
+    website: 'https://bhsd.santaclaracounty.gov'
+  },
+  {
+    id: 'dir-monterrey-health-55',
+    name: 'Monterrey Health',
+    categoryId: 'mental-health',
+    city: 'San Jose',
+    address: '1660 Hamilton Ave #100, San Jose, CA 95125',
+    website: 'https://www.monterreyhealth.com'
+  },
+  {
+    id: 'dir-harmony-place-san-jose-56',
+    name: 'Harmony Place San Jose',
+    categoryId: 'mental-health',
+    city: 'San Jose',
+    address: '79 Devine St #100, San Jose, CA 95110',
+    website: 'https://harmonytreatmentcenters.com/our-centers/san-jose-ca/'
+  },
+  {
+    id: 'dir-trauma-healing-therapy-57',
+    name: 'Trauma Healing Therapy',
+    categoryId: 'mental-health',
+    city: 'Cupertino',
+    address: '21710 Stevens Creek Blvd Ste 140, Cupertino, CA 95014',
+    website: 'https://www.traumahealingtherapy.com'
+  },
+  {
+    id: 'dir-west-valley-community-services-58',
+    name: 'West Valley Community Services',
+    categoryId: 'mental-health',
+    city: 'Cupertino',
+    address: '10104 Vista Dr, Cupertino, CA 95014',
+    website: 'https://www.wvcommunityservices.org'
+  },
+  {
+    id: 'dir-bay-area-mental-health-59',
+    name: 'Bay Area Mental Health',
+    categoryId: 'mental-health',
+    city: 'Campbell',
+    address: '1925 Winchester Blvd #204, Campbell, CA 95008',
+    website: 'https://www.bayareamh.com'
+  },
+  {
+    id: 'dir-riva-mental-health-60',
+    name: 'Riva Mental Health',
+    categoryId: 'mental-health',
+    city: 'Redwood City',
+    address: '1775 Woodside Rd, Suite 301, Redwood City, CA 94061',
+    website: 'https://rivamh.com'
   }
 ];
