@@ -117,6 +117,23 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           <span>{t.filters.noId}</span>
         </label>
 
+        <label htmlFor="city-filter-dropdown">
+          <span>{t.filters.city}:</span>
+          <select
+            id="city-filter-dropdown"
+            value={selectedCity}
+            onChange={(e) => onSelectCity(e.target.value)}
+            className="qc-select"
+          >
+            <option value="all">{t.filters.allCities}</option>
+            {availableCities.map((city) => (
+              <option key={city} value={city}>
+                {city}
+              </option>
+            ))}
+          </select>
+        </label>
+
         <button type="button" onClick={onResetFilters} className="qc-t min-h-0">
           {t.filters.reset}
         </button>
@@ -125,26 +142,6 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           {matches.length} {currentLanguage === 'en' ? 'listings' : 'registros'} · {demonstrationCount}{' '}
           {t.filters.resultsCount}
         </span>
-      </div>
-
-      {/* City selector (kept from the existing filter set) */}
-      <div className="mt-4 text-[14px] text-[#5a5870]">
-        <label htmlFor="city-filter-dropdown" className="mr-2">
-          {t.filters.city}:
-        </label>
-        <select
-          id="city-filter-dropdown"
-          value={selectedCity}
-          onChange={(e) => onSelectCity(e.target.value)}
-          className="qc-select"
-        >
-          <option value="all">{t.filters.allCities}</option>
-          {availableCities.map((city) => (
-            <option key={city} value={city}>
-              {city}
-            </option>
-          ))}
-        </select>
       </div>
 
       {/* Listings */}

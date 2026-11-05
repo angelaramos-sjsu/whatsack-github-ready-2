@@ -39,7 +39,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       className="qc-card flex flex-col justify-between overflow-hidden"
     >
       {/* Academic record indicator */}
-      <div className="flex items-center justify-between gap-3 border-b border-[#ece9f7] px-5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#8a879f]">
+      <div className="flex items-center justify-between gap-3 border-b border-[#ece9f7] px-5 py-2.5 text-[12px] uppercase tracking-[0.1em] text-[#6b6880]">
         <span>{currentLanguage === 'en' ? 'Verified Demonstration Record' : 'Registro de Demostración Verificado'}</span>
         <span>{resource.location.city}</span>
       </div>
@@ -54,7 +54,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                   : resource.categoryId
               ] || resource.categoryId}
             </span>
-            <span className="text-[12px] tracking-[0.02em] text-[#8a879f]">{resource.costType}</span>
+            <span className="text-[12px] tracking-[0.02em] text-[#6b6880]">{resource.costType}</span>
           </div>
 
           <button
@@ -121,7 +121,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               {t.resourceCard.confidentialBadge}
             </span>
           )}
-          <span className="ml-auto text-[12px] text-[#8a879f]">
+          <span className="ml-auto text-[13px] text-[#6b6880]">
             {resource.nextStepInsight.confidenceRating}% match
           </span>
         </div>
