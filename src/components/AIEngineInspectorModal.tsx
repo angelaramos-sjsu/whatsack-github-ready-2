@@ -174,7 +174,7 @@ CORE CIVIC DIRECTIVES:
                 </div>
 
                 <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 flex flex-col justify-between">
-                  <div className="w-8 h-8 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs mb-3">
+                  <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs mb-3">
                     2
                   </div>
                   <div>

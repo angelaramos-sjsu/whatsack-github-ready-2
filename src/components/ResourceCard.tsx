@@ -39,7 +39,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       className="qc-card flex flex-col justify-between overflow-hidden"
     >
       {/* Academic record indicator */}
-      <div className="flex items-center justify-between gap-3 border-b border-[#ece9f7] px-5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#8a879f]">
+      <div className="flex items-center justify-between gap-3 border-b border-[#e3f3ea] px-5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#8a879f]">
         <span>{currentLanguage === 'en' ? 'Verified Demonstration Record' : 'Registro de Demostración Verificado'}</span>
         <span>{resource.location.city}</span>
       </div>
@@ -60,13 +60,13 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           <button
             type="button"
             onClick={() => onToggleSave(resource.id)}
-            className="min-h-0 rounded-lg p-2 text-[#8a879f] transition-colors hover:bg-[#F3F0FF] hover:text-[#4C1D95]"
+            className="min-h-0 rounded-lg p-2 text-[#8a879f] transition-colors hover:bg-[#eafaf1] hover:text-[#047857]"
             title={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-label={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-pressed={isSaved}
           >
             {isSaved ? (
-              <BookmarkCheck className="h-5 w-5 text-[#4C1D95]" aria-hidden="true" />
+              <BookmarkCheck className="h-5 w-5 text-[#047857]" aria-hidden="true" />
             ) : (
               <Bookmark className="h-5 w-5" aria-hidden="true" />
             )}
@@ -126,7 +126,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           </span>
         </div>
 
-        <div className="mt-5 rounded-xl border border-[#ece9f7] bg-[#FAF9FF] p-4">
+        <div className="mt-5 rounded-xl border border-[#e3f3ea] bg-[#f7fdfa] p-4">
           <div className="qc-eyebrow">{t.insights.whyRecommended}</div>
           <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-[#5a5870]">
             {resource.nextStepInsight.explanation[currentLanguage]}

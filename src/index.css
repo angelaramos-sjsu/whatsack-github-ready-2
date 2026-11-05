@@ -37,7 +37,7 @@
 @layer base {
   body {
     @apply font-sans antialiased text-slate-900 bg-slate-50;
-    background-image: radial-gradient(circle at top right, rgb(168 85 247 / 0.08), transparent 34rem);
+    background-image: radial-gradient(circle at top right, rgb(16 185 129 / 0.08), transparent 34rem);
   }
 
   button, a, input, select, textarea {
@@ -48,9 +48,9 @@
     min-height: 2.75rem;
   }
 
-  /* Purple keyboard focus rings retain strong visible focus for accessibility. */
+  /* Green keyboard focus rings retain strong visible focus for accessibility. */
   :focus-visible {
-    outline: 3px solid #9333ea;
+    outline: 3px solid #059669;
     outline-offset: 2px;
   }
 
@@ -60,7 +60,7 @@
   textarea:focus-visible,
   button:focus-visible,
   a:focus-visible {
-    outline: 3px solid #7e22ce;
+    outline: 3px solid #047857;
     outline-offset: 2px;
   }
 }

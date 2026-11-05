@@ -114,7 +114,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
             <button
               type="button"
               onClick={onClearSearch}
-              className="min-h-0 p-2 mr-1 rounded-full text-[#7d7a94] hover:text-[#4C1D95] transition-colors"
+              className="min-h-0 p-2 mr-1 rounded-full text-[#7d7a94] hover:text-[#047857] transition-colors"
               title="Clear input"
               aria-label="Clear search input"
             >
@@ -168,7 +168,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               <button
                 type="button"
                 onClick={onClearSearch}
-                className="min-h-0 p-1.5 text-[#5a5870] hover:text-[#4C1D95] transition-colors"
+                className="min-h-0 p-1.5 text-[#5a5870] hover:text-[#047857] transition-colors"
                 title="Reset search query"
                 aria-label="Reset search query"
               >

@@ -206,7 +206,7 @@ export function App() {
   };
 
   return (
-    <div className="qc min-h-screen flex flex-col selection:bg-[#4C1D95] selection:text-white">
+    <div className="qc min-h-screen flex flex-col selection:bg-[#047857] selection:text-white">
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
@@ -365,10 +365,10 @@ export function App() {
           <button
             type="button"
             onClick={() => setActiveView('copilot')}
-            className="flex items-center gap-2 rounded-full border border-[#e6e0fb] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(76,29,149,0.12)] transition-colors hover:border-[#4C1D95] hover:text-[#4C1D95]"
+            className="flex items-center gap-2 rounded-full border border-[#cdeedd] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(4,120,87,0.12)] transition-colors hover:border-[#047857] hover:text-[#047857]"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
-            <Bot className="h-4 w-4 text-[#4C1D95]" aria-hidden="true" />
+            <Bot className="h-4 w-4 text-[#047857]" aria-hidden="true" />
             <span>{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
           </button>
         </aside>

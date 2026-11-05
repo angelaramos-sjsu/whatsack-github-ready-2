@@ -1,7 +1,7 @@
 /* ==========================================================================
    Quiet Canvas — design language for the WhatSack home page.
-   Tokens: ink #1A1A24 · muted #5a5870 · faint #8a879f · purple #4C1D95 ·
-   lavender surface #FAF9FF · field #F3F0FF · hairline #ece9f7.
+   Tokens: ink #1A1A24 · muted #5a5870 · faint #8a879f · green #047857 ·
+   green surface #f7fdfa · field #eafaf1 · hairline #e3f3ea.
    ========================================================================== */
 
 .qc {
@@ -55,14 +55,14 @@
   left: -80px;
   width: 760px;
   height: 520px;
-  background: radial-gradient(ellipse at center, rgba(196, 181, 253, 0.28), rgba(255, 255, 255, 0) 68%);
+  background: radial-gradient(ellipse at center, rgba(110, 231, 183, 0.28), rgba(255, 255, 255, 0) 68%);
   pointer-events: none;
 }
 
 /* — Announcement strip — */
 .qc-ban {
-  background: #faf9ff;
-  border-bottom: 1px solid #ece9f7;
+  background: #f7fdfa;
+  border-bottom: 1px solid #e3f3ea;
   padding: 9px 0;
   font-size: 12px;
   color: #6b6880;
@@ -77,7 +77,7 @@
 }
 
 .qc-ban b {
-  color: #4c1d95;
+  color: #047857;
   font-weight: 600;
   letter-spacing: 0.12em;
   font-size: 11px;
@@ -127,7 +127,7 @@
   padding-bottom: 3px;
   cursor: pointer;
   transition: color 0.2s;
-  background-image: linear-gradient(#4c1d95, #4c1d95);
+  background-image: linear-gradient(#047857, #047857);
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 0 1px;
@@ -138,7 +138,7 @@
 
 .qc-link:hover,
 .qc-link:focus-visible {
-  color: #4c1d95;
+  color: #047857;
   background-size: 100% 1px;
   outline: none;
 }
@@ -157,7 +157,7 @@
   height: 5px;
   margin-top: -3px;
   border-radius: 50%;
-  background: #4c1d95;
+  background: #047857;
 }
 
 /* — Accessibility disclosure — */
@@ -171,7 +171,7 @@
 .qc-acc summary {
   cursor: pointer;
   list-style: none;
-  color: #4c1d95;
+  color: #047857;
   transition: opacity 0.2s;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .qc-acc summary:focus-visible {
-  outline: 2px solid #4c1d95;
+  outline: 2px solid #047857;
   outline-offset: 4px;
 }
 
@@ -213,7 +213,7 @@
 
 .qc-accp button:hover,
 .qc-accp button:focus-visible {
-  color: #4c1d95;
+  color: #047857;
   outline: none;
 }
 
@@ -284,17 +284,17 @@
   margin-top: 44px;
   display: flex;
   align-items: center;
-  background: #f3f0ff;
+  background: #eafaf1;
   border-radius: 14px;
   width: 100%;
   max-width: 760px;
   padding: 8px 8px 8px 26px;
-  border: 1px solid #e6e0fb;
+  border: 1px solid #cdeedd;
   transition: border-color 0.2s;
 }
 
 .qc-sf:focus-within {
-  border-color: #4c1d95;
+  border-color: #047857;
 }
 
 .qc-sf input {
@@ -318,7 +318,7 @@
 }
 
 .qc-btn {
-  background: #4c1d95;
+  background: #047857;
   color: #fff;
   border: 0;
   border-radius: 10px;
@@ -331,12 +331,12 @@
 }
 
 .qc-btn:hover {
-  background: #5b2aa8;
-  box-shadow: 0 6px 18px rgba(76, 29, 149, 0.25);
+  background: #059669;
+  box-shadow: 0 6px 18px rgba(4, 120, 87, 0.25);
 }
 
 .qc-btn:active {
-  background: #3b1578;
+  background: #03543b;
 }
 
 .qc-btn:focus-visible {
@@ -345,7 +345,7 @@
 }
 
 .qc-btn-sm {
-  background: #4c1d95;
+  background: #047857;
   color: #fff;
   border: 0;
   border-radius: 8px;
@@ -357,7 +357,7 @@
 }
 
 .qc-btn-sm:hover {
-  background: #5b2aa8;
+  background: #059669;
 }
 
 .qc-btn-sm:focus-visible {
@@ -382,7 +382,7 @@
   color: #1a1a24;
   cursor: pointer;
   padding-bottom: 3px;
-  background-image: linear-gradient(#4c1d95, #4c1d95);
+  background-image: linear-gradient(#047857, #047857);
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 0 1px;
@@ -397,14 +397,14 @@
 .qc-top button:hover,
 .qc-top button:focus-visible {
   background-size: 100% 1px;
-  color: #4c1d95;
+  color: #047857;
   outline: none;
 }
 
 .qc-top svg {
   width: 18px;
   height: 18px;
-  stroke: #4c1d95;
+  stroke: #047857;
   fill: none;
   stroke-width: 1.4;
   stroke-linecap: round;
@@ -425,7 +425,7 @@
 .qc-eyebrow {
   font-size: 12px;
   letter-spacing: 0.16em;
-  color: #4c1d95;
+  color: #047857;
   text-transform: uppercase;
 }
 
@@ -457,7 +457,7 @@
   align-items: center;
   margin-top: 44px;
   padding-bottom: 18px;
-  border-bottom: 1px solid #ebe8f5;
+  border-bottom: 1px solid #e3f3ea;
   font-size: 14px;
   color: #5a5870;
   flex-wrap: wrap;
@@ -471,7 +471,7 @@
   font-family: inherit;
   border: 0;
   background-color: transparent;
-  background-image: linear-gradient(#4c1d95, #4c1d95);
+  background-image: linear-gradient(#047857, #047857);
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 0 1px;
@@ -480,7 +480,7 @@
 
 .qc-t:hover,
 .qc-t:focus-visible {
-  color: #4c1d95;
+  color: #047857;
   background-size: 100% 1px;
   outline: none;
 }
@@ -498,7 +498,7 @@
 }
 
 .qc-fs input[type="checkbox"] {
-  accent-color: #4c1d95;
+  accent-color: #047857;
   cursor: pointer;
 }
 
@@ -518,11 +518,11 @@
 }
 
 .qc-select:hover {
-  color: #4c1d95;
+  color: #047857;
 }
 
 .qc-select:focus-visible {
-  outline: 2px solid #4c1d95;
+  outline: 2px solid #047857;
   outline-offset: 4px;
 }
 
@@ -532,13 +532,13 @@
   grid-template-columns: 1fr 330px;
   align-items: center;
   padding: 26px 0;
-  border-bottom: 1px solid #f0eef8;
+  border-bottom: 1px solid #eaf7f0;
   gap: 30px;
   transition: background 0.25s;
 }
 
 .qc-row:hover {
-  background: #faf9ff;
+  background: #f7fdfa;
 }
 
 @media (max-width: 767px) {
@@ -588,10 +588,10 @@
 
 .qc-ac a,
 .qc-ac button {
-  color: #4c1d95;
+  color: #047857;
   cursor: pointer;
   text-decoration: none;
-  background-image: linear-gradient(#4c1d95, #4c1d95);
+  background-image: linear-gradient(#047857, #047857);
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 0 1px;
@@ -612,7 +612,7 @@
 }
 
 .qc-ac .qc-primary {
-  background: #4c1d95;
+  background: #047857;
   background-image: none;
   color: #fff;
   padding: 7px 16px;
@@ -622,24 +622,24 @@
 
 .qc-ac .qc-primary:hover,
 .qc-ac .qc-primary:focus-visible {
-  background: #5b2aa8;
+  background: #059669;
 }
 
 .qc-ac .qc-primary[aria-pressed="true"] {
-  background: #3b1578;
+  background: #03543b;
 }
 
 /* — Cards for the demonstration records — */
 .qc-card {
   background: #fff;
-  border: 1px solid #ece9f7;
+  border: 1px solid #e3f3ea;
   border-radius: 18px;
   transition: background 0.25s, border-color 0.25s;
 }
 
 .qc-card:hover {
-  background: #faf9ff;
-  border-color: #ded7f2;
+  background: #f7fdfa;
+  border-color: #c9e8d8;
 }
 
 .qc-chip {
@@ -650,19 +650,19 @@
   letter-spacing: 0.02em;
   padding: 3px 10px;
   border-radius: 6px;
-  background: #f3f0ff;
-  color: #4c1d95;
-  border: 1px solid #e6e0fb;
+  background: #eafaf1;
+  color: #047857;
+  border: 1px solid #cdeedd;
 }
 
 /* — Lavender panel (search synthesis) — */
 .qc-sheet {
   margin-top: 40px;
-  background: #faf9ff;
-  border: 1px solid #ece9f7;
+  background: #f7fdfa;
+  border: 1px solid #e3f3ea;
   border-radius: 18px;
   padding: 28px 32px;
-  box-shadow: 0 18px 50px rgba(76, 29, 149, 0.06);
+  box-shadow: 0 18px 50px rgba(4, 120, 87, 0.06);
 }
 
 /* — Advanced links — */
@@ -683,7 +683,7 @@
   color: #1a1a24;
   cursor: pointer;
   padding-bottom: 3px;
-  background-image: linear-gradient(#4c1d95, #4c1d95);
+  background-image: linear-gradient(#047857, #047857);
   background-repeat: no-repeat;
   background-position: left bottom;
   background-size: 0 1px;
@@ -700,15 +700,15 @@
 .qc-advg button:hover,
 .qc-advg button:focus-visible {
   background-size: 100% 1px;
-  color: #4c1d95;
+  color: #047857;
   outline: none;
 }
 
 /* — Footer — */
 .qc-ft {
   margin-top: 130px;
-  border-top: 1px solid #ece9f7;
-  background: #faf9ff;
+  border-top: 1px solid #e3f3ea;
+  background: #f7fdfa;
   font-size: 14px;
   color: #5a5870;
 }
@@ -733,7 +733,7 @@
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #4c1d95;
+  color: #047857;
   font-weight: 600;
 }
 
@@ -768,7 +768,7 @@
 .qc-ft .c:focus-visible,
 .qc-ft .disc:hover,
 .qc-ft .disc:focus-visible {
-  color: #4c1d95;
+  color: #047857;
   outline: none;
 }
 

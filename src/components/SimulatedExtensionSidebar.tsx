@@ -227,7 +227,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             onClick={() => setSelectedPortal('deanza')}
             className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
               selectedPortal === 'deanza'
-                ? 'bg-purple-600 text-white shadow-xs'
+                ? 'bg-emerald-600 text-white shadow-xs'
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
