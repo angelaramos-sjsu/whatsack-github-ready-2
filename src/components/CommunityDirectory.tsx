@@ -85,11 +85,6 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
       <h2 id="directory-heading" className="qc-h2">
         {currentLanguage === 'en' ? 'Community Resource Directory' : 'Directorio de Recursos Comunitarios'}
       </h2>
-      <p className="qc-dsub">
-        {currentLanguage === 'en'
-          ? 'Direct links to local organizations and public agencies. Visit each website for current programs and eligibility.'
-          : 'Enlaces directos a organizaciones locales y agencias públicas. Consulte cada sitio para programas y requisitos vigentes.'}
-      </p>
 
       {/* Filters */}
       <div className="qc-fs">
