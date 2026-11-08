@@ -1,4 +1,5 @@
 import { CategoryId, Language } from '../types';
+import { translations } from './translations';
 
 export interface DirectoryCategoryInfo {
   id: CategoryId;
@@ -17,4 +18,18 @@ export const directoryCategories: DirectoryCategoryInfo[] = [
 export const categoryLabel = (id: CategoryId, language: Language): string => {
   const match = directoryCategories.find((category) => category.id === id);
   return match ? match.name[language] : id;
+};
+
+const descriptionKeys: Record<CategoryId, keyof typeof translations.en.categories> = {
+  food: 'foodDesc',
+  'mental-health': 'mentalHealthDesc',
+  education: 'educationDesc',
+  workforce: 'workforceDesc',
+  community: 'communityDesc'
+};
+
+// Short, plain-language explanation of each category, shared by the homepage,
+// navigation menu and sidebar.
+export const categoryDescription = (id: CategoryId, language: Language): string => {
+  return translations[language].categories[descriptionKeys[id]];
 };

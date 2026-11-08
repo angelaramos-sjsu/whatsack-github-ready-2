@@ -1,8 +1,9 @@
 import React, { useMemo, useState } from 'react';
+import { Bookmark, Layers, SearchX } from 'lucide-react';
 import { CategoryId, Language, SourceTypeId } from '../types';
 import { translations } from '../data/translations';
 import { DirectoryEntry, directoryEntries } from '../data/directory';
-import { categoryLabel, directoryCategories } from '../data/categories';
+import { categoryDescription, categoryLabel, directoryCategories } from '../data/categories';
 import { sourceTypeLabel, sourceTypes } from '../data/sourceTypes';
 import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
 import { DirectoryEntryDialog } from './DirectoryEntryDialog';
@@ -22,6 +23,9 @@ interface CommunityDirectoryProps {
   onResetFilters: () => void;
   isEntrySaved: (entryId: string) => boolean;
   onToggleEntrySave: (entryId: string) => void;
+  isLoading?: boolean;
+  savedCount?: number;
+  onOpenSaved?: () => void;
 }
 
 const displayAddress = (address: string, language: Language) => {
@@ -46,7 +50,10 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   onToggleNoIdRequired,
   onResetFilters,
   isEntrySaved,
-  onToggleEntrySave
+  onToggleEntrySave,
+  isLoading = false,
+  savedCount = 0,
+  onOpenSaved
 }) => {
   const t = translations[currentLanguage];
   const en = currentLanguage === 'en';
@@ -89,12 +96,24 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
-  const eyebrow = selectedCategory === 'all' ? t.filters.allCities : categoryLabel(selectedCategory, currentLanguage);
+  const isFiltered =
+    selectedCategory !== 'all' ||
+    selectedSourceType !== 'all' ||
+    selectedCity !== 'all' ||
+    freeOnly ||
+    noIdRequiredOnly ||
+    searchQuery.trim() !== '';
+
+  const eyebrow = selectedCategory === 'all' ? (en ? 'All Silicon Valley' : 'Todo Silicon Valley') : categoryLabel(selectedCategory, currentLanguage);
 
   const resetDirectoryFilters = () => {
     setSelectedSourceType('all');
     onResetFilters();
   };
+
+  const otherCategories = directoryCategories
+    .filter((category) => category.id !== selectedCategory && (categoryCounts.get(category.id) || 0) > 0)
+    .slice(0, 3);
 
   return (
     <section id="directory" aria-labelledby="directory-heading" className="qc-sec qc-shell scroll-mt-28">
@@ -108,6 +127,25 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           : 'Enlaces directos a organizaciones locales y agencias públicas. Consulte cada sitio para programas y requisitos vigentes.'}
       </p>
 
+      {/* Selected category context */}
+      {selectedCategory !== 'all' && (
+        <div className="qc-cathead">
+          <div>
+            <h3>{categoryLabel(selectedCategory, currentLanguage)}</h3>
+            <p>{categoryDescription(selectedCategory, currentLanguage)}</p>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="qc-cathead-count">
+              {categoryCounts.get(selectedCategory) || 0} {en ? 'listings' : 'registros'}
+            </span>
+            <button type="button" className="qc-btn-ghost" onClick={() => onSelectCategory('all')}>
+              <Layers className="h-4 w-4" aria-hidden="true" />
+              {en ? 'All categories' : 'Todas las categorías'}
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Category tabs */}
       <div className="qc-tabs" role="tablist" aria-label={en ? 'Filter by resource category' : 'Filtrar por categoría'}>
         <button
@@ -117,7 +155,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           onClick={() => onSelectCategory('all')}
           className={`qc-t min-h-0 ${selectedCategory === 'all' ? 'on' : ''}`}
         >
-          {en ? 'All' : 'Todas'}
+          {en ? 'All' : 'Todas'} ({directoryEntries.length})
         </button>
         {directoryCategories.map((category) => (
           <button
@@ -184,19 +222,86 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         <button type="button" onClick={resetDirectoryFilters} className="qc-t min-h-0">
           {t.filters.reset}
         </button>
+      </div>
 
-        <span className="qc-cnt" aria-live="polite">
-          {matches.length} {en ? 'listings' : 'registros'}
+      {/* Result summary & compare */}
+      <div className="qc-countline">
+        <span aria-live="polite">
+          {isLoading ? (
+            en ? 'Searching listings…' : 'Buscando registros…'
+          ) : (
+            <>
+              {en ? 'Showing' : 'Mostrando'} <b>{matches.length}</b>{' '}
+              {en ? `of ${directoryEntries.length} listings` : `de ${directoryEntries.length} registros`}
+              {searchQuery.trim() && (
+                <> {en ? `for “${searchQuery.trim()}”` : `para “${searchQuery.trim()}”`}</>
+              )}
+            </>
+          )}
         </span>
+        {onOpenSaved && (
+          <button
+            type="button"
+            onClick={onOpenSaved}
+            className="qc-btn-ghost ml-auto"
+            disabled={savedCount === 0}
+            aria-label={en ? `Compare ${savedCount} saved resources` : `Comparar ${savedCount} recursos guardados`}
+            style={savedCount === 0 ? { opacity: 0.55, cursor: 'not-allowed' } : undefined}
+          >
+            <Bookmark className="h-4 w-4" aria-hidden="true" />
+            {en ? `Compare saved (${savedCount})` : `Comparar guardados (${savedCount})`}
+          </button>
+        )}
       </div>
 
       {/* Listings */}
-      {matches.length === 0 ? (
-        <p className="py-10 text-[15px] text-[#5a5870]">
-          {en
-            ? 'No directory listings match these filters yet.'
-            : 'Ningún registro del directorio coincide con estos filtros.'}
-        </p>
+      {isLoading ? (
+        <div aria-busy="true" aria-label={en ? 'Loading listings' : 'Cargando registros'}>
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="qc-skel-row">
+              <div className="space-y-3">
+                <span className="qc-skel w60" />
+                <span className="qc-skel w40" />
+                <span className="qc-skel w80" />
+              </div>
+              <div className="flex gap-3">
+                <span className="qc-skel w40" />
+              </div>
+            </div>
+          ))}
+          <p className="sr-only" role="status">
+            {en ? 'Loading community listings' : 'Cargando registros comunitarios'}
+          </p>
+        </div>
+      ) : matches.length === 0 ? (
+        <div className="qc-empty">
+          <SearchX aria-hidden="true" />
+          <h3>{en ? 'No listings match these filters' : 'Ningún registro coincide'}</h3>
+          <p>
+            {searchQuery.trim()
+              ? en
+                ? `Nothing matched “${searchQuery.trim()}”. Try a broader word or clear the filters.`
+                : `Nada coincidió con “${searchQuery.trim()}”. Pruebe una palabra más general o borre los filtros.`
+              : en
+                ? 'Try removing a filter, or explore a different category below.'
+                : 'Intente quitar un filtro o explore otra categoría.'}
+          </p>
+          <div className="qc-empty-actions">
+            <button type="button" className="qc-btn-sm" onClick={resetDirectoryFilters}>
+              {t.filters.reset}
+            </button>
+            {otherCategories.map((category) => (
+              <button
+                key={category.id}
+                type="button"
+                className="qc-btn-secondary"
+                onClick={() => onSelectCategory(category.id)}
+              >
+                {category.name[currentLanguage]} ({categoryCounts.get(category.id) || 0})
+              </button>
+            ))}
+          </div>
+        </div>
       ) : (
         <div>
           {matches.map((entry) => {

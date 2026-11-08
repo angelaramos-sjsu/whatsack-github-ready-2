@@ -1,7 +1,9 @@
 import React from 'react';
-import { Language, IntakeProfile, CategoryId } from '../types';
+import { CategoryId, IntakeProfile, Language } from '../types';
 import { translations } from '../data/translations';
-import { X } from 'lucide-react';
+import { categoryDescription, directoryCategories } from '../data/categories';
+import { CategoryGlyph } from './CategoryGlyph';
+import { ArrowRight, Mic, Sparkles, UserRound, X } from 'lucide-react';
 
 interface HeroConversationalSearchProps {
   currentLanguage: Language;
@@ -14,64 +16,35 @@ interface HeroConversationalSearchProps {
   onOpenArchitecture: () => void;
   onOpenIntroductionForm: () => void;
   onClearProfile: () => void;
+  onOpenSidebar: () => void;
   userProfile: IntakeProfile | null;
   matchedCount: number;
   onClearSearch: () => void;
   selectedCategory: CategoryId | 'all';
   onSelectCategory: (category: CategoryId | 'all') => void;
+  categoryCounts: Record<CategoryId, number>;
 }
-
-const categoryIcons: Record<CategoryId, React.ReactNode> = {
-  workforce: (
-    <>
-      <path d="M2 9l10-5 10 5-10 5z" />
-      <path d="M6 11v5c3 2.5 9 2.5 12 0v-5" />
-    </>
-  ),
-  food: (
-    <>
-      <path d="M5 11h14l-1.5 9h-11z" />
-      <path d="M8 11c0-4 8-4 8 0" />
-    </>
-  ),
-  'mental-health': (
-    <path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 9c0 6-8 11-8 11z" />
-  ),
-  education: (
-    <>
-      <path d="M4 5h6a2 2 0 012 2v12a2 2 0 00-2-2H4z" />
-      <path d="M20 5h-6a2 2 0 00-2 2v12a2 2 0 012-2h6z" />
-    </>
-  ),
-  community: (
-    <>
-      <circle cx="9" cy="8" r="3" />
-      <path d="M2 20c0-3.5 3-6 7-6s7 2.5 7 6" />
-      <path d="M16 6a3 3 0 010 5" />
-      <path d="M18 14c2 1 4 3 4 6" />
-    </>
-  )
-};
 
 export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> = ({
   currentLanguage,
   searchQuery,
   onSearchChange,
   onExecuteSearch,
+  onOpenVoiceModal,
+  onSelectPrompt,
+  onOpenIntroductionForm,
+  onClearProfile,
+  onOpenSidebar,
+  userProfile,
   matchedCount,
   onClearSearch,
   selectedCategory,
-  onSelectCategory
+  onSelectCategory,
+  categoryCounts
 }) => {
   const t = translations[currentLanguage];
-
-  const categories: { id: CategoryId; label: string }[] = [
-    { id: 'workforce', label: t.categories.workforce },
-    { id: 'food', label: t.categories.food },
-    { id: 'mental-health', label: t.categories.mentalHealth },
-    { id: 'education', label: t.categories.education },
-    { id: 'community', label: t.categories.community }
-  ];
+  const en = currentLanguage === 'en';
+  const totalListings = Object.values(categoryCounts).reduce((sum, count) => sum + count, 0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,18 +53,26 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
     }
   };
 
-  const handleCategory = (id: CategoryId) => {
+  const handleCategory = (id: CategoryId | 'all') => {
     onSelectCategory(id);
     window.setTimeout(() => {
       document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 0);
   };
 
+  const quickPrompts = en
+    ? ['Food for my family today', 'Free job training', 'Counseling without insurance']
+    : ['Comida para mi familia hoy', 'Capacitación gratuita', 'Terapia sin seguro'];
+
   return (
     <section aria-labelledby="hero-title" className="qc-hero overflow-hidden">
       <div className="qc-pool" aria-hidden="true" />
 
       <div className="qc-shell">
+        <div className="qc-eyebrow qc-rise" style={{ animationDelay: '.15s' }}>
+          {en ? 'Free · Bilingual · Silicon Valley' : 'Gratis · Bilingüe · Silicon Valley'}
+        </div>
+
         <h1 id="hero-title" className="qc-h1 qc-rise" style={{ animationDelay: '.25s' }}>
           {t.hero.title}
         </h1>
@@ -121,9 +102,9 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
             <button
               type="button"
               onClick={onClearSearch}
-              className="min-h-0 p-2 mr-1 rounded-full text-[#7d7a94] hover:text-[#4C1D95] transition-colors"
-              title="Clear input"
-              aria-label="Clear search input"
+              className="min-h-0 p-2 mr-1 rounded-full text-[#6b6880] hover:text-[#4C1D95] transition-colors"
+              title={en ? 'Clear input' : 'Borrar texto'}
+              aria-label={en ? 'Clear search input' : 'Borrar búsqueda'}
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -134,23 +115,90 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
           </button>
         </form>
 
-        <div className="qc-top qc-rise" style={{ animationDelay: '.75s' }}>
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              type="button"
-              onClick={() => handleCategory(category.id)}
-              className="min-h-0"
-              aria-current={selectedCategory === category.id ? 'true' : undefined}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">{categoryIcons[category.id]}</svg>
-              <span>{category.label}</span>
+        <div className="qc-prompts qc-rise" style={{ animationDelay: '.68s' }}>
+          {quickPrompts.map((prompt) => (
+            <button key={prompt} type="button" className="qc-prompt" onClick={() => onSelectPrompt(prompt)}>
+              {prompt}
             </button>
           ))}
         </div>
 
+        <div className="qc-actions qc-rise" style={{ animationDelay: '.72s' }}>
+          <button type="button" className="qc-btn-secondary" onClick={onOpenIntroductionForm}>
+            <UserRound className="h-4 w-4" aria-hidden="true" />
+            {en ? 'Personalize my search' : 'Personalizar mi búsqueda'}
+          </button>
+          <button type="button" className="qc-btn-ghost" onClick={onOpenVoiceModal}>
+            <Mic className="h-4 w-4" aria-hidden="true" />
+            {en ? 'Talk instead' : 'Hablar en su lugar'}
+          </button>
+          <button type="button" className="qc-btn-ghost" onClick={onOpenSidebar}>
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
+            {en ? 'Open the companion sidebar' : 'Abrir barra lateral'}
+          </button>
+        </div>
+
+        {userProfile && (
+          <div className="qc-profile">
+            <span>
+              {en ? 'Personalized for' : 'Personalizado para'} <b>{userProfile.name}</b>
+              {' · '}
+              {userProfile.servicePriorities
+                .map((id) => directoryCategories.find((category) => category.id === id)?.name[currentLanguage])
+                .filter(Boolean)
+                .join(', ')}
+            </span>
+            <button type="button" className="qc-btn-ghost ml-auto" onClick={onClearProfile}>
+              {en ? 'Clear personalization' : 'Borrar personalización'}
+            </button>
+          </div>
+        )}
+
         <div aria-live="polite" className="sr-only">
           {matchedCount} {t.filters.resultsCount}
+        </div>
+
+        {/* Browse by category */}
+        <div className="mt-14 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-[20px] font-semibold tracking-[-0.02em] text-[#1A1A24]">
+              {en ? 'Browse by what you need' : 'Explore por necesidad'}
+            </h2>
+            <p className="mt-1 text-[14px] text-[#55526b]">
+              {en
+                ? `${totalListings} verified local listings across ${directoryCategories.length} categories.`
+                : `${totalListings} registros locales en ${directoryCategories.length} categorías.`}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => handleCategory('all')}
+            className="qc-btn-ghost"
+          >
+            {en ? 'See all resources' : 'Ver todos los recursos'}
+            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="qc-cats qc-rise" style={{ animationDelay: '.78s' }}>
+          {directoryCategories.map((category) => (
+            <button
+              key={category.id}
+              type="button"
+              onClick={() => handleCategory(category.id)}
+              className={`qc-cat ${selectedCategory === category.id ? 'on' : ''}`}
+              aria-current={selectedCategory === category.id ? 'true' : undefined}
+            >
+              <span className="qc-cat-ic">
+                <CategoryGlyph id={category.id} />
+              </span>
+              <b>{category.name[currentLanguage]}</b>
+              <span className="qc-cat-desc">{categoryDescription(category.id, currentLanguage)}</span>
+              <span className="qc-cat-count">
+                {(categoryCounts[category.id] || 0)} {en ? 'listings' : 'registros'}
+              </span>
+            </button>
+          ))}
         </div>
 
         {/* Active search synthesis */}
@@ -160,14 +208,14 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               <div>
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="qc-eyebrow">
-                    {currentLanguage === 'en' ? 'Search Synthesis' : 'Síntesis de Búsqueda'}
+                    {en ? 'Search Synthesis' : 'Síntesis de Búsqueda'}
                   </span>
                   <span className="qc-chip">
                     {matchedCount} {t.filters.resultsCount}
                   </span>
                 </div>
                 <p className="mt-3 text-[15px] leading-relaxed text-[#1A1A24]">
-                  {currentLanguage === 'en'
+                  {en
                     ? `Filtering verified Silicon Valley community services matching: "${searchQuery}" with zero required state ID and accessible public transit routes.`
                     : `Filtrando programas de Silicon Valley que coinciden con: "${searchQuery}" sin requisito de ID estatal y con acceso por transporte público.`}
                 </p>
@@ -175,15 +223,40 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               <button
                 type="button"
                 onClick={onClearSearch}
-                className="min-h-0 p-1.5 text-[#5a5870] hover:text-[#4C1D95] transition-colors"
-                title="Reset search query"
-                aria-label="Reset search query"
+                className="min-h-0 p-1.5 text-[#55526b] hover:text-[#4C1D95] transition-colors"
+                title={en ? 'Reset search query' : 'Restablecer búsqueda'}
+                aria-label={en ? 'Reset search query' : 'Restablecer búsqueda'}
               >
                 <X className="w-5 h-5" aria-hidden="true" />
               </button>
             </div>
           </div>
         )}
+
+        {/* How it works */}
+        <div className="qc-steps" aria-label={en ? 'How WhatSack works' : 'Cómo funciona WhatSack'}>
+          <div className="qc-step">
+            <span className="qc-step-n" aria-hidden="true">1</span>
+            <div>
+              <h2>{en ? 'Tell us what you need' : 'Díganos qué necesita'}</h2>
+              <p>{en ? 'Type a question or pick a category. No account or ID needed.' : 'Escriba una pregunta o elija una categoría. Sin cuenta ni identificación.'}</p>
+            </div>
+          </div>
+          <div className="qc-step">
+            <span className="qc-step-n" aria-hidden="true">2</span>
+            <div>
+              <h2>{en ? 'Compare local programs' : 'Compare programas locales'}</h2>
+              <p>{en ? 'Filter by city, cost and source type, then open details to compare.' : 'Filtre por ciudad, costo y tipo de fuente, y compare los detalles.'}</p>
+            </div>
+          </div>
+          <div className="qc-step">
+            <span className="qc-step-n" aria-hidden="true">3</span>
+            <div>
+              <h2>{en ? 'Leave with next steps' : 'Salga con pasos claros'}</h2>
+              <p>{en ? 'Save listings to your plan and bring a clear checklist to your visit.' : 'Guarde recursos en su plan y lleve una lista clara a su visita.'}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

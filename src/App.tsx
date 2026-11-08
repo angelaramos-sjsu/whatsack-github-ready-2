@@ -18,6 +18,8 @@ import { ResourceCard } from './components/ResourceCard';
 import { CommunityDirectory } from './components/CommunityDirectory';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
+import { ExtensionSidebar, CompanionMode } from './components/ExtensionSidebar';
+import { FeedbackToast, ToastMessage } from './components/FeedbackToast';
 import { VoiceAssistantModal } from './components/VoiceAssistantModal';
 import { SavedResourcesDrawer } from './components/SavedResourcesDrawer';
 import { AILLMConsole } from './components/AILLMConsole';
@@ -56,7 +58,72 @@ export function App() {
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
 
+  // Browser-extension companion sidebar & feedback
+  const [companionMode, setCompanionMode] = useState<CompanionMode>('closed');
+  const [companionExpanded, setCompanionExpanded] = useState<boolean>(false);
+  const [toast, setToast] = useState<ToastMessage | null>(null);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+
   const t = translations[currentLanguage];
+  const en = currentLanguage === 'en';
+
+  const notify = (text: string) => setToast({ id: Date.now(), text });
+
+  // Category counts shared by the homepage, navigation and companion sidebar.
+  const categoryCounts = useMemo(() => {
+    const counts: Record<CategoryId, number> = {
+      food: 0,
+      'mental-health': 0,
+      education: 0,
+      workforce: 0,
+      community: 0
+    };
+    directoryEntries.forEach((entry) => {
+      counts[entry.categoryId] += 1;
+    });
+    return counts;
+  }, []);
+
+  const scrollToDirectory = () => {
+    window.setTimeout(() => {
+      document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 30);
+  };
+
+  // Single entry point used by the homepage, navigation and sidebar so every
+  // category link behaves the same way.
+  const handleSelectCategory = (category: CategoryId | 'all') => {
+    setActiveView('home');
+    setSelectedCategory(category);
+    scrollToDirectory();
+  };
+
+  const runSearch = (query: string) => {
+    if (!query.trim()) return;
+    setSearchQuery(query);
+    setIsSearching(true);
+    window.setTimeout(() => {
+      setIsSearching(false);
+      notify(
+        en
+          ? `Search updated for “${query}”.`
+          : `Búsqueda actualizada para “${query}”.`
+      );
+    }, 600);
+    scrollToDirectory();
+  };
+
+  const openCompanion = () => setCompanionMode('open');
+  const toggleCompanion = () =>
+    setCompanionMode((mode) => (mode === 'open' ? 'closed' : 'open'));
+
+  // On phones and tablets the companion panel covers the page, so close it
+  // after a choice to keep the directory visible.
+  const closeCompanionOnSmallScreen = () => {
+    if (window.matchMedia('(max-width: 1023px)').matches) {
+      setCompanionMode('closed');
+    }
+  };
 
   // High contrast mode effect
   useEffect(() => {
@@ -79,18 +146,40 @@ export function App() {
   };
 
   const handleToggleSave = (resourceId: string) => {
+    const resource = demonstrationResources.find((item) => item.id === resourceId);
+    const wasSaved = savedResourceIds.includes(resourceId);
     setSavedResourceIds((prev) => 
       prev.includes(resourceId) 
         ? prev.filter((id) => id !== resourceId) 
         : [...prev, resourceId]
     );
+    notify(
+      wasSaved
+        ? en
+          ? `Removed “${resource?.title.en ?? 'resource'}” from saved items.`
+          : `Se eliminó “${resource?.title.es ?? 'el recurso'}” de guardados.`
+        : en
+          ? `Saved “${resource?.title.en ?? 'resource'}” to My Next Steps.`
+          : `Se guardó “${resource?.title.es ?? 'el recurso'}” en Mis Próximos Pasos.`
+    );
   };
 
   const handleToggleDirectorySave = (entryId: string) => {
+    const entry = directoryEntries.find((item) => item.id === entryId);
+    const wasSaved = savedDirectoryIds.includes(entryId);
     setSavedDirectoryIds((prev) =>
       prev.includes(entryId)
         ? prev.filter((id) => id !== entryId)
         : [...prev, entryId]
+    );
+    notify(
+      wasSaved
+        ? en
+          ? `Removed “${entry?.name ?? 'listing'}” from saved items.`
+          : `Se eliminó “${entry?.name ?? 'el registro'}” de guardados.`
+        : en
+          ? `Saved “${entry?.name ?? 'listing'}” to My Next Steps.`
+          : `Se guardó “${entry?.name ?? 'el registro'}” en Mis Próximos Pasos.`
     );
   };
 
@@ -107,11 +196,18 @@ export function App() {
     if (profile.city && profile.city !== 'Other Silicon Valley') {
       setSelectedCity(profile.city);
     }
+    notify(
+      en
+        ? `Thanks, ${profile.name}. Your category and filter suggestions are applied.`
+        : `Gracias, ${profile.name}. Se aplicaron sus categorías y filtros sugeridos.`
+    );
+    scrollToDirectory();
   };
 
   const handleClearProfile = () => {
     setUserProfile(null);
     resetAllFilters();
+    notify(en ? 'Personalization cleared. Showing all resources.' : 'Personalización borrada. Mostrando todos los recursos.');
   };
 
   // Available unique cities for filtering
@@ -197,10 +293,20 @@ export function App() {
     setFreeOnly(false);
     setNoIdRequiredOnly(false);
     setSearchQuery('');
+    setIsSearching(false);
+  };
+
+  const handleResetFilters = () => {
+    resetAllFilters();
+    notify(en ? 'Filters reset. Showing all resources.' : 'Filtros restablecidos. Mostrando todos los recursos.');
   };
 
   return (
-    <div className="qc min-h-screen flex flex-col selection:bg-[#4C1D95] selection:text-white">
+    <div
+      className={`qc min-h-screen flex flex-col selection:bg-[#4C1D95] selection:text-white ${
+        activeView !== 'extension' && companionMode === 'open' ? 'qc--ext-open' : ''
+      } ${activeView !== 'extension' && companionMode === 'open' && companionExpanded ? 'qc--ext-wide' : ''}`}
+    >
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
@@ -214,6 +320,10 @@ export function App() {
         onCycleTextSize={handleCycleTextSize}
         activeView={activeView}
         setActiveView={setActiveView}
+        onSelectCategory={handleSelectCategory}
+        categoryCounts={categoryCounts}
+        isSidebarOpen={companionMode === 'open'}
+        onToggleSidebar={toggleCompanion}
       />
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
@@ -238,39 +348,36 @@ export function App() {
           onNavigateHome={() => setActiveView('home')}
         />
       ) : (
-        <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
+        <main id="main-content" tabIndex={-1} className="qc-main flex-1 focus:outline-hidden">
           {/* Conversational AI Search Hero */}
           <HeroConversationalSearch
             currentLanguage={currentLanguage}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
-            onExecuteSearch={(q) => {
-              setSearchQuery(q);
-              window.setTimeout(() => {
-                document.getElementById('directory')?.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }, 0);
-            }}
+            onExecuteSearch={runSearch}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
             onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
             onOpenCopilot={() => setActiveView('copilot')}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
             onClearProfile={handleClearProfile}
+            onOpenSidebar={openCompanion}
             userProfile={userProfile}
             matchedCount={filteredResources.length}
-            onClearSearch={() => setSearchQuery('')}
+            onClearSearch={() => {
+              setSearchQuery('');
+              setIsSearching(false);
+            }}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            onSelectCategory={handleSelectCategory}
+            categoryCounts={categoryCounts}
           />
 
           {/* Community resource directory with filters */}
           <CommunityDirectory
             currentLanguage={currentLanguage}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            onSelectCategory={handleSelectCategory}
             selectedCity={selectedCity}
             onSelectCity={setSelectedCity}
             availableCities={availableCities}
@@ -279,9 +386,12 @@ export function App() {
             onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
             noIdRequiredOnly={noIdRequiredOnly}
             onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
-            onResetFilters={resetAllFilters}
+            onResetFilters={handleResetFilters}
             isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
             onToggleEntrySave={handleToggleDirectorySave}
+            isLoading={isSearching}
+            savedCount={savedResourceIds.length + savedDirectoryIds.length}
+            onOpenSaved={() => setIsSavedDrawerOpen(true)}
           />
 
           {/* Demonstration resources */}
@@ -363,13 +473,56 @@ export function App() {
           <button
             type="button"
             onClick={() => setActiveView('copilot')}
-            className="flex items-center gap-2 rounded-full border border-[#e6e0fb] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(76,29,149,0.12)] transition-colors hover:border-[#4C1D95] hover:text-[#4C1D95]"
+            className="flex items-center gap-2 rounded-full border border-[#e6e0fb] bg-white p-3 sm:px-4 sm:py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(76,29,149,0.12)] transition-colors hover:border-[#4C1D95] hover:text-[#4C1D95]"
             title="Open WhatSack Civic-LLM Chat Assistant"
+            aria-label={currentLanguage === 'en' ? 'Open Civic-LLM copilot' : 'Abrir el copiloto Civic-LLM'}
           >
             <Bot className="h-4 w-4 text-[#4C1D95]" aria-hidden="true" />
-            <span>{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
+            <span className="hidden sm:inline">{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
           </button>
         </aside>
+      )}
+
+      {/* Browser-extension companion sidebar */}
+      {activeView !== 'extension' && (
+        <ExtensionSidebar
+          mode={companionMode}
+          expanded={companionExpanded}
+          currentLanguage={currentLanguage}
+          categoryCounts={categoryCounts}
+          selectedCategory={selectedCategory}
+          searchQuery={searchQuery}
+          savedCount={savedResourceIds.length + savedDirectoryIds.length}
+          onOpen={openCompanion}
+          onClose={() => setCompanionMode('closed')}
+          onMinimize={() => setCompanionMode('minimized')}
+          onToggleExpand={() => setCompanionExpanded((value) => !value)}
+          onSelectCategory={(category) => {
+            handleSelectCategory(category);
+            closeCompanionOnSmallScreen();
+          }}
+          onSearch={(query) => {
+            runSearch(query);
+            closeCompanionOnSmallScreen();
+          }}
+          onOpenSaved={() => {
+            setIsSavedDrawerOpen(true);
+            closeCompanionOnSmallScreen();
+          }}
+          onOpenCopilot={() => {
+            setActiveView('copilot');
+            closeCompanionOnSmallScreen();
+          }}
+          onOpenFullDemo={() => {
+            setActiveView('extension');
+            setCompanionMode('closed');
+          }}
+          onGoHome={() => {
+            setActiveView('home');
+            setCompanionMode('closed');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
       )}
 
       {/* Footer */}
@@ -377,10 +530,10 @@ export function App() {
         <Footer
           currentLanguage={currentLanguage}
           onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
-          onNavigateCategory={(cat) => {
-            setSelectedCategory(cat);
+          onNavigateCategory={handleSelectCategory}
+          onGoHome={() => {
             setActiveView('home');
-            window.setTimeout(() => document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
           onOpenExtension={() => setActiveView('extension')}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
@@ -452,6 +605,8 @@ export function App() {
         }}
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
+
+      <FeedbackToast message={toast} onDismiss={() => setToast(null)} />
     </div>
   );
 }
