@@ -41,6 +41,9 @@ export const Footer: React.FC<FooterProps> = ({
           <button type="button" className="c min-h-0" onClick={() => onNavigateCategory('mental-health')}>
             {t.categories.mentalHealth}
           </button>
+          <button type="button" className="c min-h-0" onClick={() => onNavigateCategory('education')}>
+            {t.categories.education}
+          </button>
           <button type="button" className="c min-h-0" onClick={() => onNavigateCategory('workforce')}>
             {t.categories.workforce}
           </button>

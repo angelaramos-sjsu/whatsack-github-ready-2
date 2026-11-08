@@ -507,6 +507,21 @@
   color: #1a1a24;
 }
 
+/* — Directory category tabs — */
+.qc-tabs {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 36px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebe8f5;
+}
+
+.qc-fs label select.qc-select {
+  margin-left: 6px;
+}
+
 .qc-select {
   cursor: pointer;
   color: #5a5870;

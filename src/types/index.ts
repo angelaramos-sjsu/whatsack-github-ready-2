@@ -1,6 +1,20 @@
 export type Language = 'en' | 'es';
 
-export type CategoryId = 'food' | 'mental-health' | 'workforce' | 'community';
+export type CategoryId = 'food' | 'mental-health' | 'education' | 'workforce' | 'community';
+
+// Kind of organization behind a listing, used to group and filter resources.
+export type SourceTypeId =
+  | 'government'
+  | 'nonprofit'
+  | 'food-bank'
+  | 'healthcare'
+  | 'school'
+  | 'workforce'
+  | 'community-center'
+  | 'legal-social'
+  | 'hotline'
+  | 'online-directory'
+  | 'other';
 
 export interface CategoryInfo {
   id: CategoryId;

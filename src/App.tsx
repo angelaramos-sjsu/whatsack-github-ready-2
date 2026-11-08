@@ -118,7 +118,8 @@ export function App() {
   const availableCities = useMemo(() => {
     const cities = new Set<string>();
     demonstrationResources.forEach((r) => cities.add(r.location.city));
-    return Array.from(cities);
+    directoryEntries.forEach((entry) => cities.add(entry.city));
+    return Array.from(cities).sort((a, b) => a.localeCompare(b));
   }, []);
 
   // Filtered resources calculation
@@ -279,12 +280,12 @@ export function App() {
             noIdRequiredOnly={noIdRequiredOnly}
             onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
             onResetFilters={resetAllFilters}
-            demonstrationCount={filteredResources.length}
             isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
             onToggleEntrySave={handleToggleDirectorySave}
           />
 
           {/* Demonstration resources */}
+          {(filteredResources.length > 0 || searchQuery.trim() !== '') && (
           <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-16 scroll-mt-28">
             <h2 id="resources-heading" className="sr-only">
               {currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}
@@ -322,6 +323,7 @@ export function App() {
               </div>
             )}
           </section>
+          )}
 
           {/* Advanced prototype tools */}
           <section aria-labelledby="advanced-heading" className="qc-adv qc-shell">

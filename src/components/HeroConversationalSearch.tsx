@@ -37,6 +37,12 @@ const categoryIcons: Record<CategoryId, React.ReactNode> = {
   'mental-health': (
     <path d="M12 20s-8-5-8-11a4.5 4.5 0 018-2.8A4.5 4.5 0 0120 9c0 6-8 11-8 11z" />
   ),
+  education: (
+    <>
+      <path d="M4 5h6a2 2 0 012 2v12a2 2 0 00-2-2H4z" />
+      <path d="M20 5h-6a2 2 0 00-2 2v12a2 2 0 012-2h6z" />
+    </>
+  ),
   community: (
     <>
       <circle cx="9" cy="8" r="3" />
@@ -63,6 +69,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
     { id: 'workforce', label: t.categories.workforce },
     { id: 'food', label: t.categories.food },
     { id: 'mental-health', label: t.categories.mentalHealth },
+    { id: 'education', label: t.categories.education },
     { id: 'community', label: t.categories.community }
   ];
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DemonstrationResource, Language } from '../types';
 import { DirectoryEntry } from '../data/directory';
+import { sourceTypeLabel } from '../data/sourceTypes';
 import { translations } from '../data/translations';
 import { 
   X, 
@@ -75,7 +76,8 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
       ].join('\n')),
       ...savedDirectoryEntries.map((entry, i) => [
         `${savedResources.length + i + 1}. ${entry.name}`,
-        `   Address: ${entry.address}`,
+        `   Source Type: ${sourceTypeLabel(entry.sourceType, currentLanguage)}`,
+        ...(entry.address ? [`   Address: ${entry.address}`] : []),
         `   Website: ${entry.website}`,
         ''
       ].join('\n'))
@@ -210,7 +212,10 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                 <h3 className="font-extrabold text-sm sm:text-base text-slate-900 mb-1">
                   {entry.name}
                 </h3>
-                <p className="text-xs text-slate-700 mb-3">{entry.address}</p>
+                <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 mb-2">
+                  {sourceTypeLabel(entry.sourceType, currentLanguage)}
+                </p>
+                {entry.address && <p className="text-xs text-slate-700 mb-3">{entry.address}</p>}
 
                 <a
                   href={entry.website}
