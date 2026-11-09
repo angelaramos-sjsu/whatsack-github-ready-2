@@ -25,8 +25,7 @@ import { AILLMConsole } from './components/AILLMConsole';
 import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
-
-import { Bot } from 'lucide-react';
+import { SproutAssistant } from './components/SproutAssistant';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
@@ -420,19 +419,12 @@ export function App() {
         </main>
       )}
 
-      {/* Floating AI Copilot summon pill */}
-      {activeView === 'home' && (
-        <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
-          <button
-            type="button"
-            onClick={() => setActiveView('copilot')}
-            className="flex items-center gap-2 rounded-full border border-[#cdeedd] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(4,120,87,0.12)] transition-colors hover:border-[#047857] hover:text-[#047857]"
-            title="Open WhatSack Civic-LLM Chat Assistant"
-          >
-            <Bot className="h-4 w-4 text-[#047857]" aria-hidden="true" />
-            <span>{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
-          </button>
-        </aside>
+      {/* Sprout is a user-invoked, accessible companion to Ask WhatSack. */}
+      {['home', 'resources', 'about'].includes(activeView) && (
+        <SproutAssistant
+          currentLanguage={currentLanguage}
+          onOpenChat={() => setActiveView('copilot')}
+        />
       )}
 
       {/* Footer */}
