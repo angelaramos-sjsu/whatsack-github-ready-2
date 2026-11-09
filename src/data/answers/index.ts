@@ -26,6 +26,7 @@ export const topicEntryAnswerIds: Record<AnswerTopic, string> = {
   college: 'ans-college-tuition-free',
   mental: 'ans-mental-confidential-teens',
   senior: 'ans-senior-cultural-circles',
+  community: 'ans-community-connections',
   roleplay: 'ans-roleplay-intake-open'
 };
 
