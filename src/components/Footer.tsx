@@ -6,18 +6,12 @@ interface FooterProps {
   currentLanguage: Language;
   onOpenDisclaimer: () => void;
   onNavigateCategory: (cat: any) => void;
-  onOpenExtension: () => void;
-  onOpenDecoderModal: () => void;
-  onOpenVoiceModal: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   currentLanguage,
   onOpenDisclaimer,
-  onNavigateCategory,
-  onOpenExtension,
-  onOpenDecoderModal,
-  onOpenVoiceModal
+  onNavigateCategory
 }) => {
   const t = translations[currentLanguage];
 
@@ -49,18 +43,6 @@ export const Footer: React.FC<FooterProps> = ({
           </button>
         </div>
 
-        <div>
-          <h4>{currentLanguage === 'en' ? 'Interactive Tools' : 'Herramientas Interactivas'}</h4>
-          <button type="button" className="c min-h-0" onClick={onOpenExtension}>
-            {t.nav.extension}
-          </button>
-          <button type="button" className="c min-h-0" onClick={onOpenDecoderModal}>
-            {t.nav.docDecoder}
-          </button>
-          <button type="button" className="c min-h-0" onClick={onOpenVoiceModal}>
-            {t.nav.voice}
-          </button>
-        </div>
       </div>
     </footer>
   );
