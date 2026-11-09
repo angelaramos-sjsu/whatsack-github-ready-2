@@ -26,6 +26,20 @@ export interface ScriptedNextStep {
   title: BilingualText;
   detail: BilingualText;
   actions: ScriptedAction[];
+  meta?: NextStepMeta;
+}
+
+export interface NextStepMeta {
+  who?: string;
+  area?: string;
+  contact?: string;
+  deadline?: string;
+  cost?: string;
+  language?: string;
+  prepare?: string;
+  sourceUrl: string;
+  sourceUrl2?: string;
+  lastReviewed: string;
 }
 
 /**
@@ -47,6 +61,8 @@ export interface ScriptedAnswer {
   nextStep?: ScriptedNextStep;
   /** A closing set of NextStep Insights, shown as an ordered list. */
   nextSteps?: ScriptedNextStep[];
+  /** Sourced details to consider, shown before the NextStep options. */
+  keepInMind?: BilingualText[];
   /** Grounded demonstration resources rendered under the answer. */
   resourceIds?: string[];
   /** Only ids that resolve to another implemented answer are displayed. */

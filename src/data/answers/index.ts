@@ -2,18 +2,19 @@ import { entryAnswers } from './entry';
 import { programFollowUpAnswers } from './followUpsPrograms';
 import { supportFollowUpAnswers } from './followUpsSupport';
 import { routeSaraCollegeQuestion, saraCollegePathwayAnswers, saraCollegeStageIds } from './saraCollegePathway';
+import { attachSourcedNextSteps } from './nextStepOptions';
 import type { AnswerTopic, BilingualText, ScriptedAnswer } from './types';
 
-export type { AnswerTopic, BilingualText, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep, SavedScriptedStep } from './types';
+export type { AnswerTopic, BilingualText, NextStepMeta, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep, SavedScriptedStep } from './types';
 export { routeSaraCollegeQuestion, saraCollegeStageIds };
 
 /** Every approved scripted answer, keyed by its unique id. */
-export const scriptedAnswers: ScriptedAnswer[] = [
+export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
   ...programFollowUpAnswers,
   ...supportFollowUpAnswers,
   ...saraCollegePathwayAnswers
-];
+]);
 
 const answersById = new Map(scriptedAnswers.map((answer) => [answer.id, answer]));
 

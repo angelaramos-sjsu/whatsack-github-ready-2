@@ -49,19 +49,19 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
   const isEnglish = currentLanguage === 'en';
 
   return (
-    <aside className="sprout-helper" aria-label={isEnglish ? 'Sprout chat helper' : 'Ayudante Sprout'}>
+    <aside className="sprout-helper" aria-label={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}>
       {showGreeting && (
         <div className="sprout-helper-bubble">
           <button
             type="button"
             onClick={onDismissGreeting}
             className="sprout-helper-dismiss"
-            aria-label={isEnglish ? 'Hide Sprout introduction' : 'Ocultar mensaje de Sprout'}
+            aria-label={isEnglish ? 'Hide assistant introduction' : 'Ocultar introducción de ayuda'}
           >
             <X aria-hidden="true" size={16} />
           </button>
           <p className="sprout-helper-greeting">
-            {isEnglish ? "Hi, I'm Sprout!" : '¡Hola! Soy Sprout.'}
+            {isEnglish ? "Hi! I'm WhatSack." : '¡Hola! Soy WhatSack.'}
           </p>
           <p className="sprout-helper-description">
             {isEnglish
@@ -74,13 +74,13 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
         type="button"
         onClick={onOpenChat}
         className="sprout-helper-button"
-        aria-label={isEnglish ? 'Chat with Sprout, your WhatSack guide' : 'Hablar con Sprout, su guía de WhatSack'}
-        title={isEnglish ? 'Ask Sprout' : 'Preguntar a Sprout'}
+        aria-label={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
+        title={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
       >
         <SproutMascot className="sprout-helper-character" />
         <span className="sprout-helper-chat-icon" aria-hidden="true"><MessageCircle size={18} /></span>
       </button>
-      <span className="sprout-helper-label" aria-hidden="true">{isEnglish ? 'Ask Sprout' : 'Hablar con Sprout'}</span>
+      <span className="sprout-helper-label" aria-hidden="true">{isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}</span>
     </aside>
   );
 };

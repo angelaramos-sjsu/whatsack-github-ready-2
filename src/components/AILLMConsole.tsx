@@ -65,6 +65,7 @@ interface AILLMConsoleProps {
   onSaveScriptedStep?: (step: SavedScriptedStep) => void;
   onSavePlanAction?: (resourceId: string) => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
+  onOpenIntroductionForm?: (source?: string) => void;
   /** A question submitted from the homepage; the copilot opens already answered. */
   initialQuestion?: { text: string; key: number } | null;
 }
@@ -77,6 +78,33 @@ const topicIntents: Record<AnswerTopic, string> = {
   senior: 'Senior Cultural Circles & Nutrition Programs',
   community: 'Community Activities & Social Connection',
   roleplay: 'Intake Rehearsal & Anxiety De-escalation'
+};
+
+const shouldOfferQuickQuestions = (question: string | undefined): boolean => {
+  if (!question) return false;
+  const normalized = question.trim();
+  if (!normalized) return false;
+
+  const words = normalized.split(/\s+/).filter(Boolean);
+  if (words.length < 4) return true;
+
+  const vagueTerms = [
+    'help',
+    'anything',
+    'not sure',
+    'lost my job',
+    'no money',
+    'need support',
+    'necesito ayuda',
+    'no se',
+    'no estoy seguro',
+    'perdi mi trabajo',
+    'sin dinero',
+    'necesito apoyo'
+  ];
+
+  const lower = normalized.toLowerCase();
+  return vagueTerms.some((term) => lower.includes(term));
 };
 
 /**
@@ -113,6 +141,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   onSaveScriptedStep,
   onSavePlanAction,
   onOpenInsights,
+  onOpenIntroductionForm,
   initialQuestion
 }) => {
   const t = translations[currentLanguage];
@@ -124,8 +153,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     id: 'msg-init-1',
     sender: 'llm',
     text: currentLanguage === 'en'
-      ? "Hi! I'm Sprout, your WhatSack guide. I can help you explore local food, school, work, mental health, and community resources. What would you like help with today? This chat uses prepared example answers."
-      : "¡Hola! Soy Sprout, su guía de WhatSack. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
+      ? "Hi! I'm WhatSack, your guide. I can help you explore local food, school, work, mental health, and community resources. What would you like help with today? This chat uses prepared example answers."
+      : "¡Hola! Soy WhatSack, su guía. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
     timestamp: currentLanguage === 'en' ? 'Welcome' : 'Bienvenida',
     followUpIds: [
       'ans-food-east-sj-groceries',
@@ -255,8 +284,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             </h1>
             <p className="mt-1 text-sm leading-relaxed text-slate-300">
               {currentLanguage === 'en'
-                ? 'Meet Sprout, your friendly guide. This is a scripted demo.'
-                : 'Conozca a Sprout, su guía. Esta es una demostración con respuestas preparadas.'}
+                ? 'Meet WhatSack, your friendly guide. This is a scripted demo.'
+                : 'Conozca a WhatSack, su guía. Esta es una demostración con respuestas preparadas.'}
             </p>
           </div>
         </div>
@@ -300,7 +329,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     ) : (
                       <>
                         <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>{currentLanguage === 'en' ? 'Sprout · WhatSack guide' : 'Sprout · guía de WhatSack'}</span>
+                        <span>{currentLanguage === 'en' ? 'WhatSack guide' : 'Guía de WhatSack'}</span>
                       </>
                     )}
                   </span>
@@ -392,6 +421,15 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           💬 {followUp.question[currentLanguage]}
                         </button>
                       ))}
+                      {shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
+                        <button
+                          type="button"
+                          onClick={() => onOpenIntroductionForm?.('assistant-chip')}
+                          className="min-h-[44px] text-sm px-3 py-2.5 rounded-lg bg-emerald-900/60 text-white border border-emerald-500/80 hover:bg-emerald-800 text-left leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+                        >
+                          {currentLanguage === 'en' ? 'Ask me a few quick questions instead' : 'Hazme algunas preguntas rápidas en su lugar'}
+                        </button>
+                      )}
                     </div>
                   </div>
                 )}
@@ -468,8 +506,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         <p className="text-center text-sm leading-relaxed text-slate-300 font-medium mt-3">
           {currentLanguage === 'en'
-            ? 'Sprout uses scripted example answers for this class project. Check official sources before making decisions.'
-            : 'Sprout usa respuestas de ejemplo para este proyecto de clase. Consulte fuentes oficiales antes de tomar decisiones.'}
+            ? 'WhatSack uses scripted example answers for this class project. Check official sources before making decisions.'
+            : 'WhatSack usa respuestas de ejemplo para este proyecto de clase. Consulte fuentes oficiales antes de tomar decisiones.'}
         </p>
       </div>
     </div>

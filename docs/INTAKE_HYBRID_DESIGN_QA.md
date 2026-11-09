@@ -1,40 +1,85 @@
-# WhatSack — Hybrid "Find My Support" intake (research-informed class prototype)
+# WhatSack intake form QA checklist
 
-**Branch:** `brand-color-green`  
-**Scope:** This is a resource-navigation demonstration, not benefits eligibility screening. It does not certify program participation, intake document requirements, service availability, or appointments.
+This checklist covers the calm, four-step intake modal introduced for the brand-color-green branch. It is intended to validate the accessibility and usability requirements for the flow without changing the intake data contract used by App.tsx.
 
-## Why this four-step order?
-The WhatSack group proposal prioritizes city/ZIP, requested help, urgency and communication/access needs, with optional contextual data. It also states that names, exact addresses, birthdates, SSNs and detailed histories should not be required for exploration. The redesigned wizard keeps useful parts of the existing introduction assessment while starting with immediate needs instead of income and demographics.
+## Manual test checklist
 
-1. **Your needs:** Multi-select Food, Mental Health, Education/Workforce, and Community; optionally Housing, Bills/Utilities, and Transportation as **211 referral-only** categories. Select urgency (today, soon, exploring, or not sure).
-2. **Your area:** City/area for resource navigation; optional name/nickname and age range. No exact home address or ZIP-to-city geolocation is claimed.
-3. **Access preferences:** Explicit **"I need options that do not require an ID or SSN"**, transit, online/phone access, evening/weekend hours, accessible locations, and support language. These are *user preferences*, not unverified eligibility filters.
-4. **Optional household details:** Opt-in to household size, dependents, broad income range and work status. If not opted in, the profile omits household size/child/senior flags and treats income/employment as undisclosed.
+### 1. Keyboard-only run
+- Open the intake form from the homepage or the visible CTA.
+- Confirm focus lands on the modal title when the dialog opens.
+- Use Tab and Shift + Tab to move through the dialog in logical order.
+- Confirm every interactive element is reachable, including:
+  - close button
+  - step actions
+  - need cards
+  - urgency options
+  - city selector
+  - optional field labels
+  - skip actions
+  - summary edit links
+- Confirm the visible focus ring is at least 2px and brand green.
+- Confirm pressing Escape closes the dialog.
+- If the user has entered answers, confirm the leave confirmation reads: “Leave the form? Your answers are not saved.”
+- Confirm that on each step change focus moves to the step heading and the step announcement is read aloud by assistive tech.
 
-A collapsed *Class demonstration scenarios* disclosure preserves fictional persona test presets but prevents them from overwhelming real visitors.
+### 2. Screen reader run (VoiceOver or NVDA)
+- Open the form and verify the dialog announces as a dialog with the correct title.
+- Confirm the live region announces the current step in plain language, for example: “Step 2 of 4: Where are you looking?”
+- Confirm the progress bar is exposed as a progressbar with correct values and text.
+- Confirm each checkbox and radio group is announced with a label and selection state.
+- Confirm optional labels include “(optional)” where applicable.
+- Confirm the error state is announced when the user tries to continue without selecting a need.
+- Confirm the external 211 referral text is announced as a link to an external referral.
+- Confirm the summary screen reads in plain language and each edit link is announced correctly.
 
-## Results behavior
-- Finishing the wizard opens **Find Resources**.
-- One or more selected supported categories filter organizations and simulated sample programs **together**, retaining multi-select intent.
-- City selection narrows results; an unknown/other area leaves the city filter open.
-- No ID/SSN preference is echoed in a visible explanatory panel with a reminder to check each organization's documentation rules. **It does not silently hide unknown-policy services.**
-- Housing, utility and transportation selections prompt a clear 211 Bay Area referral, because those categories are not reviewed in the current WhatSack directory.
-- "Today" urgency surfaces the **Call 211** route.
-- Residents can clear their preferences; normal browsing and the Sprout chatbot remain available without completing intake.
+### 3. 320 px width run
+- Resize the viewport to 320px wide.
+- Confirm the modal becomes a full-height sheet and the content stacks in a single column.
+- Confirm there is no horizontal scrolling.
+- Confirm action buttons remain visible and easy to tap.
+- Confirm the footer action bar stays fixed at the bottom without covering the form content.
+- Confirm card choices stack cleanly and are fully readable.
 
-## Manual acceptance tests (unverified until run)
+### 4. 200% zoom run
+- Zoom the page to 200%.
+- Confirm the form remains usable without overlapping or clipped content.
+- Confirm text remains readable and buttons are still operable.
+- Confirm focus stays visible and the dialog still traps focus as expected.
 
-- [ ] Open Home → "Find My Support · optional questions"; verify accessible modal, clear Close, Back/Next and progress.
-- [ ] Select Food and Education/Workforce; finish without other data. Verify both categories appear in directory results rather than just one.
-- [ ] Select **No ID / SSN required**, finish without sharing a name or household details. Verify the ID preference is visibly acknowledged, and no unverifiable organization matches are silently excluded.
-- [ ] Choose Housing and Bills, with no supported categories; verify the 211 referral appears and is labeled separately from verified listings.
-- [ ] Choose Today; verify visible 211 contact option without requiring personal details.
-- [ ] Select Other Silicon Valley; verify the directory isn't inadvertently filtered to an impossible city.
-- [ ] Select a location and later choose a manual category filter; verify the manual filter replaces the earlier intake category selection.
-- [ ] Toggle optional household details on/off. Verify skipping does not populate fictitious household data.
-- [ ] Switch the site to Español; verify the No ID/SSN, 211 referral, urgency, optional household and navigation texts.
-- [ ] Navigate with keyboard only; verify visible focus and functionality at 320px, 375px, 768px, 200% zoom.
-- [ ] Do not claim to have tested WCAG AA without real browser, assistive technology and contrast checks.
+### 5. Spanish toggle run
+- Switch the app language to Spanish using the existing language control.
+- Confirm the dialog title, helper text, labels, and options update to Spanish.
+- Confirm progress text and step announcements use the Spanish wording.
+- Confirm validation and confirmation text are also translated.
+- Confirm the final review and summary content still reads clearly in Spanish.
 
-## Important limits
-The prototype only demonstrates resource navigation. No eligibility decisions, appointments, direct referrals, external data sharing, or live service verification are performed. Choices currently live in React page state, not a database. No legal conclusion about the privacy requirements of a real deployment is implied.
+### 6. Keyboard-only entry point checks
+- Open the form from the hero link under the search field.
+- Confirm focus lands on the dialog title and returns to the same link after closing.
+- Open the form from the final "Not sure where to start?" card.
+- Confirm focus lands on the dialog title and returns to the same card button after close.
+- In Ask WhatSack, send a short or vague first message such as "help" or "I need support".
+- Confirm the assistant responds normally and shows the suggested chip "Ask me a few quick questions instead".
+- Press the chip and confirm the form opens, focus lands on the title, and focus returns to the chip after close.
+- Open Find Resources and trigger the banner when more than 15 results appear.
+- Confirm the banner reads "Narrow these with 4 quick questions" and the link opens the modal with focus returning to the banner link after close.
+- Complete or close the form from each entry point and confirm focus returns to the exact opened control.
+
+## Acceptance signals
+
+The intake flow is acceptable when all of the following are true:
+- The form is calm, easy to follow, and one question appears at a time.
+- The user is not asked for SSN, immigration status, or any documents.
+- The flow starts with urgent need selection and ends with optional details.
+- Required selection logic works and shows the exact error message: “Choose at least one kind of help so we can show the right resources.”
+- The 211 Bay Area referral appears inline only when the need is housing, bills, transportation, or the urgency is “Today.”
+- The app preserves the existing intake output contract used by App.tsx and downstream filtering.
+- Session progress is saved so a refresh or accidental close does not fully discard work.
+- Choosing “I need options that do not require an ID or SSN” shows a reminder on the results page but does not hide organizations whose document policies are unknown.
+- Choosing housing, bills, or transportation shows the 211 Bay Area referral; choosing “Today” also surfaces a 211 call option.
+- Multiple supported needs remain selected together in Find Resources. Choosing a manual category there replaces the earlier intake category filter.
+- “Anywhere in Silicon Valley” leaves the city filter open, and skipped household details are not filled with assumed values.
+
+## Status
+
+This checklist is for manual validation in the browser and is not a claim of a formal legal accessibility certification.

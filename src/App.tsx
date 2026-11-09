@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { 
   Language, 
   CategoryId, 
@@ -44,6 +44,11 @@ export function App() {
   // Resident Introduction Profile State
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
+  const [introductionSource, setIntroductionSource] = useState<string>('hero');
+  const introTriggerRef = useRef<HTMLElement | null>(null);
+  const heroSectionRef = useRef<HTMLDivElement | null>(null);
+  const [heroVisible, setHeroVisible] = useState(true);
+  const [resultsBannerDismissed, setResultsBannerDismissed] = useState(false);
 
   // Modals & Drawers
   const [isDisclaimerOpen, setIsDisclaimerOpen] = useState<boolean>(false);
@@ -74,6 +79,23 @@ export function App() {
   useEffect(() => {
     document.documentElement.lang = currentLanguage;
   }, [currentLanguage]);
+
+  useEffect(() => {
+    const savedBannerState = sessionStorage.getItem('whatsack-results-banner-dismissed');
+    if (savedBannerState === 'true') setResultsBannerDismissed(true);
+  }, []);
+
+  useEffect(() => {
+    if (activeView !== 'home' || !heroSectionRef.current) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      const [entry] = entries;
+      setHeroVisible(entry ? entry.isIntersecting : true);
+    }, { threshold: 0.35 });
+
+    observer.observe(heroSectionRef.current);
+    return () => observer.disconnect();
+  }, [activeView]);
 
   // After a page change, read the destination heading before its controls.
   useEffect(() => {
@@ -130,6 +152,12 @@ export function App() {
   };
 
   // Handle saving introduction profile
+  const openIntroductionForm = (source = 'hero') => {
+    introTriggerRef.current = document.activeElement as HTMLElement | null;
+    setIntroductionSource(source);
+    setIsIntroductionFormOpen(true);
+  };
+
   const handleSaveProfile = (profile: IntakeProfile) => {
     setUserProfile(profile);
     // Preserve every selected need; do not silently drop multi-category selections.
@@ -141,6 +169,9 @@ export function App() {
     setSearchQuery('');
     setFreeOnly(false);
     setActiveView('resources');
+    requestAnimationFrame(() => {
+      document.getElementById('directory-page-heading')?.focus();
+    });
   };
 
   const handleClearProfile = () => {
@@ -261,6 +292,7 @@ export function App() {
             )
           }
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
+          onOpenIntroductionForm={(source) => openIntroductionForm(source ?? 'assistant-chip')}
           initialQuestion={copilotQuestion}
         />
       ) : activeView === 'extension' ? (
@@ -300,59 +332,53 @@ export function App() {
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
           {/* Home presents one search question and four category paths. */}
           {activeView === 'home' && (<>
-          <HeroConversationalSearch
-            currentLanguage={currentLanguage}
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            onExecuteSearch={(q) => {
-              setSearchQuery(q);
-              setCopilotQuestion({ text: q, key: Date.now() });
-              setActiveView('copilot');
-            }}
-            onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
-            onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
-            onOpenCopilot={() => setActiveView('copilot')}
-            onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
-            onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
-            onClearProfile={handleClearProfile}
-            userProfile={userProfile}
-            matchedCount={filteredResources.length}
-            onClearSearch={() => setSearchQuery('')}
-            selectedCategory={selectedCategory}
-            onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
-          />
+          <div ref={heroSectionRef}>
+            <HeroConversationalSearch
+              currentLanguage={currentLanguage}
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              onExecuteSearch={(q) => {
+                setSearchQuery(q);
+                setCopilotQuestion({ text: q, key: Date.now() });
+                setActiveView('copilot');
+              }}
+              onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
+              onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
+              onOpenCopilot={() => setActiveView('copilot')}
+              onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
+              onOpenIntroductionForm={(source) => openIntroductionForm(source ?? 'hero')}
+              onClearProfile={handleClearProfile}
+              userProfile={userProfile}
+              matchedCount={filteredResources.length}
+              onClearSearch={() => setSearchQuery('')}
+              selectedCategory={selectedCategory}
+              onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
+            />
+          </div>
           <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
             <div className="qc-home-start-card">
               <div className="qc-home-start-copy">
                 <p className="qc-home-start-eyebrow">
-                  {currentLanguage === 'en' ? 'Start here' : 'Empiece aquí'}
+                  {currentLanguage === 'en' ? 'Not sure where to start?' : '¿No sabe por dónde empezar?'}
                 </p>
                 <h2 id="start-here-heading" className="qc-home-start-title">
                   {currentLanguage === 'en'
-                    ? 'Prefer to browse instead of ask?'
-                    : '¿Prefiere explorar en vez de preguntar?'}
+                    ? 'Four quick questions. Skip any you like.'
+                    : 'Cuatro preguntas rápidas. Omitir las que quiera.'}
                 </h2>
                 <p className="qc-home-start-text">
                   {currentLanguage === 'en'
-                    ? 'Explore local organizations by category and city. Find useful links at your own pace.'
-                    : 'Explore organizaciones locales por categoría y ciudad. Encuentre enlaces a su propio ritmo.'}
+                    ? 'We show what fits.'
+                    : 'Mostramos lo que encaja.'}
                 </p>
               </div>
               <div className="qc-home-start-actions">
                 <button
                   type="button"
-                  className="qc-home-start-button"
-                  onClick={() => { resetAllFilters(); setActiveView('resources'); }}
+                  className="qc-home-start-button qc-home-start-button-outline"
+                  onClick={() => openIntroductionForm('start-here')}
                 >
-                  <span>{currentLanguage === 'en' ? 'Browse all resources' : 'Ver todos los recursos'}</span>
-                  <span aria-hidden="true" className="qc-home-start-arrow">→</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setIsIntroductionFormOpen(true)}
-                  className="min-h-[44px] rounded-xl px-3 py-2 text-sm font-semibold text-[#03543b] underline underline-offset-4 hover:text-[#047857] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#047857]"
-                >
-                  {currentLanguage === 'en' ? 'Find My Support · optional questions' : 'Encontrar ayuda · preguntas opcionales'}
+                  <span>{currentLanguage === 'en' ? 'Find my support' : 'Encuentra mi apoyo'}</span>
                 </button>
               </div>
             </div>
@@ -417,6 +443,35 @@ export function App() {
                 )}
               </div>
             </section>
+          )}
+
+          {filteredResources.length >= 15 && !resultsBannerDismissed && (
+            <div className="qc-shell">
+              <div className="flex flex-col gap-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-slate-800 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-base text-slate-800">
+                  <a
+                    href="#find-my-support"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      openIntroductionForm('results-banner');
+                    }}
+                    className="font-semibold text-[#047857] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047857] focus-visible:ring-offset-2"
+                  >
+                    {currentLanguage === 'en' ? 'Narrow these with 4 quick questions' : 'Reducir esto con 4 preguntas rápidas'}
+                  </a>
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setResultsBannerDismissed(true);
+                    sessionStorage.setItem('whatsack-results-banner-dismissed', 'true');
+                  }}
+                  className="self-start rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047857] focus-visible:ring-offset-2"
+                >
+                  {currentLanguage === 'en' ? 'Dismiss' : 'Cerrar'}
+                </button>
+              </div>
+            </div>
           )}
 
           {/* Community resource directory with filters */}
@@ -487,8 +542,8 @@ export function App() {
         </main>
       )}
 
-      {/* Sprout is a user-invoked, accessible companion to Ask WhatSack. */}
-      {['home', 'resources', 'about'].includes(activeView) && (
+      {/* Ask WhatSack is always the same assistant, even when the mascot is shown. */}
+      {(['home', 'resources', 'about'].includes(activeView) && !((activeView === 'home') && heroVisible)) && (
         <SproutAssistant
           currentLanguage={currentLanguage}
           showGreeting={showSproutGreeting}
@@ -512,15 +567,17 @@ export function App() {
         />
       )}
 
-      {/* Introduction Assessment Modal */}
+      {/* Find my support modal */}
       {isIntroductionFormOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-0 backdrop-blur-xs animate-in fade-in duration-200 sm:p-4">
           <IntroductionForm
             currentLanguage={currentLanguage}
             existingProfile={userProfile}
             onSaveProfile={handleSaveProfile}
             onClose={() => setIsIntroductionFormOpen(false)}
             isModal={true}
+            source={introductionSource}
+            restoreFocusTarget={introTriggerRef}
           />
         </div>
       )}

@@ -18,6 +18,7 @@ export const saraCollegeStageIds = {
   fafsa: 'ans-sara-fafsa-cadaa',
   familyIncome: 'ans-sara-family-income',
   firstGeneration: 'ans-sara-first-generation',
+  afterGraduation: 'ans-sara-after-graduation',
   nextSteps: 'ans-sara-next-steps'
 } as const;
 
@@ -55,7 +56,8 @@ Vale la pena responder tres preguntas primero: qué hay cerca de usted, cómo lo
     followUpIds: [
       saraCollegeStageIds.nearby,
       saraCollegeStageIds.affordability,
-      saraCollegeStageIds.transfer
+      saraCollegeStageIds.transfer,
+      saraCollegeStageIds.fafsa
     ]
   },
   {
@@ -437,7 +439,25 @@ No necesita saber el vocabulario para preguntar. "Soy la primera en mi familia e
       }
     ],
     resourceIds: ['res-work-3'],
-    followUpIds: [saraCollegeStageIds.nextSteps]
+    followUpIds: [saraCollegeStageIds.nextSteps, saraCollegeStageIds.afterGraduation]
+  },
+  // TODO: Spanish review — this new stage was translated for the sourced summer-transition options.
+  {
+    id: saraCollegeStageIds.afterGraduation,
+    topic: 'college',
+    question: {
+      en: 'What should I do after graduating high school?',
+      es: '¿Qué debo hacer después de graduarme de la preparatoria?'
+    },
+    answer: {
+      en: `The summer after graduation can feel like a gap, but a few small steps can make starting college easier. Check your financial aid messages, finish orientation and placement, and send your final transcript before fall classes begin. You do not have to track every deadline alone: ask a college counselor or Cash for College advisor to review your list with you.`,
+      es: `El verano después de graduarse puede sentirse como una pausa, pero unos pasos pequeños pueden facilitar el comienzo del colegio. Revise sus mensajes de ayuda financiera, complete la orientación y ubicación, y envíe su expediente final antes de que empiecen las clases de otoño. No tiene que llevar todas las fechas por su cuenta: pida a un consejero del colegio o a un asesor de Cash for College que revise la lista con usted.`
+    },
+    context: [
+      { en: 'Finishing high school', es: 'Terminando la preparatoria' },
+      { en: 'Planning for the first college term', es: 'Preparándose para el primer semestre' }
+    ],
+    followUpIds: []
   },
   {
     id: saraCollegeStageIds.nextSteps,
@@ -545,7 +565,7 @@ No necesita resolverlo todo en un día. Haga estos tres pasos en orden, y cada u
         ]
       }
     ],
-    followUpIds: []
+    followUpIds: [saraCollegeStageIds.afterGraduation]
   }
 ];
 
@@ -557,6 +577,9 @@ No necesita resolverlo todo en un día. Haga estos tres pasos en orden, y cada u
 export const routeSaraCollegeQuestion = (lower: string): string | undefined => {
   const has = (...words: string[]) => words.some((word) => lower.includes(word));
 
+  if (has('where do i start', 'where should i start', 'where to start', 'por donde empiezo', 'por dónde empiezo')) {
+    return saraCollegeStageIds.start;
+  }
   if (has('transfer', 'transferir', 'sjsu', 'csu', 'assist.org') || /\buc\b/.test(lower)) {
     return saraCollegeStageIds.transfer;
   }

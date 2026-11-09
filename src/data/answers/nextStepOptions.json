@@ -1,0 +1,711 @@
+{
+  "lastReviewed": "2026-11-09",
+  "personas": {
+    "sofia": {
+      "name": "Sofia Delgado",
+      "age": 17,
+      "city": "Fremont",
+      "nodes": [
+        {
+          "id": "a",
+          "stage": "Where do I start? (Q1, Q9)",
+          "keep_in_mind": [
+            "The aid application comes first: every state program, including the fee waiver, flows from a FAFSA or CADAA, and community colleges tell students to apply for aid before applying to the college.",
+            "California now expects every high school senior to complete a FAFSA or CADAA unless the family opts out, so Sofia's school may already have a process.",
+            "Ohlone's own checklist: FAFSA opens October 1, priority Cal Grant date March 2, school code 004481, refile every year."
+          ],
+          "options": [
+            {
+              "label": "File the FAFSA or California Dream Act Application",
+              "why": "Starting point for Pell, Cal Grant, the fee waiver, and most campus aid; you may qualify even if your family has never applied.",
+              "who": "Federal Student Aid (FAFSA) or California Student Aid Commission (CADAA)",
+              "area": "National / California",
+              "contact": "studentaid.gov or dream.csac.ca.gov; CSAC 888-224-7268",
+              "deadline": "Opens Oct 1; March 2 state priority deadline; Sept 2 for community college Cal Grant entitlement",
+              "cost": "Free",
+              "language": "FAFSA in English and Spanish; CSAC hotline supports Spanish",
+              "prepare": "Student and parent FSA ID (FAFSA) or CSAC account (CADAA); 2024 tax info or income records",
+              "source": "https://www.csac.ca.gov/apply",
+              "source2": "https://www.ohlone.edu/admissions/newstudents"
+            },
+            {
+              "label": "Ask your high school about the FAFSA/CADAA completion requirement",
+              "why": "Since the All In requirement, high schools must confirm each senior completed an aid application or opted out, so your counselor or college-and-career center is already set up to help.",
+              "who": "Your high school counseling or college & career center",
+              "area": "Sofia's Fremont high school",
+              "contact": "unknown (school-specific)",
+              "deadline": "School-set; before graduation",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.csac.ca.gov/all-in"
+            },
+            {
+              "label": "Apply to Ohlone College (closest community college to Fremont)",
+              "why": "Open admission for any California high school graduate; Ohlone lists a 7-step aid process and awards the fee waiver automatically from your FAFSA/CADAA.",
+              "who": "Ohlone College Admissions & Records",
+              "area": "Fremont / Newark / Union City",
+              "contact": "43600 Mission Blvd, Fremont; 510-659-6000",
+              "deadline": "Rolling; register before fees are due (fees due at registration, 5-day grace)",
+              "cost": "Application free; $46/unit enrollment fee unless waived",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/admissions/newstudents",
+              "source2": "https://www.cccco.edu/wp-content/uploads/2026/09/2024-admissions-and-records-handbook-1.1-a11y.pdf"
+            }
+          ]
+        },
+        {
+          "id": "b",
+          "stage": "Explore careers (Q3 + new)",
+          "keep_in_mind": [
+            "Being undecided is common: 36 percent of adults who went to college would pick a different field if they could redo it.",
+            "Do not link California CareerZone; it is being retired and replaced by the California Career Studio (Fall 2026). Use O*NET until the Studio is live.",
+            "Healthcare programs often carry extra costs (uniforms, exams, supplies); ask about Zero Textbook Cost sections."
+          ],
+          "options": [
+            {
+              "label": "Take the free O*NET Interest Profiler",
+              "why": "30 or 60 questions, free, in English or Spanish; maps interests to 900+ occupations so a 'biology, maybe healthcare' answer becomes a short list of real jobs.",
+              "who": "U.S. Department of Labor O*NET (My Next Move / Mi Próximo Paso)",
+              "area": "National",
+              "contact": "onetinterestprofiler.org",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://www.onetcenter.org/IP.html",
+              "source2": "https://onetinterestprofiler.org/"
+            },
+            {
+              "label": "Watch for the California Career Studio launch",
+              "why": "State replacement for CareerZone; will be the official California career-exploration tool once live.",
+              "who": "California Career Resource Network (CalCRN)",
+              "area": "California",
+              "contact": "californiacareers.info",
+              "deadline": "Launching Fall 2026 (verify before linking)",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.californiacareers.info/news-and-event/California%20CareerZone%20FAQ"
+            },
+            {
+              "label": "Ask a counselor about a healthcare or STEM pathway at the college",
+              "why": "Community colleges group majors into pathways so you can start general science courses that count toward several healthcare majors while you decide.",
+              "who": "College counseling office (e.g., Ohlone Counseling)",
+              "area": "Local college",
+              "contact": "unknown (college-specific)",
+              "deadline": "Before first registration",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.cccco.edu/about-us/chancellors-office/divisions/educational-services-and-support/burden-free-instructional-materials/understanding-instructional-materials/"
+            }
+          ]
+        },
+        {
+          "id": "c",
+          "stage": "Colleges & true cost (Q2, Q5 + new)",
+          "keep_in_mind": [
+            "'Free' means the $46-per-unit enrollment fee is waived if you qualify; books, food, rent, and transportation are separate and need a FAFSA/CADAA.",
+            "California public college students spend about $938 a year on course materials; Zero Textbook Cost pathways saved community college students $32.9M in 2024-25.",
+            "Every California community college has a Basic Needs Center; 136,868 students used one in fall 2024.",
+            "Proximity (46%) and cost (39%) are the top two reasons adults pick where to enroll, so 'near me and not expensive' is the right first filter."
+          ],
+          "options": [
+            {
+              "label": "Check whether you qualify for the California College Promise Grant (fee waiver)",
+              "why": "Waives the $46/unit enrollment fee for eligible California residents and AB 540 students; completing FAFSA/CADAA is enough to be considered. Keep a 2.0 GPA and complete more than half your units to stay eligible.",
+              "who": "Your college financial aid office (state program)",
+              "area": "All California community colleges",
+              "contact": "Ohlone Financial Aid, Fremont campus",
+              "deadline": "Apply before registering so fees are waived at sign-up",
+              "cost": "Free",
+              "language": "Application available in English and other languages",
+              "source": "https://icangotocollege.com/financial-aid/california-college-promise-grant",
+              "source2": "https://www.cccco.edu/wp-content/uploads/2025/09/2026-27-english-ccpg-application-a11y.pdf"
+            },
+            {
+              "label": "Apply for the Ohlone Promise Scholarship (Tri-City public high school seniors)",
+              "why": "Donor-funded; pays tuition, books, and fees for up to 60 units over two years. You may qualify with a 2.0 high school GPA, a FAFSA or CADAA on file, one recommendation letter, and two short essays. Requires 15 units per semester and a counselor meeting each semester to keep it.",
+              "who": "Ohlone College Foundation",
+              "area": "Fremont, Newark, New Haven Unified public high schools",
+              "contact": "Ohlone Foundation office; ohlone.edu/foundation/ohlonepromisescholarship",
+              "deadline": "unknown for 2027 (prior cycles opened in spring); FAFSA/CADAA by March 2 each year to keep it",
+              "cost": "Free to apply",
+              "language": "unknown",
+              "prepare": "Recommendation letter from a principal, teacher, or counselor; two essays; FAFSA/CADAA confirmation",
+              "source": "https://www.ohlone.edu/foundation/ohlonepromisescholarship"
+            },
+            {
+              "label": "Compare Santa Clara County Promise programs if you'd rather study in San José",
+              "why": "San José Promise 60 (SJCC) covers tuition, fees, books, and a VTA pass; First 2 Free (EVC) covers tuition only. Both require first-time, full-time enrollment and a 2.0 GPA to continue.",
+              "who": "San José City College / Evergreen Valley College",
+              "area": "San José",
+              "contact": "See SJPL comparison page",
+              "deadline": "Program-specific",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.sjpl.org/college-promise-comparison/"
+            },
+            {
+              "label": "Ask the Basic Needs Resource Center about food, transit, and emergency help",
+              "why": "Ohlone's center offers CalFresh application help, free grocery distributions, one-on-one resource navigation, and emergency aid requests up to $500; helped nearly 4,000 households to date.",
+              "who": "Ohlone College Basic Needs Resource Center",
+              "area": "Ohlone students",
+              "contact": "basicneeds@ohlone.edu; Fremont campus Building 6",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/basicneeds",
+              "source2": "https://www.ohlone.edu/basicneeds/food-security"
+            }
+          ]
+        },
+        {
+          "id": "f",
+          "stage": "Transfer path (Q4)",
+          "keep_in_mind": [
+            "An Associate Degree for Transfer guarantees priority admission to the CSU system, not to SJSU specifically; SJSU is impacted in every major and ranks transfers by GPA.",
+            "SJSU gives a 0.25 GPA boost to 'local' transfers who earn most units at a Santa Clara or Santa Cruz County college. Ohlone (Alameda County) is not local for SJSU, so where Sofia takes her units matters.",
+            "UC TAG covers six campuses (not Berkeley, UCLA, San Diego); apply Sept 1 to 30 the year before transfer.",
+            "The Cal Grant Transfer Entitlement needs a 2.4 community college GPA and age under 28."
+          ],
+          "options": [
+            {
+              "label": "Pick an Associate Degree for Transfer (AA-T/AS-T) major early",
+              "why": "60 units, 2.0 GPA, guaranteed priority admission to the CSU system with junior standing and a bachelor's in 60 more units; SJSU gives ADT holders in a similar major priority consideration.",
+              "who": "Your college transfer center",
+              "area": "All CCC → CSU",
+              "contact": "Transfer center counselor",
+              "deadline": "Choose in first semester to stay on track",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.calstate.edu/apply/transfer/pages/ccc-associate-degree-for-transfer.aspx",
+              "source2": "https://www2.sjsu.edu/admissions/impaction/supplemental-application-transfers/supplemental-app-help-guide.php"
+            },
+            {
+              "label": "Sign a CSU Transfer Success Pathway agreement for a guaranteed campus and major",
+              "why": "Unlike the ADT, TSP can guarantee a seat at a specific CSU campus and major if you meet the agreement within three years. Open to first-time community college students.",
+              "who": "California State University",
+              "area": "CSU system",
+              "contact": "calstate.edu TSP FAQ",
+              "deadline": "Agreement window set annually (verify)",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.calstate.edu/apply/transfer/Pages/tsp-faq.aspx"
+            },
+            {
+              "label": "If SJSU is the goal, plan units at a Santa Clara County college",
+              "why": "SJSU's impaction rules add 0.25 GPA for transfers who complete the majority of transferable units in Santa Clara or Santa Cruz County (De Anza, Mission, SJCC, EVC, Foothill, West Valley, Gavilan, Cabrillo).",
+              "who": "San José State University Admissions",
+              "area": "Santa Clara & Santa Cruz counties",
+              "contact": "sjsu.edu/admissions/impaction",
+              "deadline": "Cal State Apply Oct 1 to Nov 30 for fall (verify); SJSU supplemental app posted late December",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.sjsu.edu/admissions/impaction/"
+            },
+            {
+              "label": "File a UC Transfer Admission Guarantee if a UC is the goal",
+              "why": "Six UC campuses guarantee admission to community college students who meet GPA and course terms; needs 30 UC-transferable units at submission and 60 by the spring before transfer.",
+              "who": "University of California (UC TAP)",
+              "area": "Davis, Irvine, Merced, Riverside, Santa Barbara, Santa Cruz",
+              "contact": "UC Transfer Admission Planner",
+              "deadline": "Sept 1 to 30, the year before transfer",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/uc-transfer-programs/transfer-admission-guarantee-tag.html"
+            }
+          ]
+        },
+        {
+          "id": "d",
+          "stage": "Pay for it (Q6 + 3 programmed + new)",
+          "keep_in_mind": [
+            "File one application, not both. FAFSA: citizens, permanent residents, T-visa, eligible non-citizens. CADAA: undocumented, DACA (valid or expired), U visa, TPS, AB 540, and mixed-status families who prefer not to file a FAFSA.",
+            "WhatSack should show both lists and let the user choose; never infer immigration status.",
+            "Cal Grant A needs a 3.0 high school GPA, Cal Grant B 2.0; the community college entitlement deadline is Sept 2 and schools usually submit GPAs electronically.",
+            "'Promise grant' means two different things: the state fee waiver (2.0 to keep) and local Promise programs (first-time, full-time)."
+          ],
+          "options": [
+            {
+              "label": "Decide FAFSA vs. CADAA using the CSAC eligibility list",
+              "why": "The two forms unlock the same state aid; picking the right one avoids a rejected application and protects family information.",
+              "who": "California Student Aid Commission",
+              "area": "California",
+              "contact": "csac.ca.gov/cadaa-and-eligibility; 888-224-7268",
+              "deadline": "March 2 priority",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://csac.ca.gov/cadaa-and-eligibility"
+            },
+            {
+              "label": "Go to a free Cash for College workshop for hands-on help",
+              "why": "Trained staff walk families through FAFSA or CADAA line by line; this is the 'assistance' that research shows actually raises completion and enrollment.",
+              "who": "CSAC Cash for College (in person and webinars)",
+              "area": "California; local sites in Alameda and Santa Clara counties",
+              "contact": "cash4college.csac.ca.gov; webinars at csac.ca.gov/c4c",
+              "deadline": "Workshops run Oct 1 to June 30",
+              "cost": "Free",
+              "language": "English, Spanish, Mandarin, and other languages by session",
+              "prepare": "Student and parent IDs/FSA IDs, Social Security or CSAC account info, 2024 tax returns or income records",
+              "source": "https://cash4college.csac.ca.gov/",
+              "source2": "https://www.csac.ca.gov/cash-college"
+            },
+            {
+              "label": "Confirm your Cal Grant GPA was submitted",
+              "why": "High schools and colleges typically send GPAs electronically, but a missing GPA is a common reason students lose a Cal Grant; verify in your WebGrants 4 Students account.",
+              "who": "CSAC / your high school registrar",
+              "area": "California",
+              "contact": "mygrantinfo.csac.ca.gov",
+              "deadline": "March 2 (Sept 2 for community college entitlement)",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://www.csac.ca.gov/post/cal-grant-community-college-entitlement-award",
+              "source2": "https://www.csac.ca.gov/sites/main/files/file-attachments/cal_grant_one_pager.pdf"
+            },
+            {
+              "label": "Apply to EOPS once enrolled",
+              "why": "EOPS provides counseling, book vouchers, grants, and priority registration for low-income, first-generation, and educationally disadvantaged students; undocumented students welcome at Ohlone.",
+              "who": "Ohlone College EOPS",
+              "area": "Ohlone students (full-time, CA resident/AB 540, aid recipients)",
+              "contact": "eops@ohlone.edu; 510-659-6152; Fremont Bldg 7, 2nd floor",
+              "deadline": "Apply after admission; before the semester starts",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/eops",
+              "source2": "https://www.cccco.edu/wp-content/uploads/2026/02/2025-eops-report-a11y.pdf"
+            }
+          ]
+        },
+        {
+          "id": "e",
+          "stage": "Life changes (Q7)",
+          "keep_in_mind": [
+            "Loss of employment is a listed 'special financial circumstance'; the college financial aid office, not the FAFSA form, is where the adjustment happens.",
+            "The school's professional-judgment decision is final and cannot be appealed to the Department of Education.",
+            "A job loss may also make the household eligible for CalFresh or CalWORKs; CalWORKs, SSI/SSP, or General Assistance qualifies the student for the fee waiver automatically (Method A)."
+          ],
+          "options": [
+            {
+              "label": "Submit the FAFSA/CADAA as-is, then request a special circumstances review",
+              "why": "The form asks for prior-year income; a 2026 layoff will not show. The financial aid office can recalculate your aid using current income with documentation.",
+              "who": "College financial aid office (professional judgment)",
+              "area": "Any college you apply to",
+              "contact": "Financial aid office at each college (e.g., Ohlone Financial Aid)",
+              "deadline": "As soon as you have an admission offer; before the term starts for first-term aid",
+              "cost": "Free",
+              "language": "unknown",
+              "prepare": "Layoff notice or EDD award letter, recent pay stubs, a short written explanation",
+              "source": "https://studentaid.gov/help/reporting-special-financial-circumstances",
+              "source2": "https://studentaid.gov/help-center/answers/article/what-is-professional-judgment"
+            },
+            {
+              "label": "Check whether the household now qualifies for CalFresh",
+              "why": "Lower household income may qualify your family for monthly food benefits; college students have their own eligibility rules and campus Basic Needs Centers help with the application.",
+              "who": "Alameda County Social Services via GetCalFresh / Ohlone Basic Needs",
+              "area": "Alameda County (Fremont)",
+              "contact": "getcalfresh.org/s/ohlone-ccd; basicneeds@ohlone.edu",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "GetCalFresh in English, Spanish, Chinese, and others",
+              "source": "https://www.ohlone.edu/basicneeds/food-security",
+              "source2": "https://www.cccco.edu/wp-content/uploads/2026/06/2024-25-basic-needs-centers-report-a11y.pdf"
+            },
+            {
+              "label": "Re-check fee waiver eligibility under Method A",
+              "why": "If the family receives CalWORKs, SSI/SSP, or General Assistance after the layoff, the student qualifies for the California College Promise Grant without an income test.",
+              "who": "College financial aid office",
+              "area": "All California community colleges",
+              "contact": "Financial aid office",
+              "deadline": "Any time during the year",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.cccco.edu/wp-content/uploads/2025/09/2026-27-english-ccpg-application-a11y.pdf"
+            }
+          ]
+        },
+        {
+          "id": "g",
+          "stage": "Human help (Q8 + programmed + new)",
+          "keep_in_mind": [
+            "California's school counselor ratio is 464:1, so 'ask your counselor' is not enough; name people whose job is this.",
+            "EOPS students earn associate degrees at a 31 percent rate and reach degree-plus-transfer at 22 percent versus 12 percent for comparable peers.",
+            "Georgia State's text assistant still routed about 13.5 percent of messages to staff; WhatSack should always offer a human."
+          ],
+          "options": [
+            {
+              "label": "Book a Cash for College workshop (free, bilingual)",
+              "why": "One-on-one FAFSA/CADAA help from trained volunteers, Oct through June, in person and online.",
+              "who": "CSAC Cash for College",
+              "area": "California",
+              "contact": "cash4college.csac.ca.gov",
+              "deadline": "Oct 1 to June 30",
+              "cost": "Free",
+              "language": "English, Spanish, other languages by session",
+              "source": "https://cash4college.csac.ca.gov/"
+            },
+            {
+              "label": "Join a first-year program that bundles support",
+              "why": "Evergreen Valley's First Year Experience gives first-time students the fee waiver, a $500 grant, priority registration, and a textbook lending library if they file FAFSA/CADAA; Ohlone's EOPS offers counseling, book vouchers, and transfer help.",
+              "who": "EVC First Year Experience / Ohlone EOPS",
+              "area": "San José / Fremont",
+              "contact": "evc.edu/services/fye; eops@ohlone.edu 510-659-6152",
+              "deadline": "Apply before first semester",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.evc.edu/services/fye/index.html",
+              "source2": "https://www.ohlone.edu/eops"
+            },
+            {
+              "label": "Call the CSAC hotline for financial aid questions",
+              "why": "State staff answer FAFSA, CADAA, and Cal Grant questions directly.",
+              "who": "California Student Aid Commission",
+              "area": "California",
+              "contact": "888-224-7268",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://cash4college.csac.ca.gov/"
+            },
+            {
+              "label": "Ask the campus Dreamer or EOPS office if immigration status is a concern",
+              "why": "San José City College lists a named EOPS/Dreamer contact; Ohlone has Dreamers Support Services and an AB 540 application guide.",
+              "who": "SJCC EOPS/Dreamer office; Ohlone Dreamers Support Services",
+              "area": "San José / Fremont",
+              "contact": "SJCC 408-288-3168; ohlone.edu/dreamers",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://icangotocollege.com/colleges/san-jose-city",
+              "source2": "https://www.ohlone.edu/dreamers/apply"
+            }
+          ]
+        },
+        {
+          "id": "h",
+          "stage": "After graduation (new)",
+          "keep_in_mind": [
+            "10 to 40 percent of college-intending graduates never enroll in the fall; about 40 percent for community-college-bound students.",
+            "Task-specific reminders cut melt 21 percent at Georgia State; a dated checklist is the right format.",
+            "Your fee waiver and Promise scholarship both depend on completing FAFSA/CADAA and, for Promise, enrolling full time."
+          ],
+          "options": [
+            {
+              "label": "Confirm your financial aid award and clear any verification holds",
+              "why": "Schools often request extra documents (tax transcripts, agency certifications, transcripts) by email; an unanswered request delays aid and can trigger a drop for nonpayment.",
+              "who": "College financial aid office",
+              "area": "Your college",
+              "contact": "Ohlone sends requests to your student email; submit via Student Forms",
+              "deadline": "Before fees are due at registration",
+              "cost": "Free",
+              "language": "unknown",
+              "prepare": "IRS tax transcript or signed return, agency certification if receiving public benefits, prior transcripts",
+              "source": "https://www.ohlone.edu/finaid",
+              "source2": "https://www.ohlone.edu/admissions/newstudents"
+            },
+            {
+              "label": "Complete orientation, placement, and your first education plan",
+              "why": "Required before priority registration at most colleges; the counselor meeting also satisfies Promise scholarship rules.",
+              "who": "College counseling / student success center",
+              "area": "Your college",
+              "contact": "unknown (college-specific)",
+              "deadline": "Before registration opens (summer)",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/foundation/ohlonepromisescholarship"
+            },
+            {
+              "label": "Send your final high school transcript",
+              "why": "Needed for Cal Grant GPA verification, Promise eligibility, and course placement.",
+              "who": "High school registrar → college Admissions & Records",
+              "area": "Your high school",
+              "contact": "unknown (school-specific)",
+              "deadline": "After graduation, before fall term",
+              "cost": "Usually free; unknown",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/dreamers/apply"
+            },
+            {
+              "label": "Budget for books and check for Zero Textbook Cost sections",
+              "why": "Course materials average about $938 a year; ZTC sections and the EOPS book voucher can remove most of it.",
+              "who": "College bookstore / class schedule ZTC filter",
+              "area": "Your college",
+              "contact": "Class schedule (ZTC icon required by AB 607 cost display)",
+              "deadline": "Before the first day of class",
+              "cost": "Varies",
+              "language": "unknown",
+              "source": "https://www.cccco.edu/about-us/chancellors-office/divisions/educational-services-and-support/burden-free-instructional-materials/understanding-instructional-materials/",
+              "source2": "https://www.cccco.edu/about-us/news-and-media/press-releases/2026-ztc-program-recognized-for-saving-ca-community-college-students-33-million/"
+            }
+          ]
+        },
+        {
+          "id": "x",
+          "stage": "Basic needs (cross-category)",
+          "keep_in_mind": [
+            "Every California community college funds a Basic Needs Center ($43.5M/yr statewide) with a coordinator for food, housing, transportation, technology, and childcare.",
+            "This is the bridge from the education pathway to WhatSack's food category and to Maria's CalFresh scenario."
+          ],
+          "options": [
+            {
+              "label": "Schedule a basic needs resource-navigation appointment",
+              "why": "Non-clinical, one-on-one help connecting to food, housing, transit, hygiene, health, and emergency funds; Ohlone's team includes a Basic Needs Coordinator and MSW intern.",
+              "who": "Ohlone Basic Needs Resource Center",
+              "area": "Ohlone students",
+              "contact": "basicneeds@ohlone.edu; Basic Needs Assistance form",
+              "deadline": "None (closed winter break)",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/basicneeds/case-management"
+            },
+            {
+              "label": "Apply for CalFresh in about 10 minutes",
+              "why": "Single-person student households may receive up to $281 a month for groceries if income is under 200 percent of poverty and a student exemption applies.",
+              "who": "GetCalFresh (Ohlone partner link) / Alameda County Community Food Bank",
+              "area": "Alameda County",
+              "contact": "getcalfresh.org/s/ohlone-ccd; ACCFB helpline 510-635-3663",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English, Spanish, Chinese, others",
+              "source": "https://www.ohlone.edu/basicneeds/food-security"
+            }
+          ]
+        }
+      ]
+    },
+    "daniel": {
+      "name": "Daniel Delgado",
+      "age": 45,
+      "city": "Silicon Valley",
+      "nodes": [
+        {
+          "id": "a",
+          "stage": "Laid off (intake)",
+          "keep_in_mind": [
+            "Ask city before anything else: NOVAworks (Sunnyvale) and work2future (San José) are the two America's Job Centers in Santa Clara County and serve different areas.",
+            "Report your interest in California Training Benefits early; the 16-week clock starts with your first benefit payment.",
+            "EDD pays no tuition, fees, books, or transportation; funding comes from the job centers, financial aid, or employer programs."
+          ],
+          "options": [
+            {
+              "label": "Attend a work2future orientation (San José / Gilroy)",
+              "why": "Required first step for WIOA-funded training; a layoff letter or UI documents count as eligibility proof. Access to 150+ certificate programs through training partners.",
+              "who": "work2future (City of San José)",
+              "area": "San José, Gilroy, south Santa Clara County",
+              "contact": "408-794-1101; work2future.org/jobseekers",
+              "deadline": "Orientations scheduled regularly (check site)",
+              "cost": "Free",
+              "language": "unknown",
+              "prepare": "Layoff letter or EDD documents, ID, work authorization, résumé",
+              "source": "https://www.work2future.org/jobseekers/",
+              "source2": "https://www.work2future.org/skills/"
+            },
+            {
+              "label": "Register with NOVAworks (Sunnyvale) if you live in north county",
+              "why": "Offers assessment, career coaching, a training plan, and a limited number of training scholarships from the state Eligible Training Provider List; walks claimants through the CTB request.",
+              "who": "NOVAworks Job Center",
+              "area": "Sunnyvale and north Santa Clara County; San Mateo County",
+              "contact": "408-730-7232; novaworks.org/career-seekers/training",
+              "deadline": "None; scholarships limited",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://novaworks.org/career-seekers/training/",
+              "source2": "https://edd.ca.gov/en/newsroom/benefitting-californians/benefiting-californians-2026/from-layoff-to-moving-forward/"
+            }
+          ]
+        },
+        {
+          "id": "b",
+          "stage": "Training & EDD rules",
+          "keep_in_mind": [
+            "With CTB approval you keep collecting benefits while in approved training and are exempt from looking for or accepting work.",
+            "You must tell EDD you are interested in CTB before your 16th week of payments to be considered for a training extension (extra weeks).",
+            "Self-arranged training must be full time (about 20 hours a week or 12 units), from an accredited or approved provider, in an in-demand field, and finishable in 24 months. Online training can qualify."
+          ],
+          "options": [
+            {
+              "label": "Tell EDD you are interested in CTB now",
+              "why": "Starts the training-extension eligibility; you can do it through UI Online under School or Training → California Training Benefits, by phone, or at an AJCC.",
+              "who": "EDD Unemployment Insurance",
+              "area": "California",
+              "contact": "myEDD / UI Online; Tele-Cert 1-866-333-4606; or your AJCC",
+              "deadline": "Before the 16th week of benefit payments (or before a short claim hits zero)",
+              "cost": "Free",
+              "language": "English, Spanish (phone)",
+              "prepare": "Training occupation or career goal; expected provider and dates",
+              "source": "https://edd.ca.gov/en/unemployment/California_Training_Benefits/",
+              "source2": "https://edd.ca.gov/en/unemployment/qualifying_for_a_training_extension/"
+            },
+            {
+              "label": "Report your training start date the week you begin",
+              "why": "EDD then mails the CTB application (DE 3100T), due within 10 days of the mail date, or schedules a phone interview. Approval comes as a Notice of Determination (DE 1080).",
+              "who": "EDD",
+              "area": "California",
+              "contact": "UI Online certification question 5 or Tele-Cert",
+              "deadline": "The week training starts; return DE 3100T within 10 days",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "prepare": "Dates and schedule of attendance, breaks, training occupation, school information",
+              "source": "https://edd.ca.gov/en/unemployment/FAQ_-_California_Training_Benefits/",
+              "source2": "https://edd.ca.gov/en/unemployment/how_to_report_school_or_training/"
+            },
+            {
+              "label": "Read the CTB tips sheet (DE 2332) before choosing a program",
+              "why": "Four-step summary of how to qualify, what counts as approved training, and what to have ready for the interview.",
+              "who": "EDD publication",
+              "area": "California",
+              "contact": "edd.ca.gov PDF",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English (other languages unknown)",
+              "source": "https://edd.ca.gov/siteassets/files/pdf_pub_ctr/de2332.pdf"
+            }
+          ]
+        },
+        {
+          "id": "c",
+          "stage": "Funded training",
+          "keep_in_mind": [
+            "If you attend WIOA-funded training through a job center, the job center representative reports your attendance to EDD and the program is usually pre-approved for CTB.",
+            "Community college certificates still qualify for the fee waiver and Cal Grant C; Ohlone noncredit classes are free and do not use financial aid.",
+            "Adults who stopped out rank flexible delivery and short time-to-finish first (47 percent each)."
+          ],
+          "options": [
+            {
+              "label": "Ask the job center about a WIOA training scholarship",
+              "why": "Covers tuition for programs on the state Eligible Training Provider List; eligibility is documented with a layoff letter or UI paperwork after orientation.",
+              "who": "work2future or NOVAworks",
+              "area": "Santa Clara County",
+              "contact": "work2future 408-794-1101; NOVAworks 408-730-7232",
+              "deadline": "Funds limited; apply after orientation",
+              "cost": "Free to applicant if awarded",
+              "language": "unknown",
+              "source": "https://www.work2future.org/skills/",
+              "source2": "https://novaworks.org/career-seekers/training/"
+            },
+            {
+              "label": "Use free online certificate tracks offered through NOVAworks",
+              "why": "NOVAworks lists IBM SkillsBuild and LinkedIn Learning access for career seekers; useful for a technology certificate while a funded program is arranged.",
+              "who": "NOVAworks",
+              "area": "NOVAworks service area",
+              "contact": "novaworks.org/career-seekers/training",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://novaworks.org/career-seekers/training/"
+            },
+            {
+              "label": "File FAFSA/CADAA for a community college certificate",
+              "why": "Adults qualify for the fee waiver and Cal Grant C (career-technical) at community colleges; noncredit classes at Ohlone are tuition-free and repeatable.",
+              "who": "Local community college financial aid office",
+              "area": "Local college",
+              "contact": "Financial aid office",
+              "deadline": "Sept 2 for community college Cal Grant entitlement",
+              "cost": "Free to apply; $46/unit unless waived",
+              "language": "English, Spanish (FAFSA)",
+              "source": "https://www.csac.ca.gov/cal-grants",
+              "source2": "https://www.ohlone.edu/admissions/newstudents"
+            }
+          ]
+        },
+        {
+          "id": "d",
+          "stage": "Schedule fit",
+          "keep_in_mind": [
+            "Evening and online classes exist, but self-arranged part-time study may not qualify for CTB, which requires about 20 hours a week or 12 units. Job-center-approved programs follow their own schedule rules.",
+            "Online training can be approved for CTB if it meets the criteria for its training type.",
+            "In the 2026 California survey, 53 percent of interested adults called class times a very significant barrier and 43 percent cited work responsibilities."
+          ],
+          "options": [
+            {
+              "label": "Ask the AJCC advisor which evening or online programs are CTB-approved",
+              "why": "Advisors know which providers on the ETPL run evening cohorts and already meet EDD's full-time definition.",
+              "who": "work2future / NOVAworks career advisor",
+              "area": "Santa Clara County",
+              "contact": "408-794-1101 / 408-730-7232",
+              "deadline": "Before enrolling",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://edd.ca.gov/en/unemployment/FAQ_-_California_Training_Benefits/"
+            },
+            {
+              "label": "If you are not CTB-approved, keep certifying as available for work",
+              "why": "You can still attend school while collecting benefits, but you must remain available to work, actively seek work, and accept work each week.",
+              "who": "EDD",
+              "area": "California",
+              "contact": "UI Online / Tele-Cert",
+              "deadline": "Every two weeks",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://edd.ca.gov/en/unemployment/FAQ_-_California_Training_Benefits/"
+            }
+          ]
+        },
+        {
+          "id": "e",
+          "stage": "Career navigator",
+          "keep_in_mind": [
+            "Every Daniel answer should end with a named human: an America's Job Center career advisor.",
+            "EDD's own 2026 case story shows the sequence: assessment, career coaching, training plan, then CTB request."
+          ],
+          "options": [
+            {
+              "label": "Book a career advisor appointment after orientation",
+              "why": "Advisors confirm eligibility, match you to funded programs, and coordinate with EDD on CTB; bring your questions about duration, schedule, cost, and job placement.",
+              "who": "work2future or NOVAworks",
+              "area": "Santa Clara County",
+              "contact": "408-794-1101 / 408-730-7232",
+              "deadline": "After orientation",
+              "cost": "Free",
+              "language": "unknown",
+              "prepare": "Résumé, layoff letter, list of target occupations from O*NET Interest Profiler",
+              "source": "https://www.work2future.org/jobseekers/",
+              "source2": "https://edd.ca.gov/en/newsroom/benefitting-californians/benefiting-californians-2026/from-layoff-to-moving-forward/"
+            },
+            {
+              "label": "Take the O*NET Interest Profiler before the meeting",
+              "why": "Gives the advisor a starting list of occupations; free, 30 or 60 questions, English or Spanish.",
+              "who": "O*NET / My Next Move",
+              "area": "National",
+              "contact": "onetinterestprofiler.org",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English, Spanish",
+              "source": "https://www.onetcenter.org/IP.html"
+            }
+          ]
+        },
+        {
+          "id": "x",
+          "stage": "Food & education (cross-category)",
+          "keep_in_mind": [
+            "A household income drop may qualify the family for CalFresh; if Daniel enrolls at a community college, the campus Basic Needs Center can help with the application and emergency aid.",
+            "Receiving CalWORKs or General Assistance qualifies a student for the fee waiver automatically (Method A)."
+          ],
+          "options": [
+            {
+              "label": "Apply for CalFresh for the household",
+              "why": "Monthly food benefits for low-income households; applying takes about 10 minutes online and campus centers help students meet the student exemption rules.",
+              "who": "County social services via GetCalFresh / campus Basic Needs Center",
+              "area": "Alameda or Santa Clara County",
+              "contact": "getcalfresh.org; campus basic needs office",
+              "deadline": "None",
+              "cost": "Free",
+              "language": "English, Spanish, Chinese, others",
+              "source": "https://www.ohlone.edu/basicneeds/food-security",
+              "source2": "https://www.cccco.edu/wp-content/uploads/2026/06/2024-25-basic-needs-centers-report-a11y.pdf"
+            },
+            {
+              "label": "Ask about EOPS/CARE/CalWORKs programs at the college",
+              "why": "If the family receives CalWORKs, campus CalWORKs programs add grants, childcare help, and counseling for students in vocational training.",
+              "who": "College EOPS / CalWORKs office (e.g., Ohlone)",
+              "area": "Local college",
+              "contact": "eops@ohlone.edu; 510-659-6152",
+              "deadline": "After enrollment",
+              "cost": "Free",
+              "language": "unknown",
+              "source": "https://www.ohlone.edu/basicneeds/parent-resources"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,354 +1,228 @@
 import React from 'react';
-import { Language, IntakeProfile, CategoryId, IntakeUrgency, OtherBasicNeed, AccessPreference } from '../../types';
-import { Lock } from 'lucide-react';
+import { Check } from 'lucide-react';
+import type { CategoryId, IntakeProfile, Language } from '../../types';
 
-const CITIES = [
+export type NeedChoice = CategoryId | 'housing';
+export type UrgencyChoice = 'today' | 'this-week' | 'exploring';
+
+const needOptions: Array<{
+  id: NeedChoice;
+  en: string;
+  es: string;
+  hintEn: string;
+  hintEs: string;
+}> = [
+  { id: 'food', en: 'Food', es: 'Comida', hintEn: 'Groceries, pantry items, meals', hintEs: 'Despensa, comida y comidas' },
+  { id: 'mental-health', en: 'Mental health', es: 'Salud mental', hintEn: 'Counseling, peer support, crisis help', hintEs: 'Consejería, apoyo entre pares y ayuda' },
+  { id: 'workforce', en: 'Education & workforce', es: 'Educación y trabajo', hintEn: 'School, classes, job training', hintEs: 'Escuela, clases y capacitación' },
+  { id: 'community', en: 'Community connection', es: 'Conexión comunitaria', hintEn: 'Groups, senior programs, local events', hintEs: 'Grupos, programas para mayores y eventos' },
+  { id: 'housing', en: 'Housing / bills / transportation', es: 'Vivienda / pagos / transporte', hintEn: 'Rent, utility help, rides, buses', hintEs: 'Renta, ayuda de servicios y transporte' },
+];
+
+const urgencyOptions: Array<{ value: UrgencyChoice; en: string; es: string }> = [
+  { value: 'today', en: 'Today', es: 'Hoy' },
+  { value: 'this-week', en: 'This week', es: 'Esta semana' },
+  { value: 'exploring', en: 'Just exploring', es: 'Solo estoy explorando' },
+];
+
+const cityOptions = [
+  'Anywhere in Silicon Valley',
   'East San Jose',
   'San Jose',
-  'Fremont',
-  'Union City',
-  'Newark',
-  'Santa Clara',
   'Sunnyvale',
   'Mountain View',
   'Redwood City',
   'Milpitas / Sunnyvale',
   'Cupertino / Los Altos Hills',
-  'Other Silicon Valley'
+  'Other Silicon Valley',
 ];
-
-const AGE_OPTIONS: Array<{ value: IntakeProfile['ageRange']; en: string; es: string }> = [
-  { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no decirlo' },
-  { value: 'under-18', en: 'Youth (Under 18)', es: 'Jóvenes (Menores de 18)' },
-  { value: '18-24', en: '18 – 24 (Young Adult)', es: '18 – 24 (Adulto Joven)' },
-  { value: '25-49', en: '25 – 49 (Adult)', es: '25 – 49 (Adulto)' },
-  { value: '50-64', en: '50 – 64 (Older Adult)', es: '50 – 64 (Adulto Mayor)' },
-  { value: '65+', en: '65+ (Senior Citizen)', es: '65+ (Adulto Mayor)' }
-];
-
-const INCOME_OPTIONS: Array<{ value: IntakeProfile['monthlyIncome']; en: string; es: string }> = [
-  { value: '< $2,500', en: 'Under $2,500 / month', es: 'Menos de $2,500 / mes' },
-  { value: '$2,500 - $4,500', en: '$2,500 – $4,500 / month', es: '$2,500 – $4,500 / mes' },
-  { value: '$4,500 - $7,000', en: '$4,500 – $7,000 / month', es: '$4,500 – $7,000 / mes' },
-  { value: '$7,000+', en: '$7,000+ / month', es: '$7,000+ / mes' },
-  { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no especificar' }
-];
-
-const EMPLOYMENT_OPTIONS: Array<{ value: IntakeProfile['employmentStatus']; en: string; es: string }> = [
-  { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no decirlo' },
-  { value: 'part-time', en: 'Part-Time / Shift Worker', es: 'Medio Tiempo / Turnos' },
-  { value: 'laid-off', en: 'Recently Laid-Off / Unemployed', es: 'Despedido Reciente / Desempleado' },
-  { value: 'employed', en: 'Employed Full-Time', es: 'Empleado Tiempo Completo' },
-  { value: 'seeking-work', en: 'Seeking Work', es: 'Buscando Empleo' },
-  { value: 'student', en: 'Student', es: 'Estudiante' },
-  { value: 'retired', en: 'Retired', es: 'Jubilado' }
-];
-
-const SERVICE_OPTIONS: Array<{ id: CategoryId; en: string; es: string; subEn: string; subEs: string }> = [
-  { id: 'food', en: '🍏 Food Access', es: '🍏 Despensa y Comida', subEn: 'Pantries, groceries', subEs: 'Despensas y comida' },
-  { id: 'mental-health', en: '🧠 Mental Health', es: '🧠 Salud Mental', subEn: 'Counseling, peer chat', subEs: 'Consejería y apoyo' },
-  { id: 'workforce', en: '💼 Workforce & College', es: '💼 Capacitación y Becas', subEn: 'IT certs, free tuition', subEs: 'Cursos IT y matrícula' },
-  { id: 'community', en: '🤝 Community Connection', es: '🤝 Conexión Comunitaria', subEn: 'Senior clubs, youth hubs', subEs: 'Clubes y centros' }
-];
-
-const labelClass = 'block text-sm font-semibold text-slate-900 mb-1.5';
-const fieldClass = 'w-full text-base p-3 rounded-xl border-2 border-slate-300 focus:border-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700 text-slate-900 min-h-[48px]';
-const selectClass = `${fieldClass} bg-white font-medium`;
-
-interface StepIdentityProps {
-  currentLanguage: Language;
-  name: string;
-  onNameChange: (value: string) => void;
-  nameError: boolean;
-  nameInputRef: React.RefObject<HTMLInputElement>;
-  city: string;
-  onCityChange: (value: string) => void;
-  ageRange: IntakeProfile['ageRange'];
-  onAgeRangeChange: (value: IntakeProfile['ageRange']) => void;
-}
-
-export const StepIdentity: React.FC<StepIdentityProps> = ({
-  currentLanguage,
-  name,
-  onNameChange,
-  nameError,
-  nameInputRef,
-  city,
-  onCityChange,
-  ageRange,
-  onAgeRangeChange
-}) => (
-  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    <div>
-      <label htmlFor="intake-name" className={labelClass}>
-        {currentLanguage === 'en' ? 'Name or nickname (optional)' : 'Nombre o apodo (opcional)'}
-      </label>
-      <input
-        id="intake-name"
-        ref={nameInputRef}
-        type="text"
-        value={name}
-        onChange={(e) => onNameChange(e.target.value)}
-        placeholder={currentLanguage === 'en' ? 'e.g. Maria or Daniel' : 'ej. María o Daniel'}
-        aria-invalid={nameError || undefined}
-        aria-describedby={nameError ? 'intake-name-error' : undefined}
-        className={`${fieldClass} ${nameError ? 'border-red-700' : ''}`}
-      />
-      {nameError && (
-        <p id="intake-name-error" role="alert" className="text-xs font-bold text-red-800 mt-1.5">
-          {currentLanguage === 'en'
-            ? 'Enter a name or nickname to continue.'
-            : 'Ingrese un nombre o apodo para continuar.'}
-        </p>
-      )}
-    </div>
-
-    <div>
-      <label htmlFor="intake-city" className={labelClass}>
-        {currentLanguage === 'en' ? 'City / area (helps find local resources)' : 'Ciudad / zona (para buscar recursos locales)'}
-      </label>
-      <select id="intake-city" value={city} onChange={(e) => onCityChange(e.target.value)} className={selectClass}>
-        {CITIES.map((c) => (
-          <option key={c} value={c}>{c}</option>
-        ))}
-      </select>
-    </div>
-
-    <div>
-      <label htmlFor="intake-age" className={labelClass}>
-        {currentLanguage === 'en' ? 'Age group (optional)' : 'Grupo de edad (opcional)'}
-      </label>
-      <select
-        id="intake-age"
-        value={ageRange}
-        onChange={(e) => onAgeRangeChange(e.target.value as IntakeProfile['ageRange'])}
-        className={selectClass}
-      >
-        {AGE_OPTIONS.map((option) => (
-          <option key={option.value} value={option.value}>
-            {currentLanguage === 'en' ? option.en : option.es}
-          </option>
-        ))}
-      </select>
-    </div>
-  </div>
-);
-
-interface StepHouseholdProps {
-  currentLanguage: Language;
-  monthlyIncome: IntakeProfile['monthlyIncome'];
-  onMonthlyIncomeChange: (value: IntakeProfile['monthlyIncome']) => void;
-  employmentStatus: IntakeProfile['employmentStatus'];
-  onEmploymentStatusChange: (value: IntakeProfile['employmentStatus']) => void;
-  householdSize: number;
-  onHouseholdSizeChange: (value: number) => void;
-  hasChildren: boolean;
-  onHasChildrenChange: (value: boolean) => void;
-  hasSeniors: boolean;
-  onHasSeniorsChange: (value: boolean) => void;
-}
-
-export const StepHousehold: React.FC<StepHouseholdProps> = ({
-  currentLanguage,
-  monthlyIncome,
-  onMonthlyIncomeChange,
-  employmentStatus,
-  onEmploymentStatusChange,
-  householdSize,
-  onHouseholdSizeChange,
-  hasChildren,
-  onHasChildrenChange,
-  hasSeniors,
-  onHasSeniorsChange
-}) => (
-  <div className="p-4 rounded-2xl bg-slate-50 border-2 border-slate-200">
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div>
-        <label htmlFor="intake-income" className="block text-xs font-bold text-slate-900 mb-1">
-          {currentLanguage === 'en' ? 'Estimated Monthly Income:' : 'Ingreso Mensual Estimado:'}
-        </label>
-        <select
-          id="intake-income"
-          value={monthlyIncome}
-          onChange={(e) => onMonthlyIncomeChange(e.target.value as IntakeProfile['monthlyIncome'])}
-          className={selectClass}
-        >
-          {INCOME_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {currentLanguage === 'en' ? option.en : option.es}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="intake-employment" className="block text-xs font-bold text-slate-900 mb-1">
-          {currentLanguage === 'en' ? 'Employment Situation:' : 'Situación Laboral:'}
-        </label>
-        <select
-          id="intake-employment"
-          value={employmentStatus}
-          onChange={(e) => onEmploymentStatusChange(e.target.value as IntakeProfile['employmentStatus'])}
-          className={selectClass}
-        >
-          {EMPLOYMENT_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {currentLanguage === 'en' ? option.en : option.es}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div>
-        <label htmlFor="intake-size" className="block text-xs font-bold text-slate-900 mb-1">
-          {currentLanguage === 'en' ? 'Total Household Size:' : 'Personas en el Hogar:'}
-        </label>
-        <div className="flex items-center gap-3 flex-wrap">
-          <input
-            id="intake-size"
-            type="number"
-            min="1"
-            max="12"
-            value={householdSize}
-            onChange={(e) => onHouseholdSizeChange(parseInt(e.target.value) || 1)}
-            className="w-20 text-sm p-3 rounded-xl border-2 border-slate-300 bg-white text-center font-extrabold text-slate-900 min-h-[48px]"
-          />
-          <div className="space-y-1.5 text-xs font-semibold text-slate-900">
-            <label className="flex items-center gap-2 cursor-pointer min-h-[28px]">
-              <input
-                type="checkbox"
-                checked={hasChildren}
-                onChange={(e) => onHasChildrenChange(e.target.checked)}
-                className="w-4 h-4 accent-emerald-700 rounded"
-              />
-              <span>{currentLanguage === 'en' ? 'Children under 18' : 'Hijos menores de 18'}</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer min-h-[28px]">
-              <input
-                type="checkbox"
-                checked={hasSeniors}
-                onChange={(e) => onHasSeniorsChange(e.target.checked)}
-                className="w-4 h-4 accent-emerald-700 rounded"
-              />
-              <span>{currentLanguage === 'en' ? 'Seniors 60+' : 'Adultos mayores 60+'}</span>
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 interface StepNeedsProps {
   currentLanguage: Language;
-  servicePriorities: CategoryId[];
-  onTogglePriority: (catId: CategoryId) => void;
-  otherNeeds: OtherBasicNeed[];
-  onToggleOtherNeed: (need: OtherBasicNeed) => void;
-  urgency: IntakeUrgency;
-  onUrgencyChange: (value: IntakeUrgency) => void;
+  selected: NeedChoice[];
+  urgency: UrgencyChoice;
+  onToggleNeed: (need: NeedChoice) => void;
+  onUrgencyChange: (value: UrgencyChoice) => void;
+  error?: string;
+  onErrorClear?: () => void;
 }
 
-const OTHER_NEED_OPTIONS: { id: OtherBasicNeed; en: string; es: string }[] = [
-  { id: 'housing', en: 'Housing or a safe place to stay', es: 'Vivienda o un lugar seguro donde quedarse' },
-  { id: 'utilities', en: 'Bills or utilities', es: 'Facturas o servicios públicos' },
-  { id: 'transportation', en: 'Transportation assistance', es: 'Ayuda con el transporte' }
-];
-
-const URGENCY_OPTIONS: { id: IntakeUrgency; en: string; es: string }[] = [
-  { id: 'today', en: 'Today / as soon as possible', es: 'Hoy / lo antes posible' },
-  { id: 'soon', en: 'Within the next few days', es: 'En los próximos días' },
-  { id: 'exploring', en: 'I am exploring my options', es: 'Estoy explorando mis opciones' },
-  { id: 'prefer-not-to-say', en: 'Not sure / prefer not to say', es: 'No sé / prefiero no decirlo' }
-];
-
 export const StepNeeds: React.FC<StepNeedsProps> = ({
-  currentLanguage, servicePriorities, onTogglePriority, otherNeeds, onToggleOtherNeed,
-  urgency, onUrgencyChange
+  currentLanguage,
+  selected,
+  urgency,
+  onToggleNeed,
+  onUrgencyChange,
+  error,
+  onErrorClear,
 }) => (
   <div className="space-y-6">
-    <div>
-      <h4 className="text-base font-bold text-slate-900 mb-2">
-        {currentLanguage === 'en' ? 'Choose as many areas as you need' : 'Elija todas las áreas donde necesita ayuda'}
-      </h4>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {SERVICE_OPTIONS.map((item) => {
-          const selected = servicePriorities.includes(item.id);
+    <fieldset className="space-y-4" aria-describedby={error ? 'needs-error' : undefined}>
+      <legend className="text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'What do you need help with?' : '¿Con qué necesita ayuda?'}
+      </legend>
+      {error && (
+        <p id="needs-error" role="alert" tabIndex={-1} className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-900 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-red-800">
+          {error}
+        </p>
+      )}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {needOptions.map((option) => {
+          const isSelected = selected.includes(option.id);
           return (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onTogglePriority(item.id)}
-              aria-pressed={selected}
-              className={`p-4 rounded-2xl border-2 text-left transition-colors min-h-[64px] flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${
-                selected ? 'bg-emerald-50 border-emerald-700 text-slate-900' : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-900'
+            <label
+              key={option.id}
+              className={`flex cursor-pointer items-start gap-3 rounded-2xl border-2 p-3 transition-colors min-h-[68px] focus-within:ring-2 focus-within:ring-emerald-700 focus-within:ring-offset-2 ${
+                isSelected
+                  ? 'border-emerald-700 bg-emerald-50 shadow-sm'
+                  : 'border-slate-300 bg-white hover:border-emerald-500'
               }`}
             >
-              <span className="flex-1">
-                <span className="font-bold text-base block mb-1">{currentLanguage === 'en' ? item.en : item.es}</span>
-                <span className="text-sm text-slate-700">{currentLanguage === 'en' ? item.subEn : item.subEs}</span>
-              </span>
-              <span aria-hidden="true" className={`w-6 h-6 shrink-0 rounded-md border-2 flex items-center justify-center font-bold ${
-                selected ? 'bg-emerald-700 border-emerald-700 text-white' : 'border-slate-500 text-transparent'
-              }`}>✓</span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-
-    <fieldset>
-      <legend className="text-base font-bold text-slate-900 mb-2">
-        {currentLanguage === 'en' ? 'Other basic needs' : 'Otras necesidades básicas'}
-      </legend>
-      <p className="text-sm text-slate-700 mb-3">
-        {currentLanguage === 'en'
-          ? 'These needs currently lead to a 211 referral, not verified WhatSack matches.'
-          : 'Estas necesidades ofrecen una referencia al 211; WhatSack aún no tiene resultados verificados para ellas.'}
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {OTHER_NEED_OPTIONS.map((item) => {
-          const selected = otherNeeds.includes(item.id);
-          return (
-            <label key={item.id} className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-300 p-3 text-sm text-slate-900">
               <input
                 type="checkbox"
-                className="w-5 h-5 accent-emerald-700 shrink-0"
-                checked={selected}
-                onChange={() => onToggleOtherNeed(item.id)}
+                className="sr-only"
+                checked={isSelected}
+                onChange={() => {
+                  if (error) onErrorClear?.();
+                  onToggleNeed(option.id);
+                }}
               />
-              {currentLanguage === 'en' ? item.en : item.es}
+              <span
+                aria-hidden="true"
+                className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 ${
+                  isSelected ? 'border-emerald-700 bg-emerald-700 text-white' : 'border-slate-400 bg-white text-transparent'
+                }`}
+              >
+                <Check className="h-3.5 w-3.5" />
+              </span>
+              <span className="min-w-0">
+                <span className="block text-sm font-bold text-slate-900">
+                  {currentLanguage === 'en' ? option.en : option.es}
+                </span>
+                <span className="mt-0.5 block text-xs text-slate-600">
+                  {currentLanguage === 'en' ? option.hintEn : option.hintEs}
+                </span>
+              </span>
             </label>
           );
         })}
       </div>
     </fieldset>
 
-    <fieldset>
-      <legend className="text-base font-bold text-slate-900 mb-2">
-        {currentLanguage === 'en' ? 'How soon do you need help?' : '¿Qué tan pronto necesita ayuda?'}
+    <fieldset className="space-y-3">
+      <legend className="text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'How soon do you need help?' : '¿Con qué rapidez necesita ayuda?'}
       </legend>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-        {URGENCY_OPTIONS.map((option) => (
-          <label key={option.id} className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-300 p-3 text-sm text-slate-900">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+        {urgencyOptions.map((option) => (
+          <label
+            key={option.value}
+            className={`flex cursor-pointer items-center justify-center rounded-xl border-2 p-3 text-sm font-bold min-h-[48px] focus-within:ring-2 focus-within:ring-emerald-700 focus-within:ring-offset-2 ${
+              urgency === option.value
+                ? 'border-emerald-700 bg-emerald-50 text-slate-900'
+                : 'border-slate-300 bg-white text-slate-800'
+            }`}
+          >
             <input
               type="radio"
               name="intake-urgency"
-              checked={urgency === option.id}
-              onChange={() => onUrgencyChange(option.id)}
-              className="h-5 w-5 shrink-0 accent-emerald-700"
+              className="sr-only"
+              checked={urgency === option.value}
+              onChange={() => onUrgencyChange(option.value)}
             />
-            {currentLanguage === 'en' ? option.en : option.es}
+            <span>{currentLanguage === 'en' ? option.en : option.es}</span>
           </label>
         ))}
       </div>
-      {urgency === 'today' && (
-        <p className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-slate-900">
-          {currentLanguage === 'en'
-            ? 'Need help right away? You can call 211 for local services without finishing this form. For immediate danger, call 911.'
-            : '¿Necesita ayuda ahora? Puede llamar al 211 para buscar servicios locales sin terminar este formulario. Si hay peligro inmediato, llame al 911.'}
+    </fieldset>
+
+    {selected.includes('housing') || urgency === 'today' ? (
+      <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-slate-800">
+        <p className="font-bold text-slate-900">
+          {currentLanguage === 'en' ? 'External referral' : 'Referencia externa'}
         </p>
-      )}
+        <p className="mt-1">
+          {currentLanguage === 'en'
+            ? 'We can connect you with 211 Bay Area for urgent support with rent, bills, or transportation.'
+            : 'Podemos conectarle con 211 Bay Area para apoyo urgente con renta, pagos o transporte.'}
+        </p>
+        <a
+          href="https://211bayarea.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center font-bold text-emerald-800 underline underline-offset-2"
+        >
+          {currentLanguage === 'en' ? 'Open 211 Bay Area' : 'Abrir 211 Bay Area'}
+        </a>
+      </div>
+    ) : null}
+  </div>
+);
+
+interface StepLocationProps {
+  currentLanguage: Language;
+  city: string;
+  onCityChange: (value: string) => void;
+  ageRange: IntakeProfile['ageRange'];
+  onAgeRangeChange: (value: IntakeProfile['ageRange']) => void;
+}
+
+export const StepLocation: React.FC<StepLocationProps> = ({
+  currentLanguage,
+  city,
+  onCityChange,
+  ageRange,
+  onAgeRangeChange,
+}) => (
+  <div className="space-y-6">
+    <div className="space-y-2">
+      <label htmlFor="intake-city" className="block text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'Where are you looking?' : '¿Dónde está buscando?'}
+      </label>
+      <select
+        id="intake-city"
+        value={city}
+        onChange={(e) => onCityChange(e.target.value)}
+        className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+      >
+        {cityOptions.map((option) => (
+          <option key={option} value={option === 'Anywhere in Silicon Valley' ? 'Other Silicon Valley' : option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    <fieldset className="space-y-3">
+      <legend className="text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'Age group (optional)' : 'Grupo de edad (opcional)'}
+      </legend>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {[
+          { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no decirlo' },
+          { value: 'under-18', en: 'Under 18', es: 'Menor de 18' },
+          { value: '18-24', en: '18 to 24', es: '18 a 24' },
+          { value: '25-49', en: '25 to 49', es: '25 a 49' },
+          { value: '50-64', en: '50 to 64', es: '50 a 64' },
+          { value: '65+', en: '65 and up', es: '65 o más' },
+        ].map((option) => (
+          <label
+            key={option.value}
+            className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 p-3 text-sm font-bold min-h-[48px] ${
+              ageRange === option.value ? 'border-emerald-700 bg-emerald-50' : 'border-slate-300 bg-white'
+            }`}
+          >
+            <input
+              type="radio"
+              name="intake-age"
+              className="h-4 w-4 accent-emerald-700"
+              checked={ageRange === option.value}
+              onChange={() => onAgeRangeChange(option.value as IntakeProfile['ageRange'])}
+            />
+            <span>{currentLanguage === 'en' ? option.en : option.es}</span>
+          </label>
+        ))}
+      </div>
     </fieldset>
   </div>
 );
@@ -359,94 +233,286 @@ interface StepPreferencesProps {
   onNoIdRequiredPreferenceChange: (value: boolean) => void;
   transitDependent: boolean;
   onTransitDependentChange: (value: boolean) => void;
+  preferPhoneOrOnline: boolean;
+  onPreferPhoneOrOnlineChange: (value: boolean) => void;
+  needEveningWeekend: boolean;
+  onNeedEveningWeekendChange: (value: boolean) => void;
+  needAccessibilitySupport: boolean;
+  onNeedAccessibilitySupportChange: (value: boolean) => void;
   preferredLanguage: string;
   onPreferredLanguageChange: (value: string) => void;
-  accessPreferences: AccessPreference[];
-  onToggleAccessPreference: (value: AccessPreference) => void;
 }
-
-const ACCESS_OPTIONS: { id: AccessPreference; en: string; es: string }[] = [
-  { id: 'remote', en: 'Online or by phone', es: 'En línea o por teléfono' },
-  { id: 'evenings', en: 'Evening or weekend hours', es: 'Por las tardes o fines de semana' },
-  { id: 'accessible', en: 'Accessible location or other accommodations', es: 'Lugar accesible u otras adaptaciones' }
-];
 
 export const StepPreferences: React.FC<StepPreferencesProps> = ({
   currentLanguage,
-  noIdRequiredPreference, onNoIdRequiredPreferenceChange,
-  transitDependent, onTransitDependentChange,
-  preferredLanguage, onPreferredLanguageChange,
-  accessPreferences, onToggleAccessPreference
+  noIdRequiredPreference,
+  onNoIdRequiredPreferenceChange,
+  transitDependent,
+  onTransitDependentChange,
+  preferPhoneOrOnline,
+  onPreferPhoneOrOnlineChange,
+  needEveningWeekend,
+  onNeedEveningWeekendChange,
+  needAccessibilitySupport,
+  onNeedAccessibilitySupportChange,
+  preferredLanguage,
+  onPreferredLanguageChange,
 }) => (
-  <div className="space-y-5">
-    <fieldset>
-      <legend className="text-base font-bold text-slate-900 mb-2">
-        {currentLanguage === 'en' ? 'What would make getting help easier?' : '¿Qué facilitaría obtener ayuda?'}
+  <div className="space-y-6">
+    <fieldset className="space-y-3">
+      <legend className="text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'What would make this easier for you?' : '¿Qué haría esto más fácil para usted?'}
       </legend>
       <div className="space-y-3">
-        <label className="flex min-h-[56px] items-start gap-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 p-3 text-slate-900 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={noIdRequiredPreference}
-            onChange={(e) => onNoIdRequiredPreferenceChange(e.target.checked)}
-            className="mt-1 w-5 h-5 accent-emerald-700 shrink-0"
-          />
-          <span>
-            <span className="block text-base font-bold">
-              {currentLanguage === 'en' ? 'I need options that do not require an ID or SSN' : 'Necesito opciones que no pidan identificación ni número de Seguro Social'}
-            </span>
-            <span className="block text-sm text-slate-700 mt-1">
-              {currentLanguage === 'en'
-                ? 'You never need to give WhatSack an ID or SSN to browse. We have not verified document rules for every organization; confirm directly before visiting.'
-                : 'No necesita dar identificación ni número de Seguro Social a WhatSack para explorar. No hemos verificado los requisitos de cada organización; confirme antes de ir.'}
-            </span>
-          </span>
-        </label>
-        <label className="flex min-h-[48px] items-center gap-3 rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={transitDependent}
-            onChange={(e) => onTransitDependentChange(e.target.checked)}
-            className="w-5 h-5 accent-emerald-700 shrink-0"
-          />
-          {currentLanguage === 'en' ? 'I rely on public transportation' : 'Dependo del transporte público'}
-        </label>
-        {ACCESS_OPTIONS.map((option) => (
-          <label key={option.id} className="flex min-h-[48px] items-center gap-3 rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900 cursor-pointer">
+        {[
+          {
+            checked: noIdRequiredPreference,
+            onChange: onNoIdRequiredPreferenceChange,
+            labelEn: 'I need options that do not require an ID or SSN.',
+            labelEs: 'Necesito opciones que no requieran identificación ni Seguro Social.',
+          },
+          {
+            checked: transitDependent,
+            onChange: onTransitDependentChange,
+            labelEn: 'I rely on public transit.',
+            labelEs: 'Dependo del transporte público.',
+          },
+          {
+            checked: preferPhoneOrOnline,
+            onChange: onPreferPhoneOrOnlineChange,
+            labelEn: 'I prefer online or phone help.',
+            labelEs: 'Prefiero ayuda por teléfono o en línea.',
+          },
+          {
+            checked: needEveningWeekend,
+            onChange: onNeedEveningWeekendChange,
+            labelEn: 'I need evening or weekend hours.',
+            labelEs: 'Necesito horarios por la noche o los fines de semana.',
+          },
+          {
+            checked: needAccessibilitySupport,
+            onChange: onNeedAccessibilitySupportChange,
+            labelEn: 'I need accessibility accommodations.',
+            labelEs: 'Necesito apoyos de accesibilidad.',
+          },
+        ].map((item) => (
+          <label
+            key={item.labelEn}
+            className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 p-3 text-sm font-bold min-h-[48px] ${
+              item.checked ? 'border-emerald-700 bg-emerald-50' : 'border-slate-300 bg-white'
+            }`}
+          >
             <input
               type="checkbox"
-              checked={accessPreferences.includes(option.id)}
-              onChange={() => onToggleAccessPreference(option.id)}
-              className="w-5 h-5 accent-emerald-700 shrink-0"
+              className="h-4 w-4 accent-emerald-700"
+              checked={item.checked}
+              onChange={(e) => item.onChange(e.target.checked)}
             />
-            {currentLanguage === 'en' ? option.en : option.es}
+            <span>{currentLanguage === 'en' ? item.labelEn : item.labelEs}</span>
           </label>
         ))}
       </div>
     </fieldset>
-    <div>
-      <label htmlFor="intake-language" className={labelClass}>
-        {currentLanguage === 'en' ? 'Language for support (optional)' : 'Idioma para recibir ayuda (opcional)'}
+
+    <div className="space-y-2">
+      <label htmlFor="intake-language" className="block text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'Language preference' : 'Preferencia de idioma'}
       </label>
-      <select id="intake-language" value={preferredLanguage} onChange={(e) => onPreferredLanguageChange(e.target.value)} className={selectClass}>
-        <option value="No preference">{currentLanguage === 'en' ? 'No preference / not sure' : 'Sin preferencia / no sé'}</option>
+      <select
+        id="intake-language"
+        value={preferredLanguage}
+        onChange={(e) => onPreferredLanguageChange(e.target.value)}
+        className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+      >
+        <option value="No preference">{currentLanguage === 'en' ? 'No preference' : 'Sin preferencia'}</option>
         <option value="English">English</option>
         <option value="Español">Español</option>
-        <option value="Other">{currentLanguage === 'en' ? 'Another language (ask organization)' : 'Otro idioma (consultar a la organización)'}</option>
+        <option value="Vietnamese">Tiếng Việt</option>
+        <option value="Mandarin">中文</option>
       </select>
-      <p className="mt-2 text-sm text-slate-700">
-        {currentLanguage === 'en'
-          ? 'Preferences help you know what to ask about. They do not guarantee availability or automatically filter unverified organization details.'
-          : 'Estas preferencias le ayudan a saber qué preguntar. No garantizan disponibilidad ni filtran automáticamente información no verificada.'}
-      </p>
     </div>
-    <p className="flex items-start gap-2 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
-      <Lock className="w-5 h-5 text-emerald-700 shrink-0" aria-hidden="true" />
-      <span>
-        {currentLanguage === 'en'
-          ? 'This class prototype keeps your choices in the current page session. It does not determine benefits eligibility.'
-          : 'Este prototipo de clase conserva sus elecciones durante esta sesión. No determina si cumple requisitos para beneficios.'}
-      </span>
+
+    <p className="text-sm text-slate-700">
+      {currentLanguage === 'en'
+        ? 'These choices help show better results. They are preferences we use to sort options, not guarantees about any organization’s policies.'
+        : 'Estas preferencias ayudan a mostrar mejores resultados. Son opciones que usamos para ordenar recursos, no garantías sobre las políticas de ninguna organización.'}
     </p>
+  </div>
+);
+
+interface StepOptionalDetailsProps {
+  currentLanguage: Language;
+  name: string;
+  onNameChange: (value: string) => void;
+  householdSize: number;
+  onHouseholdSizeChange: (value: number) => void;
+  hasChildren: boolean;
+  onHasChildrenChange: (value: boolean) => void;
+  hasSeniors: boolean;
+  onHasSeniorsChange: (value: boolean) => void;
+  includeHouseholdDetails: boolean;
+  onIncludeHouseholdDetailsChange: (value: boolean) => void;
+  monthlyIncome: IntakeProfile['monthlyIncome'];
+  onMonthlyIncomeChange: (value: IntakeProfile['monthlyIncome']) => void;
+  employmentStatus: IntakeProfile['employmentStatus'];
+  onEmploymentStatusChange: (value: IntakeProfile['employmentStatus']) => void;
+}
+
+export const StepOptionalDetails: React.FC<StepOptionalDetailsProps> = ({
+  currentLanguage,
+  name,
+  onNameChange,
+  householdSize,
+  onHouseholdSizeChange,
+  hasChildren,
+  onHasChildrenChange,
+  hasSeniors,
+  onHasSeniorsChange,
+  includeHouseholdDetails,
+  onIncludeHouseholdDetailsChange,
+  monthlyIncome,
+  onMonthlyIncomeChange,
+  employmentStatus,
+  onEmploymentStatusChange,
+}) => (
+  <div className="space-y-6">
+    <div className="space-y-2">
+      <label htmlFor="intake-name" className="block text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'Name or nickname (optional)' : 'Nombre o apodo (opcional)'}
+      </label>
+      <input
+        id="intake-name"
+        type="text"
+        value={name}
+        onChange={(e) => onNameChange(e.target.value)}
+        className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+        placeholder={currentLanguage === 'en' ? 'e.g. Maria or Daniel' : 'ej. María o Daniel'}
+      />
+    </div>
+
+    <label className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 p-3 text-base font-semibold text-slate-900 focus-within:ring-2 focus-within:ring-emerald-700 focus-within:ring-offset-2">
+      <input
+        type="checkbox"
+        checked={includeHouseholdDetails}
+        onChange={(event) => onIncludeHouseholdDetailsChange(event.target.checked)}
+        className="h-5 w-5 shrink-0 accent-emerald-700"
+      />
+      {currentLanguage === 'en' ? 'I want to share optional household details' : 'Quiero compartir datos opcionales del hogar'}
+    </label>
+
+    {includeHouseholdDetails && <div className="space-y-6">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="space-y-2">
+        <label htmlFor="intake-household-size" className="block text-base font-bold text-slate-900">
+          {currentLanguage === 'en' ? 'Household size (optional)' : 'Tamaño del hogar (opcional)'}
+        </label>
+        <input
+          id="intake-household-size"
+          type="number"
+          min={1}
+          max={12}
+          value={householdSize}
+          onChange={(e) => onHouseholdSizeChange(Math.max(1, Math.min(12, Number(e.target.value) || 1)))}
+          className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label htmlFor="intake-income" className="block text-base font-bold text-slate-900">
+          {currentLanguage === 'en' ? 'Monthly income band (optional)' : 'Rango de ingreso mensual (opcional)'}
+        </label>
+        <select
+          id="intake-income"
+          value={monthlyIncome}
+          onChange={(e) => onMonthlyIncomeChange(e.target.value as IntakeProfile['monthlyIncome'])}
+          className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+        >
+          <option value="prefer-not-to-say">{currentLanguage === 'en' ? 'Prefer not to say' : 'Prefiero no decirlo'}</option>
+          <option value="< $2,500">{currentLanguage === 'en' ? 'Under $2,500 / month' : 'Menos de $2,500 / mes'}</option>
+          <option value="$2,500 - $4,500">{currentLanguage === 'en' ? '$2,500 – $4,500 / month' : '$2,500 – $4,500 / mes'}</option>
+          <option value="$4,500 - $7,000">{currentLanguage === 'en' ? '$4,500 – $7,000 / month' : '$4,500 – $7,000 / mes'}</option>
+          <option value="$7,000+">{currentLanguage === 'en' ? '$7,000+ / month' : '$7,000+ / mes'}</option>
+        </select>
+      </div>
+    </div>
+
+    <div className="space-y-3">
+      <fieldset className="space-y-2">
+        <legend className="text-base font-bold text-slate-900">
+          {currentLanguage === 'en' ? 'Children under 18?' : '¿Tiene hijos menores de 18 años?'}
+        </legend>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { value: true, labelEn: 'Yes', labelEs: 'Sí' },
+            { value: false, labelEn: 'No', labelEs: 'No' },
+          ].map((option) => (
+            <label
+              key={String(option.value)}
+              className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 p-3 text-sm font-bold min-h-[48px] ${
+                hasChildren === option.value ? 'border-emerald-700 bg-emerald-50' : 'border-slate-300 bg-white'
+              }`}
+            >
+              <input
+                type="radio"
+                name="intake-has-children"
+                className="h-4 w-4 accent-emerald-700"
+                checked={hasChildren === option.value}
+                onChange={() => onHasChildrenChange(option.value)}
+              />
+              <span>{currentLanguage === 'en' ? option.labelEn : option.labelEs}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="space-y-2">
+        <legend className="text-base font-bold text-slate-900">
+          {currentLanguage === 'en' ? 'Adults 60 or older in your home?' : '¿Hay adultos mayores de 60 en su hogar?'}
+        </legend>
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { value: true, labelEn: 'Yes', labelEs: 'Sí' },
+            { value: false, labelEn: 'No', labelEs: 'No' },
+          ].map((option) => (
+            <label
+              key={String(option.value)}
+              className={`flex cursor-pointer items-center justify-center gap-2 rounded-xl border-2 p-3 text-sm font-bold min-h-[48px] ${
+                hasSeniors === option.value ? 'border-emerald-700 bg-emerald-50' : 'border-slate-300 bg-white'
+              }`}
+            >
+              <input
+                type="radio"
+                name="intake-has-seniors"
+                className="h-4 w-4 accent-emerald-700"
+                checked={hasSeniors === option.value}
+                onChange={() => onHasSeniorsChange(option.value)}
+              />
+              <span>{currentLanguage === 'en' ? option.labelEn : option.labelEs}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+    </div>
+
+    <div className="space-y-2">
+      <label htmlFor="intake-employment" className="block text-base font-bold text-slate-900">
+        {currentLanguage === 'en' ? 'Employment situation (optional)' : 'Situación laboral (opcional)'}
+      </label>
+      <select
+        id="intake-employment"
+        value={employmentStatus}
+        onChange={(e) => onEmploymentStatusChange(e.target.value as IntakeProfile['employmentStatus'])}
+        className="w-full min-h-[48px] rounded-xl border-2 border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 focus:border-emerald-700 focus:outline-none"
+      >
+        <option value="prefer-not-to-say">{currentLanguage === 'en' ? 'Prefer not to say' : 'Prefiero no decirlo'}</option>
+        <option value="employed">{currentLanguage === 'en' ? 'Employed full-time' : 'Empleado a tiempo completo'}</option>
+        <option value="part-time">{currentLanguage === 'en' ? 'Part-time or shift work' : 'Medio tiempo o turnos'}</option>
+        <option value="laid-off">{currentLanguage === 'en' ? 'Recently laid off' : 'Despedido recientemente'}</option>
+        <option value="seeking-work">{currentLanguage === 'en' ? 'Seeking work' : 'Buscando trabajo'}</option>
+        <option value="student">{currentLanguage === 'en' ? 'Student' : 'Estudiante'}</option>
+        <option value="retired">{currentLanguage === 'en' ? 'Retired' : 'Jubilado'}</option>
+      </select>
+    </div>
+    </div>}
   </div>
 );

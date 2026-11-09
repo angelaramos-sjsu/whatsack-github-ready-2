@@ -12,7 +12,7 @@ interface HeroConversationalSearchProps {
   onSelectPrompt: (promptText: string) => void;
   onOpenCopilot: () => void;
   onOpenArchitecture: () => void;
-  onOpenIntroductionForm: () => void;
+  onOpenIntroductionForm: (source?: string) => void;
   onClearProfile: () => void;
   userProfile: IntakeProfile | null;
   matchedCount: number;
@@ -52,6 +52,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   searchQuery,
   onSearchChange,
   onExecuteSearch,
+  onOpenIntroductionForm,
   matchedCount,
   onClearSearch,
   selectedCategory,
@@ -122,7 +123,23 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
           </button>
         </form>
 
-        <div className="qc-top qc-rise" style={{ animationDelay: '.75s' }}>
+        <div className="qc-rise" style={{ marginTop: '16px', animationDelay: '.75s' }}>
+          <p className="mb-2 text-sm text-slate-600">
+            <span className="mr-2 text-slate-600">{currentLanguage === 'en' ? 'Not sure where to start?' : '¿No sabe por dónde empezar?'}</span>
+            <a
+              href="#quick-questions"
+              onClick={(event) => {
+                event.preventDefault();
+                onOpenIntroductionForm('hero-link');
+              }}
+              className="inline-flex min-h-[44px] items-center gap-1 text-base font-semibold text-[#047857] underline decoration-2 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#047857] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            >
+              {currentLanguage === 'en' ? 'Answer 4 quick questions (about 2 minutes) →' : 'Responda 4 preguntas rápidas (unos 2 minutos) →'}
+            </a>
+          </p>
+        </div>
+
+        <div className="qc-top qc-rise" style={{ animationDelay: '.85s' }}>
           {categories.map((category) => (
             <button
               key={category.id}

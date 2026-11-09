@@ -880,8 +880,24 @@
   box-shadow: 0 7px 18px rgba(4, 120, 87, 0.16);
 }
 
+.qc-home-start-button-outline {
+  background: #ffffff;
+  color: #047857;
+  border: 1.5px solid #047857;
+  box-shadow: none;
+}
+
+.qc-home-start-button-outline:hover {
+  background: #f0fbf5;
+  box-shadow: 0 7px 18px rgba(4, 120, 87, 0.12);
+}
+
 .qc-home-start-button:active {
   background: #024b35;
+}
+
+.qc-home-start-button-outline:active {
+  background: #e7f8ee;
 }
 
 .qc-home-start-button:focus-visible {
