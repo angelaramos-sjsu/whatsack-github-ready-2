@@ -32,6 +32,18 @@ import {
   Sliders,
 } from 'lucide-react';
 
+/**
+ * Render the simple **bold** markers used in reviewed, scripted answers.
+ * The content remains ordinary React text (never raw HTML), and the chat
+ * container's pre-wrap style preserves line breaks and numbered steps.
+ */
+const renderScriptedAnswer = (value: string): React.ReactNode =>
+  value.split(/(\*\*[\s\S]+?\*\*)/g).map((part, index) =>
+    part.startsWith('**') && part.endsWith('**') && part.length > 4
+      ? <strong key={index} className="font-semibold text-white">{part.slice(2, -2)}</strong>
+      : part
+  );
+
 interface ChatMessage {
   id: string;
   sender: 'user' | 'llm' | 'system';
@@ -284,11 +296,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
                 {/* Message Text Content */}
                 <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
-                  {msg.sender === 'llm' && msg.scriptedAnswer
-                    ? msg.scriptedAnswer.answer[currentLanguage]
-                    : msg.id === 'msg-init-1'
-                      ? greetingMessage.text
-                      : msg.text}
+                  {msg.sender === 'llm'
+                    ? renderScriptedAnswer(
+                        msg.scriptedAnswer
+                          ? msg.scriptedAnswer.answer[currentLanguage]
+                          : msg.id === 'msg-init-1' ? greetingMessage.text : msg.text
+                      )
+                    : msg.text}
                 </div>
 
                 {/* Grounded Resource Cards Preview */}
