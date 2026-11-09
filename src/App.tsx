@@ -29,7 +29,7 @@ import { Bot } from 'lucide-react';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about'>('home');
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -59,6 +59,23 @@ export function App() {
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
 
   const t = translations[currentLanguage];
+
+  useEffect(() => {
+    document.documentElement.lang = currentLanguage;
+  }, [currentLanguage]);
+
+  // After a page change, read the destination heading before its controls.
+  useEffect(() => {
+    if (activeView === 'extension') return;
+    const destination = activeView === 'resources' ? 'directory-page-heading'
+      : activeView === 'about' ? 'about-heading'
+      : activeView === 'home' ? 'hero-title' : 'main-content';
+    const frame = window.requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+      document.getElementById(destination)?.focus();
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeView]);
 
   // The homepage question seeds the copilot once, then clears when you leave it.
   useEffect(() => {
@@ -125,6 +142,7 @@ export function App() {
   const availableCities = useMemo(() => {
     const cities = new Set<string>();
     demonstrationResources.forEach((r) => cities.add(r.location.city));
+    directoryEntries.forEach((r) => { if (!['Online', 'Statewide', 'Multiple campuses'].includes(r.city)) cities.add(r.city); });
     return Array.from(cities);
   }, []);
 
@@ -244,9 +262,37 @@ export function App() {
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
         />
+      ) : activeView === 'about' ? (
+        <main id="main-content" tabIndex={-1} className="flex-1 qc-shell qc-page" aria-labelledby="about-heading">
+          <div className="qc-eyebrow">{currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}</div>
+          <h1 id="about-heading" tabIndex={-1} className="qc-h2 qc-page-title">
+            {currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}
+          </h1>
+          <p className="qc-dsub">
+            {currentLanguage === 'en'
+              ? 'WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley.'
+              : 'WhatSack es un sitio creado por estudiantes para explorar ayuda con estudios, trabajo, comida, salud mental y servicios comunitarios en Silicon Valley.'}
+          </p>
+          <h2 className="qc-about-h2">{currentLanguage === 'en' ? 'How it works' : 'Cómo funciona'}</h2>
+          <p className="qc-dsub">
+            {currentLanguage === 'en'
+              ? 'Ask a question or choose a category. Open the resource directory to view organization websites. Save useful items in My Next Steps.'
+              : 'Haga una pregunta o elija una categoría. Visite el directorio para ver sitios de organizaciones. Guarde recursos en Mis Próximos Pasos.'}
+          </p>
+          <h2 className="qc-about-h2">{currentLanguage === 'en' ? 'What is real?' : '¿Qué es real?'}</h2>
+          <p className="qc-dsub">
+            {currentLanguage === 'en'
+              ? 'Organization listings link to real websites, but details can change. Sample programs and chat answers are for class testing only. Check the organization website before making plans.'
+              : 'El directorio enlaza a sitios reales, pero los datos pueden cambiar. Los programas y respuestas de ejemplo son solo para pruebas de clase. Revise el sitio oficial antes de hacer planes.'}
+          </p>
+          <button type="button" className="qc-btn-sm mt-8" onClick={() => setIsDisclaimerOpen(true)}>
+            {currentLanguage === 'en' ? 'Read the safety notice' : 'Leer el aviso de seguridad'}
+          </button>
+        </main>
       ) : (
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
-          {/* Conversational AI Search Hero */}
+          {/* Home presents one search question and four category paths. */}
+          {activeView === 'home' && (<>
           <HeroConversationalSearch
             currentLanguage={currentLanguage}
             searchQuery={searchQuery}
@@ -266,8 +312,23 @@ export function App() {
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            onSelectCategory={(cat) => { setSelectedCategory(cat); setActiveView('resources'); }}
           />
+          <section className="qc-shell qc-home-more" aria-labelledby="start-here-heading">
+            <h2 id="start-here-heading" className="qc-h2">{currentLanguage === 'en' ? 'Start here' : 'Empiece aquí'}</h2>
+            <p className="qc-dsub">{currentLanguage === 'en' ? 'Want to browse organizations instead of asking a question?' : '¿Prefiere ver organizaciones en vez de hacer una pregunta?'}</p>
+            <button type="button" className="qc-btn-sm mt-5" onClick={() => { setSelectedCategory('all'); setActiveView('resources'); }}>
+              {currentLanguage === 'en' ? 'See all resources' : 'Ver todos los recursos'}
+            </button>
+          </section>
+          </>)}
+
+          {activeView === 'resources' && (<>
+          <div className="qc-shell qc-page-heading">
+            <div className="qc-eyebrow">{currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos'}</div>
+            <h1 id="directory-page-heading" tabIndex={-1} className="qc-h2 qc-page-title">{currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos'}</h1>
+            <p className="qc-dsub">{currentLanguage === 'en' ? 'Browse organizations and sample programs. Check each organization website for current details.' : 'Explore organizaciones y programas de ejemplo. Consulte cada sitio oficial para ver datos actuales.'}</p>
+          </div>
 
           {/* Community resource directory with filters */}
           <CommunityDirectory
@@ -327,6 +388,9 @@ export function App() {
             )}
           </section>
 
+          </>)}
+
+          {activeView === 'home' && (<>
           {/* Advanced prototype tools */}
           <section aria-labelledby="advanced-heading" className="qc-adv qc-shell">
             <div className="qc-eyebrow">{currentLanguage === 'en' ? 'Advanced' : 'Avanzado'}</div>
@@ -355,6 +419,7 @@ export function App() {
               </button>
             </div>
           </section>
+          </>)}
 
         </main>
       )}
@@ -381,8 +446,7 @@ export function App() {
           onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
           onNavigateCategory={(cat) => {
             setSelectedCategory(cat);
-            setActiveView('home');
-            window.setTimeout(() => document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+            setActiveView('resources');
           }}
           onOpenExtension={() => setActiveView('extension')}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
