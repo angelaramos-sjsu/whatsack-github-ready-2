@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CategoryId, Language } from '../types';
 import { translations } from '../data/translations';
 import { directoryEntries } from '../data/directory';
@@ -56,6 +56,8 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
 }) => {
   const t = translations[currentLanguage];
   const [isOhloneAidOpen, setIsOhloneAidOpen] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(10);
+  const focusNextRow = useRef<string | null>(null);
   const words = searchQuery.toLowerCase().trim().split(/\s+/).filter((w) => w.length > 2);
 
   const matches = directoryEntries.filter((entry) => {
@@ -74,6 +76,18 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
+  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedCity, searchQuery, freeOnly, noIdRequiredOnly]);
+
+  useEffect(() => {
+    if (!focusNextRow.current) return;
+    const id = focusNextRow.current;
+    focusNextRow.current = null;
+    document.getElementById(id)?.focus();
+  }, [visibleCount]);
+
+  const visibleMatches = matches.slice(0, visibleCount);
+  const organizationsLabel = currentLanguage === 'en' ? 'organization listings' : 'organizaciones';
+  const samplesLabel = currentLanguage === 'en' ? 'sample programs' : 'programas de ejemplo';
   const eyebrow =
     selectedCategory === 'all'
       ? t.filters.allCities
@@ -116,11 +130,19 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           {t.filters.reset}
         </button>
 
-        <span className="qc-cnt" aria-live="polite">
-          {matches.length} {currentLanguage === 'en' ? 'listings' : 'registros'} · {demonstrationCount}{' '}
-          {t.filters.resultsCount}
-        </span>
+        <span className="qc-cnt">{matches.length} {organizationsLabel} · {demonstrationCount} {samplesLabel}</span>
       </div>
+
+      <p className="qc-filter-note">
+        {currentLanguage === 'en'
+          ? 'Organization websites are real. Fees and ID rules are not checked here; the Free and No ID filters apply to sample programs only.'
+          : 'Los sitios de organizaciones son reales. No verificamos costos ni requisitos de identificación; estos filtros solo se aplican a programas de ejemplo.'}
+      </p>
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {currentLanguage === 'en'
+          ? `${matches.length} organization listings and ${demonstrationCount} sample programs found.`
+          : `Se encontraron ${matches.length} organizaciones y ${demonstrationCount} programas de ejemplo.`}
+      </p>
 
       {/* City selector (kept from the existing filter set) */}
       <div className="mt-4 text-[14px] text-[#5a5870]">
@@ -151,12 +173,13 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         </p>
       ) : (
         <div>
-          {matches.map((entry) => {
+          {visibleMatches.map((entry) => {
             const saved = isEntrySaved(entry.id);
             return (
-              <div key={entry.id} className="qc-row">
+              <article key={entry.id} id={`directory-entry-${entry.id}`} tabIndex={-1} className="qc-row" aria-labelledby={`directory-name-${entry.id}`}>
                 <div>
-                  <div className="qc-nm">{entry.name}</div>
+                  <h3 id={`directory-name-${entry.id}`} className="qc-nm">{entry.name}</h3>
+                  <p className="qc-org-badge">{currentLanguage === 'en' ? 'Organization website — check details' : 'Sitio de organización — confirme los datos'}</p>
                   <div className="qc-mt">
                     <span>{displayAddress(entry.address, currentLanguage)}</span>
                     <span>{categoryLabels[entry.categoryId][currentLanguage]}</span>
@@ -174,7 +197,9 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
                     </button>
                   )}
                   <a href={entry.website} target="_blank" rel="noopener noreferrer">
-                    {currentLanguage === 'en' ? 'Visit website' : 'Visitar sitio web'}
+                    {currentLanguage === 'en'
+                      ? `Visit ${entry.name}${new URL(entry.website).pathname === '/' ? ' homepage' : ' page'} (opens new tab)`
+                      : `Visitar ${entry.name}${new URL(entry.website).pathname === '/' ? ' (inicio)' : ' (información)'} (abre otra pestaña)`}
                   </a>
                   <button
                     type="button"
@@ -190,9 +215,23 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
                       : t.resourceCard.save}
                   </button>
                 </div>
-              </div>
+              </article>
             );
           })}
+          {visibleCount < matches.length && (
+            <button
+              type="button"
+              className="qc-btn-sm qc-load-more"
+              onClick={() => {
+                focusNextRow.current = `directory-entry-${matches[visibleCount].id}`;
+                setVisibleCount((count) => count + 10);
+              }}
+            >
+              {currentLanguage === 'en'
+                ? `Show ${Math.min(10, matches.length - visibleCount)} more organizations`
+                : `Mostrar ${Math.min(10, matches.length - visibleCount)} organizaciones más`}
+            </button>
+          )}
         </div>
       )}
 
