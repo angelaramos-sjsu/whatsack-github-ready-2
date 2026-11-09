@@ -8,7 +8,7 @@
   position: relative;
   background: #fff;
   color: #1a1a24;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Inter, system-ui, Arial, sans-serif;
   line-height: 1.6;
 }
 
@@ -777,3 +777,18 @@
   font-size: 12px;
   letter-spacing: 0.1em;
 }
+
+/* Clear destinations, readable metadata, and responsive resource links. */
+.qc-h1,.qc-h2,.qc-brand,.qc-nm { font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif; }
+.qc-page,.qc-page-heading { padding-top: 72px; padding-bottom: 50px; }
+.qc-page-title { margin-top: 12px; }
+.qc-about-h2 { font-size: 23px; font-weight: 600; margin-top: 36px; }
+.qc-home-more { padding-top: 66px; padding-bottom: 36px; }
+.qc-org-badge { display: inline-block; font-size: 12px; color: #03543b; margin: 5px 0 0; font-weight: 600; }
+.qc-filter-note { color: #414155; margin-top: 18px; max-width: 850px; font-size: 14px; }
+.qc-row,.qc-ac,.qc-ac a { min-width: 0; overflow-wrap: anywhere; }
+.qc-row:focus { outline: 3px solid #047857; outline-offset: 3px; }
+.qc-load-more { margin-top: 26px; }
+.qc-language { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.qc-language button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 400px) { .qc-shell { padding-left: 14px; padding-right: 14px; } .qc-row { grid-template-columns: minmax(0,1fr); } .qc-fs { gap: 12px; } .qc-top { gap: 12px; } .qc-top button { min-height: 44px; } }
