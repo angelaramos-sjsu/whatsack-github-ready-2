@@ -23,10 +23,10 @@ interface CommunityDirectoryProps {
 }
 
 const categoryLabels: Record<CategoryId, { en: string; es: string }> = {
-  food: { en: 'Food', es: 'Alimentos' },
+  food: { en: 'Food Access', es: 'Acceso a alimentos' },
   'mental-health': { en: 'Mental Health', es: 'Salud Mental' },
   workforce: { en: 'Education & Workforce', es: 'Educación y Trabajo' },
-  community: { en: 'Community Support', es: 'Apoyo Comunitario' }
+  community: { en: 'Community Connection', es: 'Conexión comunitaria' }
 };
 
 const displayAddress = (address: string, language: Language) => {
