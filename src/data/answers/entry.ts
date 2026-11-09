@@ -269,6 +269,43 @@ export const entryAnswers: ScriptedAnswer[] = [
     followUpIds: ['ans-mental-school-privacy', 'ans-mental-drop-in-what-happens', 'ans-mental-text-practice']
   },
   {
+    id: 'ans-community-connections',
+    topic: 'community',
+    question: {
+      en: 'I feel lonely. Where can I meet people or join community activities?',
+      es: 'Me siento sola. ¿Dónde puedo conocer gente o participar en actividades de mi comunidad?'
+    },
+    answer: {
+      en: `**Looking for company or activities in your community?**
+
+You can explore local organizations without creating an account or sharing personal information.
+
+1. Select **Find Resources** in the navigation.
+2. Choose **Community Connection** and select your city.
+3. Open an organization's official website to check current events, languages, accessibility, costs, and how to join.
+
+**Important:** WhatSack includes real organization websites and simulated sample programs. It does not verify live event schedules. Check directly with each organization before visiting.
+
+**For older adults near Redwood City:** Select the suggested question below to see a *sample* Spanish-speaking senior-activities journey.`,
+      es: `**¿Busca compañía o actividades para conocer a otras personas?**
+
+Puede explorar organizaciones locales sin crear una cuenta ni compartir datos personales.
+
+1. Seleccione **Buscar Recursos** en el menú.
+2. Elija **Conexión comunitaria** y seleccione su ciudad.
+3. Abra el sitio oficial de cada organización para confirmar actividades, idiomas, accesibilidad, costos y cómo participar.
+
+**Importante:** WhatSack incluye sitios reales de organizaciones y programas de ejemplo simulados. No verifica horarios de eventos en vivo. Consulte directamente con la organización antes de ir.
+
+**Para adultos mayores cerca de Redwood City:** Seleccione la pregunta sugerida a continuación para explorar un *ejemplo* de actividades en español.`
+    },
+    context: [
+      { en: 'Community activities and social connection', es: 'Actividades comunitarias y conexión social' },
+      { en: 'Ask the organization for current details', es: 'Confirme los detalles actuales con la organización' }
+    ],
+    followUpIds: ['ans-senior-cultural-circles']
+  },
+  {
     id: 'ans-senior-cultural-circles',
     topic: 'senior',
     question: {
