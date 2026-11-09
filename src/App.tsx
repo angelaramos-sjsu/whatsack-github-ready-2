@@ -35,6 +35,7 @@ export function App() {
   const [showSproutGreeting, setShowSproutGreeting] = useState(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
+  const [intakeSelectedNeeds, setIntakeSelectedNeeds] = useState<CategoryId[]>([]);
   
   // Secondary Filters
   const [selectedCity, setSelectedCity] = useState<string>('all');
@@ -131,13 +132,15 @@ export function App() {
   // Handle saving introduction profile
   const handleSaveProfile = (profile: IntakeProfile) => {
     setUserProfile(profile);
-    // Apply category and location preferences, without hidden ID restrictions.
-    if (profile.servicePriorities.length === 1) {
-      setSelectedCategory(profile.servicePriorities[0]);
-    }
-    if (profile.city && profile.city !== 'Other Silicon Valley') {
-      setSelectedCity(profile.city);
-    }
+    // Preserve every selected need; do not silently drop multi-category selections.
+    // No-ID, transit, language and timing preferences are reminders, not
+    // hidden filters: organization eligibility and document rules are unverified.
+    setIntakeSelectedNeeds(profile.servicePriorities);
+    setSelectedCategory('all');
+    setSelectedCity(profile.city && profile.city !== 'Other Silicon Valley' ? profile.city : 'all');
+    setSearchQuery('');
+    setFreeOnly(false);
+    setActiveView('resources');
   };
 
   const handleClearProfile = () => {
@@ -157,6 +160,7 @@ export function App() {
   const filteredResources = useMemo(() => {
     return demonstrationResources.filter((resource) => {
       // 1. Category Filter
+      if (intakeSelectedNeeds.length > 0 && !intakeSelectedNeeds.includes(resource.categoryId)) return false;
       if (selectedCategory !== 'all' && resource.categoryId !== selectedCategory) {
         return false;
       }
@@ -202,6 +206,7 @@ export function App() {
     });
   }, [
     selectedCategory, 
+    intakeSelectedNeeds,
     selectedCity, 
     freeOnly, 
     searchQuery
@@ -217,6 +222,7 @@ export function App() {
   }, [savedDirectoryIds]);
 
   const resetAllFilters = () => {
+    setIntakeSelectedNeeds([]);
     setSelectedCategory('all');
     setSelectedCity('all');
     setFreeOnly(false);
@@ -313,7 +319,7 @@ export function App() {
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
             selectedCategory={selectedCategory}
-            onSelectCategory={(cat) => { setSelectedCategory(cat); setActiveView('resources'); }}
+            onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
           />
           <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
             <div className="qc-home-start-card">
@@ -341,6 +347,13 @@ export function App() {
                   <span>{currentLanguage === 'en' ? 'Browse all resources' : 'Ver todos los recursos'}</span>
                   <span aria-hidden="true" className="qc-home-start-arrow">→</span>
                 </button>
+                <button
+                  type="button"
+                  onClick={() => setIsIntroductionFormOpen(true)}
+                  className="min-h-[44px] rounded-xl px-3 py-2 text-sm font-semibold text-[#03543b] underline underline-offset-4 hover:text-[#047857] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#047857]"
+                >
+                  {currentLanguage === 'en' ? 'Find My Support · optional questions' : 'Encontrar ayuda · preguntas opcionales'}
+                </button>
               </div>
             </div>
           </section>
@@ -353,11 +366,65 @@ export function App() {
             <p className="qc-dsub">{currentLanguage === 'en' ? 'Browse organizations and sample programs. Check each organization website for current details.' : 'Explore organizaciones y programas de ejemplo. Consulte cada sitio oficial para ver datos actuales.'}</p>
           </div>
 
+          {/* Context from the optional intake; never imply benefits eligibility. */}
+          {userProfile && (
+            <section className="qc-shell pb-6" aria-label={currentLanguage === 'en' ? 'Your search preferences' : 'Sus preferencias de búsqueda'}>
+              <div className="rounded-2xl border border-[#cdeedd] bg-[#f7fdfa] p-4 sm:p-5 space-y-3 text-sm text-[#1a1a24]">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="font-bold text-lg">{currentLanguage === 'en' ? 'Your support preferences' : 'Sus preferencias de ayuda'}</h2>
+                    <p className="mt-1">
+                      {currentLanguage === 'en'
+                        ? 'These choices help narrow the categories and area you can explore; they are not an eligibility check.'
+                        : 'Estas elecciones ayudan a limitar las categorías y la zona que puede explorar; no determinan elegibilidad.'}
+                    </p>
+                  </div>
+                  <button type="button" onClick={handleClearProfile} className="min-h-[44px] rounded-lg border border-emerald-700 px-3 py-2 font-semibold text-[#03543b] hover:bg-white">
+                    {currentLanguage === 'en' ? 'Clear my preferences' : 'Borrar mis preferencias'}
+                  </button>
+                </div>
+                {userProfile.noIdRequiredPreference && (
+                  <p className="rounded-xl border border-emerald-300 bg-white p-3">
+                    <strong>{currentLanguage === 'en' ? 'No ID / SSN preferred:' : 'Prefiere opciones sin identificación ni Seguro Social:'}</strong>{' '}
+                    {currentLanguage === 'en'
+                      ? 'You do not need to give WhatSack an ID or SSN. We cannot confirm every organization’s documentation requirements; ask them directly before visiting.'
+                      : 'No necesita dar identificación ni Seguro Social a WhatSack. No podemos confirmar los requisitos de cada organización; consúltelos antes de visitar.'}
+                  </p>
+                )}
+                {userProfile.urgency === 'today' && (
+                  <p>
+                    {currentLanguage === 'en'
+                      ? 'Need help today? Call 211 for local assistance without waiting for this directory.'
+                      : '¿Necesita ayuda hoy? Llame al 211 para encontrar asistencia local sin esperar este directorio.'}
+                    {' '}<a href="tel:211" className="font-bold text-[#03543b] underline">{currentLanguage === 'en' ? 'Call 211' : 'Llamar al 211'}</a>
+                  </p>
+                )}
+                {(userProfile.otherNeeds?.length ?? 0) > 0 && (
+                  <p>
+                    {currentLanguage === 'en'
+                      ? 'For housing, utilities, or transportation assistance, WhatSack does not yet have reviewed listings in those categories. Use a local human referral service instead:'
+                      : 'Para vivienda, servicios públicos o transporte, WhatSack aún no cuenta con listados revisados en esas categorías. Consulte un servicio de referencia local:'}
+                    {' '}<a className="font-bold text-[#03543b] underline" href="https://211bayarea.org/" target="_blank" rel="noopener noreferrer">{currentLanguage === 'en' ? '211 Bay Area (opens new tab)' : '211 Bay Area (abre otra pestaña)'}</a>
+                  </p>
+                )}
+                {(userProfile.transitDependent || (userProfile.accessPreferences?.length ?? 0) > 0 || (userProfile.preferredLanguage !== 'No preference' && userProfile.preferredLanguage)) && (
+                  <p>
+                    <strong>{currentLanguage === 'en' ? 'Before visiting:' : 'Antes de visitar:'}</strong>{' '}
+                    {currentLanguage === 'en'
+                      ? 'Please confirm transportation, language availability, appointment format, hours and accessibility with each organization. These preferences have not been verified against its current services.'
+                      : 'Confirme con cada organización el transporte, idioma, modalidad de atención, horarios y accesibilidad. Estas preferencias no se han verificado con los servicios actuales.'}
+                  </p>
+                )}
+              </div>
+            </section>
+          )}
+
           {/* Community resource directory with filters */}
           <CommunityDirectory
             currentLanguage={currentLanguage}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
+            selectedNeeds={intakeSelectedNeeds}
+            onSelectCategory={(category) => { setIntakeSelectedNeeds([]); setSelectedCategory(category); }}
             selectedCity={selectedCity}
             onSelectCity={setSelectedCity}
             availableCities={availableCities}
