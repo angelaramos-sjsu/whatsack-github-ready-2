@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const t = translations[currentLanguage];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAccOpen, setIsAccOpen] = useState(true);
+  const [isAccOpen, setIsAccOpen] = useState(false);
 
   const goHome = () => {
     setActiveView('home');
@@ -123,7 +123,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          <div className="flex items-start gap-5">
+          <div className="qc-nav-tools">
+            <div className="qc-header-language" role="group" aria-label={currentLanguage === 'en' ? 'Website language' : 'Idioma del sitio'}>
+              <button type="button" lang="en" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}>EN</button>
+              <button type="button" lang="es" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}>Español</button>
+            </div>
             <details
               className="qc-acc"
               open={isAccOpen}
@@ -131,11 +135,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
-                <div className="qc-language" role="group" aria-label={currentLanguage === 'en' ? 'Language' : 'Idioma'}>
-                  <span>{currentLanguage === 'en' ? 'Language' : 'Idioma'}</span>
-                  <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}><span lang="en">EN</span></button>
-                  <button type="button" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}><span lang="es">Español</span></button>
-                </div>
                 <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
                   {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
                 </button>
@@ -175,6 +174,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={link.label}
                 type="button"
                 onClick={link.onClick}
+                aria-current={link.active ? 'page' : undefined}
                 className={`qc-link min-h-0 self-start ${link.active ? 'on' : ''}`}
               >
                 {link.label}
