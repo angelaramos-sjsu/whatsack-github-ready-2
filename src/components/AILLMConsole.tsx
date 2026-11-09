@@ -25,11 +25,6 @@ import {
   CheckCircle2, 
   Layers, 
   ArrowRight,
-  MessageSquare,
-  HelpCircle,
-  PhoneCall,
-  Activity,
-  Sliders,
 } from 'lucide-react';
 
 /**
@@ -80,17 +75,34 @@ const topicIntents: Record<AnswerTopic, string> = {
   college: 'Higher Education Grants & College Promise',
   mental: 'Youth Mental Health & Confidential Minor Consent',
   senior: 'Senior Cultural Circles & Nutrition Programs',
+  community: 'Community Activities & Social Connection',
   roleplay: 'Intake Rehearsal & Anxiety De-escalation'
 };
 
-/** Free-text routing only picks a topic; the approved answer comes from its id. */
-const detectTopic = (lower: string): AnswerTopic | null => {
-  if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) return 'food';
-  if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) return 'work';
-  if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula') || lower.includes('colegiatura') || lower.includes('fafsa') || lower.includes('cadaa') || lower.includes('promise')) return 'college';
-  if (lower.includes('teen') || lower.includes('anxiety') || lower.includes('mateo') || lower.includes('mental') || lower.includes('joven') || lower.includes('estrés') || lower.includes('confidencial')) return 'mental';
-  if (lower.includes('senior') || lower.includes('rosa') || lower.includes('abuela') || lower.includes('lunch') || lower.includes('almuerzo') || lower.includes('mayor')) return 'senior';
-  if (lower.includes('roleplay') || lower.includes('practice') || lower.includes('ensayar') || lower.includes('practicar')) return 'roleplay';
+/**
+ * Route common bilingual phrases to existing approved, scripted answers.
+ * Accent normalization helps Spanish users write naturally or omit accents.
+ * A person asking for companionship is NOT assumed to be an older adult.
+ */
+const detectTopic = (question: string): AnswerTopic | null => {
+  const normalized = question.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const has = (...phrases: string[]) => phrases.some((phrase) => normalized.includes(phrase));
+
+  if (has('food', 'grocer', 'despensa', 'alimento', 'comida', 'maria')) return 'food';
+  if (has('work', 'retrain', 'job', 'daniel', 'despido', 'capacita', 'empleo', 'trabajo')) return 'work';
+  if (has('college', 'sofia', 'de anza', 'tuition', 'universidad', 'matricula', 'colegiatura', 'fafsa', 'cadaa', 'promise', 'becas')) return 'college';
+  if (has('teen', 'anxiety', 'mateo', 'mental', 'joven', 'estres', 'confidencial', 'ansiedad')) return 'mental';
+  // Rosa's example is specific to older adults; generic social questions are not.
+  if (/\b(rosa|seniors?|abuel[oa]s?|adult[oa]s? mayores?|personas? mayores?|tercera edad|jubilad[oa]s?|pensionad[oa]s?)\b/.test(normalized)) return 'senior';
+  if (has(
+    'me siento sola', 'me siento solo', 'me siento aislada', 'me siento aislado',
+    'soledad', 'compania', 'conocer gente', 'conocer personas', 'conocer a personas',
+    'hacer amigos', 'hacer amigas', 'hacer amistades', 'actividades sociales',
+    'actividades comunitarias', 'conexion comunitaria', 'centro comunitario',
+    'community activities', 'community connection', 'social activities',
+    'meet people', 'make friends', 'lonely', 'community groups'
+  )) return 'community';
+  if (has('roleplay', 'practice', 'ensayar', 'practicar')) return 'roleplay';
   return null;
 };
 
@@ -118,7 +130,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     followUpIds: [
       'ans-food-east-sj-groceries',
       'ans-work-tech-certificates',
-      'ans-mental-confidential-teens'
+      'ans-mental-confidential-teens',
+      'ans-community-connections'
     ]
   };
 
@@ -146,7 +159,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
    */
   const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
     const lower = text.toLowerCase();
-    const topic = detectTopic(lower);
+    const topic = detectTopic(text);
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const answer = saraStageId
@@ -237,10 +250,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             <SproutMascot className="h-12 w-12" />
           </div>
           <div className="min-w-0">
-            <h1 className="text-lg font-semibold tracking-tight text-white">
+            <h1 className="text-xl font-semibold tracking-tight text-white">
               {currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
             </h1>
-            <p className="mt-0.5 text-xs leading-relaxed text-slate-300">
+            <p className="mt-1 text-sm leading-relaxed text-slate-300">
               {currentLanguage === 'en'
                 ? 'Meet Sprout, your friendly guide. This is a scripted demo.'
                 : 'Conozca a Sprout, su guía. Esta es una demostración con respuestas preparadas.'}
@@ -277,7 +290,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   : 'bg-slate-800/90 text-slate-100 border border-slate-700/80 rounded-tl-xs'
               }`}>
                 {/* Message Header */}
-                <div className="flex items-center justify-between mb-2 pb-1 border-b border-slate-700/40 text-[11px]">
+                <div className="flex flex-wrap items-center justify-between gap-1 mb-2 pb-2 border-b border-slate-700/40 text-sm">
                   <span className="font-bold flex items-center gap-1.5">
                     {msg.sender === 'user' ? (
                       <>
@@ -291,11 +304,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       </>
                     )}
                   </span>
-                  <span className="text-slate-400 text-[10px]">{msg.timestamp}</span>
+                  <span className="text-slate-400 text-sm">{msg.timestamp}</span>
                 </div>
 
                 {/* Message Text Content */}
-                <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
+                <div className="text-base leading-7 whitespace-pre-wrap font-sans space-y-2 break-words">
                   {msg.sender === 'llm'
                     ? renderScriptedAnswer(
                         msg.scriptedAnswer
@@ -308,7 +321,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {/* Grounded Resource Cards Preview */}
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60 space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                    <span className="text-sm font-bold uppercase tracking-wider text-slate-400 block">
                       {currentLanguage === 'en' ? 'Grounded Demonstration Resources:' : 'Recursos de Demostración Vinculados:'}
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -323,22 +336,22 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           >
                             <div>
                               <div className="flex items-center justify-between gap-1 mb-1">
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400">
+                                <span className="text-sm font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400">
                                   {res.costType}
                                 </span>
-                                <span className="text-[10px] text-slate-400 font-mono">{res.location.city}</span>
+                                <span className="text-sm text-slate-400 font-mono">{res.location.city}</span>
                               </div>
-                              <h5 className="font-bold text-xs text-white line-clamp-1">
+                              <h5 className="font-bold text-base text-white">
                                 {res.title[currentLanguage]}
                               </h5>
-                              <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                              <p className="text-sm text-slate-300 mt-1">
                                 {res.organization[currentLanguage]}
                               </p>
                             </div>
 
                             <button
                               onClick={() => onOpenInsights(res)}
-                              className="mt-2 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                              className="mt-2 inline-flex min-h-[44px] items-center gap-2 rounded-lg py-2 text-sm font-bold text-emerald-300 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
                             >
                               <span>{t.resourceCard.viewInsights}</span>
                               <ArrowRight className="w-3 h-3" />
@@ -365,7 +378,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
                 {isLlm && !!msg.followUpIds?.length && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
+                    <span className="text-sm font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -374,7 +387,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           key={followUp.id}
                           type="button"
                           onClick={() => handleFollowUpClick(followUp.id)}
-                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 hover:border-emerald-400 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-400"
+                          className="min-h-[44px] text-sm px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 hover:border-emerald-400 text-left leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
                         >
                           💬 {followUp.question[currentLanguage]}
                         </button>
@@ -399,12 +412,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             <div aria-hidden="true" className="h-10 w-10 shrink-0 rounded-xl border border-emerald-300/50 bg-emerald-50 p-1">
               <SproutMascot className="h-full w-full" />
             </div>
-            <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 text-xs text-slate-300 max-w-md space-y-2">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+            <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 text-sm text-slate-200 max-w-md space-y-2">
+              <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
                 <Brain className="w-4 h-4 animate-pulse" />
                 <span>{t.aiCopilot.thinking}</span>
               </div>
-              <ul className="text-[11px] text-slate-400 space-y-1">
+              <ul className="text-sm text-slate-400 space-y-1">
                 <li className="flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                   <span>{t.aiCopilot.retrievalStep2}</span>
@@ -439,13 +452,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={t.aiCopilot.chatPlaceholder}
-            className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 text-white placeholder-slate-400 text-xs sm:text-sm rounded-2xl px-4 py-3 focus:outline-hidden transition-colors min-h-[46px]"
+            className="min-w-0 flex-1 bg-slate-900 border border-slate-500 focus:border-emerald-400 text-white placeholder-slate-300 text-base rounded-2xl px-4 py-3 focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-emerald-300 transition-colors min-h-[48px]"
           />
 
           <button
             type="submit"
             disabled={!inputText.trim() || isGenerating}
-            className="min-h-[46px] px-6 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-xs sm:text-sm rounded-2xl flex items-center gap-2 transition-all shadow-md shadow-emerald-600/20 focus-visible:ring-2 focus-visible:ring-emerald-400"
+            className="min-h-[48px] px-4 sm:px-6 py-3 bg-emerald-700 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-base rounded-2xl flex items-center gap-2 transition-all focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
             aria-label={t.aiCopilot.send}
           >
             <span className="hidden sm:inline">{t.aiCopilot.send}</span>
@@ -453,7 +466,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 font-medium mt-2.5">
+        <p className="text-center text-sm leading-relaxed text-slate-300 font-medium mt-3">
           {currentLanguage === 'en'
             ? 'Sprout uses scripted example answers for this class project. Check official sources before making decisions.'
             : 'Sprout usa respuestas de ejemplo para este proyecto de clase. Consulte fuentes oficiales antes de tomar decisiones.'}
