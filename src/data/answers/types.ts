@@ -15,6 +15,13 @@ export type ScriptedAction =
   | { id: string; kind: 'open-link'; label: BilingualText; url: string }
   | { id: string; kind: 'save-plan'; label: BilingualText; resourceId: string };
 
+/** A reviewed scripted step saved into the resident's plan. */
+export interface SavedScriptedStep {
+  id: string;
+  title: BilingualText;
+  detail: BilingualText;
+}
+
 export interface ScriptedNextStep {
   title: BilingualText;
   detail: BilingualText;
