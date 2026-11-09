@@ -926,3 +926,168 @@
 .qc-language { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .qc-language button[aria-pressed="true"] { text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 400px) { .qc-shell { padding-left: 14px; padding-right: 14px; } .qc-row { grid-template-columns: minmax(0,1fr); } .qc-fs { gap: 12px; } .qc-top { gap: 12px; } .qc-top button { min-height: 44px; } }
+
+
+/* Sprout: WhatSack's own opt-in Clippy-style guide. No copy of a paperclip. */
+.sprout-helper {
+  position: fixed;
+  z-index: 35;
+  right: clamp(12px, 2.6vw, 28px);
+  bottom: max(12px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 7px;
+  max-width: calc(100vw - 24px);
+  font-family: Inter, system-ui, sans-serif;
+  pointer-events: none;
+}
+
+.sprout-helper > * {
+  pointer-events: auto;
+}
+
+.sprout-helper-bubble {
+  position: relative;
+  width: min(286px, calc(100vw - 32px));
+  margin-bottom: 5px;
+  padding: 16px 46px 16px 17px;
+  border: 1px solid #cdeedd;
+  border-radius: 19px 19px 6px 19px;
+  background: #fff;
+  color: #1a1a24;
+  box-shadow: 0 14px 36px rgb(4 67 49 / 14%);
+}
+
+.sprout-helper-bubble::after {
+  content: "";
+  position: absolute;
+  right: 29px;
+  bottom: -8px;
+  width: 15px;
+  height: 15px;
+  background: #fff;
+  border-right: 1px solid #cdeedd;
+  border-bottom: 1px solid #cdeedd;
+  transform: rotate(45deg);
+}
+
+.sprout-helper-greeting {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-weight: 750;
+  font-size: 16px;
+  letter-spacing: -0.025em;
+  line-height: 1.35;
+  color: #03543b;
+}
+
+.sprout-helper-description {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: #414155;
+}
+
+.sprout-helper-dismiss {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  min-height: 34px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #414155;
+  cursor: pointer;
+}
+
+.sprout-helper-dismiss:hover {
+  background: #eafaf1;
+  color: #03543b;
+}
+
+.sprout-helper-dismiss:focus-visible,
+.sprout-helper-button:focus-visible {
+  outline: 3px solid #1a1a24;
+  outline-offset: 4px;
+}
+
+.sprout-helper-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 82px;
+  height: 82px;
+  min-height: 82px;
+  padding: 4px;
+  border: 2px solid #cdeedd;
+  border-radius: 26px;
+  background: linear-gradient(155deg, #fff 15%, #e3f3ea);
+  box-shadow: 0 14px 32px rgb(4 67 49 / 17%);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.sprout-helper-button:hover {
+  transform: translateY(-3px);
+  border-color: #047857;
+  box-shadow: 0 18px 34px rgb(4 67 49 / 21%);
+}
+
+.sprout-helper-button:active {
+  transform: translateY(0);
+}
+
+.sprout-helper-character {
+  width: 74px;
+  height: 74px;
+  filter: drop-shadow(0 2px 1px rgb(4 67 49 / 9%));
+}
+
+.sprout-helper-chat-icon {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #047857;
+  color: #fff;
+}
+
+.sprout-helper-label {
+  align-self: flex-end;
+  margin-right: 4px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: #03543b;
+  color: #fff;
+  font-weight: 650;
+  font-size: 11px;
+  line-height: 1.3;
+  letter-spacing: .01em;
+}
+
+@media (max-width: 480px) {
+  .sprout-helper-button {
+    width: 72px;
+    height: 72px;
+    min-height: 72px;
+    border-radius: 22px;
+  }
+  .sprout-helper-character { width: 64px; height: 64px; }
+  .sprout-helper-bubble { width: min(264px, calc(100vw - 32px)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprout-helper-button { transition: none; }
+  .sprout-helper-button:hover { transform: none; }
+}
