@@ -7,6 +7,7 @@ import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
 interface CommunityDirectoryProps {
   currentLanguage: Language;
   selectedCategory: CategoryId | 'all';
+  selectedNeeds?: CategoryId[];
   onSelectCategory: (category: CategoryId | 'all') => void;
   selectedCity: string;
   onSelectCity: (city: string) => void;
@@ -37,6 +38,7 @@ const displayAddress = (address: string, language: Language) => {
 export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   currentLanguage,
   selectedCategory,
+  selectedNeeds = [],
   onSelectCategory,
   selectedCity,
   onSelectCity,
@@ -55,6 +57,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   const words = searchQuery.toLowerCase().trim().split(/\s+/).filter((w) => w.length > 2);
 
   const matches = directoryEntries.filter((entry) => {
+    if (selectedNeeds.length > 0 && !selectedNeeds.includes(entry.categoryId)) return false;
     if (selectedCategory !== 'all' && entry.categoryId !== selectedCategory) return false;
     if (selectedCity !== 'all' && entry.city !== selectedCity) return false;
     if (words.length) {
@@ -70,7 +73,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
-  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedCity, searchQuery, freeOnly]);
+  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedNeeds.join(','), selectedCity, searchQuery, freeOnly]);
 
   useEffect(() => {
     if (!focusNextRow.current) return;
@@ -83,7 +86,9 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   const organizationsLabel = currentLanguage === 'en' ? 'organization listings' : 'organizaciones';
   const samplesLabel = currentLanguage === 'en' ? 'sample programs' : 'programas de ejemplo';
   const eyebrow =
-    selectedCategory === 'all'
+    selectedNeeds.length > 0
+      ? (currentLanguage === 'en' ? 'Your selected needs' : 'Sus necesidades seleccionadas')
+      : selectedCategory === 'all'
       ? t.filters.allCities
       : categoryLabels[selectedCategory][currentLanguage];
 
