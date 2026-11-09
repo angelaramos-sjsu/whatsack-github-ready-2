@@ -82,13 +82,20 @@ export interface Persona {
   journeySteps: PersonaJourneyStep[];
 }
 
+export type IntakeUrgency = 'today' | 'soon' | 'exploring' | 'prefer-not-to-say';
+export type OtherBasicNeed = 'housing' | 'utilities' | 'transportation';
+export type AccessPreference = 'remote' | 'evenings' | 'accessible';
+
 export interface IntakeProfile {
   name: string;
   ageRange: 'under-18' | '18-24' | '25-49' | '50-64' | '65+' | 'prefer-not-to-say';
   city: string;
-  householdSize: number;
-  hasChildren: boolean;
-  hasSeniors: boolean;
+  householdSize?: number;
+  hasChildren?: boolean;
+  hasSeniors?: boolean;
+  urgency?: IntakeUrgency;
+  otherNeeds?: OtherBasicNeed[];
+  accessPreferences?: AccessPreference[];
   monthlyIncome: '< $2,500' | '$2,500 - $4,500' | '$4,500 - $7,000' | '$7,000+' | 'prefer-not-to-say';
   employmentStatus: 'employed' | 'part-time' | 'laid-off' | 'seeking-work' | 'student' | 'retired' | 'prefer-not-to-say';
   servicePriorities: CategoryId[];
