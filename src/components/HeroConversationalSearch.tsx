@@ -73,12 +73,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
     }
   };
 
-  const handleCategory = (id: CategoryId) => {
-    onSelectCategory(id);
-    window.setTimeout(() => {
-      document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
-  };
+  const handleCategory = (id: CategoryId) => onSelectCategory(id);
 
   return (
     <section aria-labelledby="hero-title" className="qc-hero overflow-hidden">
@@ -115,8 +110,8 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               type="button"
               onClick={onClearSearch}
               className="min-h-0 p-2 mr-1 rounded-full text-[#7d7a94] hover:text-[#047857] transition-colors"
-              title="Clear input"
-              aria-label="Clear search input"
+              title={currentLanguage === 'en' ? 'Clear search' : 'Borrar búsqueda'}
+              aria-label={currentLanguage === 'en' ? 'Clear search' : 'Borrar búsqueda'}
             >
               <X className="w-4 h-4" aria-hidden="true" />
             </button>
@@ -134,7 +129,6 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               type="button"
               onClick={() => handleCategory(category.id)}
               className="min-h-0"
-              aria-current={selectedCategory === category.id ? 'true' : undefined}
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">{categoryIcons[category.id]}</svg>
               <span>{category.label}</span>
@@ -142,41 +136,9 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
           ))}
         </div>
 
-        <div aria-live="polite" className="sr-only">
-          {matchedCount} {t.filters.resultsCount}
-        </div>
 
-        {/* Active search synthesis */}
-        {searchQuery && (
-          <div className="qc-sheet">
-            <div className="flex items-start justify-between gap-4">
-              <div>
-                <div className="flex flex-wrap items-center gap-3">
-                  <span className="qc-eyebrow">
-                    {currentLanguage === 'en' ? 'Search Synthesis' : 'Síntesis de Búsqueda'}
-                  </span>
-                  <span className="qc-chip">
-                    {matchedCount} {t.filters.resultsCount}
-                  </span>
-                </div>
-                <p className="mt-3 text-[15px] leading-relaxed text-[#1A1A24]">
-                  {currentLanguage === 'en'
-                    ? `Filtering verified Silicon Valley community services matching: "${searchQuery}" with zero required state ID and accessible public transit routes.`
-                    : `Filtrando programas de Silicon Valley que coinciden con: "${searchQuery}" sin requisito de ID estatal y con acceso por transporte público.`}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={onClearSearch}
-                className="min-h-0 p-1.5 text-[#5a5870] hover:text-[#047857] transition-colors"
-                title="Reset search query"
-                aria-label="Reset search query"
-              >
-                <X className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        )}
+
+
       </div>
     </section>
   );
