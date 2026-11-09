@@ -46,8 +46,6 @@ export function App() {
   const [isIntroductionFormOpen, setIsIntroductionFormOpen] = useState<boolean>(false);
   const [introductionSource, setIntroductionSource] = useState<string>('hero');
   const introTriggerRef = useRef<HTMLElement | null>(null);
-  const heroSectionRef = useRef<HTMLDivElement | null>(null);
-  const [heroVisible, setHeroVisible] = useState(true);
   const [resultsBannerDismissed, setResultsBannerDismissed] = useState(false);
 
   // Modals & Drawers
@@ -84,18 +82,6 @@ export function App() {
     const savedBannerState = sessionStorage.getItem('whatsack-results-banner-dismissed');
     if (savedBannerState === 'true') setResultsBannerDismissed(true);
   }, []);
-
-  useEffect(() => {
-    if (activeView !== 'home' || !heroSectionRef.current) return;
-
-    const observer = new IntersectionObserver((entries) => {
-      const [entry] = entries;
-      setHeroVisible(entry ? entry.isIntersecting : true);
-    }, { threshold: 0.35 });
-
-    observer.observe(heroSectionRef.current);
-    return () => observer.disconnect();
-  }, [activeView]);
 
   // After a page change, read the destination heading before its controls.
   useEffect(() => {
@@ -332,29 +318,27 @@ export function App() {
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
           {/* Home presents one search question and four category paths. */}
           {activeView === 'home' && (<>
-          <div ref={heroSectionRef}>
-            <HeroConversationalSearch
-              currentLanguage={currentLanguage}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              onExecuteSearch={(q) => {
-                setSearchQuery(q);
-                setCopilotQuestion({ text: q, key: Date.now() });
-                setActiveView('copilot');
-              }}
-              onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
-              onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
-              onOpenCopilot={() => setActiveView('copilot')}
-              onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
-              onOpenIntroductionForm={(source) => openIntroductionForm(source ?? 'hero')}
-              onClearProfile={handleClearProfile}
-              userProfile={userProfile}
-              matchedCount={filteredResources.length}
-              onClearSearch={() => setSearchQuery('')}
-              selectedCategory={selectedCategory}
-              onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
-            />
-          </div>
+          <HeroConversationalSearch
+            currentLanguage={currentLanguage}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            onExecuteSearch={(q) => {
+              setSearchQuery(q);
+              setCopilotQuestion({ text: q, key: Date.now() });
+              setActiveView('copilot');
+            }}
+            onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
+            onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
+            onOpenCopilot={() => setActiveView('copilot')}
+            onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
+            onOpenIntroductionForm={(source) => openIntroductionForm(source ?? 'hero')}
+            onClearProfile={handleClearProfile}
+            userProfile={userProfile}
+            matchedCount={filteredResources.length}
+            onClearSearch={() => setSearchQuery('')}
+            selectedCategory={selectedCategory}
+            onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
+          />
           <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
             <div className="qc-home-start-card">
               <div className="qc-home-start-copy">
@@ -542,8 +526,8 @@ export function App() {
         </main>
       )}
 
-      {/* Ask WhatSack is always the same assistant, even when the mascot is shown. */}
-      {(['home', 'resources', 'about'].includes(activeView) && !((activeView === 'home') && heroVisible)) && (
+      {/* Keep the Sprout launcher available alongside the homepage search. */}
+      {['home', 'resources', 'about'].includes(activeView) && (
         <SproutAssistant
           currentLanguage={currentLanguage}
           showGreeting={showSproutGreeting}
