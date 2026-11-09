@@ -54,7 +54,7 @@ export function App() {
   const [selectedResourceForInsights, setSelectedResourceForInsights] = useState<DemonstrationResource | null>(null);
 
   // Bookmarks & Accessibility
-  const [savedResourceIds, setSavedResourceIds] = useState<string[]>(['res-food-1', 'res-work-1']);
+  const [savedResourceIds, setSavedResourceIds] = useState<string[]>([]);
   const [savedDirectoryIds, setSavedDirectoryIds] = useState<string[]>([]);
   const [savedScriptedSteps, setSavedScriptedSteps] = useState<SavedScriptedStep[]>([]);
   const [completedScriptedIds, setCompletedScriptedIds] = useState<string[]>([]);
@@ -366,9 +366,14 @@ export function App() {
 
           {/* Demonstration resources */}
           <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-16 scroll-mt-28">
-            <h2 id="resources-heading" className="sr-only">
-              {currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}
+            <h2 id="resources-heading" className="qc-h2">
+              {currentLanguage === 'en' ? 'Sample programs (class examples)' : 'Programas de ejemplo (para clase)'}
             </h2>
+            <p className="qc-dsub mb-8">
+              {currentLanguage === 'en'
+                ? `${filteredResources.length} sample programs. These are not live services; do not use the sample phone numbers or addresses.`
+                : `${filteredResources.length} programas de ejemplo. No son servicios reales; no use los números ni las direcciones de ejemplo.`}
+            </p>
             {filteredResources.length === 0 ? (
               <div className="border-t border-[#f0eef8] py-16 text-center">
                 <h3 className="text-[18px] font-medium text-[#1A1A24]">
