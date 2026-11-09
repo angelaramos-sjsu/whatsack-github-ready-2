@@ -22,19 +22,19 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
   const t = translations[currentLanguage];
 
   const [name, setName] = useState(existingProfile?.name || '');
-  const [ageRange, setAgeRange] = useState<IntakeProfile['ageRange']>(existingProfile?.ageRange || '25-49');
-  const [city, setCity] = useState(existingProfile?.city || 'East San Jose');
+  const [ageRange, setAgeRange] = useState<IntakeProfile['ageRange']>(existingProfile?.ageRange || 'prefer-not-to-say');
+  const [city, setCity] = useState(existingProfile?.city || 'Other Silicon Valley');
   const [householdSize, setHouseholdSize] = useState(existingProfile?.householdSize || 3);
-  const [hasChildren, setHasChildren] = useState(existingProfile?.hasChildren ?? true);
+  const [hasChildren, setHasChildren] = useState(existingProfile?.hasChildren ?? false);
   const [hasSeniors, setHasSeniors] = useState(existingProfile?.hasSeniors ?? false);
-  const [monthlyIncome, setMonthlyIncome] = useState<IntakeProfile['monthlyIncome']>(existingProfile?.monthlyIncome || '< $2,500');
-  const [employmentStatus, setEmploymentStatus] = useState<IntakeProfile['employmentStatus']>(existingProfile?.employmentStatus || 'part-time');
+  const [monthlyIncome, setMonthlyIncome] = useState<IntakeProfile['monthlyIncome']>(existingProfile?.monthlyIncome || 'prefer-not-to-say');
+  const [employmentStatus, setEmploymentStatus] = useState<IntakeProfile['employmentStatus']>(existingProfile?.employmentStatus || 'prefer-not-to-say');
   const [servicePriorities, setServicePriorities] = useState<CategoryId[]>(
-    existingProfile?.servicePriorities || ['food', 'workforce']
+    existingProfile?.servicePriorities || []
   );
   const [preferredLanguage, setPreferredLanguage] = useState(existingProfile?.preferredLanguage || (currentLanguage === 'es' ? 'Español' : 'English'));
-  const [noIdRequiredPreference, setNoIdRequiredPreference] = useState(existingProfile?.noIdRequiredPreference ?? true);
-  const [transitDependent, setTransitDependent] = useState(existingProfile?.transitDependent ?? true);
+  const [noIdRequiredPreference, setNoIdRequiredPreference] = useState(existingProfile?.noIdRequiredPreference ?? false);
+  const [transitDependent, setTransitDependent] = useState(existingProfile?.transitDependent ?? false);
 
   // Wizard navigation state
   const [step, setStep] = useState(0);
@@ -47,8 +47,8 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
     {
       title: currentLanguage === 'en' ? 'Identity & Location' : 'Identidad y Ubicación',
       summary: currentLanguage === 'en'
-        ? 'Just a name or nickname, your area, and age group.'
-        : 'Solo un nombre o apodo, su zona y grupo de edad.'
+        ? 'Your name, area, and age group are optional.'
+        : 'Su nombre, ciudad y grupo de edad son opcionales.'
     },
     {
       title: currentLanguage === 'en' ? 'Household & Income' : 'Hogar e Ingresos',
@@ -104,16 +104,6 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
   };
 
   const goToNextStep = () => {
-    if (step === 0 && !name.trim()) {
-      setNameError(true);
-      setStatusMessage(
-        currentLanguage === 'en'
-          ? 'Enter a name or nickname to continue.'
-          : 'Ingrese un nombre o apodo para continuar.'
-      );
-      nameInputRef.current?.focus();
-      return;
-    }
     setStatusMessage('');
     setStep((prev) => Math.min(prev + 1, stepCount - 1));
   };
@@ -235,8 +225,8 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl font-normal leading-relaxed">
                 {currentLanguage === 'en'
-                  ? 'Help us match you with the right free programs. No SSN, legal status, or sensitive documents are requested or saved.'
-                  : 'Ayúdenos a conectarle con los recursos adecuados. No se solicita ni guarda Seguro Social ni estatus legal.'}
+                  ? 'This form is optional. You can browse without it. Do not enter your SSN or legal status.'
+                  : 'Este formulario es opcional. Puede explorar sin completarlo. No escriba su número de Seguro Social ni su estatus legal.'}
               </p>
             </div>
           </div>
