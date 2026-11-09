@@ -14,8 +14,8 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension';
-  setActiveView: (view: 'home' | 'copilot' | 'extension') => void;
+  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about';
+  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -41,13 +41,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
-  const goToSection = (id: string) => {
-    setActiveView('home');
+  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about') => {
+    setActiveView(view);
     setIsMenuOpen(false);
-    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
   };
 
-  const toggleLanguage = () => onLanguageChange(currentLanguage === 'en' ? 'es' : 'en');
   const textSizeLabel = textSize === 'normal' ? '1x' : textSize === 'large' ? '1.2x' : '1.4x';
 
   const navLinks = [
@@ -59,8 +57,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
     {
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
-      onClick: () => goToSection('directory'),
-      active: false
+      onClick: () => navigate('resources'),
+      active: activeView === 'resources'
     },
     {
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',
@@ -69,8 +67,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
     {
       label: currentLanguage === 'en' ? 'About' : 'Acerca de',
-      onClick: () => { onOpenDisclaimer(); setIsMenuOpen(false); },
-      active: false
+      onClick: () => navigate('about'),
+      active: activeView === 'about'
     }
   ];
 
@@ -133,9 +131,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
-                <button type="button" onClick={toggleLanguage} title={t.nav.language}>
-                  {currentLanguage === 'en' ? 'Language' : 'Idioma'} · {currentLanguage.toUpperCase()}
-                </button>
+                <div className="qc-language" role="group" aria-label={currentLanguage === 'en' ? 'Language' : 'Idioma'}>
+                  <span>{currentLanguage === 'en' ? 'Language' : 'Idioma'}</span>
+                  <button type="button" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}><span lang="en">EN</span></button>
+                  <button type="button" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}><span lang="es">Español</span></button>
+                </div>
                 <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
                   {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
                 </button>
@@ -159,7 +159,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               className="qc-link min-h-0 lg:hidden flex items-center gap-1.5"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-navigation"
-              aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-label={isMenuOpen ? (currentLanguage === 'en' ? 'Close navigation menu' : 'Cerrar menú') : (currentLanguage === 'en' ? 'Open navigation menu' : 'Abrir menú')}
             >
               {isMenuOpen ? <X className="w-4 h-4" aria-hidden="true" /> : <Menu className="w-4 h-4" aria-hidden="true" />}
             </button>
