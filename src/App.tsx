@@ -32,6 +32,7 @@ export function App() {
   const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about'>('home');
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
+  const [showSproutGreeting, setShowSproutGreeting] = useState(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
   
@@ -423,7 +424,12 @@ export function App() {
       {['home', 'resources', 'about'].includes(activeView) && (
         <SproutAssistant
           currentLanguage={currentLanguage}
-          onOpenChat={() => setActiveView('copilot')}
+          showGreeting={showSproutGreeting}
+          onDismissGreeting={() => setShowSproutGreeting(false)}
+          onOpenChat={() => {
+            setShowSproutGreeting(false);
+            setActiveView('copilot');
+          }}
         />
       )}
 
