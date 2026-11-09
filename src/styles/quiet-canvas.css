@@ -1091,3 +1091,62 @@
   .sprout-helper-button { transition: none; }
   .sprout-helper-button:hover { transform: none; }
 }
+
+/* Visible bilingual navigation: language belongs in the primary header,
+   not inside a disclosure that visitors must discover first. */
+.qc-nav-tools {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 12px;
+  row-gap: 8px;
+  min-width: 0;
+}
+
+.qc-header-language {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+  padding: 3px;
+  border: 1px solid #bedfd1;
+  border-radius: 12px;
+  background: #f7fdfa;
+  letter-spacing: 0;
+}
+
+.qc-header-language button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #03543b;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.qc-header-language button[aria-pressed="true"] {
+  background: #047857;
+  color: #fff;
+}
+
+.qc-header-language button:focus-visible {
+  outline: 3px solid #1a1a24;
+  outline-offset: 3px;
+}
+
+@media (min-width: 1024px) {
+  .qc-nav-l { gap: 18px; }
+  .qc-nav-links { gap: 18px; }
+}
+
+@media (max-width: 767px) {
+  .qc-nav { gap: 10px; padding-top: 18px; }
+  .qc-nav-tools { justify-content: flex-start; }
+  .qc-header-language button { padding: 8px 9px; }
+}
