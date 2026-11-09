@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MessageCircle, X } from 'lucide-react';
 import type { Language } from '../types';
 
@@ -40,11 +40,12 @@ export const SproutMascot: React.FC<{ className?: string }> = ({ className = '' 
 interface SproutAssistantProps {
   currentLanguage: Language;
   onOpenChat: () => void;
+  showGreeting: boolean;
+  onDismissGreeting: () => void;
 }
 
 /** A nonintrusive, user-invoked launcher for the existing scripted chat. */
-export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguage, onOpenChat }) => {
-  const [showGreeting, setShowGreeting] = useState(true);
+export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguage, onOpenChat, showGreeting, onDismissGreeting }) => {
   const isEnglish = currentLanguage === 'en';
 
   return (
@@ -53,7 +54,7 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
         <div className="sprout-helper-bubble">
           <button
             type="button"
-            onClick={() => setShowGreeting(false)}
+            onClick={onDismissGreeting}
             className="sprout-helper-dismiss"
             aria-label={isEnglish ? 'Hide Sprout introduction' : 'Ocultar mensaje de Sprout'}
           >
