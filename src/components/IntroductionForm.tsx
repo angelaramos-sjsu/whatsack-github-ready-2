@@ -192,7 +192,7 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
       hasSeniors,
       monthlyIncome,
       employmentStatus,
-      servicePriorities: servicePriorities.length > 0 ? servicePriorities : ['food'],
+      servicePriorities,
       preferredLanguage,
       noIdRequiredPreference,
       transitDependent,
