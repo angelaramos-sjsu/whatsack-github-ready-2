@@ -287,9 +287,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   {msg.sender === 'llm' && msg.scriptedAnswer
                     ? msg.scriptedAnswer.answer[currentLanguage]
                     : msg.id === 'msg-init-1'
-                      ? (currentLanguage === 'en'
-                        ? "Hi! I'm Sprout, your WhatSack guide. 🌱 I can help you explore local support for school, work, food, mental health, and community life. What do you need help with? My answers are prepared examples for this class project."
-                        : "¡Hola! Soy Sprout, su guía de WhatSack. 🌱 Puedo ayudarle a encontrar recursos para estudios, trabajo, comida, salud mental y comunidad. ¿En qué necesita ayuda? Mis respuestas son ejemplos preparados para este proyecto.")
+                      ? greetingMessage.text
                       : msg.text}
                 </div>
 
