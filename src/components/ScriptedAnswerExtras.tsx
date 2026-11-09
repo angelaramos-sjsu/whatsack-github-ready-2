@@ -1,6 +1,6 @@
 import React from 'react';
 import { Language } from '../types';
-import { ScriptedAnswer, ScriptedNextStep } from '../data/answers';
+import { ScriptedAnswer, ScriptedNextStep, SavedScriptedStep } from '../data/answers';
 import { BookmarkPlus, Check, ExternalLink, Sparkles } from 'lucide-react';
 
 interface ScriptedAnswerExtrasProps {
@@ -8,6 +8,8 @@ interface ScriptedAnswerExtrasProps {
   currentLanguage: Language;
   savedResourceIds: string[];
   onSavePlan: (resourceId: string) => void;
+  savedSteps: SavedScriptedStep[];
+  onSaveStep: (step: SavedScriptedStep) => void;
 }
 
 interface NextStepCardProps {
@@ -16,6 +18,9 @@ interface NextStepCardProps {
   currentLanguage: Language;
   savedResourceIds: string[];
   onSavePlan: (resourceId: string) => void;
+  savedSteps: SavedScriptedStep[];
+  onSaveStep: (step: SavedScriptedStep) => void;
+  stepId: string;
 }
 
 /** One NextStep Insight: its title, detail and actions. */
@@ -24,10 +29,14 @@ const NextStepCard: React.FC<NextStepCardProps> = ({
   index,
   currentLanguage,
   savedResourceIds,
-  onSavePlan
+  onSavePlan,
+  savedSteps,
+  onSaveStep,
+  stepId
 }) => {
   const lang = currentLanguage;
   const isEn = currentLanguage === 'en';
+  const isStepSaved = savedSteps.some(saved => saved.id === stepId);
 
   return (
     <div className="rounded-xl border border-emerald-800/60 bg-emerald-950/40 p-3">
@@ -36,6 +45,17 @@ const NextStepCard: React.FC<NextStepCardProps> = ({
         {step.title[lang]}
       </p>
       <p className="text-[11px] leading-relaxed text-slate-300 mt-0.5">{step.detail[lang]}</p>
+      <button
+        type="button"
+        disabled={isStepSaved}
+        onClick={() => onSaveStep({ id: stepId, title: step.title, detail: step.detail })}
+        className="mt-3 inline-flex items-center gap-2 min-h-[44px] px-3 py-2 rounded-lg border border-emerald-500 bg-emerald-900/50 text-white text-xs font-semibold disabled:opacity-70 focus-visible:outline focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+      >
+        {isStepSaved ? <Check className="w-4 h-4" aria-hidden="true" /> : <BookmarkPlus className="w-4 h-4" aria-hidden="true" />}
+        {isStepSaved
+          ? (isEn ? 'Added to My Next Steps' : 'Guardado en Mis Próximos Pasos')
+          : (isEn ? 'Add step to My Next Steps' : 'Agregar a Mis Próximos Pasos')}
+      </button>
 
       <div className="mt-2.5 flex flex-wrap gap-2">
         {step.actions.map((action) => {
@@ -93,7 +113,9 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
   answer,
   currentLanguage,
   savedResourceIds,
-  onSavePlan
+  onSavePlan,
+  savedSteps,
+  onSaveStep
 }) => {
   const lang = currentLanguage;
   const isEn = currentLanguage === 'en';
@@ -155,6 +177,9 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
           </div>
           <NextStepCard
             step={nextStep}
+            stepId={`${answer.id}-next-step`}
+            savedSteps={savedSteps}
+            onSaveStep={onSaveStep}
             currentLanguage={currentLanguage}
             savedResourceIds={savedResourceIds}
             onSavePlan={onSavePlan}
@@ -175,6 +200,9 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
             <NextStepCard
               key={step.title.en}
               step={step}
+              stepId={`${answer.id}-next-steps-${index}`}
+              savedSteps={savedSteps}
+              onSaveStep={onSaveStep}
               index={index}
               currentLanguage={currentLanguage}
               savedResourceIds={savedResourceIds}
