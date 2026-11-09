@@ -8,6 +8,7 @@ import {
 import { demonstrationResources } from './data/resources';
 import { directoryEntries } from './data/directory';
 import { translations } from './data/translations';
+import type { SavedScriptedStep } from './data/answers';
 
 // Components
 import { Navbar } from './components/Navbar';
@@ -55,6 +56,16 @@ export function App() {
   // Bookmarks & Accessibility
   const [savedResourceIds, setSavedResourceIds] = useState<string[]>(['res-food-1', 'res-work-1']);
   const [savedDirectoryIds, setSavedDirectoryIds] = useState<string[]>([]);
+  const [savedScriptedSteps, setSavedScriptedSteps] = useState<SavedScriptedStep[]>([]);
+  const [completedScriptedIds, setCompletedScriptedIds] = useState<string[]>([]);
+  const [completedActionIds, setCompletedActionIds] = useState<string[]>([]);
+
+  const toggleCompletedAction = (id: string) => setCompletedActionIds(prev =>
+    prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+  );
+  const toggleCompletedScriptedStep = (id: string) => setCompletedScriptedIds(prev =>
+    prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+  );
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
 
@@ -231,7 +242,7 @@ export function App() {
         onLanguageChange={setCurrentLanguage}
         onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
         onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
-        savedCount={savedResourceIds.length + savedDirectoryIds.length}
+        savedCount={savedResourceIds.length + savedDirectoryIds.length + savedScriptedSteps.length}
         highContrast={highContrast}
         onToggleHighContrast={() => setHighContrast(!highContrast)}
         textSize={textSize}
@@ -246,6 +257,10 @@ export function App() {
           currentLanguage={currentLanguage}
           userProfile={userProfile}
           savedResourceIds={savedResourceIds}
+          savedScriptedSteps={savedScriptedSteps}
+          onSaveScriptedStep={(step) => setSavedScriptedSteps(prev =>
+            prev.some(item => item.id === step.id) ? prev : [...prev, step]
+          )}
           onSavePlanAction={(resourceId) =>
             setSavedResourceIds((prev) =>
               prev.includes(resourceId) ? prev : [...prev, resourceId]
@@ -502,6 +517,8 @@ export function App() {
         onClose={() => setSelectedResourceForInsights(null)}
         isSaved={selectedResourceForInsights ? savedResourceIds.includes(selectedResourceForInsights.id) : false}
         onToggleSave={handleToggleSave}
+        completedActionIds={completedActionIds}
+        onToggleAction={toggleCompletedAction}
       />
 
       <SavedResourcesDrawer
@@ -510,11 +527,23 @@ export function App() {
         currentLanguage={currentLanguage}
         savedResources={savedResourcesList}
         savedDirectoryEntries={savedDirectoryList}
+        savedScriptedSteps={savedScriptedSteps}
+        completedScriptedIds={completedScriptedIds}
+        onToggleScriptedStep={toggleCompletedScriptedStep}
+        onRemoveScriptedStep={(id) => {
+          setSavedScriptedSteps(prev => prev.filter(item => item.id !== id));
+          setCompletedScriptedIds(prev => prev.filter(item => item !== id));
+        }}
+        completedActionIds={completedActionIds}
+        onToggleAction={toggleCompletedAction}
         onRemoveDirectoryEntry={handleToggleDirectorySave}
         onRemoveSaved={handleToggleSave}
         onClearAll={() => {
           setSavedResourceIds([]);
           setSavedDirectoryIds([]);
+          setSavedScriptedSteps([]);
+          setCompletedScriptedIds([]);
+          setCompletedActionIds([]);
         }}
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
