@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { DemonstrationResource, Language } from '../types';
 import { DirectoryEntry } from '../data/directory';
+import type { SavedScriptedStep } from '../data/answers';
 import { translations } from '../data/translations';
 import { 
   X, 
@@ -25,6 +26,12 @@ interface SavedResourcesDrawerProps {
   onRemoveSaved: (id: string) => void;
   onClearAll: () => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
+  savedScriptedSteps: SavedScriptedStep[];
+  completedScriptedIds: string[];
+  onToggleScriptedStep: (id: string) => void;
+  onRemoveScriptedStep: (id: string) => void;
+  completedActionIds: string[];
+  onToggleAction: (id: string) => void;
 }
 
 export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
@@ -36,11 +43,21 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
   onRemoveDirectoryEntry,
   onRemoveSaved,
   onClearAll,
-  onOpenInsights
+  onOpenInsights,
+  savedScriptedSteps,
+  completedScriptedIds,
+  onToggleScriptedStep,
+  onRemoveScriptedStep,
+  completedActionIds,
+  onToggleAction
 }) => {
   const [copied, setCopied] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const t = translations[currentLanguage];
-  const totalSaved = savedResources.length + savedDirectoryEntries.length;
+  const totalSaved = savedResources.length + savedDirectoryEntries.length + savedScriptedSteps.length;
+
+  // Keyboard users start at the dialog close control.
+  useEffect(() => { if (isOpen) closeButtonRef.current?.focus(); }, [isOpen]);
 
   // Escape key listener
   useEffect(() => {
@@ -60,6 +77,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
     const content = [
       `WhatSack Saved Community Resource Plan (${totalSaved} items)`,
       `Academic Demonstration Reference - Silicon Valley`,
+      ...savedScriptedSteps.map((item,i) => `${i+1}. [${completedScriptedIds.includes(item.id) ? 'X' : ' '}] ${item.title[currentLanguage]}: ${item.detail[currentLanguage]}`),
       '=========================================',
       '',
       ...savedResources.map((r, i) => [
@@ -70,7 +88,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
         `   Schedule: ${r.schedule[currentLanguage]}`,
         `   Phone (Simulated): ${r.contactSimulated.phone}`,
         `   Next Steps:`,
-        ...r.nextStepInsight.actionItems.map((a) => `     - ${a.title[currentLanguage]}`),
+        ...r.nextStepInsight.actionItems.map((a) => `     - [${completedActionIds.includes(`${r.id}:${a.id}`) ? 'X' : ' '}] ${a.title[currentLanguage]}`),
         ''
       ].join('\n')),
       ...savedDirectoryEntries.map((entry, i) => [
@@ -102,7 +120,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
             </div>
             <div>
               <h2 id="saved-drawer-title" className="font-extrabold text-base sm:text-lg text-slate-900">
-                {t.savedDrawer.title}
+                {currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos'}
               </h2>
               <span className="text-xs text-slate-700 font-bold">
                 {totalSaved} {currentLanguage === 'en' ? 'saved items' : 'elementos guardados'}
@@ -113,6 +131,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
           <button
             type="button"
             onClick={onClose}
+            ref={closeButtonRef}
             className="p-2 text-slate-500 hover:text-slate-900 rounded-xl hover:bg-slate-200 min-h-[44px] min-w-[44px] flex items-center justify-center transition-colors focus-visible:ring-2 focus-visible:ring-emerald-600"
             aria-label={currentLanguage === 'en' ? 'Close saved programs drawer' : 'Cerrar panel de recursos guardados'}
           >
@@ -128,11 +147,30 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                 📑
               </div>
               <p className="text-sm text-slate-700 leading-relaxed font-semibold">
-                {t.savedDrawer.empty}
+                {currentLanguage === 'en' ? 'No steps or resources saved yet. Save a step from Ask WhatSack or a resource from Find Resources.' : 'Aún no hay pasos ni recursos guardados. Guarde un paso desde Preguntar a WhatSack o un recurso desde Buscar Recursos.'}
               </p>
             </div>
           ) : (
             <>
+            {savedScriptedSteps.length > 0 && (
+              <section aria-label={currentLanguage === 'en' ? 'Steps saved from Ask WhatSack' : 'Pasos guardados de Preguntar a WhatSack'} className="space-y-3">
+                <h3 className="font-bold text-slate-900 text-base">{currentLanguage === 'en' ? 'Steps from Ask WhatSack' : 'Pasos de Preguntar a WhatSack'}</h3>
+                {savedScriptedSteps.map((step) => (
+                  <div key={step.id} className="p-4 rounded-xl border border-emerald-300 bg-emerald-50">
+                    <label className="flex gap-3 items-start text-slate-900">
+                      <input type="checkbox" checked={completedScriptedIds.includes(step.id)} onChange={() => onToggleScriptedStep(step.id)} className="w-5 h-5 mt-1 shrink-0 accent-emerald-700" />
+                      <span>
+                        <strong className={completedScriptedIds.includes(step.id) ? 'line-through' : ''}>{step.title[currentLanguage]}</strong>
+                        <span className="block text-sm mt-1">{step.detail[currentLanguage]}</span>
+                      </span>
+                    </label>
+                    <button type="button" onClick={() => onRemoveScriptedStep(step.id)} className="mt-2 text-sm min-h-[44px] text-emerald-900 underline">
+                      {currentLanguage === 'en' ? 'Remove step' : 'Quitar paso'}
+                    </button>
+                  </div>
+                ))}
+              </section>
+            )}
             {savedResources.map((resource) => (
               <div
                 key={resource.id}
@@ -173,6 +211,17 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                   </div>
                 </div>
 
+                <fieldset className="border-t border-slate-200 mt-3 pt-3 mb-3">
+                  <legend className="text-sm font-bold text-slate-900">{currentLanguage === 'en' ? 'Action steps (sample)' : 'Pasos (ejemplo)'}</legend>
+                  {resource.nextStepInsight.actionItems.map((action) => (
+                    <label key={action.id} className="flex gap-2 items-start py-2 text-sm text-slate-900">
+                      <input type="checkbox" className="w-5 h-5 mt-0.5 shrink-0 accent-emerald-700"
+                        checked={completedActionIds.includes(`${resource.id}:${action.id}`)}
+                        onChange={() => onToggleAction(`${resource.id}:${action.id}`)} />
+                      <span>{action.title[currentLanguage]}</span>
+                    </label>
+                  ))}
+                </fieldset>
                 <button
                   type="button"
                   onClick={() => {
@@ -218,7 +267,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-xs font-extrabold text-emerald-900 underline"
                 >
-                  {currentLanguage === 'en' ? 'Visit website' : 'Visitar sitio web'}
+                  {currentLanguage === 'en' ? `Visit ${entry.name} website (opens new tab)` : `Visitar ${entry.name} (abre otra pestaña)`}
                 </a>
               </div>
             ))}
