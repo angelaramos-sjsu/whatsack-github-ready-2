@@ -3,6 +3,7 @@ import { Language, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
+import { SproutMascot } from './SproutAssistant';
 import type { SavedScriptedStep } from '../data/answers';
 import {
   buildUnscriptedFallback,
@@ -13,7 +14,6 @@ import {
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { 
-  Bot, 
   Send, 
   Sparkles, 
   Brain, 
@@ -97,17 +97,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const greetingMessage: ChatMessage = {
-      id: 'msg-init-1',
-      sender: 'llm',
-      text: currentLanguage === 'en'
-        ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
-        : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
-      timestamp: 'Just now',
-      followUpIds: [
-        'ans-food-east-sj-groceries',
-        'ans-work-tech-certificates',
-        'ans-mental-confidential-teens'
-      ]
+    id: 'msg-init-1',
+    sender: 'llm',
+    text: currentLanguage === 'en'
+      ? "Hi! I'm Sprout, your WhatSack guide. I can help you explore local food, school, work, mental health, and community resources. What would you like help with today? This chat uses prepared example answers."
+      : "¡Hola! Soy Sprout, su guía de WhatSack. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
+    timestamp: currentLanguage === 'en' ? 'Welcome' : 'Bienvenida',
+    followUpIds: [
+      'ans-food-east-sj-groceries',
+      'ans-work-tech-certificates',
+      'ans-mental-confidential-teens'
+    ]
   };
 
   /** Turn an approved scripted answer into a chat bubble. */
@@ -221,8 +221,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       {/* Simple chat heading. Demo menus and persona shortcuts were removed for clarity. */}
       <header className="border-b border-slate-800 bg-slate-950 px-4 py-5 sm:px-6">
         <div className="mx-auto flex max-w-5xl items-center gap-3">
-          <div aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-700/50 bg-emerald-900/40 text-emerald-300">
-            <Bot className="h-5 w-5" />
+          <div aria-hidden="true" className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl border border-emerald-600/50 bg-emerald-50">
+            <SproutMascot className="h-12 w-12" />
           </div>
           <div className="min-w-0">
             <h1 className="text-lg font-semibold tracking-tight text-white">
@@ -230,8 +230,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             </h1>
             <p className="mt-0.5 text-xs leading-relaxed text-slate-300">
               {currentLanguage === 'en'
-                ? 'Ask a question about local support. Answers are scripted examples.'
-                : 'Pregunte sobre recursos locales. Las respuestas son ejemplos preparados.'}
+                ? 'Meet Sprout, your friendly guide. This is a scripted demo.'
+                : 'Conozca a Sprout, su guía. Esta es una demostración con respuestas preparadas.'}
             </p>
           </div>
         </div>
@@ -254,8 +254,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               className={`flex gap-3 sm:gap-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {isLlm && (
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <Bot className="w-4 h-4" />
+                <div aria-hidden="true" className="h-10 w-10 shrink-0 rounded-xl border border-emerald-300/50 bg-emerald-50 p-1">
+                  <SproutMascot className="h-full w-full" />
                 </div>
               )}
 
@@ -275,7 +275,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     ) : (
                       <>
                         <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>WhatSack Civic-LLM</span>
+                        <span>{currentLanguage === 'en' ? 'Sprout · WhatSack guide' : 'Sprout · guía de WhatSack'}</span>
                       </>
                     )}
                   </span>
@@ -288,8 +288,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     ? msg.scriptedAnswer.answer[currentLanguage]
                     : msg.id === 'msg-init-1'
                       ? (currentLanguage === 'en'
-                        ? 'Hi! I am WhatSack, a scripted class prototype. Ask me about college, work, food, mental health, or community activities.'
-                        : '¡Hola! Soy WhatSack, un prototipo de clase con respuestas preparadas. Pregúnteme sobre estudios, trabajo, comida, salud mental o actividades comunitarias.')
+                        ? "Hi! I'm Sprout, your WhatSack guide. 🌱 I can help you explore local support for school, work, food, mental health, and community life. What do you need help with? My answers are prepared examples for this class project."
+                        : "¡Hola! Soy Sprout, su guía de WhatSack. 🌱 Puedo ayudarle a encontrar recursos para estudios, trabajo, comida, salud mental y comunidad. ¿En qué necesita ayuda? Mis respuestas son ejemplos preparados para este proyecto.")
                       : msg.text}
                 </div>
 
@@ -384,8 +384,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         {/* Live Generating & Thinking Animation */}
         {isGenerating && (
           <div className="flex gap-3 items-start animate-in fade-in duration-200">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-              <Bot className="w-4 h-4 animate-spin" />
+            <div aria-hidden="true" className="h-10 w-10 shrink-0 rounded-xl border border-emerald-300/50 bg-emerald-50 p-1">
+              <SproutMascot className="h-full w-full" />
             </div>
             <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 text-xs text-slate-300 max-w-md space-y-2">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
@@ -443,8 +443,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         <p className="text-center text-xs text-slate-400 font-medium mt-2.5">
           {currentLanguage === 'en'
-            ? 'WhatSack Civic-LLM grounds outputs strictly in demonstration records. No personal data collected or stored.'
-            : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
+            ? 'Sprout uses scripted example answers for this class project. Check official sources before making decisions.'
+            : 'Sprout usa respuestas de ejemplo para este proyecto de clase. Consulte fuentes oficiales antes de tomar decisiones.'}
         </p>
       </div>
     </div>
