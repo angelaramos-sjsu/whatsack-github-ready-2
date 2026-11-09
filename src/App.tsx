@@ -329,12 +329,34 @@ export function App() {
             selectedCategory={selectedCategory}
             onSelectCategory={(cat) => { setSelectedCategory(cat); setActiveView('resources'); }}
           />
-          <section className="qc-shell qc-home-more" aria-labelledby="start-here-heading">
-            <h2 id="start-here-heading" className="qc-h2">{currentLanguage === 'en' ? 'Start here' : 'Empiece aquí'}</h2>
-            <p className="qc-dsub">{currentLanguage === 'en' ? 'Want to browse organizations instead of asking a question?' : '¿Prefiere ver organizaciones en vez de hacer una pregunta?'}</p>
-            <button type="button" className="qc-btn-sm mt-5" onClick={() => { setSelectedCategory('all'); setActiveView('resources'); }}>
-              {currentLanguage === 'en' ? 'See all resources' : 'Ver todos los recursos'}
-            </button>
+          <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
+            <div className="qc-home-start-card">
+              <div className="qc-home-start-copy">
+                <p className="qc-home-start-eyebrow">
+                  {currentLanguage === 'en' ? 'Start here' : 'Empiece aquí'}
+                </p>
+                <h2 id="start-here-heading" className="qc-home-start-title">
+                  {currentLanguage === 'en'
+                    ? 'Prefer to browse instead of ask?'
+                    : '¿Prefiere explorar en vez de preguntar?'}
+                </h2>
+                <p className="qc-home-start-text">
+                  {currentLanguage === 'en'
+                    ? 'Explore local organizations by category and city. Find useful links at your own pace.'
+                    : 'Explore organizaciones locales por categoría y ciudad. Encuentre enlaces a su propio ritmo.'}
+                </p>
+              </div>
+              <div className="qc-home-start-actions">
+                <button
+                  type="button"
+                  className="qc-home-start-button"
+                  onClick={() => { resetAllFilters(); setActiveView('resources'); }}
+                >
+                  <span>{currentLanguage === 'en' ? 'Browse all resources' : 'Ver todos los recursos'}</span>
+                  <span aria-hidden="true" className="qc-home-start-arrow">→</span>
+                </button>
+              </div>
+            </div>
           </section>
           </>)}
 
@@ -410,36 +432,7 @@ export function App() {
 
           </>)}
 
-          {activeView === 'home' && (<>
-          {/* Advanced prototype tools */}
-          <section aria-labelledby="advanced-heading" className="qc-adv qc-shell">
-            <div className="qc-eyebrow">{currentLanguage === 'en' ? 'Advanced' : 'Avanzado'}</div>
-            <h2 id="advanced-heading" className="sr-only">
-              {currentLanguage === 'en' ? 'Advanced prototype tools' : 'Herramientas avanzadas del prototipo'}
-            </h2>
-            <div className="qc-advg">
-              <button type="button" className="min-h-0" onClick={() => setIsArchitectureModalOpen(true)}>
-                {currentLanguage === 'en' ? 'AI Architecture' : 'Arquitectura IA'}
-              </button>
-              <button type="button" className="min-h-0" onClick={() => setIsDecoderModalOpen(true)}>
-                {t.nav.docDecoder}
-              </button>
-              <button
-                type="button"
-                className="min-h-0"
-                onClick={() => setActiveView('extension')}
-              >
-                {t.nav.extension}
-              </button>
-              <button type="button" className="min-h-0" onClick={() => setIsVoiceModalOpen(true)}>
-                {t.nav.voice}
-              </button>
-              <button type="button" className="min-h-0" onClick={() => setIsIntroductionFormOpen(true)}>
-                {currentLanguage === 'en' ? 'Personalize My Search' : 'Personalizar mi búsqueda'}
-              </button>
-            </div>
-          </section>
-          </>)}
+
 
         </main>
       )}
@@ -468,9 +461,6 @@ export function App() {
             setSelectedCategory(cat);
             setActiveView('resources');
           }}
-          onOpenExtension={() => setActiveView('extension')}
-          onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
-          onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
         />
       )}
 
