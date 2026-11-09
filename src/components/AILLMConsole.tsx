@@ -420,7 +420,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
                 {/* Message Text Content */}
                 <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
-                  {msg.text}
+                  {msg.sender === 'llm' && msg.scriptedAnswer
+                    ? msg.scriptedAnswer.answer[currentLanguage]
+                    : msg.id === 'msg-init-1'
+                      ? (currentLanguage === 'en'
+                        ? 'Hi! I am WhatSack, a scripted class prototype. Ask me about college, work, food, mental health, or community activities.'
+                        : '¡Hola! Soy WhatSack, un prototipo de clase con respuestas preparadas. Pregúnteme sobre estudios, trabajo, comida, salud mental o actividades comunitarias.')
+                      : msg.text}
                 </div>
 
                 {/* Grounded Resource Cards Preview */}
