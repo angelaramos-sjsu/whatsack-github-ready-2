@@ -14,6 +14,7 @@ const CITIES = [
 ];
 
 const AGE_OPTIONS: Array<{ value: IntakeProfile['ageRange']; en: string; es: string }> = [
+  { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no decirlo' },
   { value: 'under-18', en: 'Youth (Under 18)', es: 'Jóvenes (Menores de 18)' },
   { value: '18-24', en: '18 – 24 (Young Adult)', es: '18 – 24 (Adulto Joven)' },
   { value: '25-49', en: '25 – 49 (Adult)', es: '25 – 49 (Adulto)' },
@@ -30,6 +31,7 @@ const INCOME_OPTIONS: Array<{ value: IntakeProfile['monthlyIncome']; en: string;
 ];
 
 const EMPLOYMENT_OPTIONS: Array<{ value: IntakeProfile['employmentStatus']; en: string; es: string }> = [
+  { value: 'prefer-not-to-say', en: 'Prefer not to say', es: 'Prefiero no decirlo' },
   { value: 'part-time', en: 'Part-Time / Shift Worker', es: 'Medio Tiempo / Turnos' },
   { value: 'laid-off', en: 'Recently Laid-Off / Unemployed', es: 'Despedido Reciente / Desempleado' },
   { value: 'employed', en: 'Employed Full-Time', es: 'Empleado Tiempo Completo' },
@@ -75,13 +77,12 @@ export const StepIdentity: React.FC<StepIdentityProps> = ({
   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
     <div>
       <label htmlFor="intake-name" className={labelClass}>
-        {currentLanguage === 'en' ? 'Name or Preferred Nickname *' : 'Nombre o Apodo *'}
+        {currentLanguage === 'en' ? 'Name or nickname (optional)' : 'Nombre o apodo (opcional)'}
       </label>
       <input
         id="intake-name"
         ref={nameInputRef}
         type="text"
-        required
         value={name}
         onChange={(e) => onNameChange(e.target.value)}
         placeholder={currentLanguage === 'en' ? 'e.g. Maria or Daniel' : 'ej. María o Daniel'}
@@ -100,7 +101,7 @@ export const StepIdentity: React.FC<StepIdentityProps> = ({
 
     <div>
       <label htmlFor="intake-city" className={labelClass}>
-        {currentLanguage === 'en' ? 'City / Area in Silicon Valley *' : 'Ciudad / Zona en Silicon Valley *'}
+        {currentLanguage === 'en' ? 'City / Area (optional)' : 'Ciudad / zona (opcional)'}
       </label>
       <select id="intake-city" value={city} onChange={(e) => onCityChange(e.target.value)} className={selectClass}>
         {CITIES.map((c) => (
@@ -111,7 +112,7 @@ export const StepIdentity: React.FC<StepIdentityProps> = ({
 
     <div>
       <label htmlFor="intake-age" className={labelClass}>
-        {currentLanguage === 'en' ? 'Age Group *' : 'Grupo de Edad *'}
+        {currentLanguage === 'en' ? 'Age group (optional)' : 'Grupo de edad (opcional)'}
       </label>
       <select
         id="intake-age"
