@@ -141,3 +141,8 @@ html.text-xlarge {
   text-decoration: underline !important;
   font-weight: 700 !important;
 }
+
+/* Visible keyboard focus and minimum targets for the link-style controls. */
+.qc-link:focus-visible,.qc-top button:focus-visible,.qc-t:focus-visible,.qc-ac a:focus-visible,.qc-ac button:focus-visible,.qc-accp button:focus-visible { outline: 3px solid #047857 !important; outline-offset: 3px !important; }
+.qc-link,.qc-t,.qc-ac a,.qc-ac button,.qc-accp button { min-height: 44px; display: inline-flex; align-items: center; }
+@media (max-width: 420px) { .qc-sf { flex-wrap: wrap; padding: 10px; } .qc-sf input { flex-basis: 100%; } .qc-sf .qc-btn { width: 100%; } .qc-ac { flex-wrap: wrap; } }
