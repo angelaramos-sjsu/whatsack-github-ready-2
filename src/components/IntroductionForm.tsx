@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Language, IntakeProfile, CategoryId } from '../types';
+import { Language, IntakeProfile, CategoryId, IntakeUrgency, OtherBasicNeed, AccessPreference } from '../types';
 import { translations } from '../data/translations';
 import { StepIdentity, StepHousehold, StepNeeds, StepPreferences } from './intake/IntakeSteps';
 import { X, ArrowRight, ArrowLeft, CheckCircle2 } from 'lucide-react';
@@ -24,7 +24,7 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
   const [name, setName] = useState(existingProfile?.name || '');
   const [ageRange, setAgeRange] = useState<IntakeProfile['ageRange']>(existingProfile?.ageRange || 'prefer-not-to-say');
   const [city, setCity] = useState(existingProfile?.city || 'Other Silicon Valley');
-  const [householdSize, setHouseholdSize] = useState(existingProfile?.householdSize || 3);
+  const [householdSize, setHouseholdSize] = useState(existingProfile?.householdSize || 1);
   const [hasChildren, setHasChildren] = useState(existingProfile?.hasChildren ?? false);
   const [hasSeniors, setHasSeniors] = useState(existingProfile?.hasSeniors ?? false);
   const [monthlyIncome, setMonthlyIncome] = useState<IntakeProfile['monthlyIncome']>(existingProfile?.monthlyIncome || 'prefer-not-to-say');
@@ -32,7 +32,13 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
   const [servicePriorities, setServicePriorities] = useState<CategoryId[]>(
     existingProfile?.servicePriorities || []
   );
-  const [preferredLanguage, setPreferredLanguage] = useState(existingProfile?.preferredLanguage || (currentLanguage === 'es' ? 'Español' : 'English'));
+  const [preferredLanguage, setPreferredLanguage] = useState(existingProfile?.preferredLanguage || 'No preference');
+  const [urgency, setUrgency] = useState<IntakeUrgency>(existingProfile?.urgency || 'prefer-not-to-say');
+  const [otherNeeds, setOtherNeeds] = useState<OtherBasicNeed[]>(existingProfile?.otherNeeds || []);
+  const [accessPreferences, setAccessPreferences] = useState<AccessPreference[]>(existingProfile?.accessPreferences || []);
+  const [includeHouseholdDetails, setIncludeHouseholdDetails] = useState(
+    Boolean(existingProfile?.householdSize || (existingProfile?.monthlyIncome && existingProfile.monthlyIncome !== 'prefer-not-to-say'))
+  );
   const [noIdRequiredPreference, setNoIdRequiredPreference] = useState(existingProfile?.noIdRequiredPreference ?? false);
   const [transitDependent, setTransitDependent] = useState(existingProfile?.transitDependent ?? false);
 
@@ -45,28 +51,28 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
 
   const steps = [
     {
-      title: currentLanguage === 'en' ? 'Identity & Location' : 'Identidad y Ubicación',
+      title: currentLanguage === 'en' ? 'Your needs' : 'Sus necesidades',
       summary: currentLanguage === 'en'
-        ? 'Your name, area, and age group are optional.'
-        : 'Su nombre, ciudad y grupo de edad son opcionales.'
+        ? 'Choose one or more needs and tell us how soon you need help. You can skip.'
+        : 'Elija sus necesidades y qué tan pronto necesita ayuda. Puede omitirlo.'
     },
     {
-      title: currentLanguage === 'en' ? 'Household & Income' : 'Hogar e Ingresos',
+      title: currentLanguage === 'en' ? 'Your area' : 'Su zona',
       summary: currentLanguage === 'en'
-        ? 'Used only to check program eligibility ranges.'
-        : 'Se usa solo para verificar rangos de elegibilidad.'
+        ? 'Your city helps find nearby organizations. Name and age are optional.'
+        : 'Su ciudad ayuda a buscar organizaciones cercanas. El nombre y la edad son opcionales.'
     },
     {
-      title: currentLanguage === 'en' ? 'Service Needs' : 'Necesidades',
+      title: currentLanguage === 'en' ? 'Access preferences' : 'Preferencias de acceso',
       summary: currentLanguage === 'en'
-        ? 'Select every area where you would like help.'
-        : 'Seleccione todas las áreas en las que desea ayuda.'
+        ? 'No ID / SSN required, transportation, language, and availability preferences.'
+        : 'Preferencias de identificación o Seguro Social, transporte, idioma y horarios.'
     },
     {
-      title: currentLanguage === 'en' ? 'Comfort & Transportation' : 'Confort y Transporte',
+      title: currentLanguage === 'en' ? 'Optional household details' : 'Datos opcionales del hogar',
       summary: currentLanguage === 'en'
-        ? 'Final step — tell us how you prefer to receive help.'
-        : 'Último paso — indíquenos cómo prefiere recibir ayuda.'
+        ? 'Share household details only if you want. These are not used to determine eligibility.'
+        : 'Comparta datos del hogar solo si desea. No se usan para determinar elegibilidad.'
     }
   ];
   const stepCount = steps.length;
@@ -89,6 +95,14 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isModal, onClose]);
+
+  const toggleOtherNeed = (need: OtherBasicNeed) =>
+    setOtherNeeds((prev) => prev.includes(need) ? prev.filter((item) => item !== need) : [...prev, need]);
+
+  const toggleAccessPreference = (preference: AccessPreference) =>
+    setAccessPreferences((prev) => prev.includes(preference)
+      ? prev.filter((item) => item !== preference)
+      : [...prev, preference]);
 
   const togglePriority = (catId: CategoryId) => {
     setServicePriorities((prev) =>
@@ -167,6 +181,9 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
       setTransitDependent(true);
       setPreferredLanguage('English');
     }
+    setIncludeHouseholdDetails(true);
+    setOtherNeeds([]);
+    setAccessPreferences([]);
     setNameError(false);
     setStatusMessage(
       currentLanguage === 'en'
@@ -184,15 +201,18 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
     }
 
     const profile: IntakeProfile = {
-      name: name.trim() || (currentLanguage === 'en' ? 'Neighbor' : 'Vecino'),
+      name: name.trim(),
       ageRange,
       city,
-      householdSize,
-      hasChildren,
-      hasSeniors,
-      monthlyIncome,
-      employmentStatus,
+      householdSize: includeHouseholdDetails ? householdSize : undefined,
+      hasChildren: includeHouseholdDetails ? hasChildren : undefined,
+      hasSeniors: includeHouseholdDetails ? hasSeniors : undefined,
+      monthlyIncome: includeHouseholdDetails ? monthlyIncome : 'prefer-not-to-say',
+      employmentStatus: includeHouseholdDetails ? employmentStatus : 'prefer-not-to-say',
       servicePriorities,
+      otherNeeds,
+      urgency,
+      accessPreferences,
       preferredLanguage,
       noIdRequiredPreference,
       transitDependent,
@@ -221,12 +241,12 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
             </div>
             <div>
               <h2 id="intake-form-heading" className="text-xl sm:text-2xl font-extrabold tracking-tight text-white">
-                {currentLanguage === 'en' ? 'Community Introduction Assessment' : 'Evaluación de Introducción Comunitaria'}
+                {currentLanguage === 'en' ? 'Find My Support' : 'Encontrar ayuda'}
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 mt-1 max-w-xl font-normal leading-relaxed">
                 {currentLanguage === 'en'
-                  ? 'This form is optional. You can browse without it. Do not enter your SSN or legal status.'
-                  : 'Este formulario es opcional. Puede explorar sin completarlo. No escriba su número de Seguro Social ni su estatus legal.'}
+                  ? 'Four short steps · No account required. Skip any question. Never enter your SSN or immigration status.'
+                  : 'Cuatro pasos cortos · Sin cuenta. Puede omitir preguntas. No escriba su Seguro Social ni su situación migratoria.'}
               </p>
             </div>
           </div>
@@ -243,7 +263,11 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
         </div>
 
         {/* Quick Example Presets (Accessible buttons) */}
-        <div className="mt-4 pt-4 border-t border-slate-800 flex items-center gap-2 overflow-x-auto text-xs">
+        <details className="mt-4 border-t border-slate-700 pt-3">
+          <summary className="cursor-pointer text-sm text-emerald-200 font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">
+            {currentLanguage === 'en' ? 'Class demonstration scenarios (optional)' : 'Escenarios de demostración para clase (opcional)'}
+          </summary>
+          <div className="mt-3 flex items-center gap-2 overflow-x-auto text-xs pb-2">
           <span className="text-xs font-bold uppercase tracking-wider text-slate-400 shrink-0 mr-1">
             {currentLanguage === 'en' ? 'Quick Test Scenarios:' : 'Ejemplos Rápidos:'}
           </span>
@@ -275,7 +299,8 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
           >
             🧠 {currentLanguage === 'en' ? 'Youth' : 'Joven'}
           </button>
-        </div>
+          </div>
+        </details>
 
         {/* Progress indicator */}
         <div className="mt-4">
@@ -338,13 +363,25 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
                 {steps[step].title}
               </h3>
             </div>
-            <p id="intake-step-summary" className="text-xs sm:text-sm text-slate-700 font-medium mt-1.5">
+            <p id="intake-step-summary" className="text-sm sm:text-base text-slate-700 font-medium mt-1.5">
               {steps[step].summary}
             </p>
           </div>
 
           <div role="group" aria-labelledby="intake-step-heading" aria-describedby="intake-step-summary">
             {step === 0 && (
+              <StepNeeds
+                currentLanguage={currentLanguage}
+                servicePriorities={servicePriorities}
+                onTogglePriority={togglePriority}
+                otherNeeds={otherNeeds}
+                onToggleOtherNeed={toggleOtherNeed}
+                urgency={urgency}
+                onUrgencyChange={setUrgency}
+              />
+            )}
+
+            {step === 1 && (
               <StepIdentity
                 currentLanguage={currentLanguage}
                 name={name}
@@ -358,38 +395,56 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
               />
             )}
 
-            {step === 1 && (
-              <StepHousehold
-                currentLanguage={currentLanguage}
-                monthlyIncome={monthlyIncome}
-                onMonthlyIncomeChange={setMonthlyIncome}
-                employmentStatus={employmentStatus}
-                onEmploymentStatusChange={setEmploymentStatus}
-                householdSize={householdSize}
-                onHouseholdSizeChange={setHouseholdSize}
-                hasChildren={hasChildren}
-                onHasChildrenChange={setHasChildren}
-                hasSeniors={hasSeniors}
-                onHasSeniorsChange={setHasSeniors}
-              />
-            )}
-
             {step === 2 && (
-              <StepNeeds
-                currentLanguage={currentLanguage}
-                servicePriorities={servicePriorities}
-                onTogglePriority={togglePriority}
-              />
-            )}
-
-            {step === 3 && (
               <StepPreferences
                 currentLanguage={currentLanguage}
                 noIdRequiredPreference={noIdRequiredPreference}
                 onNoIdRequiredPreferenceChange={setNoIdRequiredPreference}
                 transitDependent={transitDependent}
                 onTransitDependentChange={setTransitDependent}
+                preferredLanguage={preferredLanguage}
+                onPreferredLanguageChange={setPreferredLanguage}
+                accessPreferences={accessPreferences}
+                onToggleAccessPreference={toggleAccessPreference}
               />
+            )}
+
+            {step === 3 && (
+              <div className="space-y-4">
+                <label className="flex items-start gap-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 p-4 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={includeHouseholdDetails}
+                    onChange={(e) => setIncludeHouseholdDetails(e.target.checked)}
+                    className="mt-1 h-5 w-5 shrink-0 accent-emerald-700"
+                  />
+                  <span>
+                    <span className="block text-base font-bold text-slate-900">
+                      {currentLanguage === 'en' ? 'I want to share optional household details' : 'Quiero compartir datos opcionales de mi hogar'}
+                    </span>
+                    <span className="block text-sm text-slate-700 mt-1">
+                      {currentLanguage === 'en'
+                        ? 'Only for demonstration context; this prototype does not determine benefit eligibility. You can finish without answering.'
+                        : 'Solo para contexto de demostración; este prototipo no determina elegibilidad. Puede terminar sin responder.'}
+                    </span>
+                  </span>
+                </label>
+                {includeHouseholdDetails && (
+                  <StepHousehold
+                    currentLanguage={currentLanguage}
+                    monthlyIncome={monthlyIncome}
+                    onMonthlyIncomeChange={setMonthlyIncome}
+                    employmentStatus={employmentStatus}
+                    onEmploymentStatusChange={setEmploymentStatus}
+                    householdSize={householdSize}
+                    onHouseholdSizeChange={setHouseholdSize}
+                    hasChildren={hasChildren}
+                    onHasChildrenChange={setHasChildren}
+                    hasSeniors={hasSeniors}
+                    onHasSeniorsChange={setHasSeniors}
+                  />
+                )}
+              </div>
             )}
           </div>
         </div>
@@ -415,7 +470,7 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
               type="submit"
               className="px-4 sm:px-6 py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-extrabold text-sm rounded-xl shadow-md shadow-emerald-700/25 flex items-center gap-2 transition-colors min-h-[48px] focus-visible:ring-3 focus-visible:ring-emerald-950"
             >
-              <span>{currentLanguage === 'en' ? 'Save & View Matched Resources' : 'Guardar y Ver Recursos'}</span>
+              <span>{currentLanguage === 'en' ? 'Find support options' : 'Ver opciones de ayuda'}</span>
               <CheckCircle2 className="w-5 h-5" aria-hidden="true" />
             </button>
           ) : (
