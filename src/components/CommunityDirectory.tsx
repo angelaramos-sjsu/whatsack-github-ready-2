@@ -14,9 +14,6 @@ interface CommunityDirectoryProps {
   searchQuery: string;
   freeOnly: boolean;
   onToggleFreeOnly: () => void;
-  noIdRequiredOnly: boolean;
-  onToggleNoIdRequired: () => void;
-  onResetFilters: () => void;
   demonstrationCount: number;
   isEntrySaved: (entryId: string) => boolean;
   onToggleEntrySave: (entryId: string) => void;
@@ -47,9 +44,6 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   searchQuery,
   freeOnly,
   onToggleFreeOnly,
-  noIdRequiredOnly,
-  onToggleNoIdRequired,
-  onResetFilters,
   demonstrationCount,
   isEntrySaved,
   onToggleEntrySave
@@ -76,7 +70,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
-  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedCity, searchQuery, freeOnly, noIdRequiredOnly]);
+  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedCity, searchQuery, freeOnly]);
 
   useEffect(() => {
     if (!focusNextRow.current) return;
@@ -121,22 +115,13 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           <span>{t.filters.freeOnly}</span>
         </label>
 
-        <label>
-          <input type="checkbox" checked={noIdRequiredOnly} onChange={onToggleNoIdRequired} />
-          <span>{t.filters.noId}</span>
-        </label>
-
-        <button type="button" onClick={onResetFilters} className="qc-t min-h-0">
-          {t.filters.reset}
-        </button>
-
         <span className="qc-cnt">{matches.length} {organizationsLabel} · {demonstrationCount} {samplesLabel}</span>
       </div>
 
       <p className="qc-filter-note">
         {currentLanguage === 'en'
-          ? 'Organization websites are real. Fees and ID rules are not checked here; the Free and No ID filters apply to sample programs only.'
-          : 'Los sitios de organizaciones son reales. No verificamos costos ni requisitos de identificación; estos filtros solo se aplican a programas de ejemplo.'}
+          ? 'Organization websites are real. Check their details before visiting. The Free filter applies only to sample programs; organization fees are not checked here.'
+          : 'Los sitios de organizaciones son reales. Revise sus datos antes de visitarlas. El filtro Gratis solo se aplica a programas de ejemplo; aquí no se verifican los costos de las organizaciones.'}
       </p>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {currentLanguage === 'en'
