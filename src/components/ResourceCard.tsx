@@ -40,7 +40,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
     >
       {/* Academic record indicator */}
       <div className="flex items-center justify-between gap-3 border-b border-[#e3f3ea] px-5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#8a879f]">
-        <span>{currentLanguage === 'en' ? 'Verified Demonstration Record' : 'Registro de Demostración Verificado'}</span>
+        <span>{currentLanguage === 'en' ? 'Sample program — not a live service' : 'Programa de ejemplo — no es un servicio real'}</span>
         <span>{resource.location.city}</span>
       </div>
 
@@ -60,7 +60,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
           <button
             type="button"
             onClick={() => onToggleSave(resource.id)}
-            className="min-h-0 rounded-lg p-2 text-[#8a879f] transition-colors hover:bg-[#eafaf1] hover:text-[#047857]"
+            className="min-h-[44px] min-w-[44px] rounded-lg p-2 text-[#5a5870] transition-colors hover:bg-[#eafaf1] hover:text-[#047857]"
             title={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-label={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-pressed={isSaved}
@@ -122,7 +122,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
             </span>
           )}
           <span className="ml-auto text-[12px] text-[#8a879f]">
-            {resource.nextStepInsight.confidenceRating}% match
+            {currentLanguage === 'en' ? 'Sample match' : 'Coincidencia de ejemplo'}
           </span>
         </div>
 
