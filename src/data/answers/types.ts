@@ -1,4 +1,4 @@
-export type AnswerTopic = 'food' | 'work' | 'college' | 'mental' | 'senior' | 'roleplay';
+export type AnswerTopic = 'food' | 'work' | 'college' | 'mental' | 'senior' | 'community' | 'roleplay';
 
 export interface BilingualText {
   en: string;
