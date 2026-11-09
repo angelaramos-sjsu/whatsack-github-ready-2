@@ -255,7 +255,6 @@ export function App() {
       {activeView === 'copilot' ? (
         <AILLMConsole
           currentLanguage={currentLanguage}
-          userProfile={userProfile}
           savedResourceIds={savedResourceIds}
           savedScriptedSteps={savedScriptedSteps}
           onSaveScriptedStep={(step) => setSavedScriptedSteps(prev =>
@@ -267,8 +266,6 @@ export function App() {
             )
           }
           onOpenInsights={(res) => setSelectedResourceForInsights(res)}
-          onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
-          onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
           initialQuestion={copilotQuestion}
         />
       ) : activeView === 'extension' ? (
