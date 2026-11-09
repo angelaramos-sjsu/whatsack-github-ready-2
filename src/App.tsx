@@ -39,7 +39,6 @@ export function App() {
   // Secondary Filters
   const [selectedCity, setSelectedCity] = useState<string>('all');
   const [freeOnly, setFreeOnly] = useState<boolean>(false);
-  const [noIdRequiredOnly, setNoIdRequiredOnly] = useState<boolean>(false);
 
   // Resident Introduction Profile State
   const [userProfile, setUserProfile] = useState<IntakeProfile | null>(null);
@@ -132,10 +131,7 @@ export function App() {
   // Handle saving introduction profile
   const handleSaveProfile = (profile: IntakeProfile) => {
     setUserProfile(profile);
-    // Apply relevant filters automatically
-    if (profile.noIdRequiredPreference) {
-      setNoIdRequiredOnly(true);
-    }
+    // Apply category and location preferences, without hidden ID restrictions.
     if (profile.servicePriorities.length === 1) {
       setSelectedCategory(profile.servicePriorities[0]);
     }
@@ -175,11 +171,6 @@ export function App() {
         return false;
       }
 
-      // 4. No ID Required Filter
-      if (noIdRequiredOnly && !resource.noIdRequired) {
-        return false;
-      }
-
       // 5. Conversational Search Query Filter
       if (searchQuery.trim()) {
         const queryLower = searchQuery.toLowerCase().trim();
@@ -213,7 +204,6 @@ export function App() {
     selectedCategory, 
     selectedCity, 
     freeOnly, 
-    noIdRequiredOnly, 
     searchQuery
   ]);
 
@@ -230,7 +220,6 @@ export function App() {
     setSelectedCategory('all');
     setSelectedCity('all');
     setFreeOnly(false);
-    setNoIdRequiredOnly(false);
     setSearchQuery('');
   };
 
@@ -375,9 +364,6 @@ export function App() {
             searchQuery={searchQuery}
             freeOnly={freeOnly}
             onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
-            noIdRequiredOnly={noIdRequiredOnly}
-            onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
-            onResetFilters={resetAllFilters}
             demonstrationCount={filteredResources.length}
             isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
             onToggleEntrySave={handleToggleDirectorySave}
