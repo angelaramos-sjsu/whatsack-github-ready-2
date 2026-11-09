@@ -286,7 +286,7 @@ You can explore local organizations without creating an account or sharing perso
 
 **Important:** WhatSack includes real organization websites and simulated sample programs. It does not verify live event schedules. Check directly with each organization before visiting.
 
-**For older adults near Redwood City:** Select the suggested question below to see a *sample* Spanish-speaking senior-activities journey.`,
+**For older adults near Redwood City:** Select the suggested question below to see a sample Spanish-speaking senior-activities journey.`,
       es: `**¿Busca compañía o actividades para conocer a otras personas?**
 
 Puede explorar organizaciones locales sin crear una cuenta ni compartir datos personales.
@@ -297,7 +297,7 @@ Puede explorar organizaciones locales sin crear una cuenta ni compartir datos pe
 
 **Importante:** WhatSack incluye sitios reales de organizaciones y programas de ejemplo simulados. No verifica horarios de eventos en vivo. Consulte directamente con la organización antes de ir.
 
-**Para adultos mayores cerca de Redwood City:** Seleccione la pregunta sugerida a continuación para explorar un *ejemplo* de actividades en español.`
+**Para adultos mayores cerca de Redwood City:** Seleccione la pregunta sugerida a continuación para explorar un ejemplo de actividades en español.`
     },
     context: [
       { en: 'Community activities and social connection', es: 'Actividades comunitarias y conexión social' },
@@ -313,20 +313,20 @@ Puede explorar organizaciones locales sin crear una cuenta ni compartir datos pe
       es: '¿Dónde hay convivencias para adultos mayores en español cerca de Redwood City?'
     },
     answer: {
-      en: `**Here are wonderful Spanish-speaking senior gatherings in Redwood City & the Peninsula:**
+      en: `**Sample senior-activities journey (not a live service listing):**
 
 - **Casa Círculo Cultural Senior Circle:** Meets every Tuesday & Thursday (10:00 AM – 1:30 PM) in North Fair Oaks. Features traditional crafts, chair yoga, warm Mexican hot lunches, and music.
 - **Door-to-Door Transit Assistance:** Staff helps register you for **SamTrans Redi-Wheels**, which picks you up directly at your home and brings you to the center.
-- **Cost:** 100% Free. No fees, no membership requirements.
+- **Sample cost:** Free in this fictional example; real costs and eligibility must be confirmed.
 
-**Actionable Next Step:** Call bilingual coordinator Carmen at (650) 555-CASA (Simulated) or arrive this Tuesday at 10:00 AM. Free welcome coffee and apron provided!`,
-      es: `**Aquí tiene excelentes opciones de convivencia para adultos mayores en español en Redwood City:**
+**Next step:** This program, its schedule, and its contact number are fictional for the class prototype. Do not call or visit based on these details. Use the official information links below to look for real services and confirm availability.`,
+      es: `**Ejemplo de actividades para adultos mayores (no son servicios verificados):**
 
 - **Círculo de Adultos Mayores de Casa Círculo Cultural:** Se reúnen martes y jueves (10:00 AM a 1:30 PM) en North Fair Oaks. Disfrutan de manualidades, yoga en silla, música y un rico almuerzo caliente.
 - **Transporte Puerta a Puerta:** El personal le ayuda a tramitar **SamTrans Redi-Wheels**, una camioneta que pasa por usted hasta la puerta de su casa.
-- **Costo:** 100% Gratuito. Sin membresías ni mensualidades.
+- **Costo de ejemplo:** Gratis en esta simulación; confirme los requisitos y costos reales.
 
-**Siguiente Paso Recomendado:** Llame a la coordinadora Doña Carmen al (650) 555-CASA (Simulado) o llegue el martes a las 10:00 AM. ¡Recibirá café caliente y un mandil de bienvenida!`
+**Siguiente paso:** Este programa, su horario y su teléfono son ficticios y se usan en el prototipo de clase. No llame ni acuda con estos datos. Use los enlaces oficiales de abajo para buscar servicios reales y confirmar disponibilidad.`
     },
     context: [
       { en: 'Redwood City & North Fair Oaks', es: 'Redwood City y North Fair Oaks' },
@@ -346,10 +346,10 @@ Puede explorar organizaciones locales sin crear una cuenta ni compartir datos pe
       }
     ],
     nextStep: {
-      title: { en: 'Call the bilingual coordinator before Tuesday', es: 'Llame a la coordinadora bilingüe antes del martes' },
+      title: { en: 'Check official service and transportation information', es: 'Consulte la información oficial de servicios y transporte' },
       detail: {
-        en: 'One call reserves a lunch plate and starts the Redi-Wheels application, so the first visit needs no walking.',
-        es: 'Una llamada reserva el almuerzo e inicia la solicitud de Redi-Wheels, para que la primera visita no requiera caminar.'
+        en: 'Review the official websites below to ask about real local programs, eligibility, schedules, and accessible transportation.',
+        es: 'Consulte los sitios oficiales de abajo para preguntar por programas reales, requisitos, horarios y transporte accesible.'
       },
       actions: [
         {
