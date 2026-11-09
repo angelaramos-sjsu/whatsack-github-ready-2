@@ -4,6 +4,7 @@ import { translations } from '../data/translations';
 import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
+import type { SavedScriptedStep } from '../data/answers';
 import {
   buildUnscriptedFallback,
   getScriptedAnswer,
@@ -56,6 +57,8 @@ interface AILLMConsoleProps {
   currentLanguage: Language;
   userProfile?: any;
   savedResourceIds?: string[];
+  savedScriptedSteps?: SavedScriptedStep[];
+  onSaveScriptedStep?: (step: SavedScriptedStep) => void;
   onSavePlanAction?: (resourceId: string) => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
   onOpenArchitectureModal: () => void;
@@ -89,6 +92,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   currentLanguage,
   userProfile,
   savedResourceIds = [],
+  savedScriptedSteps = [],
+  onSaveScriptedStep,
   onSavePlanAction,
   onOpenInsights,
   onOpenArchitectureModal,
@@ -245,7 +250,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   };
 
   return (
-    <div className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
+    <div id="main-content" role="main" tabIndex={-1} className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
       {/* Top Copilot Bar */}
       <div className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-3">
         <div className="flex items-center gap-3">
@@ -368,6 +373,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         )}
       </div>
 
+      <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
+        {currentLanguage === 'en'
+          ? `${messages.filter((message) => message.sender === 'llm').length} responses in the conversation.`
+          : `${messages.filter((message) => message.sender === 'llm').length} respuestas en la conversación.`}
+        {isGenerating ? (currentLanguage === 'en' ? ' Loading an answer.' : ' Cargando una respuesta.') : ''}
+      </p>
       {/* Main Chat Stream Container */}
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
@@ -464,6 +475,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     currentLanguage={currentLanguage}
                     savedResourceIds={savedResourceIds}
                     onSavePlan={(resourceId) => onSavePlanAction?.(resourceId)}
+                    savedSteps={savedScriptedSteps}
+                    onSaveStep={(step) => onSaveScriptedStep?.(step)}
                   />
                 )}
 
