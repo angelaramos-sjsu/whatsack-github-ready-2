@@ -27,6 +27,8 @@ interface NextStepInsightsModalProps {
   onClose: () => void;
   isSaved: boolean;
   onToggleSave: (id: string) => void;
+  completedActionIds: string[];
+  onToggleAction: (id: string) => void;
 }
 
 export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
@@ -34,9 +36,10 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
   currentLanguage,
   onClose,
   isSaved,
-  onToggleSave
+  onToggleSave,
+  completedActionIds,
+  onToggleAction
 }) => {
-  const [completedSteps, setCompletedSteps] = useState<Record<string, boolean>>({});
   const [copied, setCopied] = useState(false);
 
   // Close on Escape key press
@@ -56,39 +59,31 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
   const insight = resource.nextStepInsight;
   const actionItems = insight.actionItems;
 
+  const isStepDone = (stepId: string) => completedActionIds.includes(`${resource.id}:${stepId}`);
   const toggleStep = (stepId: string) => {
-    setCompletedSteps((prev) => {
-      const next = { ...prev, [stepId]: !prev[stepId] };
-      
-      // Check if all steps are completed
-      const total = actionItems.length;
-      const completedCount = Object.values(next).filter(Boolean).length;
-      if (completedCount === total && total > 0) {
-        confetti({
-          particleCount: 60,
-          spread: 70,
-          origin: { y: 0.6 }
-        });
-      }
-      return next;
-    });
+    const wasDone = isStepDone(stepId);
+    onToggleAction(`${resource.id}:${stepId}`);
+    if (!wasDone && actionItems.every(item => item.id === stepId || isStepDone(item.id))
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
+    }
   };
 
-  const completedCount = Object.values(completedSteps).filter(Boolean).length;
+  const completedCount = actionItems.filter(item => isStepDone(item.id)).length;
   const progressPercent = actionItems.length > 0 
     ? Math.round((completedCount / actionItems.length) * 100) 
     : 0;
 
   const handleCopyChecklist = () => {
     const lines = [
-      `WhatSack NextStep Checklist: ${resource.title[currentLanguage]}`,
+      `WhatSack NextStep Checklist (sample only): ${resource.title[currentLanguage]}`,
       `Location: ${resource.location.addressSimulated}`,
       '',
       'DOCUMENTS NEEDED:',
       ...insight.documentsNeeded.map((d) => `- ${d[currentLanguage]}`),
       '',
       'ACTION STEPS:',
-      ...actionItems.map((a, i) => `${i + 1}. [${completedSteps[a.id] ? 'X' : ' '}] ${a.title[currentLanguage]}: ${a.description[currentLanguage]}`),
+      ...actionItems.map((a, i) => `${i + 1}. [${isStepDone(a.id) ? 'X' : ' '}] ${a.title[currentLanguage]}: ${a.description[currentLanguage]}`),
       '',
       `Simulated Intake: ${resource.contactSimulated.phone} | ${resource.contactSimulated.intakeMethod[currentLanguage]}`
     ];
@@ -202,7 +197,7 @@ export const NextStepInsightsModal: React.FC<NextStepInsightsModalProps> = ({
 
             <div className="space-y-3">
               {actionItems.map((item, idx) => {
-                const isDone = !!completedSteps[item.id];
+                const isDone = isStepDone(item.id);
 
                 return (
                   <label
