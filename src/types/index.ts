@@ -84,13 +84,13 @@ export interface Persona {
 
 export interface IntakeProfile {
   name: string;
-  ageRange: 'under-18' | '18-24' | '25-49' | '50-64' | '65+';
+  ageRange: 'under-18' | '18-24' | '25-49' | '50-64' | '65+' | 'prefer-not-to-say';
   city: string;
   householdSize: number;
   hasChildren: boolean;
   hasSeniors: boolean;
   monthlyIncome: '< $2,500' | '$2,500 - $4,500' | '$4,500 - $7,000' | '$7,000+' | 'prefer-not-to-say';
-  employmentStatus: 'employed' | 'part-time' | 'laid-off' | 'seeking-work' | 'student' | 'retired';
+  employmentStatus: 'employed' | 'part-time' | 'laid-off' | 'seeking-work' | 'student' | 'retired' | 'prefer-not-to-say';
   servicePriorities: CategoryId[];
   preferredLanguage: string;
   noIdRequiredPreference: boolean;
