@@ -1,10 +1,14 @@
 import React from 'react';
-import { Language, IntakeProfile, CategoryId } from '../../types';
+import { Language, IntakeProfile, CategoryId, IntakeUrgency, OtherBasicNeed, AccessPreference } from '../../types';
 import { Lock } from 'lucide-react';
 
 const CITIES = [
   'East San Jose',
   'San Jose',
+  'Fremont',
+  'Union City',
+  'Newark',
+  'Santa Clara',
   'Sunnyvale',
   'Mountain View',
   'Redwood City',
@@ -47,8 +51,8 @@ const SERVICE_OPTIONS: Array<{ id: CategoryId; en: string; es: string; subEn: st
   { id: 'community', en: '🤝 Community Connection', es: '🤝 Conexión Comunitaria', subEn: 'Senior clubs, youth hubs', subEs: 'Clubes y centros' }
 ];
 
-const labelClass = 'block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5';
-const fieldClass = 'w-full text-sm p-3 rounded-xl border-2 border-slate-300 focus:border-emerald-700 focus:outline-hidden text-slate-900 min-h-[48px]';
+const labelClass = 'block text-sm font-semibold text-slate-900 mb-1.5';
+const fieldClass = 'w-full text-base p-3 rounded-xl border-2 border-slate-300 focus:border-emerald-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-emerald-700 text-slate-900 min-h-[48px]';
 const selectClass = `${fieldClass} bg-white font-medium`;
 
 interface StepIdentityProps {
@@ -101,7 +105,7 @@ export const StepIdentity: React.FC<StepIdentityProps> = ({
 
     <div>
       <label htmlFor="intake-city" className={labelClass}>
-        {currentLanguage === 'en' ? 'City / Area (optional)' : 'Ciudad / zona (opcional)'}
+        {currentLanguage === 'en' ? 'City / area (helps find local resources)' : 'Ciudad / zona (para buscar recursos locales)'}
       </label>
       <select id="intake-city" value={city} onChange={(e) => onCityChange(e.target.value)} className={selectClass}>
         {CITIES.map((c) => (
@@ -239,41 +243,113 @@ interface StepNeedsProps {
   currentLanguage: Language;
   servicePriorities: CategoryId[];
   onTogglePriority: (catId: CategoryId) => void;
+  otherNeeds: OtherBasicNeed[];
+  onToggleOtherNeed: (need: OtherBasicNeed) => void;
+  urgency: IntakeUrgency;
+  onUrgencyChange: (value: IntakeUrgency) => void;
 }
 
-export const StepNeeds: React.FC<StepNeedsProps> = ({ currentLanguage, servicePriorities, onTogglePriority }) => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-    {SERVICE_OPTIONS.map((item) => {
-      const isSelected = servicePriorities.includes(item.id);
-      return (
-        <button
-          key={item.id}
-          type="button"
-          onClick={() => onTogglePriority(item.id)}
-          className={`p-4 rounded-2xl border-2 text-left transition-all min-h-[64px] flex items-center gap-3 ${
-            isSelected
-              ? 'bg-emerald-50 border-emerald-700 shadow-sm ring-2 ring-emerald-700/20'
-              : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-800'
-          }`}
-          aria-pressed={isSelected}
-        >
-          <span className="flex-1">
-            <span className="font-extrabold text-sm block text-slate-900 mb-0.5">
+const OTHER_NEED_OPTIONS: { id: OtherBasicNeed; en: string; es: string }[] = [
+  { id: 'housing', en: 'Housing or a safe place to stay', es: 'Vivienda o un lugar seguro donde quedarse' },
+  { id: 'utilities', en: 'Bills or utilities', es: 'Facturas o servicios públicos' },
+  { id: 'transportation', en: 'Transportation assistance', es: 'Ayuda con el transporte' }
+];
+
+const URGENCY_OPTIONS: { id: IntakeUrgency; en: string; es: string }[] = [
+  { id: 'today', en: 'Today / as soon as possible', es: 'Hoy / lo antes posible' },
+  { id: 'soon', en: 'Within the next few days', es: 'En los próximos días' },
+  { id: 'exploring', en: 'I am exploring my options', es: 'Estoy explorando mis opciones' },
+  { id: 'prefer-not-to-say', en: 'Not sure / prefer not to say', es: 'No sé / prefiero no decirlo' }
+];
+
+export const StepNeeds: React.FC<StepNeedsProps> = ({
+  currentLanguage, servicePriorities, onTogglePriority, otherNeeds, onToggleOtherNeed,
+  urgency, onUrgencyChange
+}) => (
+  <div className="space-y-6">
+    <div>
+      <h4 className="text-base font-bold text-slate-900 mb-2">
+        {currentLanguage === 'en' ? 'Choose as many areas as you need' : 'Elija todas las áreas donde necesita ayuda'}
+      </h4>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {SERVICE_OPTIONS.map((item) => {
+          const selected = servicePriorities.includes(item.id);
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => onTogglePriority(item.id)}
+              aria-pressed={selected}
+              className={`p-4 rounded-2xl border-2 text-left transition-colors min-h-[64px] flex items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-700 ${
+                selected ? 'bg-emerald-50 border-emerald-700 text-slate-900' : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-900'
+              }`}
+            >
+              <span className="flex-1">
+                <span className="font-bold text-base block mb-1">{currentLanguage === 'en' ? item.en : item.es}</span>
+                <span className="text-sm text-slate-700">{currentLanguage === 'en' ? item.subEn : item.subEs}</span>
+              </span>
+              <span aria-hidden="true" className={`w-6 h-6 shrink-0 rounded-md border-2 flex items-center justify-center font-bold ${
+                selected ? 'bg-emerald-700 border-emerald-700 text-white' : 'border-slate-500 text-transparent'
+              }`}>✓</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    <fieldset>
+      <legend className="text-base font-bold text-slate-900 mb-2">
+        {currentLanguage === 'en' ? 'Other basic needs' : 'Otras necesidades básicas'}
+      </legend>
+      <p className="text-sm text-slate-700 mb-3">
+        {currentLanguage === 'en'
+          ? 'These needs currently lead to a 211 referral, not verified WhatSack matches.'
+          : 'Estas necesidades ofrecen una referencia al 211; WhatSack aún no tiene resultados verificados para ellas.'}
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {OTHER_NEED_OPTIONS.map((item) => {
+          const selected = otherNeeds.includes(item.id);
+          return (
+            <label key={item.id} className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-300 p-3 text-sm text-slate-900">
+              <input
+                type="checkbox"
+                className="w-5 h-5 accent-emerald-700 shrink-0"
+                checked={selected}
+                onChange={() => onToggleOtherNeed(item.id)}
+              />
               {currentLanguage === 'en' ? item.en : item.es}
-            </span>
-            <span className="text-xs text-slate-600">{currentLanguage === 'en' ? item.subEn : item.subEs}</span>
-          </span>
-          <span
-            aria-hidden="true"
-            className={`w-5 h-5 rounded-md border-2 shrink-0 flex items-center justify-center text-[11px] font-black ${
-              isSelected ? 'bg-emerald-700 border-emerald-700 text-white' : 'border-slate-400 text-transparent'
-            }`}
-          >
-            ✓
-          </span>
-        </button>
-      );
-    })}
+            </label>
+          );
+        })}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend className="text-base font-bold text-slate-900 mb-2">
+        {currentLanguage === 'en' ? 'How soon do you need help?' : '¿Qué tan pronto necesita ayuda?'}
+      </legend>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        {URGENCY_OPTIONS.map((option) => (
+          <label key={option.id} className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-xl border border-slate-300 p-3 text-sm text-slate-900">
+            <input
+              type="radio"
+              name="intake-urgency"
+              checked={urgency === option.id}
+              onChange={() => onUrgencyChange(option.id)}
+              className="h-5 w-5 shrink-0 accent-emerald-700"
+            />
+            {currentLanguage === 'en' ? option.en : option.es}
+          </label>
+        ))}
+      </div>
+      {urgency === 'today' && (
+        <p className="mt-3 rounded-xl border border-amber-300 bg-amber-50 p-3 text-sm text-slate-900">
+          {currentLanguage === 'en'
+            ? 'Need help right away? You can call 211 for local services without finishing this form. For immediate danger, call 911.'
+            : '¿Necesita ayuda ahora? Puede llamar al 211 para buscar servicios locales sin terminar este formulario. Si hay peligro inmediato, llame al 911.'}
+        </p>
+      )}
+    </fieldset>
   </div>
 );
 
@@ -283,54 +359,93 @@ interface StepPreferencesProps {
   onNoIdRequiredPreferenceChange: (value: boolean) => void;
   transitDependent: boolean;
   onTransitDependentChange: (value: boolean) => void;
+  preferredLanguage: string;
+  onPreferredLanguageChange: (value: string) => void;
+  accessPreferences: AccessPreference[];
+  onToggleAccessPreference: (value: AccessPreference) => void;
 }
+
+const ACCESS_OPTIONS: { id: AccessPreference; en: string; es: string }[] = [
+  { id: 'remote', en: 'Online or by phone', es: 'En línea o por teléfono' },
+  { id: 'evenings', en: 'Evening or weekend hours', es: 'Por las tardes o fines de semana' },
+  { id: 'accessible', en: 'Accessible location or other accommodations', es: 'Lugar accesible u otras adaptaciones' }
+];
 
 export const StepPreferences: React.FC<StepPreferencesProps> = ({
   currentLanguage,
-  noIdRequiredPreference,
-  onNoIdRequiredPreferenceChange,
-  transitDependent,
-  onTransitDependentChange
+  noIdRequiredPreference, onNoIdRequiredPreferenceChange,
+  transitDependent, onTransitDependentChange,
+  preferredLanguage, onPreferredLanguageChange,
+  accessPreferences, onToggleAccessPreference
 }) => (
-  <div className="space-y-3">
-    <div className="p-4 rounded-2xl bg-emerald-50/80 border-2 border-emerald-300 space-y-3">
-      <div className="grid grid-cols-1 gap-3 text-slate-900">
-        <label className="flex items-center gap-3 p-3 bg-white rounded-xl border border-emerald-200 cursor-pointer min-h-[52px]">
+  <div className="space-y-5">
+    <fieldset>
+      <legend className="text-base font-bold text-slate-900 mb-2">
+        {currentLanguage === 'en' ? 'What would make getting help easier?' : '¿Qué facilitaría obtener ayuda?'}
+      </legend>
+      <div className="space-y-3">
+        <label className="flex min-h-[56px] items-start gap-3 rounded-xl border-2 border-emerald-500 bg-emerald-50 p-3 text-slate-900 cursor-pointer">
           <input
             type="checkbox"
             checked={noIdRequiredPreference}
             onChange={(e) => onNoIdRequiredPreferenceChange(e.target.checked)}
-            className="w-5 h-5 accent-emerald-700 rounded shrink-0"
+            className="mt-1 w-5 h-5 accent-emerald-700 shrink-0"
           />
-          <span className="text-xs sm:text-sm font-bold">
-            {currentLanguage === 'en'
-              ? 'Prefer No-ID or zero-documentation programs'
-              : 'Prefiero programas sin requisito de ID estatal'}
+          <span>
+            <span className="block text-base font-bold">
+              {currentLanguage === 'en' ? 'I need options that do not require an ID or SSN' : 'Necesito opciones que no pidan identificación ni número de Seguro Social'}
+            </span>
+            <span className="block text-sm text-slate-700 mt-1">
+              {currentLanguage === 'en'
+                ? 'You never need to give WhatSack an ID or SSN to browse. We have not verified document rules for every organization; confirm directly before visiting.'
+                : 'No necesita dar identificación ni número de Seguro Social a WhatSack para explorar. No hemos verificado los requisitos de cada organización; confirme antes de ir.'}
+            </span>
           </span>
         </label>
-
-        <label className="flex items-center gap-3 p-3 bg-white rounded-xl border border-emerald-200 cursor-pointer min-h-[52px]">
+        <label className="flex min-h-[48px] items-center gap-3 rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900 cursor-pointer">
           <input
             type="checkbox"
             checked={transitDependent}
             onChange={(e) => onTransitDependentChange(e.target.checked)}
-            className="w-5 h-5 accent-emerald-700 rounded shrink-0"
+            className="w-5 h-5 accent-emerald-700 shrink-0"
           />
-          <span className="text-xs sm:text-sm font-bold">
-            {currentLanguage === 'en'
-              ? 'Rely on VTA buses / SamTrans public transit'
-              : 'Me traslado en autobuses VTA o SamTrans'}
-          </span>
+          {currentLanguage === 'en' ? 'I rely on public transportation' : 'Dependo del transporte público'}
         </label>
+        {ACCESS_OPTIONS.map((option) => (
+          <label key={option.id} className="flex min-h-[48px] items-center gap-3 rounded-xl border border-slate-300 bg-white p-3 text-sm text-slate-900 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={accessPreferences.includes(option.id)}
+              onChange={() => onToggleAccessPreference(option.id)}
+              className="w-5 h-5 accent-emerald-700 shrink-0"
+            />
+            {currentLanguage === 'en' ? option.en : option.es}
+          </label>
+        ))}
       </div>
+    </fieldset>
+    <div>
+      <label htmlFor="intake-language" className={labelClass}>
+        {currentLanguage === 'en' ? 'Language for support (optional)' : 'Idioma para recibir ayuda (opcional)'}
+      </label>
+      <select id="intake-language" value={preferredLanguage} onChange={(e) => onPreferredLanguageChange(e.target.value)} className={selectClass}>
+        <option value="No preference">{currentLanguage === 'en' ? 'No preference / not sure' : 'Sin preferencia / no sé'}</option>
+        <option value="English">English</option>
+        <option value="Español">Español</option>
+        <option value="Other">{currentLanguage === 'en' ? 'Another language (ask organization)' : 'Otro idioma (consultar a la organización)'}</option>
+      </select>
+      <p className="mt-2 text-sm text-slate-700">
+        {currentLanguage === 'en'
+          ? 'Preferences help you know what to ask about. They do not guarantee availability or automatically filter unverified organization details.'
+          : 'Estas preferencias le ayudan a saber qué preguntar. No garantizan disponibilidad ni filtran automáticamente información no verificada.'}
+      </p>
     </div>
-
-    <p className="flex items-center gap-1.5 text-xs text-slate-700 font-medium">
-      <Lock className="w-4 h-4 text-emerald-700 shrink-0" aria-hidden="true" />
+    <p className="flex items-start gap-2 rounded-lg bg-slate-50 p-3 text-sm text-slate-700">
+      <Lock className="w-5 h-5 text-emerald-700 shrink-0" aria-hidden="true" />
       <span>
         {currentLanguage === 'en'
-          ? 'Private & secure: Stays on your device only'
-          : 'Privado: Se guarda únicamente en su dispositivo'}
+          ? 'This class prototype keeps your choices in the current page session. It does not determine benefits eligibility.'
+          : 'Este prototipo de clase conserva sus elecciones durante esta sesión. No determina si cumple requisitos para beneficios.'}
       </span>
     </p>
   </div>
