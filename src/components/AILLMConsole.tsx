@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Language, Persona, DemonstrationResource } from '../types';
+import { Language, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
-import { fictionalPersonas } from '../data/personas';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
 import type { SavedScriptedStep } from '../data/answers';
@@ -10,7 +9,6 @@ import {
   getScriptedAnswer,
   resolveFollowUps,
   routeSaraCollegeQuestion,
-  saraCollegeStageIds,
   topicEntryAnswerIds
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
@@ -55,14 +53,11 @@ interface ChatMessage {
 
 interface AILLMConsoleProps {
   currentLanguage: Language;
-  userProfile?: any;
   savedResourceIds?: string[];
   savedScriptedSteps?: SavedScriptedStep[];
   onSaveScriptedStep?: (step: SavedScriptedStep) => void;
   onSavePlanAction?: (resourceId: string) => void;
   onOpenInsights: (resource: DemonstrationResource) => void;
-  onOpenArchitectureModal: () => void;
-  onOpenDecoderModal: () => void;
   /** A question submitted from the homepage; the copilot opens already answered. */
   initialQuestion?: { text: string; key: number } | null;
 }
@@ -77,8 +72,7 @@ const topicIntents: Record<AnswerTopic, string> = {
 };
 
 /** Free-text routing only picks a topic; the approved answer comes from its id. */
-const detectTopic = (lower: string, isRoleplayMode: boolean): AnswerTopic | null => {
-  if (isRoleplayMode) return 'roleplay';
+const detectTopic = (lower: string): AnswerTopic | null => {
   if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) return 'food';
   if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) return 'work';
   if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula') || lower.includes('colegiatura') || lower.includes('fafsa') || lower.includes('cadaa') || lower.includes('promise')) return 'college';
@@ -90,21 +84,16 @@ const detectTopic = (lower: string, isRoleplayMode: boolean): AnswerTopic | null
 
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   currentLanguage,
-  userProfile,
   savedResourceIds = [],
   savedScriptedSteps = [],
   onSaveScriptedStep,
   onSavePlanAction,
   onOpenInsights,
-  onOpenArchitectureModal,
-  onOpenDecoderModal,
   initialQuestion
 }) => {
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [activePersonaId, setActivePersonaId] = useState<string | null>(null);
-  const [isRoleplayMode, setIsRoleplayMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const greetingMessage: ChatMessage = {
@@ -117,8 +106,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       followUpIds: [
         'ans-food-east-sj-groceries',
         'ans-work-tech-certificates',
-        'ans-mental-confidential-teens',
-        'ans-roleplay-intake-open'
+        'ans-mental-confidential-teens'
       ]
   };
 
@@ -146,7 +134,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
    */
   const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
     const lower = text.toLowerCase();
-    const topic = detectTopic(lower, isRoleplayMode);
+    const topic = detectTopic(lower);
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const answer = saraStageId
@@ -204,13 +192,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isGenerating]);
 
-  // Handle persona selection in Copilot
-  const handleSelectPersona = (persona: Persona) => {
-    setActivePersonaId(persona.id);
-    const personaQuery = persona.sampleQuestions[0][currentLanguage];
-    handleSendMessage(personaQuery, persona.name);
-  };
-
   const handleSendMessage = (textToSend?: string, personaTag?: string) => {
     const text = textToSend || inputText;
     if (!text.trim() || isGenerating) return;
@@ -219,7 +200,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const userMessage: ChatMessage = {
       id: userMsgId,
       sender: 'user',
-      personaName: personaTag || (activePersonaId ? fictionalPersonas.find(p => p.id === activePersonaId)?.name : undefined),
+      personaName: personaTag,
       text: text,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
@@ -235,143 +216,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     }, 900);
   };
 
-  const handleExportChat = () => {
-    const textContent = messages
-      .map(m => `[${m.timestamp}] ${m.sender === 'user' ? (m.personaName || 'Resident') : 'WhatSack Civic-LLM'}:\n${m.text}\n`)
-      .join('\n----------------------------------------\n\n');
-
-    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `whatsack-civic-copilot-plan-${Date.now()}.txt`;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div id="main-content" role="main" tabIndex={-1} className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
-      {/* Top Copilot Bar */}
-      <div className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
-            <Bot className="w-5 h-5" />
+      {/* Simple chat heading. Demo menus and persona shortcuts were removed for clarity. */}
+      <header className="border-b border-slate-800 bg-slate-950 px-4 py-5 sm:px-6">
+        <div className="mx-auto flex max-w-5xl items-center gap-3">
+          <div aria-hidden="true" className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-emerald-700/50 bg-emerald-900/40 text-emerald-300">
+            <Bot className="h-5 w-5" />
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-extrabold text-base text-white tracking-tight">
-                {t.aiCopilot.title}
-              </h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                {t.aiCopilot.badge}
-              </span>
-            </div>
-            <p className="text-xs text-slate-400">
-              {t.aiCopilot.systemStatus}
+          <div className="min-w-0">
+            <h1 className="text-lg font-semibold tracking-tight text-white">
+              {currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
+            </h1>
+            <p className="mt-0.5 text-xs leading-relaxed text-slate-300">
+              {currentLanguage === 'en'
+                ? 'Ask a question about local support. Answers are scripted examples.'
+                : 'Pregunte sobre recursos locales. Las respuestas son ejemplos preparados.'}
             </p>
           </div>
         </div>
-
-        {/* Action Buttons: Architecture & Decoder */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onOpenArchitectureModal}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-          >
-            <Brain className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="hidden sm:inline">{t.aiCopilot.architectureButton}</span>
-            <span className="sm:hidden">Architecture</span>
-          </button>
-
-          <button
-            onClick={onOpenDecoderModal}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-          >
-            <FileText className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">{t.aiCopilot.decoderButton}</span>
-            <span className="sm:hidden">Decoder</span>
-          </button>
-
-          <button
-            onClick={() => setIsRoleplayMode(!isRoleplayMode)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              isRoleplayMode
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'bg-slate-800 text-amber-300 hover:bg-slate-700 border border-amber-500/30'
-            }`}
-          >
-            <PhoneCall className="w-3.5 h-3.5" />
-            <span>{t.aiCopilot.practiceRoleplay}</span>
-          </button>
-
-          <button
-            onClick={handleExportChat}
-            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800"
-            title={t.aiCopilot.exportChat}
-          >
-            <Download className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-
-      {/* Persona Quick Simulator Bar */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2.5 flex items-center gap-2 overflow-x-auto">
-        <button
-          onClick={() => handleFollowUpClick(saraCollegeStageIds.start)}
-          className="px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border mr-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 border-emerald-700/50"
-        >
-          <Sparkles className="w-3.5 h-3.5" />
-          <span>{currentLanguage === 'en' ? "Start Sara's college story" : 'Iniciar la historia de Sara'}</span>
-        </button>
-
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
-          <User className="w-3.5 h-3.5 text-indigo-400" />
-          <span>{currentLanguage === 'en' ? 'Quick Profiles:' : 'Perfiles:'}</span>
-        </span>
-
-        {userProfile && (
-          <button
-            onClick={() => {
-              setActivePersonaId(null);
-              handleSendMessage(
-                currentLanguage === 'en'
-                  ? `Hello, my name is ${userProfile.name}. I live in ${userProfile.city} with a household of ${userProfile.householdSize}. Our monthly income is ${userProfile.monthlyIncome} and our priority needs are: ${userProfile.servicePriorities.join(', ')}. What immediate programs are available for us?`
-                  : `Hola, mi nombre es ${userProfile.name}. Vivo en ${userProfile.city} en un hogar de ${userProfile.householdSize} personas. Nuestro ingreso es ${userProfile.monthlyIncome} y buscamos: ${userProfile.servicePriorities.join(', ')}. ¿Qué programas inmediatos tenemos disponibles?`,
-                userProfile.name
-              );
-            }}
-            className="px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 bg-emerald-600 text-white border border-emerald-500 shadow-xs"
-          >
-            <span>👤</span>
-            <span>{currentLanguage === 'en' ? `Ask as ${userProfile.name}` : `Consultar como ${userProfile.name}`}</span>
-          </button>
-        )}
-
-        {fictionalPersonas.map((persona) => (
-          <button
-            key={persona.id}
-            onClick={() => handleSelectPersona(persona)}
-            className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all shrink-0 flex items-center gap-1.5 border ${
-              activePersonaId === persona.id
-                ? 'bg-indigo-600 text-white border-indigo-500 shadow-xs'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-            }`}
-          >
-            <img src={persona.avatarUrl} alt={persona.name} className="w-4 h-4 rounded-full object-cover" />
-            <span>{persona.name} ({persona.age})</span>
-          </button>
-        ))}
-
-        {activePersonaId && (
-          <button
-            onClick={() => setActivePersonaId(null)}
-            className="text-[11px] font-bold text-slate-400 hover:text-white underline ml-1 shrink-0"
-          >
-            {currentLanguage === 'en' ? 'Reset persona' : 'Quitar persona'}
-          </button>
-        )}
-      </div>
+      </header>
 
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {currentLanguage === 'en'
@@ -493,7 +357,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {resolveFollowUps(msg.followUpIds).map((followUp) => (
+                      {resolveFollowUps(msg.followUpIds).filter((followUp) => followUp.topic !== 'roleplay').map((followUp) => (
                         <button
                           key={followUp.id}
                           type="button"
@@ -555,19 +419,14 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           className="max-w-4xl mx-auto relative flex items-center gap-2"
         >
           <label htmlFor="civic-copilot-input" className="sr-only">
-            {isRoleplayMode 
-              ? (currentLanguage === 'en' ? 'Type your practice phone response' : 'Escriba su respuesta de práctica')
-              : t.aiCopilot.chatPlaceholder}
+            {t.aiCopilot.chatPlaceholder}
           </label>
           <input
             id="civic-copilot-input"
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder={isRoleplayMode 
-              ? (currentLanguage === 'en' ? 'Type your practice phone response to Elena...' : 'Escriba su respuesta de práctica a Elena...')
-              : t.aiCopilot.chatPlaceholder
-            }
+            placeholder={t.aiCopilot.chatPlaceholder}
             className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 text-white placeholder-slate-400 text-xs sm:text-sm rounded-2xl px-4 py-3 focus:outline-hidden transition-colors min-h-[46px]"
           />
 
