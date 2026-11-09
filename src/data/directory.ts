@@ -95,7 +95,7 @@ export const directoryEntries: DirectoryEntry[] = [
   },
   {
     id: 'dir-second-harvest-of-silicon-valley-calfresh-assistance-11',
-    name: 'Second Harvest of Silicon Valley - calfresh assistance',
+    name: 'Second Harvest of Silicon Valley — CalFresh Assistance',
     categoryId: 'food',
     city: 'San Jose',
     address: '750 Curtner Avenue, San Jose, CA 95125',
@@ -122,7 +122,7 @@ export const directoryEntries: DirectoryEntry[] = [
     name: 'California Department of Social Services',
     categoryId: 'food',
     city: 'Statewide',
-    address: '744 P Street Sacramentio, CA 95814',
+    address: '744 P Street Sacramento, CA 95814',
     website: 'https://cdss.ca.gov/food'
   },
   {
@@ -146,7 +146,7 @@ export const directoryEntries: DirectoryEntry[] = [
     name: 'California Association of Food Banks',
     categoryId: 'food',
     city: 'Oakland',
-    address: '1616 Franklin Street, Suite 300, Oakland, CA 946112',
+    address: '1616 Franklin Street, Suite 300, Oakland, CA 94612',
     website: 'https://www.cafoodbanks.org/find-food/'
   },
   {
