@@ -114,7 +114,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
             <button
               type="button"
               onClick={onClearSearch}
-              className="min-h-0 p-2 mr-1 rounded-full text-[#7d7a94] hover:text-[#4C1D95] transition-colors"
+              className="min-h-0 p-2 mr-1 rounded-full text-[#8A8272] hover:text-[#0A0A0A] transition-colors"
               title="Clear input"
               aria-label="Clear search input"
             >
@@ -159,7 +159,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
                     {matchedCount} {t.filters.resultsCount}
                   </span>
                 </div>
-                <p className="mt-3 text-[15px] leading-relaxed text-[#1A1A24]">
+                <p className="mt-3 text-[15px] leading-relaxed text-[#0A0A0A]">
                   {currentLanguage === 'en'
                     ? `Filtering verified Silicon Valley community services matching: "${searchQuery}" with zero required state ID and accessible public transit routes.`
                     : `Filtrando programas de Silicon Valley que coinciden con: "${searchQuery}" sin requisito de ID estatal y con acceso por transporte público.`}
@@ -168,7 +168,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
               <button
                 type="button"
                 onClick={onClearSearch}
-                className="min-h-0 p-1.5 text-[#5a5870] hover:text-[#4C1D95] transition-colors"
+                className="min-h-0 p-1.5 text-[#5E594F] hover:text-[#0A0A0A] transition-colors"
                 title="Reset search query"
                 aria-label="Reset search query"
               >

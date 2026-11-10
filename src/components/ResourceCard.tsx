@@ -39,7 +39,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       className="qc-card flex flex-col justify-between overflow-hidden"
     >
       {/* Academic record indicator */}
-      <div className="flex items-center justify-between gap-3 border-b border-[#ece9f7] px-5 py-2.5 text-[12px] uppercase tracking-[0.1em] text-[#6b6880]">
+      <div className="flex items-center justify-between gap-3 border-b border-[#E8E2D4] bg-[#FBF9F3] px-5 py-2.5 text-[10.5px] uppercase tracking-[0.16em] text-[#6E6960]">
         <span>{currentLanguage === 'en' ? 'Verified Demonstration Record' : 'Registro de Demostración Verificado'}</span>
         <span>{resource.location.city}</span>
       </div>
@@ -54,19 +54,19 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                   : resource.categoryId
               ] || resource.categoryId}
             </span>
-            <span className="text-[12px] tracking-[0.02em] text-[#6b6880]">{resource.costType}</span>
+            <span className="text-[11px] uppercase tracking-[0.1em] text-[#6E6960]">{resource.costType}</span>
           </div>
 
           <button
             type="button"
             onClick={() => onToggleSave(resource.id)}
-            className="min-h-0 rounded-lg p-2 text-[#8a879f] transition-colors hover:bg-[#F3F0FF] hover:text-[#4C1D95]"
+            className="min-h-0 rounded-sm p-2 text-[#6E6960] transition-colors hover:bg-[#F6F1E5] hover:text-[#8A6A1F]"
             title={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-label={isSaved ? `${t.resourceCard.saved}: ${resourceTitle}` : `${t.resourceCard.save}: ${resourceTitle}`}
             aria-pressed={isSaved}
           >
             {isSaved ? (
-              <BookmarkCheck className="h-5 w-5 text-[#4C1D95]" aria-hidden="true" />
+              <BookmarkCheck className="h-5 w-5 text-[#8A6A1F]" aria-hidden="true" />
             ) : (
               <Bookmark className="h-5 w-5" aria-hidden="true" />
             )}
@@ -75,35 +75,35 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
 
         <h3
           id={`resource-title-${resource.id}`}
-          className="text-[20px] font-medium leading-snug tracking-[-0.02em] text-[#1A1A24]"
+          className="qc-card-title"
         >
           {resourceTitle}
         </h3>
-        <p className="mt-1 text-[13px] text-[#5a5870]">{resourceOrg}</p>
+        <p className="mt-1 text-[12.5px] text-[#6E6960]">{resourceOrg}</p>
 
-        <p className="mt-4 text-[14px] leading-relaxed text-[#5a5870]">
+        <p className="mt-4 text-[14px] leading-relaxed text-[#5E594F]">
           {resource.description[currentLanguage]}
         </p>
 
-        <div className="mt-5 space-y-2 border-t border-[#f0eef8] pt-4 text-[13px] text-[#5a5870]">
+        <div className="mt-5 space-y-2 border-t border-[#E8E2D4] pt-4 text-[13px] text-[#5E594F]">
           <div className="flex items-start gap-2">
-            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#8a879f]" aria-hidden="true" />
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#6E6960]" aria-hidden="true" />
             <div>
-              <span className="text-[#1A1A24]">{resource.location.city}, {resource.location.county}</span>
+              <span className="text-[#0A0A0A]">{resource.location.city}, {resource.location.county}</span>
               <p className="mt-0.5 flex items-start gap-1.5">
-                <Bus className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#8a879f]" aria-hidden="true" />
+                <Bus className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#6E6960]" aria-hidden="true" />
                 <span>{resource.location.transitNote[currentLanguage]}</span>
               </p>
             </div>
           </div>
 
           <div className="flex items-start gap-2">
-            <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#8a879f]" aria-hidden="true" />
+            <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#6E6960]" aria-hidden="true" />
             <span>{resource.schedule[currentLanguage]}</span>
           </div>
 
           <div className="flex items-start gap-2">
-            <Languages className="mt-0.5 h-4 w-4 shrink-0 text-[#8a879f]" aria-hidden="true" />
+            <Languages className="mt-0.5 h-4 w-4 shrink-0 text-[#6E6960]" aria-hidden="true" />
             <span>{resource.languagesSupported.join(', ')}</span>
           </div>
         </div>
@@ -121,14 +121,14 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               {t.resourceCard.confidentialBadge}
             </span>
           )}
-          <span className="ml-auto text-[13px] text-[#6b6880]">
+          <span className="ml-auto text-[11px] uppercase tracking-[0.1em] text-[#6E6960]">
             {resource.nextStepInsight.confidenceRating}% match
           </span>
         </div>
 
-        <div className="mt-5 rounded-xl border border-[#ece9f7] bg-[#FAF9FF] p-4">
+        <div className="mt-5 rounded-sm border border-[#E8E2D4] bg-[#FBF9F3] p-4">
           <div className="qc-eyebrow">{t.insights.whyRecommended}</div>
-          <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-[#5a5870]">
+          <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-[#5E594F]">
             {resource.nextStepInsight.explanation[currentLanguage]}
           </p>
         </div>

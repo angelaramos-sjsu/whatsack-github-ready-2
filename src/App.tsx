@@ -206,7 +206,7 @@ export function App() {
   };
 
   return (
-    <div className="qc min-h-screen flex flex-col selection:bg-[#4C1D95] selection:text-white">
+    <div className="qc min-h-screen flex flex-col selection:bg-[#E9DFC6] selection:text-[#0A0A0A]">
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
@@ -294,11 +294,11 @@ export function App() {
               {currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}
             </h2>
             {filteredResources.length === 0 ? (
-              <div className="border-t border-[#f0eef8] py-16 text-center">
-                <h3 className="text-[18px] font-medium text-[#1A1A24]">
+              <div className="border-t border-[#E8E2D4] py-16 text-center">
+                <h3 className="qc-card-title text-[19px]">
                   {currentLanguage === 'en' ? 'No matching demonstration resources found' : 'No se encontraron recursos de demostración'}
                 </h3>
-                <p className="mt-2 text-[14px] text-[#5a5870]">
+                <p className="mt-2 text-[14px] text-[#5E594F]">
                   {currentLanguage === 'en'
                     ? 'Try broadening your search filters or resetting your inquiry.'
                     : 'Intente ampliar los filtros de búsqueda o restablecer la consulta.'}
@@ -365,10 +365,10 @@ export function App() {
           <button
             type="button"
             onClick={() => setActiveView('copilot')}
-            className="flex items-center gap-2 rounded-full border border-[#e6e0fb] bg-white px-4 py-3 text-[13px] font-medium text-[#1A1A24] shadow-[0_10px_30px_rgba(76,29,149,0.12)] transition-colors hover:border-[#4C1D95] hover:text-[#4C1D95]"
+            className="group flex items-center gap-2 rounded-full border border-[#0A0A0A] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0A0A0A] shadow-[0_10px_30px_rgba(10,10,10,0.12)] transition-colors hover:bg-[#0A0A0A] hover:text-white"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
-            <Bot className="h-4 w-4 text-[#4C1D95]" aria-hidden="true" />
+            <Bot className="h-4 w-4 text-[#8A6A1F] transition-colors group-hover:text-[#D6B36A]" aria-hidden="true" />
             <span>{currentLanguage === 'en' ? 'Ask Civic-LLM Copilot' : 'Preguntar al Copiloto IA'}</span>
           </button>
         </aside>

@@ -146,7 +146,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
 
       {/* Listings */}
       {matches.length === 0 ? (
-        <p className="py-10 text-[15px] text-[#5a5870]">
+        <p className="py-10 text-[15px] text-[#5E594F]">
           {currentLanguage === 'en'
             ? 'No directory listings match these filters yet.'
             : 'Ningún registro del directorio coincide con estos filtros.'}

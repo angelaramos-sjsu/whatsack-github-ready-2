@@ -75,10 +75,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="relative z-40 bg-white">
+    <header className="qc-head relative z-40 bg-white">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#4C1D95] focus:text-white focus:rounded-md focus:font-semibold"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-[#0A0A0A] focus:text-white focus:rounded-md focus:font-semibold"
       >
         {t.a11y.skipToContent}
       </a>
@@ -91,7 +91,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onOpenDisclaimer}
-            className="qc-link min-h-0 ml-auto text-[12px] text-[#4C1D95]"
+            className="qc-ban-link min-h-0 ml-auto"
           >
             {currentLanguage === 'en' ? 'Safety Notice' : 'Aviso de Seguridad'}
           </button>
@@ -168,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {isMenuOpen && (
-        <div id="mobile-navigation" className="lg:hidden border-t border-[#ece9f7] bg-white">
+        <div id="mobile-navigation" className="lg:hidden border-t border-[#E8E2D4] bg-white">
           <div className="qc-shell py-5 flex flex-col gap-3 text-[14px] tracking-[.06em]">
             {navLinks.map((link) => (
               <button
