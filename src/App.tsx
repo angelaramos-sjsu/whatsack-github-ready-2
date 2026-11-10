@@ -24,6 +24,7 @@ import { SavedResourcesDrawer } from './components/SavedResourcesDrawer';
 import { AILLMConsole } from './components/AILLMConsole';
 import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
+import { WelcomePopup } from './components/WelcomePopup';
 import { Footer } from './components/Footer';
 
 import { 
@@ -60,6 +61,8 @@ export function App() {
   const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState<boolean>(false);
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState<boolean>(false);
   const [isDecoderModalOpen, setIsDecoderModalOpen] = useState<boolean>(false);
+  // Welcome popup shown once when a visitor lands on the page
+  const [isWelcomePopupOpen, setIsWelcomePopupOpen] = useState<boolean>(true);
   const [selectedResourceForInsights, setSelectedResourceForInsights] = useState<DemonstrationResource | null>(null);
 
   // Bookmarks & Accessibility
@@ -531,6 +534,14 @@ export function App() {
         isSaved={selectedResourceForInsights ? savedResourceIds.includes(selectedResourceForInsights.id) : false}
         onToggleSave={handleToggleSave}
       />
+
+      {/* Welcome Popup (shown on first visit) */}
+      {isWelcomePopupOpen && (
+        <WelcomePopup
+          currentLanguage={currentLanguage}
+          onClose={() => setIsWelcomePopupOpen(false)}
+        />
+      )}
 
       <SavedResourcesDrawer
         isOpen={isSavedDrawerOpen}
