@@ -180,6 +180,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
   const [messages, setMessages] = useState<ChatMessage[]>([greetingMessage]);
 
+  /** The message at the end of the feed — always the answer you just asked for. */
+  const newestMessageRef = useRef<HTMLDivElement | null>(null);
+  const newestMessageId = messages[messages.length - 1]?.id;
+
   // A question submitted from the homepage opens the copilot already answered.
   const seededQuestionKeyRef = useRef<number | null>(null);
   useEffect(() => {
@@ -218,10 +222,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
   };
 
-  // Keep the newest message in view without moving the page itself.
+  // Jump to the newest answer, so a question never leaves you reading the older reply.
   useEffect(() => {
     const stream = streamRef.current;
-    if (stream) stream.scrollTop = stream.scrollHeight;
+    const newest = newestMessageRef.current;
+    if (!stream || !newest) return;
+
+    const align = () => {
+      const offset = newest.getBoundingClientRect().top - stream.getBoundingClientRect().top;
+      stream.scrollTop = Math.max(0, stream.scrollTop + offset - 12);
+    };
+
+    align();
+    // Cards and web fonts settle a moment later; keep the newest answer in place.
+    const frame = requestAnimationFrame(align);
+    const settle = window.setTimeout(align, 180);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(settle);
+    };
   }, [messages, isGenerating]);
 
   // Handle persona selection in Copilot
@@ -398,6 +418,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           return (
             <div
               key={msg.id}
+              ref={msg.id === newestMessageId ? newestMessageRef : undefined}
               className={`cp-msg ${msg.sender === 'user' ? 'cp-msg--user' : 'cp-msg--llm'}`}
             >
               <div className="cp-meta">
