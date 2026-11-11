@@ -32,7 +32,7 @@ export const translations = {
       closeModal: 'Close dialog (Esc)',
     },
     aiCopilot: {
-      title: 'WhatSack Civic-LLM Co-Pilot',
+      title: 'Web Assistant',
       subtitle: 'Free, friendly AI help with verified Silicon Valley community resources.',
       badge: 'Grounded answers • Civic-LLM 70B',
       systemStatus: 'Online. Santa Clara and San Mateo programs are loaded.',
