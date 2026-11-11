@@ -130,8 +130,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
-        ? `Hello! I am the WhatSack Civic-LLM Copilot — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
-        : `¡Hola! Soy el Copiloto Civic-LLM de WhatSack — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
+        ? `Hi, I am the WhatSack Civic-LLM Co-Pilot.\n\nI help Silicon Valley residents find free local programs. I can also explain confusing letters and help you practice a phone call. What do you need help with today?`
+        : `Hola, soy el Copiloto Civic-LLM de WhatSack.\n\nAyudo a residentes de Silicon Valley a encontrar programas gratuitos. También explico cartas confusas y le ayudo a practicar una llamada. ¿En qué le puedo ayudar hoy?`,
       timestamp: 'Just now',
       followUpIds: [
         'ans-food-east-sj-groceries',
@@ -291,13 +291,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             <button type="button" onClick={onOpenArchitectureModal} className="cp-ghost">
               <Brain aria-hidden="true" />
               <span className="hidden sm:inline">{t.aiCopilot.architectureButton}</span>
-              <span className="sm:hidden">Architecture</span>
+              <span className="sm:hidden">How it works</span>
             </button>
 
             <button type="button" onClick={onOpenDecoderModal} className="cp-ghost">
               <FileText aria-hidden="true" />
               <span className="hidden sm:inline">{t.aiCopilot.decoderButton}</span>
-              <span className="sm:hidden">Decoder</span>
+              <span className="sm:hidden">Decode letter</span>
             </button>
 
             <button
@@ -348,7 +348,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         </button>
 
         <span className="cp-profiles-label">
-          {currentLanguage === 'en' ? 'Quick Profiles' : 'Perfiles'}
+          {currentLanguage === 'en' ? 'Examples' : 'Ejemplos'}
         </span>
 
         {userProfile && (
@@ -357,8 +357,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               setActivePersonaId(null);
               handleSendMessage(
                 currentLanguage === 'en'
-                  ? `Hello, my name is ${userProfile.name}. I live in ${userProfile.city} with a household of ${userProfile.householdSize}. Our monthly income is ${userProfile.monthlyIncome} and our priority needs are: ${userProfile.servicePriorities.join(', ')}. What immediate programs are available for us?`
-                  : `Hola, mi nombre es ${userProfile.name}. Vivo en ${userProfile.city} en un hogar de ${userProfile.householdSize} personas. Nuestro ingreso es ${userProfile.monthlyIncome} y buscamos: ${userProfile.servicePriorities.join(', ')}. ¿Qué programas inmediatos tenemos disponibles?`,
+                  ? `My name is ${userProfile.name}. I live in ${userProfile.city}. ${userProfile.householdSize} people live in my home. We earn ${userProfile.monthlyIncome} a month. We need help with: ${userProfile.servicePriorities.join(', ')}. What programs can help us soon?`
+                  : `Me llamo ${userProfile.name}. Vivo en ${userProfile.city}. En mi casa vivimos ${userProfile.householdSize} personas. Ganamos ${userProfile.monthlyIncome} al mes. Necesitamos ayuda con: ${userProfile.servicePriorities.join(', ')}. ¿Qué programas nos pueden ayudar pronto?`,
                 userProfile.name
               );
             }}
@@ -383,7 +383,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         {activePersonaId && (
           <button type="button" onClick={() => setActivePersonaId(null)} className="cp-reset">
-            {currentLanguage === 'en' ? 'Reset persona' : 'Quitar persona'}
+            {currentLanguage === 'en' ? 'Clear' : 'Quitar'}
           </button>
         )}
         </div>
@@ -403,7 +403,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               <div className="cp-meta">
                 <span className="cp-who">
                   {msg.sender === 'user'
-                    ? (msg.personaName || (currentLanguage === 'en' ? 'Resident inquiry' : 'Consulta ciudadana'))
+                    ? (msg.personaName || (currentLanguage === 'en' ? 'You' : 'Usted'))
                     : 'WhatSack Civic-LLM'}
                 </span>
                 <span className="cp-time">{msg.timestamp}</span>
@@ -416,7 +416,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
                   <div className="cp-block">
                     <span className="cp-block-label">
-                      {currentLanguage === 'en' ? 'Grounded demonstration resources' : 'Recursos de demostración vinculados'}
+                      {currentLanguage === 'en' ? 'Programs that match' : 'Programas relacionados'}
                     </span>
                     <div className="cp-res-grid">
                       {msg.recommendedResourceIds.map((resId) => {
@@ -467,7 +467,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && !!msg.followUpIds?.length && (
                   <div className="cp-block">
                     <span className="cp-block-label">
-                      {currentLanguage === 'en' ? 'Follow-up prompts' : 'Preguntas sugeridas'}
+                      {currentLanguage === 'en' ? 'Ask next' : 'Pregunte ahora'}
                     </span>
                     <div className="cp-sugg">
                       {resolveFollowUps(msg.followUpIds).map((followUp) => (
@@ -513,7 +513,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         >
           <label htmlFor="civic-copilot-input" className="sr-only">
             {isRoleplayMode 
-              ? (currentLanguage === 'en' ? 'Type your practice phone response' : 'Escriba su respuesta de práctica')
+              ? (currentLanguage === 'en' ? 'Type what you would say on the phone' : 'Escriba lo que diría por teléfono')
               : t.aiCopilot.chatPlaceholder}
           </label>
           <input
@@ -522,7 +522,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder={isRoleplayMode 
-              ? (currentLanguage === 'en' ? 'Type your practice phone response to Elena...' : 'Escriba su respuesta de práctica a Elena...')
+              ? (currentLanguage === 'en' ? 'Type what you would say on the phone...' : 'Escriba lo que diría por teléfono...')
               : t.aiCopilot.chatPlaceholder
             }
             className="cp-input"
@@ -541,8 +541,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         <p className="cp-note">
           {currentLanguage === 'en'
-            ? 'WhatSack Civic-LLM grounds outputs strictly in demonstration records. No personal data collected or stored.'
-            : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
+            ? 'Answers come from demonstration records only. No personal data is collected or stored.'
+            : 'Las respuestas vienen solo de registros de demostración. No se recopilan ni guardan datos personales.'}
         </p>
         </div>
       </div>

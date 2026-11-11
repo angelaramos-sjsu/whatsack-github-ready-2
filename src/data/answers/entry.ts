@@ -14,28 +14,28 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: '¿Dónde consigo despensa en el Este de San José sin identificación?'
     },
     answer: {
-      en: `**I found 2 immediate, stigma-free food resources in East San Jose that fit your inquiry:**
+      en: `**Two free food options in East San Jose match what you asked:**
 
-1. **Sacred Heart Saturday Community Food Pantry** (550 S 1st St, San Jose)
-   - **Schedule:** Every Saturday, 9:00 AM – 1:00 PM
-   - **ID Policy:** Zero ID, SSN, or income verification required. Self-attestation accepted.
-   - **Public Charge Clarification:** Community food pantries do **NOT** count toward federal public charge determinations under USCIS rules.
+- **Sacred Heart Saturday Community Food Pantry**, 550 S 1st St, San Jose.
+  - **Hours:** Every Saturday, 9:00 AM to 1:00 PM.
+  - **ID:** No ID, Social Security number or proof of income. Giving your name is enough.
+  - **Immigration:** Food pantries do **NOT** count in the public charge test.
 
-2. **Second Harvest Mobile Produce Market** (Story Rd & King Rd)
-   - Fresh vegetables, farmer produce boxes, walk-up or drive-thru lanes.
+- **Second Harvest Mobile Produce Market**, Story Rd and King Rd.
+  - Free fresh produce. Walk up or drive through.
 
-**Actionable Next Step:** Arrive at Sacred Heart around 8:40 AM this Saturday with 2 sturdy reusable bags. No pre-registration needed.`,
-      es: `**Encontré 2 opciones de despensa inmediata sin estigma en el Este de San José:**
+**Next step:** Go to Sacred Heart this Saturday around 8:40 AM. Bring two strong bags. You do not need an appointment.`,
+      es: `**Hay dos opciones gratis de comida en el Este de San José:**
 
-1. **Despensa Comunitaria de Sábados en Sacred Heart** (550 S 1st St, San José)
-   - **Horario:** Todos los sábados de 9:00 AM a 1:00 PM
-   - **Requisito de ID:** Cero identificación, sin Seguro Social ni comprobante de ingresos. Solo autodeclaración verbal.
-   - **Aclaración de Carga Pública:** Recibir alimentos de despensas comunitarias **NO** cuenta para la regla de carga pública de inmigración.
+- **Despensa Comunitaria de Sábados en Sacred Heart**, 550 S 1st St, San José.
+  - **Horario:** Todos los sábados, de 9:00 AM a 1:00 PM.
+  - **Identificación:** No piden ID, Seguro Social ni comprobante de ingresos. Basta con dar su nombre.
+  - **Inmigración:** Las despensas de comida **NO** cuentan en la regla de carga pública.
 
-2. **Mercado Móvil Second Harvest** (Story Rd y King Rd)
-   - Frutas y verduras frescas de temporada, fila peatonal y de autos.
+- **Mercado Móvil Second Harvest**, Story Rd y King Rd.
+  - Frutas y verduras frescas gratis. Puede ir caminando o en auto.
 
-**Siguiente Paso Recomendado:** Llegue a Sacred Heart a las 8:40 AM este sábado con 2 bolsas reutilizables. No se requiere cita previa.`
+**Próximo paso:** Vaya a Sacred Heart este sábado a las 8:40 AM. Lleve dos bolsas fuertes. No necesita cita.`
     },
     context: [
       { en: 'East San Jose', es: 'Este de San José' },
@@ -86,18 +86,18 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: '¿Cómo recibir cursos de tecnología gratuitos tras un despido en Milpitas?'
     },
     answer: {
-      en: `**If you experienced a recent layoff or workforce reduction in Silicon Valley, you have access to substantial state retraining funds:**
+      en: `**Your layoff may pay for free job training.**
 
-- **NOVAworks Dislocated Worker Program:** Offers vouchers up to **$8,000** for approved certificates in CompTIA Security+, Cloud Operations (AWS), and Network Support.
-- **Crucial Protection:** Enrolling in approved California Training Benefits (CTB) allows you to continue receiving weekly EDD unemployment benefits without having to submit weekly job search logs.
+- **NOVAworks Dislocated Worker Program:** Vouchers up to **$8,000** for certificates in CompTIA Security+, AWS Cloud and network support.
+- **California Training Benefits (CTB):** While you study an approved course, you can keep your weekly EDD payments. You do not need to send weekly job search logs.
 
-**Actionable Next Step:** Sign up for the 45-minute virtual WIOA orientation held every Wednesday at 10:00 AM. Bring your EDD determination letter.`,
-      es: `**Si recientemente fue despedido o redujeron su jornada en Silicon Valley, tiene acceso a importantes becas estatales:**
+**Next step:** Join the free online WIOA orientation. It runs every Wednesday at 10:00 AM and takes 45 minutes. Bring your EDD letter.`,
+      es: `**Su despido puede pagar capacitación gratis.**
 
-- **Programa NOVAworks para Trabajadores Desplazados:** Otorga vales de hasta **$8,000** para certificaciones en CompTIA Security+, Nube (AWS) y Soporte de Redes.
-- **Protección Clave:** Al inscribirse en cursos avalados por California Training Benefits (CTB), continúa recibiendo sus cheques de desempleo del EDD sin la obligación de buscar empleo semanalmente.
+- **Programa NOVAworks para Trabajadores Desplazados:** Vales de hasta **$8,000** para certificados en CompTIA Security+, Nube (AWS) y Soporte de Redes.
+- **California Training Benefits (CTB):** Mientras estudia un curso aprobado, sigue recibiendo sus pagos semanales del EDD. No necesita enviar registros de búsqueda de empleo.
 
-**Siguiente Paso Recomendado:** Inscríbase a la orientación virtual de 45 minutos que se realiza todos los miércoles a las 10:00 AM. Tenga a la mano su carta del EDD.`
+**Próximo paso:** Inscríbase a la orientación virtual gratuita de WIOA. Es cada miércoles a las 10:00 AM y dura 45 minutos. Lleve su carta del EDD.`
     },
     context: [
       { en: 'Milpitas', es: 'Milpitas' },
@@ -148,20 +148,20 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: '¿Qué ayuda hay para pagar la universidad en Silicon Valley?'
     },
     answer: {
-      en: `**Here is the exact breakdown for tuition-free college in Silicon Valley:**
+      en: `**You can study at these colleges with no tuition.**
 
-- **Foothill & De Anza College Promise (AB 19):** Covers **100% of tuition and mandatory fees for 2 full academic years** for California residents enrolled in 12+ units.
-- **AB 540 / Dream Act Safety:** Undocumented students submit the California Dream Act Application (CADAA). Under California state law, your financial aid records are confidential and never shared with federal immigration agencies.
-- **Book Support:** First-generation students can ask the Student Success Center about bookstore and supplies assistance.
+- **Foothill and De Anza College Promise (AB 19):** Pays **100% of tuition and fees for 2 full years** if you live in California and take 12 or more units.
+- **Undocumented students:** Fill out the California Dream Act Application (CADAA). State law keeps your financial aid records private from federal immigration agencies.
+- **Books:** First-generation students can ask the Student Success Center for help with books and supplies.
 
-**Actionable Next Step:** Complete your OpenCCC admissions application first to generate your student CWID, then submit CADAA/FAFSA.`,
-      es: `**Aquí tiene el desglose exacto para estudiar la universidad sin costo en Silicon Valley:**
+**Next step:** First apply to the college on OpenCCC to get your student ID. Then send your CADAA or FAFSA.`,
+      es: `**Puede estudiar en estas universidades sin pagar colegiatura.**
 
-- **Foothill y De Anza College Promise (Ley AB 19):** Cubre el **100% de la colegiatura y cuotas durante 2 años completos** para residentes de California inscritos en 12+ créditos.
-- **Seguridad AB 540 / Dream Act:** Estudiantes indocumentados llenan la solicitud CADAA. Por ley de California, sus datos escolares son confidenciales y nunca se comparten con autoridades migratorias.
-- **Apoyo para Libros:** Estudiantes de 1ra generación pueden preguntar en el Centro de Éxito Estudiantil por apoyo para libros y útiles.
+- **Foothill y De Anza College Promise (Ley AB 19):** Paga el **100% de la colegiatura y cuotas por 2 años completos** si vive en California y toma 12 o más créditos.
+- **Estudiantes indocumentados:** Llenen la solicitud CADAA (California Dream Act). La ley estatal mantiene sus datos escolares privados y no los comparte con autoridades migratorias.
+- **Libros:** Estudiantes de primera generación pueden pedir ayuda para libros y útiles en el Centro de Éxito Estudiantil.
 
-**Siguiente Paso Recomendado:** Llene primero la solicitud de admisión en OpenCCC para obtener su número estudiantil CWID, y después envíe su CADAA o FAFSA.`
+**Próximo paso:** Primero solicite admisión en OpenCCC para obtener su número estudiantil. Después envíe su CADAA o FAFSA.`
     },
     context: [
       { en: 'Silicon Valley', es: 'Silicon Valley' },
@@ -212,20 +212,20 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: '¿Qué apoyo emocional para jóvenes es confidencial en Sunnyvale?'
     },
     answer: {
-      en: `**You have full legal rights to confidential support in California:**
+      en: `**In California, teens can get private mental health support.**
 
-- **California Health & Safety Code § 124260:** Youth aged 12 and older can consent to outpatient mental health and peer counseling confidentially without parental notification.
-- **California Youth Crisis Text Line:** Text **HOPE** to **844-555-TEEN** (Simulated). 100% free, 24/7, anonymous. Texts are answered by trained young listeners who understand academic pressure.
-- **Sunnyvale Youth Wellness Hub:** Drop in after school (3:00 PM – 7:30 PM) for art therapy, quiet sensory pods, and peer listeners without insurance cards or school reporting.
+- **Health and Safety Code § 124260:** If you are 12 or older, you can agree to outpatient counseling without telling your parents.
+- **California Youth Crisis Text Line:** Text **HOPE** to **844-555-TEEN** (simulated). It is free, private and open 24/7. Trained young listeners answer.
+- **Sunnyvale Youth Wellness Hub:** Drop in after school, 3:00 PM to 7:30 PM. There is art, quiet rooms and peer listeners. No insurance card and no school report.
 
-**Actionable Next Step:** Save the text code in your phone as "Peer Line". Reach out anytime you feel overwhelmed.`,
-      es: `**Tienes plenos derechos legales a recibir apoyo confidencial en California:**
+**Next step:** Save the number in your phone as "Peer Line". Text any time you feel stressed.`,
+      es: `**En California, los jóvenes pueden recibir apoyo emocional privado.**
 
-- **Código de Salud de California § 124260:** Jóvenes de 12 años en adelante tienen derecho legal a solicitar consejería ambulatoria de forma confidencial sin aviso obligatorio a los padres.
-- **Línea de Texto de Crisis Juvenil de California:** Envía la palabra **HOPE** al **844-555-TEEN** (Simulado). 100% gratuito, anónimo y disponible 24/7 con jóvenes capacitados.
-- **Centro de Bienestar Juvenil de Sunnyvale:** Espacio libre después de clases (3:00 PM a 7:30 PM) con arte, zonas sensoriales y apoyo entre compañeros sin pedir seguro médico.
+- **Código de Salud y Seguridad § 124260:** Si tienes 12 años o más, puedes aceptar consejería sin avisar a tus padres.
+- **Línea de Texto de Crisis Juvenil de California:** Envía **HOPE** al **844-555-TEEN** (simulado). Es gratis, privada y responde 24/7. Contestan jóvenes capacitados.
+- **Centro de Bienestar Juvenil de Sunnyvale:** Entra después de clases, de 3:00 PM a 7:30 PM. Hay arte, salas tranquilas y apoyo entre jóvenes. No piden seguro médico ni reportan a la escuela.
 
-**Siguiente Paso Recomendado:** Guarda el número como "Apoyo Amigo" en tu celular. Escribe en cualquier momento de estrés.`
+**Próximo paso:** Guarda el número como "Apoyo Amigo" en tu celular. Escribe cuando te sientas con estrés.`
     },
     context: [
       { en: 'Sunnyvale', es: 'Sunnyvale' },
@@ -276,20 +276,20 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: '¿Dónde hay convivencias para adultos mayores en español cerca de Redwood City?'
     },
     answer: {
-      en: `**Here are wonderful Spanish-speaking senior gatherings in Redwood City & the Peninsula:**
+      en: `**Free Spanish-speaking gatherings for older adults are close by.**
 
-- **Casa Círculo Cultural Senior Circle:** Meets every Tuesday & Thursday (10:00 AM – 1:30 PM) in North Fair Oaks. Features traditional crafts, chair yoga, warm Mexican hot lunches, and music.
-- **Door-to-Door Transit Assistance:** Staff helps register you for **SamTrans Redi-Wheels**, which picks you up directly at your home and brings you to the center.
-- **Cost:** 100% Free. No fees, no membership requirements.
+- **Casa Círculo Cultural Senior Circle:** Meets Tuesday and Thursday, 10:00 AM to 1:30 PM, in North Fair Oaks. There are crafts, chair yoga, music and a hot lunch.
+- **Ride help:** Staff can sign you up for **SamTrans Redi-Wheels**. The van picks you up at your home.
+- **Cost:** Free. No fees and no membership.
 
-**Actionable Next Step:** Call bilingual coordinator Carmen at (650) 555-CASA (Simulated) or arrive this Tuesday at 10:00 AM. Free welcome coffee and apron provided!`,
-      es: `**Aquí tiene excelentes opciones de convivencia para adultos mayores en español en Redwood City:**
+**Next step:** Call the bilingual coordinator Carmen at (650) 555-CASA (simulated), or come this Tuesday at 10:00 AM. Coffee is free.`,
+      es: `**Hay convivencias gratis en español para adultos mayores cerca de usted.**
 
-- **Círculo de Adultos Mayores de Casa Círculo Cultural:** Se reúnen martes y jueves (10:00 AM a 1:30 PM) en North Fair Oaks. Disfrutan de manualidades, yoga en silla, música y un rico almuerzo caliente.
-- **Transporte Puerta a Puerta:** El personal le ayuda a tramitar **SamTrans Redi-Wheels**, una camioneta que pasa por usted hasta la puerta de su casa.
-- **Costo:** 100% Gratuito. Sin membresías ni mensualidades.
+- **Círculo de Adultos Mayores de Casa Círculo Cultural:** Se reúnen martes y jueves, de 10:00 AM a 1:30 PM, en North Fair Oaks. Hay manualidades, yoga en silla, música y almuerzo caliente.
+- **Transporte:** El personal le ayuda a inscribirse en **SamTrans Redi-Wheels**. La camioneta pasa por usted a su casa.
+- **Costo:** Gratis. Sin cuotas ni membresías.
 
-**Siguiente Paso Recomendado:** Llame a la coordinadora Doña Carmen al (650) 555-CASA (Simulado) o llegue el martes a las 10:00 AM. ¡Recibirá café caliente y un mandil de bienvenida!`
+**Próximo paso:** Llame a la coordinadora bilingüe Carmen al (650) 555-CASA (simulado), o llegue el martes a las 10:00 AM. El café es gratis.`
     },
     context: [
       { en: 'Redwood City & North Fair Oaks', es: 'Redwood City y North Fair Oaks' },
@@ -340,20 +340,20 @@ export const entryAnswers: ScriptedAnswer[] = [
       es: 'Practicar llamada para pedir despensa'
     },
     answer: {
-      en: `**[Intake Specialist Roleplay Mode Active]**
+      en: `**[Practice call is on]**
 
-*"Good morning! Welcome to the Silicon Valley Community Support Desk. My name is Elena. Thank you for calling today — please take your time, we are here to support you without any judgment.*
+*"Good morning! This is the Silicon Valley Community Support Desk. My name is Elena. Take your time. We are here to help and we do not judge.*
 
-*Could you share with me what neighborhood you are calling from, and whether you are looking for groceries, job training, or health support today?"*
+*Which neighborhood are you calling from? And are you looking for food, job training or health support today?"*
 
-*(Notice how warm and straightforward the intake is? Reply to me as you would on the phone to practice!)*`,
-      es: `**[Modo de Ensayo de Registro Activo]**
+*That is how a real intake call sounds. Reply the way you would on the phone, and we will keep practicing.*`,
+      es: `**[La llamada de práctica está activa]**
 
-*"¡Buenos días! Bienvenido a la Mesa de Apoyo Comunitario de Silicon Valley. Mi nombre es Elena. Gracias por comunicarse con nosotros hoy — tómese todo su tiempo, estamos aquí para servirle con respeto y sin juzgar.*
+*"¡Buenos días! Habla la Mesa de Apoyo Comunitario de Silicon Valley. Mi nombre es Elena. Tómese su tiempo. Estamos aquí para ayudar y no juzgamos.*
 
-*¿Podría decirme desde qué área nos llama y si busca alimentos, capacitación o apoyo emocional hoy?"*
+*¿Desde qué barrio nos llama? ¿Y busca comida, capacitación o apoyo emocional hoy?"*
 
-*(¿Ve qué sencillo y cálido es el trato? Respóndame como si estuviera en la llamada para seguir practicando).*`
+*Así suena una llamada de registro real. Respóndame como lo haría por teléfono y seguimos practicando.*`
     },
     context: [
       { en: 'Practice call', es: 'Llamada de práctica' },
