@@ -7,25 +7,39 @@ export const programFollowUpAnswers: ScriptedAnswer[] = [
     id: 'ans-food-proof-of-address',
     topic: 'food',
     question: {
-      en: 'Do I need to show proof of address?',
-      es: '¿Debo mostrar comprobante de domicilio?'
+      en: 'Do I need an ID or proof of address?',
+      es: '¿Necesito identificación o comprobante de domicilio?'
     },
     answer: {
-      en: `**It depends on the site — check the listing before you go.**
+      en: `**You can still get food. Not having a photo ID usually is not what stops a food pickup — but identification and proof of address are two different requests, so it helps to know which one a program is asking for.**
 
-Second Harvest's Food Locator shows each distribution's days and times, and it has a “No documents required” filter for sites that do not ask for documents. Other pantries, including Sacred Heart, ask new members to register online before the first visit.
+**Free groceries**
+- Second Harvest's Food Locator lets you filter for sites marked **“No documents required,”** and every listing includes a phone number, so you can call and ask what that specific site wants before you go. Food Connection: **1-800-984-3663**.
+- Sacred Heart asks Santa Clara County residents to **register online** before the first visit, with a form in Spanish. That page links the registration forms; it does not list documents you must bring, so ask when you register.
 
-If a site does ask for something, call the number in its listing and ask what it accepts. Rules change, so the official listing is the reliable answer.`,
-      es: `**Depende del sitio — revisa el listado antes de ir.**
+**CalFresh is a separate process**
+- **Identification** answers “who are you.” During verification a county worker may ask for it — a driver's license, passport, or consular ID are common examples — along with proof of income.
+- **Proof of address** answers “where do you live,” and it is a separate requirement. CalFresh asks about your household and housing costs, which is not the same as a photo ID.
+- You can send documents after you apply, and if you cannot get one, tell your county worker: a signed, dated written statement explaining your situation is generally accepted.
 
-El Localizador de Alimentos de Second Harvest muestra los días y horarios de cada distribución y tiene un filtro “No documents required” para los sitios que no piden documentos. Otras despensas, como Sacred Heart, piden que las personas nuevas se registren en línea antes de la primera visita.
+**Next step:** open the Food Locator and filter for sites that ask for no documents, or use the CalFresh help page if your question is about an application.`,
+      es: `**Usted sí puede recibir alimentos. Por lo general, no tener una identificación con foto no impide recoger comida, pero la identificación y el comprobante de domicilio son dos solicitudes distintas, así que conviene saber cuál pide cada programa.**
 
-Si un sitio sí pide algo, llama al número de su listado y pregunta qué acepta. Las reglas cambian, así que el listado oficial es la respuesta confiable.`
+**Alimentos gratuitos**
+- El Localizador de Alimentos de Second Harvest permite filtrar los sitios marcados como **“No documents required”** (no se requieren documentos), y cada listado incluye un teléfono para llamar y preguntar qué pide ese sitio antes de ir. Food Connection: **1-800-984-3663**.
+- Sacred Heart pide a los residentes del Condado de Santa Clara **registrarse en línea** antes de la primera visita, con formulario en español. Esa página enlaza los formularios de registro y no presenta una lista de documentos que deba llevar; pregunta al registrarse.
+
+**CalFresh es un trámite aparte**
+- La **identificación** responde “quién es usted”. Durante la verificación, el condado puede pedirla —una licencia de conducir, un pasaporte o una matrícula consular son ejemplos comunes— junto con comprobante de ingresos.
+- El **comprobante de domicilio** responde “dónde vive” y es un requisito aparte. CalFresh pregunta por su hogar y sus gastos de vivienda, lo cual no es lo mismo que una identificación con foto.
+- Puede entregar documentos después de solicitar, y si no puede conseguir uno, dígaselo a su trabajador del condado: por lo general se acepta una declaración escrita, firmada y con fecha, que explique su situación.
+
+**Siguiente paso:** abre el Localizador de Alimentos y filtra los sitios que no piden documentos, o usa la página de ayuda de CalFresh si su pregunta es sobre una solicitud.`
     },
     context: [
       { en: 'Food access', es: 'Acceso a alimentos' },
-      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' },
-      { en: 'Verify site rules', es: 'Verifica las reglas del sitio' }
+      { en: 'ID vs. proof of address', es: 'Identificación vs. domicilio' },
+      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' }
     ],
     links: [
       {
@@ -37,13 +51,18 @@ Si un sitio sí pide algo, llama al número de su listado y pregunta qué acepta
         label: { en: 'Sacred Heart Community Service — Food Program', es: 'Sacred Heart Community Service — Programa de Alimentos' },
         source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
         url: 'https://www.sacredheartcs.org/programs-food-clothing'
+      },
+      {
+        label: { en: 'Second Harvest — CalFresh help and application', es: 'Second Harvest — ayuda y solicitud de CalFresh' },
+        source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
+        url: 'https://www.shfb.org/get-food/calfresh/'
       }
     ],
     nextStep: {
-      title: { en: 'Use the locator filter before you go', es: 'Usa el filtro del localizador antes de ir' },
+      title: { en: 'Filter for sites that ask for no documents', es: 'Filtra los sitios que no piden documentos' },
       detail: {
-        en: 'The “No documents required” filter shows sites that do not ask for documents. For any other site, the listing includes a number to call.',
-        es: 'El filtro “No documents required” muestra los sitios que no piden documentos. Para cualquier otro sitio, el listado incluye un número para llamar.'
+        en: 'Open the Food Locator, turn on the “No documents required” filter, and call the number in the listing to confirm what that site asks for.',
+        es: 'Abre el Localizador de Alimentos, activa el filtro de sitios que no piden documentos y llama al número del listado para confirmar qué pide ese sitio.'
       },
       actions: [
         {
@@ -204,8 +223,12 @@ También puedes preguntar: “¿Qué necesito traer hoy?” Nunca tienes que exp
     answer: {
       en: `**CalFresh (also called SNAP, EBT or food stamps) puts money on an EBT card each month to buy food at most stores, farmers markets, and online.**
 
+**First time applying?** There is no application fee and no deadline — you can apply at any point in the year, and it is fine to apply again if you were turned down before.
+
 Second Harvest of Silicon Valley's CalFresh page explains who may qualify and offers free help with the application: you can request a call from their Food Connection team in your language, or apply on your own through BenefitsCal. Eligibility depends on household size and income, and U.S.-born children may qualify no matter where their parents were born. Second Harvest is not a government agency.`,
       es: `**CalFresh (también llamado SNAP, EBT o cupones de alimentos) deposita dinero cada mes en una tarjeta EBT para comprar comida en la mayoría de las tiendas, mercados de agricultores y en línea.**
+
+**¿Es su primera solicitud?** No hay costo ni fecha límite: puede solicitar en cualquier momento del año, y no hay problema en volver a solicitar si antes le negaron el beneficio.
 
 La página de CalFresh de Second Harvest of Silicon Valley explica quién puede calificar y ofrece ayuda gratuita con la solicitud: puedes pedir que te llame su equipo Food Connection en tu idioma o solicitar por tu cuenta a través de BenefitsCal. La elegibilidad depende del tamaño del hogar y de los ingresos, y los hijos nacidos en Estados Unidos pueden calificar sin importar dónde nacieron sus padres. Second Harvest no es una agencia de gobierno.`
     },

@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { foodAnswerIds, normalizeQuestionText, routeFoodQuestion } from './foodRouting';
 import { programFollowUpAnswers } from './followUpsPrograms';
 import { supportFollowUpAnswers } from './followUpsSupport';
 import { routeSaraCollegeQuestion, saraCollegePathwayAnswers, saraCollegeStageIds } from './saraCollegePathway';
@@ -6,6 +7,7 @@ import type { AnswerTopic, BilingualText, ScriptedAnswer } from './types';
 
 export type { AnswerTopic, BilingualText, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep } from './types';
 export { routeSaraCollegeQuestion, saraCollegeStageIds };
+export { foodAnswerIds, normalizeQuestionText, routeFoodQuestion };
 
 /** Every approved scripted answer, keyed by its unique id. */
 export const scriptedAnswers: ScriptedAnswer[] = [

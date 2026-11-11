@@ -8,6 +8,7 @@ import {
   buildUnscriptedFallback,
   getScriptedAnswer,
   resolveFollowUps,
+  routeFoodQuestion,
   routeSaraCollegeQuestion,
   saraCollegeStageIds,
   topicEntryAnswerIds
@@ -76,7 +77,7 @@ const topicIntents: Record<AnswerTopic, string> = {
 /** Free-text routing only picks a topic; the approved answer comes from its id. */
 const detectTopic = (lower: string, isRoleplayMode: boolean): AnswerTopic | null => {
   if (isRoleplayMode) return 'roleplay';
-  if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('maria')) return 'food';
+  if (lower.includes('food') || lower.includes('grocer') || lower.includes('despensa') || lower.includes('alimento') || lower.includes('comida') || lower.includes('pantry') || lower.includes('meal') || lower.includes('maria')) return 'food';
   if (lower.includes('work') || lower.includes('retrain') || lower.includes('job') || lower.includes('daniel') || lower.includes('despido') || lower.includes('capacita')) return 'work';
   if (lower.includes('college') || lower.includes('sofia') || lower.includes('de anza') || lower.includes('tuition') || lower.includes('universidad') || lower.includes('matrícula') || lower.includes('colegiatura') || lower.includes('fafsa') || lower.includes('cadaa') || lower.includes('promise')) return 'college';
   if (lower.includes('teen') || lower.includes('anxiety') || lower.includes('mateo') || lower.includes('mental') || lower.includes('joven') || lower.includes('estrés') || lower.includes('confidencial')) return 'mental';
@@ -144,11 +145,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const topic = detectTopic(lower, isRoleplayMode);
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
+    // A specific food concern (CalFresh, ID/documents, infant formula) outranks
+    // the general food/grocery answer. Persona questions keep their topic entry.
+    const foodAnswerId = isPersonaQuestion ? null : routeFoodQuestion(text);
     const answer = saraStageId
       ? getScriptedAnswer(saraStageId)
-      : topic
-        ? getScriptedAnswer(topicEntryAnswerIds[topic])
-        : undefined;
+      : foodAnswerId
+        ? getScriptedAnswer(foodAnswerId)
+        : topic
+          ? getScriptedAnswer(topicEntryAnswerIds[topic])
+          : undefined;
 
     // No approved answer exists for this question: say so instead of inventing one.
     return answer ?? buildUnscriptedFallback({ en: text, es: text });
