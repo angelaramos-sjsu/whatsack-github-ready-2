@@ -13,6 +13,7 @@ import {
   saraCollegeStageIds,
   topicEntryAnswerIds
 } from '../data/answers';
+import { detectMessageLanguage } from '../data/answers/messageLanguage';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { 
   Bot, 
@@ -51,6 +52,8 @@ interface ChatMessage {
   followUpIds?: string[];
   /** The approved scripted answer behind this message. */
   scriptedAnswer?: ScriptedAnswer;
+  /** The language this message was displayed in; it never changes afterwards. */
+  language?: Language;
 }
 
 interface AILLMConsoleProps {
@@ -103,6 +106,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
+  /**
+   * The language used for new replies. It starts from the site's selected
+   * language, follows a manual language selection immediately, and otherwise
+   * follows the language of the latest typed message — the site's own language
+   * is never changed from here.
+   */
+  const conversationLanguageRef = useRef<Language>(currentLanguage);
+  useEffect(() => {
+    conversationLanguageRef.current = currentLanguage;
+  }, [currentLanguage]);
+
   const greetingMessage: ChatMessage = {
       id: 'msg-init-1',
       sender: 'llm',
@@ -110,6 +124,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
         : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
       timestamp: 'Just now',
+      language: currentLanguage,
       followUpIds: [
         'ans-food-east-sj-groceries',
         'ans-work-tech-certificates',
@@ -118,11 +133,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ]
   };
 
-  /** Turn an approved scripted answer into a chat bubble. */
-  const buildAnswerMessage = (answer: ScriptedAnswer): ChatMessage => ({
+  /**
+   * Turn an approved scripted answer into a chat bubble in the language chosen
+   * for this reply. The language is stored on the message, so it keeps the copy
+   * it was first displayed in when the conversation switches languages later.
+   */
+  const buildAnswerMessage = (answer: ScriptedAnswer, language: Language): ChatMessage => ({
     id: `llm-${Date.now()}-${answer.id}`,
     sender: 'llm',
-    text: answer.answer[currentLanguage],
+    text: answer.answer[language],
+    language,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     ragTrace: {
       intent: answer.topic === 'fallback' ? 'Unscripted inquiry — no approved answer' : topicIntents[answer.topic],
@@ -170,34 +190,42 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!seededQuestion || seededKey === undefined || seededQuestionKeyRef.current === seededKey) return;
     seededQuestionKeyRef.current = seededKey;
 
+    const replyLanguage = detectMessageLanguage(seededQuestion) ?? conversationLanguageRef.current;
+    conversationLanguageRef.current = replyLanguage;
+
     setMessages(prev => [
       ...prev,
       {
         id: `usr-seed-${seededKey}`,
         sender: 'user',
         text: seededQuestion,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        language: replyLanguage
       },
-      buildAnswerMessage(resolveAnswer(seededQuestion))
+      buildAnswerMessage(resolveAnswer(seededQuestion), replyLanguage)
     ]);
   }, [initialQuestion]);
 
   /**
    * A follow-up button replays its own approved answer by id, so two different
-   * questions never collapse into one generic reply.
+   * questions never collapse into one generic reply. It keeps the conversation's
+   * current language: clicking a button is not a language choice.
    */
   const handleFollowUpClick = (answerId: string) => {
     const answer = getScriptedAnswer(answerId);
     if (!answer) return;
 
+    const language = conversationLanguageRef.current;
+
     const questionMessage: ChatMessage = {
       id: `usr-${Date.now()}`,
       sender: 'user',
-      text: answer.question[currentLanguage],
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      text: answer.question[language],
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      language
     };
 
-    setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
+    setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer, language)]);
   };
 
   // Auto scroll to bottom
@@ -216,13 +244,19 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const text = textToSend || inputText;
     if (!text.trim() || isGenerating) return;
 
+    // A clearly English or Spanish message switches the reply language; anything
+    // ambiguous ("OK", "WIC", a ZIP code) keeps the conversation's language.
+    const replyLanguage = detectMessageLanguage(text) ?? conversationLanguageRef.current;
+    conversationLanguageRef.current = replyLanguage;
+
     const userMsgId = `usr-${Date.now()}`;
     const userMessage: ChatMessage = {
       id: userMsgId,
       sender: 'user',
       personaName: personaTag || (activePersonaId ? fictionalPersonas.find(p => p.id === activePersonaId)?.name : undefined),
       text: text,
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      language: replyLanguage
     };
 
     setMessages(prev => [...prev, userMessage]);
@@ -231,7 +265,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
     // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)))]);
+      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)), replyLanguage)]);
       setIsGenerating(false);
     }, 900);
   };
@@ -378,6 +412,9 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
+          // Each bubble keeps the language it was first shown in.
+          const msgLanguage = msg.language ?? currentLanguage;
+          const msgT = translations[msgLanguage];
 
           return (
             <div
@@ -401,7 +438,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     {msg.sender === 'user' ? (
                       <>
                         <User className="w-3.5 h-3.5 text-emerald-200" />
-                        <span>{msg.personaName ? `${msg.personaName}` : (currentLanguage === 'en' ? 'Resident Inquiry' : 'Consulta Ciudadana')}</span>
+                        <span>{msg.personaName ? `${msg.personaName}` : (msgLanguage === 'en' ? 'Resident Inquiry' : 'Consulta Ciudadana')}</span>
                       </>
                     ) : (
                       <>
@@ -422,7 +459,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60 space-y-2">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                      {currentLanguage === 'en' ? 'Grounded Demonstration Resources:' : 'Recursos de Demostración Vinculados:'}
+                      {msgLanguage === 'en' ? 'Grounded Demonstration Resources:' : 'Recursos de Demostración Vinculados:'}
                     </span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {msg.recommendedResourceIds.map((resId) => {
@@ -442,10 +479,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                                 <span className="text-[10px] text-slate-400 font-mono">{res.location.city}</span>
                               </div>
                               <h5 className="font-bold text-xs text-white line-clamp-1">
-                                {res.title[currentLanguage]}
+                                {res.title[msgLanguage]}
                               </h5>
                               <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
-                                {res.organization[currentLanguage]}
+                                {res.organization[msgLanguage]}
                               </p>
                             </div>
 
@@ -453,7 +490,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                               onClick={() => onOpenInsights(res)}
                               className="mt-2 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
                             >
-                              <span>{t.resourceCard.viewInsights}</span>
+                              <span>{msgT.resourceCard.viewInsights}</span>
                               <ArrowRight className="w-3 h-3" />
                             </button>
                           </div>
@@ -467,7 +504,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.scriptedAnswer && (
                   <ScriptedAnswerExtras
                     answer={msg.scriptedAnswer}
-                    currentLanguage={currentLanguage}
+                    currentLanguage={msgLanguage}
                     savedResourceIds={savedResourceIds}
                     onSavePlan={(resourceId) => onSavePlanAction?.(resourceId)}
                   />
@@ -477,7 +514,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && !!msg.followUpIds?.length && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                      {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
+                      {msgLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {resolveFollowUps(msg.followUpIds).map((followUp) => (
@@ -487,7 +524,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           onClick={() => handleFollowUpClick(followUp.id)}
                           className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 hover:border-emerald-400 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-400"
                         >
-                          💬 {followUp.question[currentLanguage]}
+                          💬 {followUp.question[msgLanguage]}
                         </button>
                       ))}
                     </div>
