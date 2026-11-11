@@ -7,6 +7,7 @@ import { SproutMascot } from './SproutAssistant';
 import type { SavedScriptedStep } from '../data/answers';
 import {
   buildUnscriptedFallback,
+  findScriptedAnswerByQuestion,
   getScriptedAnswer,
   resolveFollowUps,
   routeSaraCollegeQuestion,
@@ -197,12 +198,14 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
     const lower = text.toLowerCase();
     const topic = detectTopic(text);
+    const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
-    // Prefer precise bilingual food intents over generic food topic matching.
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
-    const answer = bilingualFoodId
-      ? getScriptedAnswer(bilingualFoodId)
+    const answer = exactScriptedAnswer
+      ? exactScriptedAnswer
+      : bilingualFoodId
+        ? getScriptedAnswer(bilingualFoodId)
       : saraStageId
         ? getScriptedAnswer(saraStageId)
       : topic

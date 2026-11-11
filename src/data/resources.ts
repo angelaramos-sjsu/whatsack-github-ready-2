@@ -41,91 +41,78 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-food-1',
     categoryId: 'food',
     title: {
-      en: 'Sacred Heart Saturday Community Food Pantry',
-      es: 'Despensa Comunitaria de Sábados en Sacred Heart'
+      en: 'Second Harvest Food Locator',
+      es: 'Localizador de Alimentos de Second Harvest'
     },
     organization: {
-      en: 'Sacred Heart Community Service (Simulated Index)',
-      es: 'Sacred Heart Community Service (Índice Simulado)'
+      en: 'Second Harvest of Silicon Valley',
+      es: 'Second Harvest of Silicon Valley'
     },
     description: {
-      en: 'Walk-in grocery distribution providing fresh vegetables, fruit, dairy, and pantry staples. No proof of legal status or social security number required.',
-      es: 'Distribución de despensa sin cita con verduras frescas, frutas, lácteos y alimentos básicos. No requiere prueba de estatus legal ni Seguro Social.'
+      en: 'Use the official locator to search for nearby food resources by location. Each site sets its own hours and requirements; confirm details directly before visiting.',
+      es: 'Usa el localizador oficial para buscar recursos de alimentos cercanos por ubicación. Cada lugar establece sus propios horarios y requisitos; confirma los detalles directamente antes de ir.'
     },
     location: {
-      city: 'San Jose',
-      county: 'Santa Clara County',
+      city: 'Online',
+      county: 'Multiple locations',
       transitNote: {
-        en: 'Accessible via VTA Bus Route 22 and 68; 3 blocks from Virginia light rail station',
-        es: 'Accesible por autobús VTA Líneas 22 y 68; a 3 cuadras del tren ligero estación Virginia'
+        en: 'Transit information varies by location; check with the individual provider.',
+        es: 'La información de transporte varía según el lugar; consulta con cada proveedor.'
       },
-      addressSimulated: '550 S 1st St, San Jose, CA 95113 (Simulated Academic Reference)'
+      addressSimulated: 'Search by city or ZIP code; no single physical address.'
     },
     schedule: {
-      en: 'Every Saturday: 9:00 AM – 1:00 PM; Wednesdays 1:00 PM – 4:00 PM',
-      es: 'Todos los sábados: 9:00 AM – 1:00 PM; Miércoles 1:00 PM – 4:00 PM'
+      en: 'Hours vary by location. Check the listing and confirm directly with the provider.',
+      es: 'Los horarios varían según el lugar. Revisa la lista y confirma directamente con el proveedor.'
     },
     costType: 'Free',
-    languagesSupported: ['English', 'Español', 'Tiếng Việt'],
+    languagesSupported: ['English', 'Español'],
     eligibilityHighlight: {
-      en: 'Self-declared residence in Santa Clara County. No tax returns or immigration checks.',
-      es: 'Autodeclaración de residencia en Santa Clara. Sin revisión de impuestos ni migración.'
+      en: 'Requirements vary by location. Contact the provider to confirm.',
+      es: 'Los requisitos varían según el lugar. Comunícate con el proveedor para confirmar.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Fresh Produce', 'Weekend Hours', 'Spanish Staff', 'Walk-in'],
+    tags: ['Food Locator', 'Food Access'],
     nextStepInsight: {
       explanation: {
-        en: 'This program was created specifically to eliminate barriers for shift workers and immigrant families who cannot visit food banks during standard 9-5 weekday hours.',
-        es: 'Este programa fue diseñado para eliminar barreras en trabajadores con turnos rotativos y familias que no pueden acudir en horarios de oficina entre semana.'
+        en: 'This is a directory, not a specific food distribution site. Use it to find a nearby listing, then confirm current availability, hours, and requirements with that provider.',
+        es: 'Este es un directorio, no un lugar específico de distribución de alimentos. Úsalo para encontrar una opción cercana y luego confirma la disponibilidad, los horarios y requisitos actuales con ese proveedor.'
       },
-      confidenceRating: 98,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'Silicon Valley Food Coalition Benchmark 2026',
-        es: 'Alianza de Alimentos de Silicon Valley 2026'
+        en: 'Second Harvest of Silicon Valley',
+        es: 'Second Harvest of Silicon Valley'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Directory information only; availability not checked',
       dataSourceLabel: {
-        en: 'Verified via Community Service Catalog Demonstration',
-        es: 'Verificado mediante Catálogo de Demostración de Servicios'
+        en: 'Official online food locator',
+        es: 'Localizador oficial de alimentos en línea'
       },
       documentsNeeded: [
-        { en: 'No state identification required (self-attestation accepted)', es: 'No requiere ID estatal (se acepta autodeclaración verbal)' },
-        { en: 'Bring 2-3 sturdy reusable shopping bags or a wheeled cart', es: 'Llevar 2-3 bolsas reutilizables resistentes o carrito de compras' }
+        { en: 'Check the individual listing or contact the provider to confirm any requirements.', es: 'Revisa la lista individual o comunícate con el proveedor para confirmar los requisitos.' }
       ],
       actionItems: [
         {
           id: 'food-act-1',
-          title: { en: 'Arrive 20 minutes prior to open', es: 'Llegar 20 minutos antes de la apertura' },
-          description: { en: 'Line begins forming at 8:40 AM; first-time visitors receive a quick welcoming number.', es: 'La fila inicia a las 8:40 AM; visitantes primerizos reciben número de turno.' },
-          estimatedMinutes: 20
-        },
-        {
-          id: 'food-act-2',
-          title: { en: 'Provide family size at greeting desk', es: 'Indicar número de integrantes de familia' },
-          description: { en: 'Volunteers assemble food boxes scaled to household count (diapers available upon request).', es: 'Los voluntarios arman las cajas según el tamaño del hogar (pañales disponibles previa solicitud).' },
+          title: { en: 'Search using a city or ZIP code', es: 'Busca por ciudad o código postal' },
+          description: { en: 'Use the official locator to find nearby listings.', es: 'Usa el localizador oficial para encontrar opciones cercanas.' },
           estimatedMinutes: 5
         },
         {
-          id: 'food-act-3',
-          title: { en: 'Optional: Inquire about CalFresh navigation', es: 'Opcional: Preguntar por asesoría de CalFresh' },
-          description: { en: 'A Spanish-speaking navigator can screen eligible children without impacting parent immigration status.', es: 'Un asesor bilingüe puede evaluar a los hijos ciudadanos sin afectar a los padres.' },
-          estimatedMinutes: 10
+          id: 'food-act-2',
+          title: { en: 'Confirm details before visiting', es: 'Confirma los detalles antes de ir' },
+          description: { en: 'Check the listing and ask the provider about current hours, availability, and requirements.', es: 'Revisa la lista y pregunta al proveedor sobre horarios, disponibilidad y requisitos actuales.' },
+          estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'Using charitable food pantries does NOT count toward federal Public Charge determinations.',
-        es: 'Recibir alimentos de despensas benéficas NO cuenta para determinaciones federales de Carga Pública.'
-      },
       accessibilityNotes: {
-        en: 'Wheelchair ramp at front entrance; priority seating available for pregnant mothers and elders.',
-        es: 'Rampa para sillas de ruedas en la entrada principal; asientos prioritarios para embarazadas y adultos mayores.'
+        en: 'Ask the individual provider about accessibility and accommodation options.',
+        es: 'Pregunta al proveedor específico sobre accesibilidad y opciones de adaptación.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-0142 (Simulated)',
-      intakeMethod: { en: 'Direct Walk-in on Distribution Days', es: 'Llegada directa en días de reparto' },
-      websiteDomainSimulated: 'sacredheartcs-prototype.local'
+      phone: 'See contact details in the official listing',
+      intakeMethod: { en: 'Search the online locator', es: 'Busca en el localizador en línea' },
+      websiteDomainSimulated: 'www.shfb.org/get-food'
     }
   },
   {
@@ -216,84 +203,78 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-food-3',
     categoryId: 'food',
     title: {
-      en: 'Peninsula Senior Congregate Lunch & Pantry Bags',
-      es: 'Almuerzo Comunitario y Despensa para Adultos Mayores de la Península'
+      en: 'San Mateo County — Food Resources',
+      es: 'Condado de San Mateo — Recursos de alimentos'
     },
     organization: {
-      en: 'Peninsula Senior Alliances (Simulated)',
-      es: 'Alianzas para Mayores de la Península (Simulado)'
+      en: 'San Mateo County Health',
+      es: 'Salud del Condado de San Mateo'
     },
     description: {
-      en: 'Nutritious chef-prepared hot lunches and weekly take-home grocery bags for adults 60+ in a lively, social community setting with Spanish-speaking staff.',
-      es: 'Almuerzos calientes preparados y bolsas semanales de despensa para personas de 60+ años en un ambiente comunitario alegre con personal en español.'
+      en: 'The county lists food resources, including congregate and home-delivered meal options that may be available to adults age 60 and older. Contact the county or local provider to confirm services and requirements.',
+      es: 'El condado enumera recursos de alimentos, incluidas opciones de comidas en grupo y a domicilio que podrían estar disponibles para personas de 60 años o más. Comunícate con el condado o proveedor local para confirmar servicios y requisitos.'
     },
     location: {
-      city: 'Redwood City',
+      city: 'Online',
       county: 'San Mateo County',
       transitNote: {
-        en: 'Steps from Redwood City Transit Center (Caltrain & SamTrans ECR Route)',
-        es: 'A pasos del Centro de Tránsito de Redwood City (Caltrain y SamTrans ECR)'
+        en: 'Transit details depend on the specific provider and service.',
+        es: 'Los detalles de transporte dependen del proveedor y servicio específico.'
       },
-      addressSimulated: '711 Middlefield Rd, Redwood City, CA 94063 (Simulated)'
+      addressSimulated: 'Online county resource page; services have different locations.'
     },
     schedule: {
-      en: 'Monday through Friday: Lunch served at 11:45 AM; Pantry bags Thursdays at 1:00 PM',
-      es: 'Lunes a viernes: Almuerzo servido a las 11:45 AM; Despensa los jueves a la 1:00 PM'
+      en: 'Meal schedules vary by provider; confirm directly with the county or local program.',
+      es: 'Los horarios de comidas varían según el proveedor; confirma directamente con el condado o programa local.'
     },
     costType: 'Free',
-    languagesSupported: ['Español', 'English'],
+    languagesSupported: ['English'],
     eligibilityHighlight: {
-      en: 'Adults aged 60 and older; voluntary contribution suggested but never required.',
-      es: 'Personas de 60 años en adelante; cooperación voluntaria sugerida pero no obligatoria.'
+      en: 'San Mateo County says adults age 60 and older may qualify for certain meal programs; confirm each program’s requirements.',
+      es: 'El Condado de San Mateo indica que personas de 60 años o más podrían calificar para ciertos programas de comidas; confirma los requisitos de cada programa.'
     },
-    noIdRequired: false,
-    confidential: true,
-    tags: ['Seniors 60+', 'Hot Lunch', 'Spanish Socializing', 'Transit Accessible'],
+    tags: ['Older adults', 'Food resources', 'County directory'],
     nextStepInsight: {
       explanation: {
-        en: 'Combines hot nutritional meals with social combat against isolation for elders across San Mateo and northern Santa Clara counties.',
-        es: 'Combina nutrición balanceada caliente con convivencia comunitaria contra la soledad en personas mayores.'
+        en: 'This county resource page can help identify meal programs. It does not confirm a specific site’s current menu, hours, or availability.',
+        es: 'Esta página del condado puede ayudar a encontrar programas de comidas. No confirma el menú, los horarios ni la disponibilidad actual de un lugar específico.'
       },
-      confidenceRating: 95,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'San Mateo County Aging & Adult Services Directory',
-        es: 'Directorio de Servicios para Adultos Mayores del Condado de San Mateo'
+        en: 'San Mateo County',
+        es: 'Condado de San Mateo'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Directory information only; availability not checked',
       dataSourceLabel: {
-        en: 'Older Americans Act Title III Nutrition Program',
-        es: 'Programa de Nutrición Título III Ley de Adultos Mayores'
+        en: 'Official county food-resource page',
+        es: 'Página oficial de recursos de alimentos del condado'
       },
       documentsNeeded: [
-        { en: 'Simple intake sheet with birth year (photo ID helpful but not strictly barred)', es: 'Hoja de registro con fecha de nacimiento (identificación con foto sugerida)' }
+        { en: 'Check requirements with the specific meal program.', es: 'Consulta los requisitos con el programa de comidas específico.' }
       ],
       actionItems: [
         {
           id: 'food-act-6',
-          title: { en: 'Call or drop in for day-of meal ticket', es: 'Llamar o presentarse para boleto del día' },
-          description: { en: 'Arrive by 11:15 AM to register at the Spanish welcome table.', es: 'Llegar a las 11:15 AM para registrarse en la mesa de bienvenida en español.' },
-          estimatedMinutes: 10
+          title: { en: 'Review county meal information', es: 'Revisa la información de comidas del condado' },
+          description: { en: 'Use the official page to find a local meal service.', es: 'Usa la página oficial para buscar un servicio local de comidas.' },
+          estimatedMinutes: 5
         },
         {
           id: 'food-act-7',
-          title: { en: 'Sign up for Thursday pantry box', es: 'Inscribirse para la caja de despensa del jueves' },
-          description: { en: 'Receive shelf-stable beans, brown rice, low-sodium soups, and fresh fruit.', es: 'Recibe frijoles, arroz integral, sopas bajas en sodio y fruta fresca para llevar.' },
+          title: { en: 'Confirm eligibility and current details', es: 'Confirma la elegibilidad y los detalles actuales' },
+          description: { en: 'Contact the local provider to ask about schedules, language access, and requirements.', es: 'Comunícate con el proveedor local para preguntar sobre horarios, atención en otros idiomas y requisitos.' },
           estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'No resident is ever turned away if they cannot afford the voluntary $3 suggested donation.',
-        es: 'A ninguna persona se le niega el alimento si no puede aportar la donación sugerida de $3.'
-      },
       accessibilityNotes: {
-        en: 'Full wheelchair accessibility, ADA compliant restrooms, and Redi-Wheels drop-off slipway.',
-        es: 'Accesibilidad total para sillas de ruedas, baños ADA y rampa de llegada para Redi-Wheels.'
+        en: 'Ask the specific provider about accessibility and accommodation options.',
+        es: 'Pregunta al proveedor específico sobre accesibilidad y opciones de adaptación.'
       }
     },
     contactSimulated: {
-      phone: '(650) 555-0188 (Simulated)',
-      intakeMethod: { en: 'Drop-in before 11:30 AM or phone reservation', es: 'Llegada antes de las 11:30 AM o reserva telefónica' },
-      websiteDomainSimulated: 'peninsulaseniors-demo.local'
+      phone: 'See contact details on the county resource page',
+      intakeMethod: { en: 'Use the county directory to contact a provider', es: 'Usa el directorio del condado para comunicarte con un proveedor' },
+      websiteDomainSimulated: 'www.smcgov.org/hsa/food-resources'
     }
   },
   {
@@ -376,168 +357,156 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-mental-1',
     categoryId: 'mental-health',
     title: {
-      en: 'Sunnyvale Youth Wellness & Peer Support Hub',
-      es: 'Centro Juvenil de Bienestar y Apoyo entre Pares de Sunnyvale'
+      en: 'Santa Clara County Behavioral Health Services',
+      es: 'Servicios de Salud Conductual del Condado de Santa Clara'
     },
     organization: {
-      en: 'Silicon Valley Youth Wellness Initiative (Simulated)',
-      es: 'Iniciativa de Bienestar Juvenil de Silicon Valley (Simulado)'
+      en: 'County of Santa Clara',
+      es: 'Condado de Santa Clara'
     },
     description: {
-      en: 'A confidential, stigma-free drop-in center designed specifically for teens aged 12-18 experiencing academic pressure, test anxiety, depression, and social loneliness.',
-      es: 'Un centro sin estigma y confidencial para jóvenes de 12 a 18 años con estrés escolar, ansiedad ante exámenes, tristeza y aislamiento social.'
+      en: 'Use the county’s official site to review behavioral health information and current service contacts. Specific programs, eligibility, hours, and privacy practices must be confirmed with the provider.',
+      es: 'Usa el sitio oficial del condado para consultar información de salud conductual y contactos actuales. Los programas, requisitos, horarios y prácticas de privacidad deben confirmarse con el proveedor.'
     },
     location: {
-      city: 'Sunnyvale',
+      city: 'Online',
       county: 'Santa Clara County',
       transitNote: {
-        en: 'Near Sunnyvale Public Library and Downtown Caltrain Station (5 min bike ride)',
-        es: 'Cerca de la Biblioteca Pública de Sunnyvale y estación Caltrain (5 min en bicicleta)'
+        en: 'Contact the specific provider for location and transportation information.',
+        es: 'Comunícate con el proveedor específico para obtener información sobre ubicación y transporte.'
       },
-      addressSimulated: '665 W Olive Ave, Sunnyvale, CA 94086 (Simulated)'
+      addressSimulated: 'Online county resource page; services have different locations.'
     },
     schedule: {
-      en: 'Monday – Friday: 3:00 PM – 7:30 PM; Saturdays 11:00 AM – 4:00 PM',
-      es: 'Lunes a viernes: 3:00 PM – 7:30 PM; Sábados 11:00 AM – 4:00 PM'
+      en: 'Service hours vary. Confirm current details with the provider.',
+      es: 'Los horarios varían. Confirma los detalles actuales con el proveedor.'
     },
-    costType: 'No Cost for Youth',
-    languagesSupported: ['English', 'Español', 'Mandarin'],
+    costType: 'Free',
+    languagesSupported: ['Check with provider'],
     eligibilityHighlight: {
-      en: 'Teens 12-18. In California, youth aged 12+ can access confidential outpatient wellness services.',
-      es: 'Jóvenes de 12 a 18 años. En California, jóvenes de 12+ pueden acceder a apoyo de forma confidencial.'
+      en: 'Program eligibility varies; ask the county or provider about the service you need.',
+      es: 'Los requisitos varían; pregunta al condado o proveedor sobre el servicio que necesitas.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Youth Only (12-18)', 'Zero Cost', 'Confidential', 'No Parent Notice Required'],
+    tags: ['County resource', 'Behavioral health'],
     nextStepInsight: {
       explanation: {
-        en: 'Created in response to high adolescent academic stress in Silicon Valley school districts. Focuses on low-barrier informal comfort, decompression, and peer listening rather than clinical pathology.',
-        es: 'Creado para atender el alto estrés académico adolescente en Silicon Valley. Ofrece un espacio relajado, descompresión y escucha entre jóvenes sin juzgar.'
+        en: 'This county resource can direct you to official behavioral health information. It does not confirm a specific center, appointment, or service.',
+        es: 'Este recurso del condado puede dirigirte a información oficial de salud conductual. No confirma un centro, cita o servicio específico.'
       },
-      confidenceRating: 97,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'Santa Clara County Youth Mental Health Taskforce 2026',
-        es: 'Fuerza de Tarea de Salud Mental Juvenil de Santa Clara 2026'
+        en: 'County of Santa Clara',
+        es: 'Condado de Santa Clara'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Current availability not checked',
       dataSourceLabel: {
-        en: 'California Minor Consent Health Services Code § 124260',
-        es: 'Código de Salud de California de Consentimiento de Menores § 124260'
+        en: 'Official county behavioral health website',
+        es: 'Sitio oficial de salud conductual del condado'
       },
       documentsNeeded: [
-        { en: 'None required (no insurance card, no student ID required)', es: 'Ninguno requerido (no necesita tarjeta de seguro ni credencial escolar)' }
+        { en: 'Ask the provider whether documents are needed.', es: 'Pregunta al proveedor si se necesitan documentos.' }
       ],
       actionItems: [
         {
           id: 'mental-act-1',
-          title: { en: 'Walk in during after-school hours (3-7 PM)', es: 'Llegar en horario después de clases (3-7 PM)' },
-          description: { en: 'Greet the youth peer host at the check-in lounge; choose a chill study booth or sensory room.', es: 'Saluda al anfitrión juvenil en la sala; elige un cubículo de estudio o sala sensorial.' },
+          title: { en: 'Review county behavioral health information', es: 'Revisa la información de salud conductual del condado' },
+          description: { en: 'Use the official county site to find current contact information.', es: 'Usa el sitio oficial del condado para encontrar información de contacto actual.' },
           estimatedMinutes: 5
         },
         {
           id: 'mental-act-2',
-          title: { en: 'Optionally request a 1-on-1 private talk', es: 'Opcional: solicitar una plática privada 1 a 1' },
-          description: { en: 'Meet with a licensed youth counselor or trained peer specialist to learn breathing and somatic grounding.', es: 'Habla con un consejero juvenil o especialista par para aprender técnicas de relajación física.' },
-          estimatedMinutes: 30
+          title: { en: 'Ask the provider about services and privacy', es: 'Pregunta al proveedor sobre servicios y privacidad' },
+          description: { en: 'Confirm eligibility, hours, cost, and confidentiality practices directly.', es: 'Confirma directamente los requisitos, horarios, costos y prácticas de confidencialidad.' },
+          estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'Visiting this center does NOT alert your school or appear on academic records.',
-        es: 'Asistir a este centro NO notifica a tu escuela ni aparece en tu historial escolar.'
-      },
       accessibilityNotes: {
-        en: 'Quiet sensory room with adjustable lighting and noise-canceling headphones for neurodivergent teens.',
-        es: 'Sala sensorial tranquila con luces regulables y audífonos de cancelación de ruido.'
+        en: 'Ask the provider about accessibility and accommodation options.',
+        es: 'Pregunta al proveedor sobre accesibilidad y opciones de adaptación.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-TEEN (Simulated)',
-      intakeMethod: { en: 'Drop-in or text "CONNECT" to simulated shortcode', es: 'Llegada directa o texto "CONNECT" a código corto simulado' },
-      websiteDomainSimulated: 'sunnyvaleyouthwellness-demo.local'
+      phone: 'See current contacts on the county website',
+      intakeMethod: { en: 'Use the official county website', es: 'Usa el sitio oficial del condado' },
+      websiteDomainSimulated: 'bhsd.sccgov.org'
     }
   },
   {
     id: 'res-mental-2',
     categoryId: 'mental-health',
     title: {
-      en: 'California Youth Crisis & Teen Peer Text Line',
-      es: 'Línea de Crisis y Mensajes de Texto para Jóvenes de California'
+      en: '988 Suicide & Crisis Lifeline',
+      es: 'Línea 988 de Prevención del Suicidio y Crisis'
     },
     organization: {
-      en: 'Statewide Youth Peer Alliance (Simulated Demonstration)',
-      es: 'Alianza Estatal de Jóvenes de California (Demostración)'
+      en: '988 Lifeline',
+      es: 'Línea 988'
     },
     description: {
-      en: 'Free, confidential, 24/7 text and chat support for middle school, high school, and transition-age youth dealing with panic, heartbreak, family conflict, or overwhelming thoughts.',
-      es: 'Apoyo gratuito y confidencial 24/7 por mensaje de texto para jóvenes con ataques de pánico, tristeza, problemas familiares o pensamientos abrumadores.'
+      en: 'Visit the official 988 website to review available call, text, and chat options. Do not assume a particular response time, language, or confidentiality outcome.',
+      es: 'Visita el sitio oficial de 988 para consultar opciones disponibles de llamada, mensaje y chat. No des por sentado un tiempo de respuesta, idioma o resultado de confidencialidad específico.'
     },
     location: {
-      city: 'Virtual / Silicon Valley Wide',
-      county: 'All Bay Area Counties',
+      city: 'Online',
+      county: 'United States',
       transitNote: {
-        en: 'Remote digital service accessible on any mobile device or school Chromebook',
-        es: 'Servicio digital remoto accesible en celulares o computadoras escolares'
+        en: 'Contact options are listed on the official website.',
+        es: 'Las opciones de contacto aparecen en el sitio oficial.'
       },
-      addressSimulated: 'Digital Access (Simulated Phone/Chat)'
+      addressSimulated: 'Online resource; no physical location.'
     },
     schedule: {
-      en: '24 Hours / 7 Days a week; peak teen counselor staffing 4:00 PM – Midnight',
-      es: '24 Horas / 7 Días a la semana; mayor atención entre jóvenes de 4:00 PM a medianoche'
+      en: 'Review the official website for current contact options and availability.',
+      es: 'Consulta el sitio oficial para ver las opciones de contacto y disponibilidad actuales.'
     },
-    costType: 'No Cost for Youth',
-    languagesSupported: ['English', 'Español'],
+    costType: 'Free',
+    languagesSupported: ['See official contact options'],
     eligibilityHighlight: {
-      en: 'Free for all youth under 25 across California; 100% anonymous.',
-      es: 'Gratuito para jóvenes menores de 25 años en California; 100% anónimo.'
+      en: 'Review the official website for information about who can use each contact option.',
+      es: 'Consulta el sitio oficial para obtener información sobre quién puede usar cada opción de contacto.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['24/7 Text Line', 'Anonymous', 'Teens & Youth', 'Bilingual English/Spanish'],
+    tags: ['988 Lifeline', 'Crisis support', 'Official resource'],
     nextStepInsight: {
       explanation: {
-        en: 'Texting eliminates the barrier of speaking aloud in a crowded home or classroom, allowing immediate de-escalation when feeling overwhelmed.',
-        es: 'El texto elimina la dificultad de hablar en voz alta en una casa llena de gente, permitiendo alivio inmediato en momentos de tensión.'
+        en: 'The official 988 website provides current contact options. Privacy and response details depend on the service and situation.',
+        es: 'El sitio oficial de 988 ofrece opciones de contacto actuales. La privacidad y los detalles de respuesta dependen del servicio y la situación.'
       },
-      confidenceRating: 99,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'California Department of Public Health Mental Health Division',
-        es: 'Departamento de Salud Pública de California'
+        en: '988 Lifeline',
+        es: 'Línea 988'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Current availability not checked',
       dataSourceLabel: {
-        en: 'Statewide Certified Crisis Peer Service',
-        es: 'Servicio Certificado Estatal de Crisis'
+        en: 'Official 988 Lifeline website',
+        es: 'Sitio oficial de la Línea 988'
       },
       documentsNeeded: [
-        { en: 'None (no registration or sign-in needed)', es: 'Ninguno (no requiere registro ni cuenta)' }
+        { en: 'Review the official contact option for any instructions.', es: 'Revisa la opción oficial de contacto para ver si hay instrucciones.' }
       ],
       actionItems: [
         {
           id: 'mental-act-3',
-          title: { en: 'Send a simulated text message "HOPE" to 844-863-TEEN', es: 'Enviar mensaje de texto simulado "HOPE" al 844-863-TEEN' },
-          description: { en: 'An automated prompt asks your preferred language (English or Spanish).', es: 'Un mensaje automático pregunta si prefiere hablar en inglés o español.' },
+          title: { en: 'Review official 988 contact options', es: 'Revisa las opciones oficiales de contacto de 988' },
+          description: { en: 'Use only the current options shown on the 988 website.', es: 'Usa únicamente las opciones actuales que aparecen en el sitio de 988.' },
           estimatedMinutes: 2
         },
         {
           id: 'mental-act-4',
-          title: { en: 'Connect with a live trained listener', es: 'Conectar con un voluntario capacitado' },
-          description: { en: 'Chat at your own pace without any pressure to share real names or addresses.', es: 'Platica a tu propio ritmo sin compromiso de dar tu nombre real ni dirección.' },
-          estimatedMinutes: 15
+          title: { en: 'Ask about privacy and response details', es: 'Pregunta sobre privacidad y detalles de respuesta' },
+          description: { en: 'Check the service’s information for relevant limits and practices.', es: 'Consulta la información del servicio sobre límites y prácticas aplicables.' },
+          estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'You do not need to be in active life-or-death crisis to reach out; mild anxiety and exam stress are completely valid reasons.',
-        es: 'No necesitas estar en peligro extremo para escribir; la ansiedad por exámenes o tristeza son motivos completamente válidos.'
-      },
       accessibilityNotes: {
-        en: 'Compatible with standard SMS and screen-reader accessibility tools.',
-        es: 'Compatible con mensajes SMS regulares y lectores de pantalla.'
+        en: 'Check the official website for accessibility and language information.',
+        es: 'Consulta el sitio oficial para obtener información sobre accesibilidad e idiomas.'
       }
     },
     contactSimulated: {
-      phone: 'Text "HOPE" to (844) 555-TEEN (Simulated)',
-      intakeMethod: { en: 'Instant Text Message 24/7', es: 'Mensaje de texto instantáneo 24/7' },
-      websiteDomainSimulated: 'calyouthtext-prototype.local'
+      phone: 'Use current options on 988lifeline.org',
+      intakeMethod: { en: 'See the official website', es: 'Consulta el sitio oficial' },
+      websiteDomainSimulated: '988lifeline.org'
     }
   },
   {
@@ -695,92 +664,84 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-work-1',
     categoryId: 'workforce',
     title: {
-      en: 'NOVAworks Dislocated Worker & Tech Reskilling Program',
-      es: 'Programa NOVAworks de Reconversión Laboral y Tecnología'
+      en: 'NOVAworks — Career and Training Information',
+      es: 'NOVAworks — Información de empleo y capacitación'
     },
     organization: {
-      en: 'NOVAworks Workforce Board (Santa Clara & San Mateo Counties)',
-      es: 'Junta de Desarrollo Laboral NOVAworks (Condados de Santa Clara y San Mateo)'
+      en: 'NOVAworks',
+      es: 'NOVAworks'
     },
     description: {
-      en: 'Comprehensive federally funded retraining grants (WIOA) offering up to $8,000 for industry credentials in IT Support, Cloud Computing, Cybersecurity, and Data Analytics.',
-      es: 'Becas federales de capacitación (WIOA) de hasta $8,000 para certificaciones en Soporte IT, Computación en la Nube, Ciberseguridad y Análisis de Datos.'
+      en: 'Use NOVAworks’ official website to ask about current career services, technology training, and whether funding may be available. Program offerings and eligibility can change; confirm details directly.',
+      es: 'Usa el sitio oficial de NOVAworks para preguntar sobre servicios de carrera, capacitación tecnológica y si podría haber fondos disponibles. Los programas y requisitos pueden cambiar; confirma los detalles directamente.'
     },
     location: {
-      city: 'Milpitas / Sunnyvale',
-      county: 'Santa Clara County',
+      city: 'Online',
+      county: 'Service area varies',
       transitNote: {
-        en: 'Locations in Sunnyvale (near Mathilda Ave) and Milpitas Library Job Center',
-        es: 'Sedes en Sunnyvale (cerca de Mathilda Ave) y Centro de Empleo en Biblioteca de Milpitas'
+        en: 'Confirm current locations and transit options with NOVAworks.',
+        es: 'Confirma con NOVAworks las ubicaciones y opciones de transporte actuales.'
       },
-      addressSimulated: '505 W Olive Ave, Suite 550, Sunnyvale, CA 94086 (Simulated)'
+      addressSimulated: 'No single address; confirm the appropriate location with NOVAworks.'
     },
     schedule: {
-      en: 'Monday – Friday: 8:00 AM – 5:00 PM; Virtual orientations every Wednesday 10 AM',
-      es: 'Lunes a viernes: 8:00 AM – 5:00 PM; Orientaciones virtuales cada miércoles 10 AM'
+      en: 'Hours and appointment options vary; confirm current details with NOVAworks.',
+      es: 'Los horarios y opciones de citas varían; confirma los detalles actuales con NOVAworks.'
     },
-    costType: 'Subsidized',
-    languagesSupported: ['English', 'Español', 'Vietnamese', 'Tagalog'],
+    costType: 'Free',
+    languagesSupported: ['Confirm with provider'],
     eligibilityHighlight: {
-      en: 'Individuals recently laid off, manufacturing workers impacted by reductions, or long-term unemployed.',
-      es: 'Trabajadores despedidos recientemente, personal manufacturero afectado o desempleados.'
+      en: 'Service and training eligibility vary; ask NOVAworks about your circumstances.',
+      es: 'Los requisitos de servicios y capacitación varían; pregunta a NOVAworks sobre tu situación.'
     },
-    noIdRequired: false,
-    confidential: true,
-    tags: ['WIOA Grants up to $8k', 'Mid-Career Pivot', 'Certifications (CompTIA/AWS)', '1-on-1 Career Advisor'],
+    tags: ['Career services', 'Training information', 'NOVAworks'],
     nextStepInsight: {
       explanation: {
-        en: 'Designed specifically to bridge mid-career manufacturing technicians into modern IT infrastructure and cloud operational roles without taking on student loan debt.',
-        es: 'Diseñado específicamente para ayudar a técnicos con experiencia manufacturera a ingresar a roles en IT y nube sin deudas estudiantiles.'
+        en: 'This is an official information source, not a guarantee of course availability, funding, eligibility, or outcomes.',
+        es: 'Esta es una fuente oficial de información, no una garantía de disponibilidad de cursos, fondos, elegibilidad o resultados.'
       },
-      confidenceRating: 98,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'California Workforce Development Board Benchmark 2026',
-        es: 'Junta de Desarrollo de la Fuerza Laboral de California 2026'
+        en: 'NOVAworks',
+        es: 'NOVAworks'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Current offerings not checked',
       dataSourceLabel: {
-        en: 'Federal Workforce Innovation and Opportunity Act (WIOA) Registry',
-        es: 'Registro Federal de Innovación y Oportunidades Laborales (WIOA)'
+        en: 'Official NOVAworks website',
+        es: 'Sitio oficial de NOVAworks'
       },
       documentsNeeded: [
-        { en: 'Layoff notice letter / EDD Unemployment Insurance Determination Notice', es: 'Carta de despido o Notificación de Seguro de Desempleo EDD' },
-        { en: 'California Driver License or State ID', es: 'Licencia de conducir de California o identificación estatal' },
-        { en: 'Current resume draft detailing past manufacturing or technical experience', es: 'Borrador de currículum detallando experiencia previa' }
+        { en: 'Ask NOVAworks what, if any, documents are needed for the service you are seeking.', es: 'Pregunta a NOVAworks qué documentos, si acaso, se necesitan para el servicio que buscas.' }
       ],
       actionItems: [
         {
           id: 'work-act-1',
-          title: { en: 'Sign up for the 45-minute virtual WIOA orientation', es: 'Inscribirse a la orientación virtual de 45 minutos de WIOA' },
-          description: { en: 'Orientations explain grant eligibility rules and approved IT training provider catalogs.', es: 'Explica los requisitos de las becas y el catálogo de escuelas de tecnología aprobadas.' },
-          estimatedMinutes: 45
+          title: { en: 'Review NOVAworks’ current services', es: 'Revisa los servicios actuales de NOVAworks' },
+          description: { en: 'Check the official website for current career and training information.', es: 'Consulta el sitio oficial para obtener información actual de empleo y capacitación.' },
+          estimatedMinutes: 5
         },
         {
           id: 'work-act-2',
-          title: { en: 'Schedule 1-on-1 intake interview with a Career Navigator', es: 'Agendar cita individual con un asesor laboral' },
-          description: { en: 'Review certificate pathways (CompTIA Security+, AWS Cloud Practitioner, Google IT Support).', es: 'Revisar opciones de certificados (CompTIA Security+, AWS Cloud, Soporte Google IT).' },
-          estimatedMinutes: 60
+          title: { en: 'Ask about training options and funding', es: 'Pregunta sobre capacitación y fondos' },
+          description: { en: 'Confirm programs, eligibility, schedules, and funding with NOVAworks.', es: 'Confirma programas, requisitos, horarios y fondos con NOVAworks.' },
+          estimatedMinutes: 5
         },
         {
           id: 'work-act-3',
-          title: { en: 'Submit training voucher paperwork for 100% tuition coverage', es: 'Enviar solicitud de vale de capacitación para 100% de colegiatura' },
-          description: { en: 'Voucher pays training provider directly; no out-of-pocket tuition.', es: 'El vale paga directamente al instituto; sin desembolso de colegiatura.' },
-          estimatedMinutes: 30
+          title: { en: 'Check with EDD if receiving unemployment benefits', es: 'Consulta con el EDD si recibes beneficios de desempleo' },
+          description: { en: 'Ask whether California Training Benefits applies to your claim; do not assume approval.', es: 'Pregunta si California Training Benefits aplica a tu reclamo; no des por sentada la aprobación.' },
+          estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'Enrolling in approved WIOA training does NOT cancel your weekly EDD unemployment benefits under California Training Benefits (CTB).',
-        es: 'Inscribirse en capacitación WIOA aprobada NO cancela sus cheques de desempleo del EDD gracias al programa California Training Benefits.'
-      },
       accessibilityNotes: {
-        en: 'Assisted listening systems and screen reading workstations at both job center facilities.',
-        es: 'Sistemas de apoyo auditivo y computadoras adaptadas para lectura en ambas sedes.'
+        en: 'Ask NOVAworks about accessibility and accommodation options.',
+        es: 'Pregunta a NOVAworks sobre accesibilidad y opciones de adaptación.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-NOVA (Simulated)',
-      intakeMethod: { en: 'Online orientation registration or phone intake', es: 'Registro en línea a orientación o llamada telefónica' },
-      websiteDomainSimulated: 'novaworks-prototype.local'
+      phone: 'See current contact information on the official website',
+      intakeMethod: { en: 'Use the official NOVAworks website', es: 'Usa el sitio oficial de NOVAworks' },
+      websiteDomainSimulated: 'www.novaworks.org'
     }
   },
   {
@@ -861,91 +822,84 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-work-3',
     categoryId: 'workforce',
     title: {
-      en: 'Foothill & De Anza College Promise: Free Tuition & First-Gen Center',
-      es: 'Foothill & De Anza College Promise: Matrícula Gratuita y Centro Primera Generación'
+      en: 'California Student Aid and College Promise Information',
+      es: 'Información de Ayuda Estudiantil y College Promise de California'
     },
     organization: {
-      en: 'Foothill-De Anza Community College District (Simulated)',
-      es: 'Distrito de Colegios Comunitarios Foothill-De Anza (Simulado)'
+      en: 'California Student Aid Commission',
+      es: 'Comisión de Ayuda Estudiantil de California'
     },
     description: {
-      en: 'Two years of 100% free college tuition and mandatory campus fees for eligible California high school graduates, plus $500 quarterly book vouchers and 1-on-1 first-gen mentoring.',
-      es: 'Dos años de colegiatura 100% gratuita y cuotas escolares para graduados de preparatoria de California, más vales de libros de $500 y mentoría.'
+      en: 'Use official state and campus pages to review financial aid applications and College Promise programs. Requirements and covered costs differ by program, college, and entry year; confirm current details with the school.',
+      es: 'Usa páginas oficiales del estado y del campus para revisar solicitudes de ayuda financiera y programas College Promise. Los requisitos y gastos cubiertos varían según el programa, colegio y año de ingreso; confirma los detalles actuales con la institución.'
     },
     location: {
-      city: 'Cupertino / Los Altos Hills',
-      county: 'Santa Clara County',
+      city: 'Online',
+      county: 'California',
       transitNote: {
-        en: 'Direct transit access via VTA Lines 23, 25, 51, and 53 to campus transit centers',
-        es: 'Acceso directo en autobús VTA Líneas 23, 25, 51 y 53 a las terminales del campus'
+        en: 'For campus visits, confirm transportation details with the specific college.',
+        es: 'Para visitar un campus, confirma los detalles de transporte con el colegio específico.'
       },
-      addressSimulated: '21250 Stevens Creek Blvd, Cupertino, CA 95014 (Simulated)'
+      addressSimulated: 'Online information; each college has its own locations.'
     },
     schedule: {
-      en: 'Admissions & Financial Aid Help Desk: Monday – Thursday 8:30 AM – 5:00 PM',
-      es: 'Módulo de Admisiones y Ayuda Financiera: Lunes a jueves 8:30 AM – 5:00 PM'
+      en: 'Online information; office hours and appointments vary by campus.',
+      es: 'Información en línea; los horarios y citas varían según el campus.'
     },
     costType: 'Free',
-    languagesSupported: ['English', 'Español', 'Mandarin', 'Vietnamese'],
+    languagesSupported: ['Check with each program'],
     eligibilityHighlight: {
-      en: 'California residents or AB 540 eligible non-residents enrolled in 12+ units per quarter.',
-      es: 'Residentes de California o elegibles bajo ley AB 540 inscritos en al menos 12 créditos.'
+      en: 'Eligibility varies by aid and campus program; verify with official sources.',
+      es: 'La elegibilidad varía según la ayuda y el programa del campus; verifica con fuentes oficiales.'
     },
-    noIdRequired: false,
-    confidential: true,
-    tags: ['2 Years Free Tuition', 'AB 540 Friendly', 'FAFSA & CADAA Help', 'First-Gen College'],
+    tags: ['Financial aid', 'College Promise', 'Official information'],
     nextStepInsight: {
       explanation: {
-        en: 'Removes the financial barrier for first-generation students in Silicon Valley, providing a guaranteed transfer pathway to UC Berkeley, UCLA, UC Davis, and San Jose State University.',
-        es: 'Elimina el costo de matrícula para estudiantes de primera generación y ofrece rutas garantizadas de transferencia a UC Berkeley, San Jose State y más.'
+        en: 'Official application and campus program information can help you compare options. This resource does not guarantee aid, admission, or a transfer outcome.',
+        es: 'La información oficial de solicitudes y programas del campus puede ayudarte a comparar opciones. Este recurso no garantiza ayuda, admisión ni resultados de transferencia.'
       },
-      confidenceRating: 99,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'California Community Colleges Chancellor’s Office',
-        es: 'Oficina del Canciller de Colegios Comunitarios de California'
+        en: 'California Student Aid Commission',
+        es: 'Comisión de Ayuda Estudiantil de California'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Current program rules not checked',
       dataSourceLabel: {
-        en: 'California College Promise Grant (Assembly Bill 19/2) Official Registry',
-        es: 'Registro Oficial de Becas California College Promise (Ley AB 19/2)'
+        en: 'Official student aid and campus program websites',
+        es: 'Sitios oficiales de ayuda estudiantil y programas del campus'
       },
       documentsNeeded: [
-        { en: 'High school graduation diploma or GED verification', es: 'Certificado de graduación de preparatoria o GED' },
-        { en: 'FAFSA submission OR California Dream Act Application (CADAA for undocumented/AB 540 students)', es: 'Envío de FAFSA O solicitud California Dream Act (CADAA para estudiantes AB 540)' }
+        { en: 'Ask the school or aid program which documents, if any, are required.', es: 'Pregunta a la institución o programa qué documentos se requieren, si acaso.' }
       ],
       actionItems: [
         {
           id: 'work-act-5',
-          title: { en: 'Submit OpenCCC online college application for De Anza or Foothill', es: 'Llenar la solicitud en línea OpenCCC para De Anza o Foothill' },
-          description: { en: 'Creates your student CWID identification number within 24 hours.', es: 'Genera su número de identificación de estudiante CWID en 24 horas.' },
-          estimatedMinutes: 20
+          title: { en: 'Review the official aid application guidance', es: 'Revisa la guía oficial de solicitudes de ayuda' },
+          description: { en: 'Compare FAFSA, CADAA, and campus options using official sources.', es: 'Compara FAFSA, CADAA y opciones del campus con fuentes oficiales.' },
+          estimatedMinutes: 10
         },
         {
           id: 'work-act-6',
-          title: { en: 'Complete FAFSA or CADAA financial aid application', es: 'Completar la solicitud de ayuda FAFSA o CADAA' },
-          description: { en: 'Add De Anza College School Code (004480) or Foothill College School Code (001199).', es: 'Agregue el código escolar de De Anza (004480) o Foothill (001199).' },
-          estimatedMinutes: 35
+          title: { en: 'Check the Promise program at your college', es: 'Consulta el programa Promise de tu colegio' },
+          description: { en: 'Requirements and covered costs vary; confirm the current rules for your campus and cohort.', es: 'Los requisitos y gastos cubiertos varían; confirma las reglas actuales de tu campus y cohorte.' },
+          estimatedMinutes: 10
         },
         {
           id: 'work-act-7',
-          title: { en: 'Book an appointment with the First-Gen Student Success Center', es: 'Agendar cita con el Centro de Éxito para Estudiantes de Primera Generación' },
-          description: { en: 'A bilingual peer counselor checks that all Promise fee waivers are active on your portal account.', es: 'Un asesor bilingüe verifica que todas las exenciones de matrícula estén activadas en su portal.' },
-          estimatedMinutes: 15
+          title: { en: 'Ask a financial aid office about your circumstances', es: 'Pregunta en ayuda financiera sobre tu situación' },
+          description: { en: 'Ask which application and programs apply to your campus and situation.', es: 'Pregunta qué solicitud y programas corresponden a tu campus y situación.' },
+          estimatedMinutes: 10
         }
       ],
-      commonMisconceptions: {
-        en: 'Undocumented students who attended 3+ years of California high schools qualify for AB 540 in-state tuition and state financial aid without risk.',
-        es: 'Estudiantes indocumentados que asistieron 3+ años a preparatorias de CA califican para matrícula estatal bajo la ley AB 540 sin riesgo alguno.'
-      },
       accessibilityNotes: {
-        en: 'Comprehensive Disability Support Services (DSS) with note-taking accommodations and mobility transport carts on campus.',
-        es: 'Servicios de Apoyo a la Discapacidad (DSS) con adaptaciones de apuntes y carritos de transporte en campus.'
+        en: 'Ask the specific school about accessible services and accommodations.',
+        es: 'Pregunta en la institución específica sobre servicios y adaptaciones accesibles.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-DEANZA (Simulated)',
-      intakeMethod: { en: 'Virtual Financial Aid Drop-In or campus appointment', es: 'Módulo virtual de ayuda financiera o cita en campus' },
-      websiteDomainSimulated: 'deanza-promise-prototype.local'
+      phone: 'See current contact information on the official website',
+      intakeMethod: { en: 'Use official aid and campus program pages', es: 'Usa páginas oficiales de ayuda y programas del campus' },
+      websiteDomainSimulated: 'www.csac.ca.gov'
     }
   },
   {
@@ -1027,92 +981,86 @@ export const demonstrationResources: DemonstrationResource[] = [
   // 4. Community Connection Resources
   {
     id: 'res-comm-1',
-    categoryId: 'community',
+    categoryId: 'food',
     title: {
-      en: 'Casa Círculo Cultural: Senior Arts, Gentle Movement & Social Circle',
-      es: 'Casa Círculo Cultural: Círculo de Arte, Movimiento y Convivencia para Adultos Mayores'
+      en: 'San Mateo County — Food Resources',
+      es: 'Condado de San Mateo — Recursos de alimentos'
     },
     organization: {
-      en: 'Casa Círculo Cultural (Simulated Community Index)',
-      es: 'Casa Círculo Cultural (Índice Comunitario Simulado)'
+      en: 'San Mateo County Health',
+      es: 'Salud del Condado de San Mateo'
     },
     description: {
-      en: 'A warm, welcoming cultural community haven in Redwood City offering weekly Spanish-language social hours, traditional crafts, chair yoga, traditional music, and nutritious shared lunches.',
-      es: 'Un espacio cultural acogedor en Redwood City que ofrece convivencia semanal en español, artesanías, yoga en silla, música tradicional y almuerzos compartidos nutritivos.'
+      en: 'The county lists food resources, including congregate and home-delivered meal options that may be available to adults age 60 and older. Contact the county or local provider to confirm services and requirements.',
+      es: 'El condado enumera recursos de alimentos, incluidas opciones de comidas en grupo y a domicilio que podrían estar disponibles para personas de 60 años o más. Comunícate con el condado o proveedor local para confirmar servicios y requisitos.'
     },
     location: {
-      city: 'Redwood City',
+      city: 'Online',
       county: 'San Mateo County',
       transitNote: {
-        en: 'In the North Fair Oaks neighborhood; SamTrans Route 270 and 296 stop 50 feet away',
-        es: 'En el vecindario de North Fair Oaks; autobuses SamTrans 270 y 296 paran a 15 metros'
+        en: 'Transit details depend on the specific provider and service.',
+        es: 'Los detalles de transporte dependen del proveedor y servicio específico.'
       },
-      addressSimulated: '3090 Middlefield Rd, Redwood City, CA 94063 (Simulated)'
+      addressSimulated: 'Online county resource page; services have different locations.'
     },
     schedule: {
-      en: 'Tuesdays and Thursdays: 10:00 AM – 1:30 PM (Lunch served at 12:15 PM)',
-      es: 'Martes y jueves: 10:00 AM – 1:30 PM (Almuerzo servido a las 12:15 PM)'
+      en: 'Meal schedules vary by provider; confirm directly with the county or local program.',
+      es: 'Los horarios de comidas varían según el proveedor; confirma directamente con el condado o programa local.'
     },
     costType: 'Free',
-    languagesSupported: ['Español', 'English'],
+    languagesSupported: ['English'],
     eligibilityHighlight: {
-      en: 'Open to all elders 60+; zero membership fees. Caregivers and family members welcome to join.',
-      es: 'Abierto a adultos mayores de 60+; sin cuotas de membresía. Familiares y cuidadores bienvenidos.'
+      en: 'San Mateo County says adults age 60 and older may qualify for certain meal programs; confirm each program’s requirements.',
+      es: 'El Condado de San Mateo indica que personas de 60 años o más podrían calificar para ciertos programas de comidas; confirma los requisitos de cada programa.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Spanish Speaking', 'Seniors 60+', 'Art & Movement', 'Door-to-Door Transit Friendly'],
+    tags: ['Older adults', 'Food resources', 'County directory'],
     nextStepInsight: {
       explanation: {
-        en: 'Addresses social isolation among Spanish-speaking Latino elders in San Mateo County through dignity, cultural preservation, music, and peer storytelling.',
-        es: 'Combate el aislamiento social en adultos mayores hispanohablantes a través de la cultura, la música, el respeto y la convivencia entre amigos.'
+        en: 'This county resource page can help identify meal programs. It does not confirm a specific site’s current menu, hours, or availability.',
+        es: 'Esta página del condado puede ayudar a encontrar programas de comidas. No confirma el menú, los horarios ni la disponibilidad actual de un lugar específico.'
       },
-      confidenceRating: 98,
+      confidenceRating: 100,
       sourceOrganization: {
-        en: 'San Mateo County Cultural Equity Benchmarks',
-        es: 'Evaluaciones de Equidad Cultural del Condado de San Mateo'
+        en: 'San Mateo County',
+        es: 'Condado de San Mateo'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'Directory information only; availability not checked',
       dataSourceLabel: {
-        en: 'Certified Nonprofit Community Hub Directory',
-        es: 'Directorio de Centros Comunitarios sin Fines de Lucro'
+        en: 'Official county food-resource page',
+        es: 'Página oficial de recursos de alimentos del condado'
       },
       documentsNeeded: [
-        { en: 'None required (just your name and emergency family contact number for safety)', es: 'Ninguno requerido (solo su nombre y un número de emergencia familiar por seguridad)' }
+        { en: 'Check requirements with the specific meal program.', es: 'Consulta los requisitos con el programa de comidas específico.' }
       ],
       actionItems: [
         {
           id: 'comm-act-1',
-          title: { en: 'Call or have a family member call coordinator Carmen', es: 'Llamar o pedir a un familiar que llame a la coordinadora Carmen' },
-          description: { en: 'She will welcome you in Spanish and explain the Tuesday schedule.', es: 'Ella le responderá con gusto en español y le explicará el programa de los martes.' },
+          title: { en: 'Review county meal information', es: 'Revisa la información de comidas del condado' },
+          description: { en: 'Use the official page to find a local meal service.', es: 'Usa la página oficial para buscar un servicio local de comidas.' },
           estimatedMinutes: 5
         },
         {
           id: 'comm-act-2',
-          title: { en: 'Request SamTrans Redi-Wheels door-to-door transit enrollment', es: 'Solicitar registro para transporte puerta a puerta Redi-Wheels de SamTrans' },
-          description: { en: 'Staff will help fill out the 1-page form so a van picks you up directly at your home.', es: 'El equipo le ayudará a llenar la hoja sencilla para que una camioneta pase por usted a su domicilio.' },
-          estimatedMinutes: 15
+          title: { en: 'Confirm eligibility and current details', es: 'Confirma la elegibilidad y los detalles actuales' },
+          description: { en: 'Contact the local provider to ask about schedules, language access, and requirements.', es: 'Comunícate con el proveedor local para preguntar sobre horarios, atención en otros idiomas y requisitos.' },
+          estimatedMinutes: 5
         },
         {
           id: 'comm-act-3',
-          title: { en: 'Attend your first Tuesday morning coffee & crafts gathering', es: 'Asistir a su primer convivio de café y manualidades del martes' },
-          description: { en: 'Arrive at 10:00 AM; free welcome apron and paints provided.', es: 'Llegue a las 10:00 AM; le obsequiarán un mandil de bienvenida y materiales.' },
-          estimatedMinutes: 60
+          title: { en: 'Ask about language and accessibility support', es: 'Pregunta sobre apoyo de idioma y accesibilidad' },
+          description: { en: 'Ask the county or provider what options are currently available.', es: 'Pregunta al condado o proveedor qué opciones hay actualmente.' },
+          estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'You do not need to be an artist or dancer to attend; sitting, listening to music, and drinking coffee is 100% welcomed.',
-        es: 'No necesita saber pintar ni bailar para asistir; sentarse a escuchar la música y convivir con café es completamente bienvenido.'
-      },
       accessibilityNotes: {
-        en: 'Zero-step entrance ramps, wide doorways for walkers, and designated quiet relaxation alcoves.',
-        es: 'Rampas sin escalones, puertas amplias para andaderas y sillones cómodos para descansar.'
+        en: 'Ask the specific provider about accessibility and accommodation options.',
+        es: 'Pregunta al proveedor específico sobre accesibilidad y opciones de adaptación.'
       }
     },
     contactSimulated: {
-      phone: '(650) 555-CASA (Simulated)',
-      intakeMethod: { en: 'Drop-in or phone call in Spanish', es: 'Llegada libre o llamada en español' },
-      websiteDomainSimulated: 'casacirculo-prototype.local'
+      phone: 'See contact details on the county resource page',
+      intakeMethod: { en: 'Use the county directory to contact a provider', es: 'Usa el directorio del condado para comunicarte con un proveedor' },
+      websiteDomainSimulated: 'www.smcgov.org/hsa/food-resources'
     }
   },
   {

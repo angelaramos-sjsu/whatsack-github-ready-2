@@ -23,6 +23,19 @@ const answersById = new Map(scriptedAnswers.map((answer) => [answer.id, answer])
 
 export const getScriptedAnswer = (id: string): ScriptedAnswer | undefined => answersById.get(id);
 
+const normalizeScriptedQuestion = (question: string): string =>
+  question.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’‘]/g, "'").replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+
+/** Match a submitted question to a reviewed answer before broad topic detection. */
+export const findScriptedAnswerByQuestion = (question: string): ScriptedAnswer | undefined => {
+  const normalizedQuestion = normalizeScriptedQuestion(question);
+  return scriptedAnswers.find((answer) =>
+    normalizeScriptedQuestion(answer.question.en) === normalizedQuestion ||
+    normalizeScriptedQuestion(answer.question.es) === normalizedQuestion
+  );
+};
+
 /** The approved entry answer for each topic. */
 export const topicEntryAnswerIds: Record<AnswerTopic, string> = {
   food: 'ans-food-east-sj-groceries',

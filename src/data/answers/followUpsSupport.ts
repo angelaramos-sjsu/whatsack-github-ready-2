@@ -10,12 +10,8 @@ export const supportFollowUpAnswers: ScriptedAnswer[] = [
       es: '¿Se enterará mi escuela si envío un mensaje?'
     },
     answer: {
-      en: `**No.** A peer crisis text line is not connected to your school, and texting it does not generate a school record. California’s minor-consent law (Health & Safety Code § 124260) also lets youth 12 and older consent to outpatient mental health counseling confidentially.
-
-The one limit is immediate safety: if a listener believes you are in danger, they are required to act to keep you safe, and they will tell you that plainly instead of reporting quietly.`,
-      es: `**No.** Una línea de texto de apoyo entre pares no está conectada con tu escuela y escribirle no genera un expediente escolar. La ley de consentimiento de menores de California (Código de Salud y Seguridad § 124260) también permite que jóvenes de 12 años en adelante consientan consejería ambulatoria de forma confidencial.
-
-El único límite es la seguridad inmediata: si quien te escucha cree que estás en peligro, tiene la obligación de actuar para protegerte y te lo dirá con claridad, sin reportarlo en silencio.`
+      en: `I can't guarantee that a school will never learn about a service you use; privacy depends on the provider, service, and circumstances. California Health & Safety Code § 124260 allows a minor age 12 or older to consent to certain outpatient mental health treatment only when the professional determines the minor is mature enough, and parent or guardian involvement is generally included unless the professional finds it inappropriate. Ask the provider how confidentiality and its limits apply before sharing personal information.`,
+      es: `No puedo garantizar que la escuela nunca se entere de un servicio que uses; la privacidad depende del proveedor, el servicio y las circunstancias. El Código de Salud y Seguridad de California § 124260 permite que un menor de 12 años o más dé su consentimiento para ciertos tratamientos ambulatorios de salud mental solo cuando el profesional determina que tiene madurez suficiente; por lo general se incluye a los padres o tutores, salvo que el profesional considere que no es apropiado. Pregunta al proveedor cómo se aplican la confidencialidad y sus límites antes de compartir información personal.`
     },
     context: [
       { en: 'Sunnyvale', es: 'Sunnyvale' },
@@ -35,16 +31,16 @@ El único límite es la seguridad inmediata: si quien te escucha cree que estás
       }
     ],
     nextStep: {
-      title: { en: 'Save the line under a neutral name', es: 'Guarda la línea con un nombre neutro' },
+      title: { en: 'Ask the provider about confidentiality', es: 'Pregunta al proveedor sobre la confidencialidad' },
       detail: {
-        en: 'A name like “Peer Line” keeps the message private if someone else picks up your phone.',
-        es: 'Un nombre como “Apoyo Amigo” mantiene el mensaje privado si alguien más toma tu teléfono.'
+        en: 'Privacy practices vary; ask about records, school contact, and exceptions before beginning care.',
+        es: 'Las prácticas de privacidad varían; pregunta sobre expedientes, contacto con la escuela y excepciones antes de comenzar la atención.'
       },
       actions: [
         {
           id: 'mental-school-save',
           kind: 'save-plan',
-          label: { en: 'Save peer line to my plan', es: 'Guardar la línea en mi plan' },
+          label: { en: 'Save mental health resources to my plan', es: 'Guardar recursos de salud mental en mi plan' },
           resourceId: 'res-mental-2'
         },
         {
@@ -66,20 +62,8 @@ El único límite es la seguridad inmediata: si quien te escucha cree que estás
       es: '¿Qué ocurre al visitar el centro juvenil?'
     },
     answer: {
-      en: `A drop-in session is designed to be low-pressure. A typical visit:
-
-1. **Check in at the front desk** — a first name is enough; no insurance card, no school paperwork.
-2. **Choose your room** — art and music space, a quiet sensory pod, or a 1-on-1 talk with a peer listener.
-3. **Leave whenever you want** — most visits run 30–60 minutes.
-
-Staff are trained youth workers, the 1-on-1 conversation is confidential, and you do not need a diagnosis or a reason to be there.`,
-      es: `Una visita sin cita está pensada para ser de baja presión. Así suele ser:
-
-1. **Regístrate en recepción** — basta un nombre; no piden seguro médico ni papeles de la escuela.
-2. **Elige tu espacio** — sala de arte y música, zona sensorial tranquila o una charla individual con un oyente par.
-3. **Sal cuando quieras** — la mayoría de las visitas duran entre 30 y 60 minutos.
-
-El personal está capacitado para trabajar con jóvenes, la conversación individual es confidencial y no necesitas un diagnóstico ni una razón para estar ahí.`
+      en: `I can't verify the hours, check-in process, services, or confidentiality practices of a specific drop-in center from this information. These details vary by provider. Contact the center or Santa Clara County Behavioral Health Services using the official resource below, and ask about age range, appointments, cost, and privacy before visiting.`,
+      es: `No puedo confirmar los horarios, el proceso de registro, los servicios ni las prácticas de confidencialidad de un centro específico con esta información. Estos detalles varían según el proveedor. Comunícate con el centro o con los Servicios de Salud Conductual del Condado de Santa Clara mediante el recurso oficial de abajo y pregunta sobre edades, citas, costos y privacidad antes de ir.`
     },
     context: [
       { en: 'Sunnyvale', es: 'Sunnyvale' },
@@ -99,10 +83,10 @@ El personal está capacitado para trabajar con jóvenes, la conversación indivi
       }
     ],
     nextStep: {
-      title: { en: 'Pick an after-school time and walk in', es: 'Elige un horario después de clases y entra' },
+      title: { en: 'Confirm the center’s current details before visiting', es: 'Confirma los detalles actuales del centro antes de ir' },
       detail: {
-        en: 'Drop-in hours are usually 3:00–7:30 PM. Going with a friend can make the first visit easier.',
-        es: 'El horario sin cita suele ser de 3:00 a 7:30 PM. Ir con alguien de confianza puede facilitar la primera visita.'
+        en: 'Ask the provider about hours, eligibility, available services, and confidentiality.',
+        es: 'Pregunta al proveedor sobre horarios, requisitos, servicios disponibles y confidencialidad.'
       },
       actions: [
         {
@@ -130,9 +114,9 @@ El personal está capacitado para trabajar con jóvenes, la conversación indivi
       es: '¿Puedo ensayar un mensaje de prueba?'
     },
     answer: {
-      en: `Yes — here is a practice exchange you can rehearse:
+      en: `This is a fictional practice exchange, not a real text conversation or service. For a real text conversation with the 988 Suicide & Crisis Lifeline, use the official contact options at the link below; do not send a practice message to an unverified number.
 
-**You:** HOPE
+**You:** I feel stressed and would like someone to listen.
 **Listener:** Hi, I’m glad you texted. How are you feeling right now?
 **You:** Stressed. Finals, and my family is arguing a lot.
 **Listener:** That sounds heavy. Do you want to vent, or would a coping idea help more?
@@ -140,9 +124,9 @@ El personal está capacitado para trabajar con jóvenes, la conversación indivi
 **Listener:** Let’s try one: breathe in for 4, hold for 4, out for 6 — three times. Want to try it with me?
 
 You control the conversation: you can stop, change the subject, or ask for a different kind of support at any point.`,
-      es: `Sí, aquí tienes un intercambio para ensayar:
+      es: `Este es un intercambio ficticio para practicar; no es una conversación ni un servicio real. Para conversar por mensaje de texto con la Línea 988 de Prevención del Suicidio y Crisis, usa las opciones oficiales del enlace de abajo; no envíes un mensaje de práctica a un número no verificado.
 
-**Tú:** HOPE
+**Tú:** Me siento estresado y quisiera que alguien me escuchara.
 **Oyente:** Hola, me alegra que escribieras. ¿Cómo te sientes en este momento?
 **Tú:** Estresado. Exámenes finales y mi familia discute mucho.
 **Oyente:** Suena pesado. ¿Quieres desahogarte o prefieres una idea para calmarte?
@@ -166,8 +150,8 @@ Tú controlas la conversación: puedes parar, cambiar de tema o pedir otro tipo 
     nextStep: {
       title: { en: 'Rehearse once before you need it', es: 'Ensaya una vez antes de necesitarlo' },
       detail: {
-        en: 'Sending a practice message lowers the barrier on a hard day.',
-        es: 'Enviar un mensaje de práctica reduce la barrera en un día difícil.'
+        en: 'This example is only for practice. Use the official 988 website to confirm how to contact the service.',
+        es: 'Este ejemplo es solo para practicar. Usa el sitio oficial de 988 para confirmar cómo comunicarte con el servicio.'
       },
       actions: [
         {
@@ -195,20 +179,8 @@ Tú controlas la conversación: puedes parar, cambiar de tema o pedir otro tipo 
       es: '¿Cómo funciona la camioneta puerta a puerta?'
     },
     answer: {
-      en: `**SamTrans Redi-Wheels** is a shared-ride paratransit van for people who cannot reliably use regular buses. How it works:
-
-- You apply once by phone and complete an eligibility interview — a family member or the senior center can be on the call with you.
-- Once approved, you call to reserve each ride, usually at least one day ahead.
-- The van picks you up at your door and drops you at the address you gave.
-
-It is not a taxi: rides are shared and pickup times come in a window. What it solves is the walk to the bus stop.`,
-      es: `**SamTrans Redi-Wheels** es una camioneta de transporte compartido para personas que no pueden usar el autobús regular de forma confiable. Así funciona:
-
-- Se solicita una vez por teléfono y se hace una entrevista de elegibilidad; un familiar o el centro de adultos mayores puede acompañarte en la llamada.
-- Una vez aprobado, llamas para reservar cada viaje, normalmente con al menos un día de anticipación.
-- La camioneta te recoge en la puerta de tu casa y te deja en la dirección que indiques.
-
-No es un taxi: los viajes son compartidos y la hora de recogida es dentro de un rango. Lo que resuelve es el camino hasta la parada.`
+      en: `SamTrans offers Redi-Wheels paratransit on the bayside and RediCoast on the coastside for people who cannot use some or all fixed-route transit because of a disability. Eligibility and service areas apply, and trips generally need to be scheduled at least one day ahead. I can't promise door pickup or approval; review SamTrans' current service and eligibility information at the official link below.`,
+      es: `SamTrans ofrece transporte adaptado Redi-Wheels en la zona de la bahía y RediCoast en la zona costera para personas que no pueden usar parte o todo el transporte de rutas fijas debido a una discapacidad. Aplican requisitos de elegibilidad y zonas de servicio, y por lo general los viajes deben programarse con al menos un día de anticipación. No puedo garantizar recogida en la puerta ni aprobación; consulta la información oficial actual de SamTrans en el enlace de abajo.`
     },
     context: [
       { en: 'Redwood City & North Fair Oaks', es: 'Redwood City y North Fair Oaks' },
@@ -219,21 +191,21 @@ No es un taxi: los viajes son compartidos y la hora de recogida es dentro de un 
       {
         label: { en: 'SamTrans Redi-Wheels paratransit', es: 'Transporte Redi-Wheels de SamTrans' },
         source: { en: 'SamTrans', es: 'SamTrans' },
-        url: 'https://www.samtrans.com/accessibility/rediwheels'
+        url: 'https://www.samtrans.com/accessibility/paratransit'
       }
     ],
     nextStep: {
       title: { en: 'Start the Redi-Wheels application by phone', es: 'Inicia la solicitud de Redi-Wheels por teléfono' },
       detail: {
-        en: 'The application and eligibility interview happen by phone, and someone can join the call to help.',
-        es: 'La solicitud y la entrevista de elegibilidad son por teléfono, y alguien puede acompañarte en la llamada.'
+        en: 'Review SamTrans’ current service area, eligibility, and trip-scheduling information before making plans.',
+        es: 'Revisa la zona de servicio, elegibilidad e información para programar viajes de SamTrans antes de hacer planes.'
       },
       actions: [
         {
           id: 'senior-van-link',
           kind: 'open-link',
           label: { en: 'Open Redi-Wheels page', es: 'Abrir la página de Redi-Wheels' },
-          url: 'https://www.samtrans.com/accessibility/rediwheels'
+          url: 'https://www.samtrans.com/accessibility/paratransit'
         },
         {
           id: 'senior-van-save',
@@ -254,18 +226,8 @@ No es un taxi: los viajes son compartidos y la hora de recogida es dentro de un 
       es: '¿Puede acompañarme mi hija o cuidador?'
     },
     answer: {
-      en: `Yes. Family members and caregivers are welcome at senior circles, and being accompanied is common on a first visit. Two useful jobs for you that day:
-
-1. Help with check-in and the transportation application.
-2. Stay for the first hour so the visit feels familiar, then step out.
-
-If your mother prefers attending alone, staff can call you at pickup time. Ask staff before sharing medical details — the center keeps attendance and health information private.`,
-      es: `Sí. Los familiares y cuidadores son bienvenidos en los círculos de adultos mayores, y acompañar a alguien en su primera visita es muy común. Dos tareas útiles ese día:
-
-1. Ayudar con el registro y con la solicitud de transporte.
-2. Quedarte la primera hora para que la visita se sienta familiar y luego retirarte.
-
-Si tu mamá prefiere asistir sola, el personal puede llamarte a la hora de la salida. Pregunta al personal antes de compartir datos médicos: el centro mantiene privada la información de asistencia y salud.`
+      en: `Whether a family member can accompany an older adult depends on the specific program, transportation provider, and visit arrangements. Contact the organization before going to ask about guests, accessibility, transportation, and privacy; I can't confirm the policies of an unverified senior circle.`,
+      es: `Que un familiar pueda acompañar a una persona mayor depende del programa, el proveedor de transporte y los arreglos de la visita. Comunícate con la organización antes de ir para preguntar sobre acompañantes, accesibilidad, transporte y privacidad; no puedo confirmar las políticas de un círculo para adultos mayores no verificado.`
     },
     context: [
       { en: 'Older adults', es: 'Adultos mayores' },
@@ -276,19 +238,19 @@ Si tu mamá prefiere asistir sola, el personal puede llamarte a la hora de la sa
       {
         label: { en: 'SamTrans Redi-Wheels paratransit', es: 'Transporte Redi-Wheels de SamTrans' },
         source: { en: 'SamTrans', es: 'SamTrans' },
-        url: 'https://www.samtrans.com/accessibility/rediwheels'
+        url: 'https://www.samtrans.com/accessibility/paratransit'
       },
       {
-        label: { en: 'Santa Clara County Aging & Adult Services', es: 'Servicios para Personas Mayores y Adultos del Condado de Santa Clara' },
-        source: { en: 'County of Santa Clara', es: 'Condado de Santa Clara' },
-        url: 'https://ssa.sccgov.org/'
+        label: { en: 'San Mateo County — Food Resources', es: 'Condado de San Mateo — Recursos de alimentos' },
+        source: { en: 'San Mateo County', es: 'Condado de San Mateo' },
+        url: 'https://www.smcgov.org/hsa/food-resources'
       }
     ],
     nextStep: {
       title: { en: 'Ask about caregiver accompaniment when you call', es: 'Pregunta por el acompañamiento al llamar' },
       detail: {
-        en: 'Staff can confirm guest seating, accessibility, and whether a caregiver may ride along.',
-        es: 'El personal puede confirmar los asientos para acompañantes, la accesibilidad y si un cuidador puede viajar con la persona.'
+        en: 'Ask the program and any transportation provider whether a caregiver may accompany the older adult.',
+        es: 'Pregunta al programa y al proveedor de transporte si un cuidador puede acompañar a la persona mayor.'
       },
       actions: [
         {
@@ -301,7 +263,7 @@ Si tu mamá prefiere asistir sola, el personal puede llamarte a la hora de la sa
           id: 'senior-caregiver-link',
           kind: 'open-link',
           label: { en: 'Open Redi-Wheels page', es: 'Abrir la página de Redi-Wheels' },
-          url: 'https://www.samtrans.com/accessibility/rediwheels'
+          url: 'https://www.samtrans.com/accessibility/paratransit'
         }
       ]
     },
@@ -316,12 +278,8 @@ Si tu mamá prefiere asistir sola, el personal puede llamarte a la hora de la sa
       es: '¿Qué días sirven almuerzo caliente?'
     },
     answer: {
-      en: `Senior circles usually serve a hot lunch at midday, and menus rotate weekly. Expect simple, culturally familiar meals — soups, rice and beans, chicken or fish, fruit, and coffee.
-
-Ask two things when you call: whether lunch needs a reservation, and whether a vegetarian or low-sodium plate is available. Many county senior nutrition programs also deliver to homebound seniors, with eligibility based on age and mobility rather than income alone.`,
-      es: `Los círculos de adultos mayores suelen servir un almuerzo caliente al mediodía y los menús cambian cada semana. Son comidas sencillas y familiares: sopas, arroz con frijoles, pollo o pescado, fruta y café.
-
-Pregunta dos cosas al llamar: si el almuerzo requiere reservación y si hay plato vegetariano o bajo en sodio. Muchos programas de nutrición para adultos mayores también entregan a domicilio a personas que no pueden salir; la elegibilidad depende de la edad y la movilidad, no solo del ingreso.`
+      en: `I can't confirm a menu, meal time, reservation policy, or dietary options for a particular site. Meal services and schedules vary. Contact the local program through the official county resource below to ask whether congregate meals or home-delivered meals are available and what requirements apply.`,
+      es: `No puedo confirmar un menú, horario de comida, política de reservaciones ni opciones dietéticas para un lugar específico. Los servicios y horarios varían. Comunícate con el programa local mediante el recurso oficial del condado de abajo para preguntar si hay comidas en grupo o a domicilio y qué requisitos aplican.`
     },
     context: [
       { en: 'Older adults', es: 'Adultos mayores' },
@@ -330,9 +288,9 @@ Pregunta dos cosas al llamar: si el almuerzo requiere reservación y si hay plat
     ],
     links: [
       {
-        label: { en: 'Santa Clara County Senior Nutrition Program', es: 'Programa de Nutrición para Adultos Mayores del Condado de Santa Clara' },
-        source: { en: 'County of Santa Clara', es: 'Condado de Santa Clara' },
-        url: 'https://ssa.sccgov.org/'
+        label: { en: 'San Mateo County — Food Resources', es: 'Condado de San Mateo — Recursos de alimentos' },
+        source: { en: 'San Mateo County', es: 'Condado de San Mateo' },
+        url: 'https://www.smcgov.org/hsa/food-resources'
       },
       {
         label: { en: 'Meals on Wheels America — how to find a local program', es: 'Meals on Wheels America — cómo encontrar un programa local' },
@@ -341,17 +299,17 @@ Pregunta dos cosas al llamar: si el almuerzo requiere reservación y si hay plat
       }
     ],
     nextStep: {
-      title: { en: 'Reserve a lunch plate before the first visit', es: 'Reserva un almuerzo antes de la primera visita' },
+      title: { en: 'Ask the county about current meal options', es: 'Pregunta al condado sobre opciones de comida actuales' },
       detail: {
-        en: 'Some sites cap lunch counts; a same-week call reserves a plate.',
-        es: 'Algunos sitios tienen cupo limitado; una llamada en la misma semana reserva el plato.'
+        en: 'Confirm current services, schedules, and any requirements directly with the county program.',
+        es: 'Confirma directamente con el programa del condado los servicios, horarios y requisitos actuales.'
       },
       actions: [
         {
           id: 'senior-lunch-link',
           kind: 'open-link',
           label: { en: 'Open senior nutrition page', es: 'Abrir la página de nutrición' },
-          url: 'https://ssa.sccgov.org/'
+          url: 'https://www.smcgov.org/hsa/food-resources'
         },
         {
           id: 'senior-lunch-save',

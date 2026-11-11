@@ -10,24 +10,15 @@ export const programFollowUpAnswers: ScriptedAnswer[] = [
       es: '¿Debo mostrar comprobante de domicilio?'
     },
     answer: {
-      en: `**No.** The Sacred Heart Saturday Community Food Pantry does not ask for proof of address, a state ID, or an income document — households self-attest at the greeting desk. The Second Harvest Mobile Produce Market works the same way: walk up, give a first name if you are comfortable, and receive produce.
-
-Pantries set their own rules, though. If a site does ask for a document, ask whether a piece of mail or a spoken address is enough — many accept that.`,
-      es: `**No.** La Despensa Comunitaria de Sábados de Sacred Heart no pide comprobante de domicilio, identificación estatal ni documento de ingresos: las familias se autodeclaran en la mesa de bienvenida. El Mercado Móvil de Second Harvest funciona igual: llega, da tu nombre si te sientes cómodo y recibe productos.
-
-Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregunta si basta con una carta recibida o con decir tu dirección en voz alta: muchas lo aceptan.`
+      en: `Requirements vary by food distribution site, so I can't say that proof of address is never needed. Use Second Harvest's Food Locator to find a current location, then check its listing or contact the organization directly to ask what, if anything, to bring before visiting.`,
+      es: `Los requisitos varían según el lugar de distribución, así que no puedo decir que nunca se necesite comprobante de domicilio. Usa el Localizador de Alimentos de Second Harvest para encontrar un lugar y revisa su información o comunícate directamente con la organización para preguntar qué debes llevar, si acaso, antes de ir.`
     },
     context: [
       { en: 'East San Jose', es: 'Este de San José' },
       { en: 'Food access', es: 'Acceso a alimentos' },
-      { en: 'No ID required', es: 'Sin identificación' }
+      { en: 'Confirm site requirements', es: 'Confirma los requisitos del lugar' }
     ],
     links: [
-      {
-        label: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        url: 'https://www.sacredheartcs.org/'
-      },
       {
         label: { en: 'Second Harvest — find food near you', es: 'Second Harvest — encuentra alimentos cerca' },
         source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
@@ -37,8 +28,8 @@ Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregun
     nextStep: {
       title: { en: 'Confirm the document policy before you go', es: 'Confirma la política de documentos antes de ir' },
       detail: {
-        en: 'Pantry rules differ by site. A two-minute call tells you exactly what to bring — often nothing.',
-        es: 'Las reglas cambian según el sitio. Una llamada de dos minutos te dice qué llevar: muchas veces nada.'
+        en: 'Requirements differ by site. Confirm them with the organization before you visit.',
+        es: 'Los requisitos varían según el lugar. Confírmalos con la organización antes de ir.'
       },
       actions: [
         {
@@ -50,8 +41,8 @@ Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregun
         {
           id: 'food-address-site',
           kind: 'open-link',
-          label: { en: 'Open Sacred Heart website', es: 'Abrir el sitio de Sacred Heart' },
-          url: 'https://www.sacredheartcs.org/'
+          label: { en: 'Open Second Harvest Food Locator', es: 'Abrir el Localizador de Alimentos de Second Harvest' },
+          url: 'https://www.shfb.org/get-food/'
         }
       ]
     },
@@ -66,12 +57,8 @@ Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregun
       es: '¿Tienen pañales o leche infantil?'
     },
     answer: {
-      en: `Pantry stock changes every week, and neither the Saturday pantry nor the produce market **guarantees** diapers or infant formula. Diapers usually appear as a separate baby-supplies table when donations allow, in limited sizes. Formula is rarer and may only be available through an infant-specific program.
-
-For formula, the statewide **WIC** program is the reliable route: it provides infant formula and food benefits for pregnant people, new parents, and children under 5. It is a separate program from CalFresh.`,
-      es: `El inventario de las despensas cambia cada semana, y ni la despensa del sábado ni el mercado de productos **garantizan** pañales o leche infantil. Los pañales suelen aparecer en una mesa aparte de artículos para bebé cuando hay donaciones, en tallas limitadas. La leche infantil es más escasa y a veces solo se consigue por un programa específico para bebés.
-
-Para la leche infantil, el programa estatal **WIC** es la vía confiable: ofrece fórmula y beneficios de alimentos para personas embarazadas, madres y padres recientes y niños menores de 5 años. Es un programa distinto de CalFresh.`
+      en: `I can't verify whether a particular pantry has diapers or infant formula, and availability can vary. **WIC provides nutrition assistance to eligible families with infants and young children.** Contact Santa Clara County WIC to ask about eligibility and current services; do not rely on a pantry having formula in stock.`,
+      es: `No puedo confirmar si una despensa específica tiene pañales o fórmula infantil, y la disponibilidad puede variar. **WIC ofrece asistencia de nutrición a familias elegibles con bebés y niños pequeños.** Comunícate con WIC del Condado de Santa Clara para preguntar sobre los requisitos y servicios actuales; no cuentes con que una despensa tenga fórmula disponible.`
     },
     context: [
       { en: 'East San Jose', es: 'Este de San José' },
@@ -80,38 +67,27 @@ Para la leche infantil, el programa estatal **WIC** es la vía confiable: ofrece
     ],
     links: [
       {
-        label: { en: 'California WIC program', es: 'Programa WIC de California' },
-        source: { en: 'California Department of Public Health', es: 'Departamento de Salud Pública de California' },
-        url: 'https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx'
-      },
-      {
-        label: { en: 'Second Harvest — get food', es: 'Second Harvest — obtener alimentos' },
-        source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
-        url: 'https://www.shfb.org/get-food/'
+        label: { en: 'Santa Clara County WIC', es: 'WIC del Condado de Santa Clara' },
+        source: { en: 'Santa Clara County Public Health', es: 'Salud Pública del Condado de Santa Clara' },
+        url: 'https://publichealth.sccgov.org/services/women-infants-and-children-wic'
       }
     ],
     nextStep: {
-      title: { en: 'Mention your children’s ages at the greeting desk', es: 'Menciona las edades de tus hijos en la mesa de bienvenida' },
+      title: { en: 'Ask WIC about eligibility and services', es: 'Pregunta a WIC sobre requisitos y servicios' },
       detail: {
-        en: 'Staff can point you to a baby-supplies table or an infant formula program faster than searching alone.',
-        es: 'El personal puede orientarte hacia la mesa de artículos para bebé o a un programa de fórmula más rápido que buscando por tu cuenta.'
+        en: 'Contact Santa Clara County WIC to ask about eligibility and current nutrition services.',
+        es: 'Comunícate con WIC del Condado de Santa Clara para preguntar sobre requisitos y servicios de nutrición actuales.'
       },
       actions: [
         {
-          id: 'food-baby-save',
-          kind: 'save-plan',
-          label: { en: 'Save pantry to my plan', es: 'Guardar despensa en mi plan' },
-          resourceId: 'res-food-1'
-        },
-        {
           id: 'food-baby-wic',
           kind: 'open-link',
-          label: { en: 'Open WIC program page', es: 'Abrir la página de WIC' },
-          url: 'https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx'
+          label: { en: 'Open Santa Clara County WIC', es: 'Abrir WIC del Condado de Santa Clara' },
+          url: 'https://publichealth.sccgov.org/services/women-infants-and-children-wic'
         }
       ]
     },
-    resourceIds: ['res-food-1', 'res-food-2'],
+    resourceIds: [],
     followUpIds: ['ans-food-greeting-desk-roleplay', 'ans-food-proof-of-address']
   },
   {
@@ -122,44 +98,38 @@ Para la leche infantil, el programa estatal **WIC** es la vía confiable: ofrece
       es: 'Ensayar la conversación en la mesa de bienvenida'
     },
     answer: {
-      en: `Here is a short script you can say out loud before Saturday:
+      en: `This is a fictional practice script, not a confirmed pantry intake process or policy. When contacting a real food distribution site, ask what is currently available, whether identification or other documents are requested, and what hours apply:
 
-**Volunteer:** “Good morning! Is this your first time here?”
-**You:** “Yes, it’s my first time. I’m here for groceries for my family.”
-**Volunteer:** “How many people are in your household?”
-**You:** “Four — two adults and two children.”
-**Volunteer:** “Any allergies or dietary needs?”
-**You:** “No allergies, but we’d use beans, rice, and fresh vegetables.”
+**You:** “Hello, I’m looking for food assistance for my household. Could you tell me what is available and what I need to know before visiting?”
+**Staff:** “I can explain the current details for this location.”
+**You:** “Do you require identification or other documents, and what are your current hours?”
 
-You can also ask: “Do you have a baby-supplies table today?” You never need to explain **why** you need food, and you do not need to show ID.`,
-      es: `Aquí tienes un guion corto para decirlo en voz alta antes del sábado:
+You can adapt the wording. Confirm the answers with the organization; this example does not promise that any location has food or accepts a particular document.`,
+      es: `Este es un guion ficticio para practicar; no es un proceso ni una política confirmada de una despensa. Cuando te comuniques con un lugar real de distribución de alimentos, pregunta qué hay disponible actualmente, si solicitan identificación u otros documentos y cuáles son los horarios:
 
-**Voluntario:** “¡Buenos días! ¿Es su primera vez aquí?”
-**Tú:** “Sí, es mi primera vez. Vengo por alimentos para mi familia.”
-**Voluntario:** “¿Cuántas personas hay en su hogar?”
-**Tú:** “Cuatro: dos adultos y dos niños.”
-**Voluntario:** “¿Alguna alergia o necesidad alimentaria?”
-**Tú:** “Sin alergias, pero nos sirven frijoles, arroz y verduras frescas.”
+**Tú:** “Hola, busco ayuda de alimentos para mi hogar. ¿Podrían decirme qué hay disponible y qué debo saber antes de ir?”
+**Personal:** “Puedo explicarte los detalles actuales de este lugar.”
+**Tú:** “¿Piden identificación u otros documentos y cuáles son sus horarios actuales?”
 
-También puedes preguntar: “¿Hoy tienen mesa de artículos para bebé?” Nunca tienes que explicar **por qué** necesitas alimentos y no necesitas mostrar identificación.`
+Puedes adaptar las palabras. Confirma la información con la organización; este ejemplo no garantiza que haya comida en un lugar ni que acepten un documento específico.`
     },
     context: [
       { en: 'Practice call', es: 'Llamada de práctica' },
       { en: 'East San Jose', es: 'Este de San José' },
-      { en: 'No ID required', es: 'Sin identificación' }
+      { en: 'Confirm site requirements', es: 'Confirma los requisitos del lugar' }
     ],
     links: [
       {
-        label: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        url: 'https://www.sacredheartcs.org/'
+        label: { en: 'Second Harvest — Food Locator', es: 'Second Harvest — Localizador de Alimentos' },
+        source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
+        url: 'https://www.shfb.org/get-food/'
       }
     ],
     nextStep: {
-      title: { en: 'Note your household number in your phone', es: 'Apunta el número de personas de tu hogar en el teléfono' },
+      title: { en: 'Prepare questions for the distribution site', es: 'Prepara preguntas para el lugar de distribución' },
       detail: {
-        en: 'It is the one question you will always be asked: how many people you are feeding.',
-        es: 'Es la pregunta que siempre te harán: para cuántas personas son los alimentos.'
+        en: 'Ask about current availability, hours, and requirements; this practice example does not confirm a specific site’s process.',
+        es: 'Pregunta sobre disponibilidad, horarios y requisitos actuales; este ejemplo no confirma el proceso de un lugar específico.'
       },
       actions: [
         {
@@ -171,8 +141,8 @@ También puedes preguntar: “¿Hoy tienen mesa de artículos para bebé?” Nun
         {
           id: 'food-roleplay-site',
           kind: 'open-link',
-          label: { en: 'Open Sacred Heart website', es: 'Abrir el sitio de Sacred Heart' },
-          url: 'https://www.sacredheartcs.org/'
+          label: { en: 'Open Second Harvest Food Locator', es: 'Abrir el Localizador de Alimentos de Second Harvest' },
+          url: 'https://www.shfb.org/get-food/'
         }
       ]
     },
@@ -187,12 +157,8 @@ También puedes preguntar: “¿Hoy tienen mesa de artículos para bebé?” Nun
       es: '¿Afectará mis cheques de desempleo semanales?'
     },
     answer: {
-      en: `Training does not end unemployment benefits by itself, but you must keep certifying for benefits each week and report that you are in training. Under **California Training Benefits (CTB)**, an approved training program can let you keep weekly benefits while attending school, and you may be excused from the usual weekly job-search log.
-
-The part people miss: approval matters. Ask EDD about CTB when you file or certify — not after the course starts — and keep a copy of the approval in case your certification is questioned later.`,
-      es: `La capacitación no termina por sí sola con los beneficios de desempleo, pero debes seguir certificando cada semana e informar que estás en capacitación. Con **California Training Benefits (CTB)**, un programa de estudios aprobado te permite conservar los beneficios semanales mientras estudias y puede eximirte del registro semanal de búsqueda de empleo.
-
-Lo que más se pasa por alto: la aprobación importa. Pregunta al EDD por CTB cuando presentes tu solicitud o tu certificación, no después de empezar el curso, y guarda una copia de la aprobación.`
+      en: `**It depends on EDD's decision about California Training Benefits (CTB).** If approved, you must continue certifying for benefits, and EDD says you may not have to be available for work or look for work while in approved training. Contact EDD as soon as possible if interested; report your training start during the week it begins and follow any EDD requests. A training extension has an additional deadline, so check EDD's current rules. Do not assume approval or continued payments.`,
+      es: `**Depende de la decisión del EDD sobre California Training Benefits (CTB).** Si te aprueban, debes seguir certificando tus beneficios; el EDD indica que quizá no tengas que estar disponible para trabajar ni buscar trabajo mientras participas en capacitación aprobada. Comunícate con el EDD lo antes posible si te interesa; informa cuándo comienza la capacitación durante la semana de inicio y responde a cualquier solicitud del EDD. La extensión de capacitación tiene un plazo adicional; consulta las reglas actuales. No des por sentada la aprobación ni la continuidad de pagos.`
     },
     context: [
       { en: 'Recent layoff', es: 'Despido reciente' },
@@ -214,8 +180,8 @@ Lo que más se pasa por alto: la aprobación importa. Pregunta al EDD por CTB cu
     nextStep: {
       title: { en: 'Ask EDD about CTB before classes start', es: 'Pregunta al EDD por CTB antes de empezar clases' },
       detail: {
-        en: 'CTB approval is what protects your weekly check while you study full time.',
-        es: 'La aprobación de CTB es lo que protege tu cheque semanal mientras estudias tiempo completo.'
+        en: 'Only EDD can determine whether CTB applies to your claim. Review the current rules and contact EDD promptly.',
+        es: 'Solo el EDD puede determinar si CTB aplica a tu reclamo. Revisa las reglas actuales y comunícate con el EDD pronto.'
       },
       actions: [
         {
@@ -243,12 +209,8 @@ Lo que más se pasa por alto: la aprobación importa. Pregunta al EDD por CTB cu
       es: '¿Hay clases nocturnas para adultos?'
     },
     answer: {
-      en: `Yes. Most NOVAworks-funded certificate cohorts include an evening or weekend track, because they are built for people working or job-searching during the day. Common evening options are IT support, cybersecurity fundamentals, and cloud operations.
-
-Schedules rotate each quarter, so confirm the current cohort times at orientation rather than relying on an old flyer.`,
-      es: `Sí. La mayoría de las cohortes de certificación financiadas por NOVAworks incluyen un horario nocturno o de fin de semana, porque están diseñadas para quienes trabajan o buscan empleo durante el día. Las opciones nocturnas más comunes son soporte técnico, fundamentos de ciberseguridad y operaciones en la nube.
-
-Los horarios cambian cada trimestre, así que confirma las fechas de la cohorte actual en la orientación en lugar de basarte en un folleto antiguo.`
+      en: `I can't verify that NOVAworks or a particular training provider currently offers evening classes. Schedules depend on the program and cohort. Check NOVAworks' current training information and ask the provider directly about evening or weekend options before enrolling.`,
+      es: `No puedo confirmar que NOVAworks o un proveedor específico ofrezca clases nocturnas actualmente. Los horarios dependen del programa y la cohorte. Revisa la información vigente de capacitación de NOVAworks y pregunta directamente al proveedor si hay opciones nocturnas o de fin de semana antes de inscribirte.`
     },
     context: [
       { en: 'Milpitas', es: 'Milpitas' },
@@ -265,8 +227,8 @@ Los horarios cambian cada trimestre, así que confirma las fechas de la cohorte 
     nextStep: {
       title: { en: 'Ask for the evening cohort list', es: 'Pide la lista de cohortes nocturnas' },
       detail: {
-        en: 'The Wednesday orientation ends with a cohort calendar — ask specifically for evening and weekend tracks.',
-        es: 'La orientación del miércoles termina con un calendario de cohortes: pide específicamente los horarios nocturnos y de fin de semana.'
+        en: 'Ask NOVAworks and the training provider which schedules are currently offered; do not rely on an old cohort listing.',
+        es: 'Pregunta a NOVAworks y al proveedor qué horarios ofrecen actualmente; no te bases en una lista antigua de cohortes.'
       },
       actions: [
         {
@@ -283,7 +245,7 @@ Los horarios cambian cada trimestre, así que confirma las fechas de la cohorte 
         }
       ]
     },
-    resourceIds: ['res-work-1', 'res-work-2'],
+    resourceIds: ['res-work-1'],
     followUpIds: ['ans-work-interview-practice', 'ans-work-edd-impact']
   },
   {
@@ -294,26 +256,22 @@ Los horarios cambian cada trimestre, así que confirma las fechas de la cohorte 
       es: 'Practicar entrevista con un asesor laboral'
     },
     answer: {
-      en: `A navigator practice interview usually runs 30–45 minutes and covers three questions: a short self-introduction, one example of a problem you solved, and how you handle a busy or stressful shift.
-
-Rehearse alone first:
+      en: `This is a **practice exercise**, not a confirmed NOVAworks appointment or official interview format. You can rehearse a brief introduction, one example of a problem you solved, and how you handle a busy or stressful situation:
 
 **Navigator:** “Tell me about yourself.”
 **You:** “I worked six years in warehouse operations and was recently laid off. I’m training in IT support, and I’m reliable with schedules and inventory accuracy.”
 **Navigator:** “Tell me about a time you fixed a problem.”
 **You:** “Our scanner system went down before a shipment. I switched the team to paper counts and reconciled everything before the truck left.”
 
-Keep each answer near 60 seconds and finish with what you want next.`,
-      es: `Una entrevista de práctica con un asesor suele durar entre 30 y 45 minutos y cubre tres preguntas: una presentación breve, un ejemplo de un problema que resolviste y cómo manejas un turno ocupado o estresante.
-
-Primero ensaya solo:
+Keep each answer concise and finish with what you want next. Contact NOVAworks directly to ask whether a career navigator offers interview practice.`,
+      es: `Este es un **ejercicio de práctica**, no una cita confirmada con NOVAworks ni un formato oficial de entrevista. Puedes ensayar una breve presentación, un ejemplo de un problema que resolviste y cómo manejas una situación ocupada o estresante:
 
 **Asesor:** “Cuéntame sobre ti.”
 **Tú:** “Trabajé seis años en operaciones de almacén y hace poco me despidieron. Estoy capacitándome en soporte técnico y soy confiable con los horarios y la exactitud del inventario.”
 **Asesor:** “Cuéntame de una vez que resolviste un problema.”
 **Tú:** “El sistema de escaneo falló antes de un envío. Pasé al equipo a conteos en papel y cuadré todo antes de que saliera el camión.”
 
-Mantén cada respuesta cerca de 60 segundos y cierra con lo que quieres como siguiente paso.`
+Mantén cada respuesta breve y cierra con lo que quieres como siguiente paso. Comunícate directamente con NOVAworks para preguntar si ofrecen práctica de entrevistas con un asesor.`
     },
     context: [
       { en: 'Recent layoff', es: 'Despido reciente' },
@@ -328,10 +286,10 @@ Mantén cada respuesta cerca de 60 segundos y cierra con lo que quieres como sig
       }
     ],
     nextStep: {
-      title: { en: 'Book the mock interview after orientation', es: 'Agenda la entrevista simulada después de la orientación' },
+      title: { en: 'Ask NOVAworks about interview practice', es: 'Pregunta a NOVAworks sobre práctica de entrevistas' },
       detail: {
-        en: 'NOVAworks schedules practice interviews with a navigator. Bring your resume even if it is rough.',
-        es: 'NOVAworks agenda entrevistas de práctica con un asesor. Lleva tu currículum aunque esté poco pulido.'
+        en: 'Ask whether this service is currently available and what to bring.',
+        es: 'Pregunta si este servicio está disponible actualmente y qué debes llevar.'
       },
       actions: [
         {
@@ -359,18 +317,18 @@ Mantén cada respuesta cerca de 60 segundos y cierra con lo que quieres como sig
       es: '¿Cómo sé si me corresponde CADAA o FAFSA?'
     },
     answer: {
-      en: `The choice follows your **federal aid eligibility**, not the school you pick:
+      en: `The choice depends on the aid you may qualify for and your circumstances:
 
-- **FAFSA** — for U.S. citizens and eligible noncitizens. This is the application that reaches federal Pell Grants, and it feeds the Cal Grant.
-- **CADAA (California Dream Act Application)** — for students who are undocumented or otherwise not eligible for federal aid, including many AB 540 students. It reaches state aid such as Cal Grant and the California College Promise Grant.
+- **FAFSA** is used to apply for federal student aid and may also be used for state or campus aid.
+- **CADAA (California Dream Act Application)** is for eligible students who cannot receive federal student aid but may qualify for California aid.
 
-Submit **one**, never both. If you are unsure which fits your situation, ask the college financial aid office before you file — asking never affects your admission.`,
-      es: `La decisión depende de tu **elegibilidad para ayuda federal**, no de la escuela que elijas:
+The rules can depend on immigration, residency, and other factors. I can't determine which application is right for you; check the official application guidance or ask a college financial aid office before filing.`,
+      es: `La decisión depende de la ayuda para la que podrías calificar y de tus circunstancias:
 
-- **FAFSA** — para ciudadanos estadounidenses y no ciudadanos elegibles. Es la solicitud que da acceso a las Becas Pell federales y alimenta la Beca Cal.
-- **CADAA (Solicitud de la Ley Dream de California)** — para estudiantes indocumentados o que no son elegibles para ayuda federal, incluidas muchas personas con estatus AB 540. Da acceso a ayuda estatal como la Beca Cal y el California College Promise Grant.
+- **FAFSA** se usa para solicitar ayuda federal para estudiantes y también puede servir para ayuda estatal o del campus.
+- **CADAA (Solicitud de la Ley Dream de California)** es para estudiantes elegibles que no pueden recibir ayuda federal, pero quizá califiquen para ayuda de California.
 
-Presenta **una**, nunca las dos. Si no sabes cuál corresponde a tu situación, pregunta a la oficina de ayuda financiera antes de enviarla: preguntar nunca afecta tu admisión.`
+Las reglas pueden depender de inmigración, residencia y otros factores. No puedo determinar qué solicitud te corresponde; revisa la guía oficial o pregunta en la oficina de ayuda financiera antes de presentarla.`
     },
     context: [
       { en: 'College goal', es: 'Meta universitaria' },
@@ -392,8 +350,8 @@ Presenta **una**, nunca las dos. Si no sabes cuál corresponde a tu situación, 
     nextStep: {
       title: { en: 'Confirm your route with a financial aid advisor', es: 'Confirma tu ruta con un asesor de ayuda financiera' },
       detail: {
-        en: 'One 15-minute conversation prevents filing the wrong application and losing state aid.',
-        es: 'Una conversación de 15 minutos evita presentar la solicitud equivocada y perder ayuda estatal.'
+        en: 'Ask which application fits your circumstances; eligibility decisions come from the official aid program.',
+        es: 'Pregunta cuál solicitud corresponde a tus circunstancias; la decisión de elegibilidad corresponde al programa oficial.'
       },
       actions: [
         {
@@ -421,20 +379,8 @@ Presenta **una**, nunca las dos. Si no sabes cuál corresponde a tu situación, 
       es: '¿Hay asesoría personalizada en el campus?'
     },
     answer: {
-      en: `Yes. Every California community college has a financial aid office with drop-in hours, and many run evening or weekend sessions before the March 2 Cal Grant deadline. Ask for three things:
-
-1. Help submitting FAFSA or CADAA and a check that it was received.
-2. A review of your Promise Grant eligibility.
-3. A transfer-planning conversation if you already know your intended major.
-
-You do **not** need to be admitted yet to ask questions. Bring an ID if you have one, your family’s income information, and your most recent tax return if available — staff can start without them.`,
-      es: `Sí. Todos los community colleges de California tienen una oficina de ayuda financiera con horario de atención sin cita, y muchas abren sesiones vespertinas o de fin de semana antes de la fecha límite de la Beca Cal (2 de marzo). Pide tres cosas:
-
-1. Ayuda para enviar la FAFSA o la CADAA y confirmación de que se recibió.
-2. Una revisión de tu elegibilidad para el Promise Grant.
-3. Una conversación sobre transferencia si ya sabes qué carrera quieres.
-
-**No** necesitas estar admitido para preguntar. Lleva identificación si la tienes, la información de ingresos de tu familia y tu declaración de impuestos más reciente si está disponible; el personal puede empezar sin ellos.`
+      en: `If you mean one-on-one financial aid or counseling help, contact the college office directly; this is not a medical clinic. Appointment and drop-in formats vary by campus and date. De Anza currently posts its own office hours and appointment information on the official page below. Ask the college what to bring and whether help with FAFSA, CADAA, or Promise programs is available.`,
+      es: `Si te refieres a asesoría individual de ayuda financiera o académica, comunícate directamente con la oficina del colegio; no es una clínica médica. Las citas y la atención sin cita varían según el campus y la fecha. De Anza publica sus horarios e información de citas en la página oficial de abajo. Pregunta qué debes llevar y si ofrecen ayuda con FAFSA, CADAA o programas Promise.`
     },
     context: [
       { en: 'College goal', es: 'Meta universitaria' },
@@ -454,10 +400,10 @@ You do **not** need to be admitted yet to ask questions. Bring an ID if you have
       }
     ],
     nextStep: {
-      title: { en: 'Book a 1-on-1 financial aid appointment', es: 'Agenda una cita individual de ayuda financiera' },
+      title: { en: 'Check the college office’s current help options', es: 'Revisa las opciones actuales de ayuda del colegio' },
       detail: {
-        en: 'Drop-in works, but an appointment gets you a full application review before the deadline.',
-        es: 'Puedes llegar sin cita, pero con una cita revisan tu solicitud completa antes de la fecha límite.'
+        en: 'Use the official campus page to confirm whether appointments or drop-in help are currently available.',
+        es: 'Usa la página oficial del campus para confirmar si actualmente hay citas o atención sin cita.'
       },
       actions: [
         {
@@ -474,7 +420,7 @@ You do **not** need to be admitted yet to ask questions. Bring an ID if you have
         }
       ]
     },
-    resourceIds: ['res-work-3', 'res-comm-2'],
+    resourceIds: [],
     followUpIds: ['ans-college-promise-requirements', 'ans-college-fafsa-vs-cadaa']
   },
   {
@@ -485,22 +431,8 @@ You do **not** need to be admitted yet to ask questions. Bring an ID if you have
       es: '¿Qué promedio de calificaciones se requiere?'
     },
     answer: {
-      en: `The Foothill–De Anza **College Promise** does not use a GPA cutoff to get in. Its requirements are about residency, timing, and course load:
-
-- California resident (or AB 540 / approved exempt status)
-- First-time college student — or returning after a long break, which varies by cohort
-- Enrolled **full time**, typically 12+ units per quarter
-- FAFSA or CADAA completed, plus the Promise program application itself
-
-To keep it, you need to meet the program’s academic progress standard and finish your units. If your grades slip you are usually asked to meet a counselor rather than dropped immediately — but the program office confirms that each quarter.`,
-      es: `El **College Promise** de Foothill–De Anza no usa un promedio mínimo para entrar. Sus requisitos tienen que ver con residencia, momento y carga de cursos:
-
-- Residente de California (o estatus AB 540 / exención aprobada)
-- Estudiante de primera vez en la universidad, o de regreso tras un periodo largo (varía por cohorte)
-- Inscripción de **tiempo completo**, normalmente 12+ créditos por trimestre
-- FAFSA o CADAA completada, más la solicitud del programa Promise
-
-Para conservarlo debes cumplir el estándar de progreso académico y terminar tus créditos. Si bajan tus calificaciones, normalmente te piden hablar con un consejero en lugar de retirarte de inmediato, pero la oficina del programa lo confirma cada trimestre.`
+      en: `There is no single GPA rule for every program called “Promise.” For the **De Anza College Promise beginning Fall 2026**, De Anza says students must maintain at least a **2.0 GPA** and remain enrolled in at least 12 units per quarter (with a stated disability accommodation). Foothill has its own cohort requirements, which can differ. These campus Promise programs are also distinct from the California College Promise Grant fee waiver. Check the official page for your college and entry year before relying on a GPA or eligibility rule.`,
+      es: `No existe una sola regla de promedio para todos los programas llamados “Promise”. Para **De Anza College Promise desde otoño de 2026**, De Anza indica que los estudiantes deben mantener un promedio mínimo de **2.0** y seguir inscritos en al menos 12 unidades por trimestre (con una excepción indicada para adaptaciones por discapacidad). Foothill tiene requisitos propios que pueden ser distintos. Estos programas Promise del campus también son diferentes de la exención California College Promise Grant. Revisa la página oficial de tu colegio y año de ingreso antes de confiar en un requisito de promedio o elegibilidad.`
     },
     context: [
       { en: 'College goal', es: 'Meta universitaria' },
@@ -522,8 +454,8 @@ Para conservarlo debes cumplir el estándar de progreso académico y terminar tu
     nextStep: {
       title: { en: 'Check your Promise cohort eligibility before registering', es: 'Revisa tu elegibilidad antes de inscribirte' },
       detail: {
-        en: 'Full-time enrollment is the requirement students miss most often. Confirm your unit count with a counselor.',
-        es: 'La inscripción de tiempo completo es el requisito que más se pasa por alto. Confirma tu número de créditos con un consejero.'
+        en: 'For De Anza’s Fall 2026 cohort, the posted minimum is 2.0 to maintain eligibility. Confirm the rule for your own campus and cohort.',
+        es: 'Para la cohorte de otoño de 2026 de De Anza, el mínimo publicado para mantener la elegibilidad es 2.0. Confirma la regla de tu campus y cohorte.'
       },
       actions: [
         {
