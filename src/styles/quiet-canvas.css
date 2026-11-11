@@ -125,6 +125,31 @@
   outline: none;
 }
 
+@media (max-width: 767px) {
+  .qc-ban {
+    padding: 9px 0;
+  }
+
+  .qc-ban-inner {
+    gap: 4px 12px;
+  }
+
+  .qc-ban b {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+  }
+
+  .qc-ban span {
+    font-size: 10.5px;
+    line-height: 1.45;
+  }
+
+  .qc-ban .qc-ban-link {
+    margin-left: 0;
+    font-size: 9.5px;
+  }
+}
+
 /* — Navigation — */
 .qc-nav {
   display: flex;
@@ -586,6 +611,14 @@
   }
 }
 
+@media (max-width: 767px) {
+  .qc-fs {
+    margin-top: 26px;
+    padding: 14px 20px;
+    gap: 12px 18px;
+  }
+}
+
 .qc-fs > span:first-child {
   font-size: 10.5px;
   font-weight: 500;
@@ -843,6 +876,13 @@
   box-shadow: 0 18px 50px rgba(10, 10, 10, 0.04);
 }
 
+@media (max-width: 767px) {
+  .qc-sheet {
+    margin-top: 28px;
+    padding: 20px;
+  }
+}
+
 /* — Advanced links — */
 .qc-adv {
   padding-top: 88px;
@@ -851,6 +891,12 @@
 @media (min-width: 1024px) {
   .qc-adv {
     padding-top: 110px;
+  }
+}
+
+@media (max-width: 767px) {
+  .qc-adv {
+    padding-top: 72px;
   }
 }
 
@@ -899,6 +945,12 @@
   font-size: 13.5px;
 }
 
+@media (max-width: 767px) {
+  .qc-ft {
+    margin-top: 72px;
+  }
+}
+
 .qc-ftg {
   padding-top: 60px;
   padding-bottom: 64px;
@@ -911,6 +963,14 @@
   .qc-ftg {
     grid-template-columns: 1fr;
     gap: 34px;
+  }
+}
+
+@media (max-width: 767px) {
+  .qc-ftg {
+    padding-top: 48px;
+    padding-bottom: 56px;
+    gap: 32px;
   }
 }
 

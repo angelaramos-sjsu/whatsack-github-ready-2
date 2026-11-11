@@ -289,7 +289,7 @@ export function App() {
           />
 
           {/* Demonstration resources */}
-          <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-16 scroll-mt-28">
+          <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-[72px] md:pt-16 scroll-mt-28">
             <h2 id="resources-heading" className="sr-only">
               {currentLanguage === 'en' ? 'Community resources' : 'Recursos comunitarios'}
             </h2>
