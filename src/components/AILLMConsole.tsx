@@ -85,6 +85,26 @@ const detectTopic = (lower: string, isRoleplayMode: boolean): AnswerTopic | null
   return null;
 };
 
+/** Approved answer copy uses **emphasis** and dash bullets; render it without raw markup. */
+const formatAnswerText = (text: string) =>
+  text.split('\n').map((line, index) => {
+    const trimmed = line.trim();
+    if (!trimmed) return null;
+    const isBullet = /^[-•]\s+/.test(trimmed);
+    const content = trimmed.replace(/^[-•]\s+/, '');
+    return (
+      <span key={index} className={isBullet ? 'cp-li' : 'cp-line'}>
+        {content.split(/(\*\*[^*]+\*\*)/g).map((part, partIndex) =>
+          part.startsWith('**') && part.endsWith('**') ? (
+            <strong key={partIndex}>{part.slice(2, -2)}</strong>
+          ) : (
+            part
+          )
+        )}
+      </span>
+    );
+  });
+
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   currentLanguage,
   userProfile,
@@ -100,14 +120,14 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [activePersonaId, setActivePersonaId] = useState<string | null>(null);
   const [isRoleplayMode, setIsRoleplayMode] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamRef = useRef<HTMLDivElement>(null);
 
   const greetingMessage: ChatMessage = {
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
-        ? `Hello! I am the **WhatSack Civic-LLM Copilot** — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
-        : `¡Hola! Soy el **Copiloto Civic-LLM de WhatSack** — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
+        ? `Hello! I am the WhatSack Civic-LLM Copilot — an AI navigator designed specifically for Silicon Valley residents.\n\nI can translate bureaucratic jargon, identify 100% free community programs across Santa Clara & San Mateo counties, clarify public charge rules, or help you practice an intake call. What situation can I assist you with today?`
+        : `¡Hola! Soy el Copiloto Civic-LLM de WhatSack — un navegador con IA diseñado especialmente para residentes de Silicon Valley.\n\nPuedo traducir trámites burocráticos confusos, encontrar despensas y programas 100% gratuitos en Santa Clara y San Mateo, aclarar reglas de carga pública o ayudarle a ensayar una llamada. ¿En qué situación le puedo apoyar hoy?`,
       timestamp: 'Just now',
       followUpIds: [
         'ans-food-east-sj-groceries',
@@ -194,9 +214,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
   };
 
-  // Auto scroll to bottom
+  // Keep the newest message in view without moving the page itself.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const stream = streamRef.current;
+    if (stream) stream.scrollTop = stream.scrollHeight;
   }, [messages, isGenerating]);
 
   // Handle persona selection in Copilot
@@ -245,84 +266,73 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   };
 
   return (
-    <div className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
-      {/* Top Copilot Bar */}
-      <div className="bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between flex-wrap gap-3">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shadow-md shadow-emerald-500/20">
-            <Bot className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="font-extrabold text-base text-white tracking-tight">
-                {t.aiCopilot.title}
-              </h2>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                {t.aiCopilot.badge}
-              </span>
+    <div className="cp">
+      {/* Copilot bar */}
+      <div className="cp-bar">
+        <div className="qc-shell cp-bar-in">
+          <div className="cp-id">
+            <span className="cp-mark" aria-hidden="true">
+              <Bot />
+            </span>
+            <div>
+              <div className="cp-title-row">
+                <h2 className="cp-title">{t.aiCopilot.title}</h2>
+                <span className="cp-tag">{t.aiCopilot.badge}</span>
+              </div>
+              <p className="cp-status">{t.aiCopilot.systemStatus}</p>
             </div>
-            <p className="text-xs text-slate-400">
-              {t.aiCopilot.systemStatus}
-            </p>
           </div>
-        </div>
 
-        {/* Action Buttons: Architecture & Decoder */}
-        <div className="flex items-center gap-2">
-          <button
-            onClick={onOpenArchitectureModal}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-          >
-            <Brain className="w-3.5 h-3.5 text-indigo-400" />
-            <span className="hidden sm:inline">{t.aiCopilot.architectureButton}</span>
-            <span className="sm:hidden">Architecture</span>
-          </button>
+          <div className="cp-actions">
+            <button type="button" onClick={onOpenArchitectureModal} className="cp-ghost">
+              <Brain aria-hidden="true" />
+              <span className="hidden sm:inline">{t.aiCopilot.architectureButton}</span>
+              <span className="sm:hidden">Architecture</span>
+            </button>
 
-          <button
-            onClick={onOpenDecoderModal}
-            className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors"
-          >
-            <FileText className="w-3.5 h-3.5 text-emerald-400" />
-            <span className="hidden sm:inline">{t.aiCopilot.decoderButton}</span>
-            <span className="sm:hidden">Decoder</span>
-          </button>
+            <button type="button" onClick={onOpenDecoderModal} className="cp-ghost">
+              <FileText aria-hidden="true" />
+              <span className="hidden sm:inline">{t.aiCopilot.decoderButton}</span>
+              <span className="sm:hidden">Decoder</span>
+            </button>
 
-          <button
-            onClick={() => setIsRoleplayMode(!isRoleplayMode)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
-              isRoleplayMode
-                ? 'bg-amber-500 text-slate-950 shadow-xs'
-                : 'bg-slate-800 text-amber-300 hover:bg-slate-700 border border-amber-500/30'
-            }`}
-          >
-            <PhoneCall className="w-3.5 h-3.5" />
-            <span>{t.aiCopilot.practiceRoleplay}</span>
-          </button>
+            <button
+              type="button"
+              onClick={() => setIsRoleplayMode(!isRoleplayMode)}
+              aria-pressed={isRoleplayMode}
+              className={`cp-ghost ${isRoleplayMode ? 'on' : ''}`}
+            >
+              <PhoneCall aria-hidden="true" />
+              <span>{t.aiCopilot.practiceRoleplay}</span>
+            </button>
 
-          <button
-            onClick={handleExportChat}
-            className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800"
-            title={t.aiCopilot.exportChat}
-          >
-            <Download className="w-4 h-4" />
-          </button>
+            <button
+              type="button"
+              onClick={handleExportChat}
+              className="cp-icon"
+              title={t.aiCopilot.exportChat}
+              aria-label={t.aiCopilot.exportChat}
+            >
+              <Download className="h-4 w-4" aria-hidden="true" />
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Persona Quick Simulator Bar */}
-      <div className="bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2.5 flex items-center gap-2 overflow-x-auto">
+      {/* Quick profile strip */}
+      <div className="cp-profiles">
+        <div className="qc-shell cp-profiles-in">
         <button
+          type="button"
           onClick={() => handleFollowUpClick(saraCollegeStageIds.start)}
-          className="px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 border mr-1 bg-slate-800 hover:bg-slate-700 text-emerald-300 border-emerald-700/50"
+          className="cp-chip cp-chip--gold"
         >
-          <Sparkles className="w-3.5 h-3.5" />
+          <Sparkles aria-hidden="true" />
           <span>{currentLanguage === 'en' ? "Start Sara's college story" : 'Iniciar la historia de Sara'}</span>
         </button>
 
-        <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider shrink-0 mr-1 flex items-center gap-1">
-          <User className="w-3.5 h-3.5 text-indigo-400" />
-          <span>{currentLanguage === 'en' ? 'Quick Profiles:' : 'Perfiles:'}</span>
+        <span className="cp-profiles-label">
+          {currentLanguage === 'en' ? 'Quick Profiles' : 'Perfiles'}
         </span>
 
         {userProfile && (
@@ -336,9 +346,9 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 userProfile.name
               );
             }}
-            className="px-3 py-1 rounded-xl text-xs font-bold transition-all shrink-0 flex items-center gap-1.5 bg-emerald-600 text-white border border-emerald-500 shadow-xs"
+            className="cp-chip cp-chip--solid"
           >
-            <span>👤</span>
+            <User aria-hidden="true" />
             <span>{currentLanguage === 'en' ? `Ask as ${userProfile.name}` : `Consultar como ${userProfile.name}`}</span>
           </button>
         )}
@@ -346,109 +356,79 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         {fictionalPersonas.map((persona) => (
           <button
             key={persona.id}
+            type="button"
             onClick={() => handleSelectPersona(persona)}
-            className={`px-3 py-1 rounded-xl text-xs font-semibold transition-all shrink-0 flex items-center gap-1.5 border ${
-              activePersonaId === persona.id
-                ? 'bg-indigo-600 text-white border-indigo-500 shadow-xs'
-                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
-            }`}
+            className={`cp-chip ${activePersonaId === persona.id ? 'on' : ''}`}
           >
-            <img src={persona.avatarUrl} alt={persona.name} className="w-4 h-4 rounded-full object-cover" />
+            <img src={persona.avatarUrl} alt="" />
             <span>{persona.name} ({persona.age})</span>
           </button>
         ))}
 
         {activePersonaId && (
-          <button
-            onClick={() => setActivePersonaId(null)}
-            className="text-[11px] font-bold text-slate-400 hover:text-white underline ml-1 shrink-0"
-          >
+          <button type="button" onClick={() => setActivePersonaId(null)} className="cp-reset">
             {currentLanguage === 'en' ? 'Reset persona' : 'Quitar persona'}
           </button>
         )}
+        </div>
       </div>
 
-      {/* Main Chat Stream Container */}
-      <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
+      {/* Conversation */}
+      <div ref={streamRef} className="qc-shell cp-stream">
+        <div className="cp-feed">
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
 
           return (
             <div
               key={msg.id}
-              className={`flex gap-3 sm:gap-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`cp-msg ${msg.sender === 'user' ? 'cp-msg--user' : 'cp-msg--llm'}`}
             >
-              {isLlm && (
-                <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <Bot className="w-4 h-4" />
-                </div>
-              )}
+              <div className="cp-meta">
+                <span className="cp-who">
+                  {msg.sender === 'user'
+                    ? (msg.personaName || (currentLanguage === 'en' ? 'Resident inquiry' : 'Consulta ciudadana'))
+                    : 'WhatSack Civic-LLM'}
+                </span>
+                <span className="cp-time">{msg.timestamp}</span>
+              </div>
 
-              <div className={`max-w-2xl w-full rounded-2xl p-4 sm:p-5 shadow-xs ${
-                msg.sender === 'user'
-                  ? 'bg-emerald-700 text-white ml-8 rounded-tr-xs'
-                  : 'bg-slate-800/90 text-slate-100 border border-slate-700/80 rounded-tl-xs'
-              }`}>
-                {/* Message Header */}
-                <div className="flex items-center justify-between mb-2 pb-1 border-b border-slate-700/40 text-[11px]">
-                  <span className="font-bold flex items-center gap-1.5">
-                    {msg.sender === 'user' ? (
-                      <>
-                        <User className="w-3.5 h-3.5 text-emerald-200" />
-                        <span>{msg.personaName ? `${msg.personaName}` : (currentLanguage === 'en' ? 'Resident Inquiry' : 'Consulta Ciudadana')}</span>
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>WhatSack Civic-LLM</span>
-                      </>
-                    )}
-                  </span>
-                  <span className="text-slate-400 text-[10px]">{msg.timestamp}</span>
-                </div>
-
-                {/* Message Text Content */}
-                <div className="text-xs sm:text-sm leading-relaxed whitespace-pre-wrap font-sans space-y-2">
-                  {msg.text}
-                </div>
+              <div className="cp-bubble">
+                <p className="cp-text">{formatAnswerText(msg.text)}</p>
 
                 {/* Grounded Resource Cards Preview */}
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
-                  <div className="mt-4 pt-3 border-t border-slate-700/60 space-y-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                      {currentLanguage === 'en' ? 'Grounded Demonstration Resources:' : 'Recursos de Demostración Vinculados:'}
+                  <div className="cp-block">
+                    <span className="cp-block-label">
+                      {currentLanguage === 'en' ? 'Grounded demonstration resources' : 'Recursos de demostración vinculados'}
                     </span>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div className="cp-res-grid">
                       {msg.recommendedResourceIds.map((resId) => {
                         const res = demonstrationResources.find(r => r.id === resId);
                         if (!res) return null;
 
                         return (
-                          <div
-                            key={res.id}
-                            className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700 hover:border-emerald-500/50 transition-colors flex flex-col justify-between"
-                          >
+                          <div key={res.id} className="cp-res">
                             <div>
-                              <div className="flex items-center justify-between gap-1 mb-1">
-                                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-400">
-                                  {res.costType}
-                                </span>
-                                <span className="text-[10px] text-slate-400 font-mono">{res.location.city}</span>
+                              <div className="cp-res-top">
+                                <span className="cp-res-cost">{res.costType}</span>
+                                <span className="cp-res-city">{res.location.city}</span>
                               </div>
-                              <h5 className="font-bold text-xs text-white line-clamp-1">
+                              <h5 className="cp-res-title line-clamp-1">
                                 {res.title[currentLanguage]}
                               </h5>
-                              <p className="text-[11px] text-slate-400 line-clamp-1 mt-0.5">
+                              <p className="cp-res-org line-clamp-1">
                                 {res.organization[currentLanguage]}
                               </p>
                             </div>
 
                             <button
+                              type="button"
                               onClick={() => onOpenInsights(res)}
-                              className="mt-2 text-[11px] font-bold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+                              className="cp-res-link"
                             >
                               <span>{t.resourceCard.viewInsights}</span>
-                              <ArrowRight className="w-3 h-3" />
+                              <ArrowRight aria-hidden="true" />
                             </button>
                           </div>
                         );
@@ -469,71 +449,51 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
                 {isLlm && !!msg.followUpIds?.length && (
-                  <div className="mt-4 pt-3 border-t border-slate-700/60">
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                      {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
+                  <div className="cp-block">
+                    <span className="cp-block-label">
+                      {currentLanguage === 'en' ? 'Follow-up prompts' : 'Preguntas sugeridas'}
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="cp-sugg">
                       {resolveFollowUps(msg.followUpIds).map((followUp) => (
                         <button
                           key={followUp.id}
                           type="button"
                           onClick={() => handleFollowUpClick(followUp.id)}
-                          className="text-[11px] px-2.5 py-1 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 border border-slate-600 hover:border-emerald-400 text-left transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-400"
                         >
-                          💬 {followUp.question[currentLanguage]}
+                          {followUp.question[currentLanguage]}
                         </button>
                       ))}
                     </div>
                   </div>
                 )}
               </div>
-
-              {msg.sender === 'user' && (
-                <div className="w-8 h-8 rounded-xl bg-emerald-600 flex items-center justify-center text-white shrink-0 shadow-xs">
-                  <User className="w-4 h-4" />
-                </div>
-              )}
             </div>
           );
         })}
 
-        {/* Live Generating & Thinking Animation */}
+        {/* Live generating state */}
         {isGenerating && (
-          <div className="flex gap-3 items-start animate-in fade-in duration-200">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center text-white shrink-0 shadow-xs">
-              <Bot className="w-4 h-4 animate-spin" />
-            </div>
-            <div className="p-4 rounded-2xl bg-slate-800 border border-slate-700 text-xs text-slate-300 max-w-md space-y-2">
-              <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
-                <Brain className="w-4 h-4 animate-pulse" />
-                <span>{t.aiCopilot.thinking}</span>
-              </div>
-              <ul className="text-[11px] text-slate-400 space-y-1">
-                <li className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  <span>{t.aiCopilot.retrievalStep2}</span>
-                </li>
-                <li className="flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-                  <span>{t.aiCopilot.retrievalStep3}</span>
-                </li>
-              </ul>
-            </div>
+          <div className="cp-think" role="status">
+            <span className="cp-dots" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+            </span>
+            <span>{t.aiCopilot.thinking}</span>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
+        </div>
       </div>
 
-      {/* Input Bar Form */}
-      <div className="bg-slate-950 border-t border-slate-800 p-4 sm:p-5">
+      {/* Composer */}
+      <div className="cp-composer">
+        <div className="qc-shell">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSendMessage();
           }}
-          className="max-w-4xl mx-auto relative flex items-center gap-2"
+          className="cp-form"
         >
           <label htmlFor="civic-copilot-input" className="sr-only">
             {isRoleplayMode 
@@ -549,25 +509,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               ? (currentLanguage === 'en' ? 'Type your practice phone response to Elena...' : 'Escriba su respuesta de práctica a Elena...')
               : t.aiCopilot.chatPlaceholder
             }
-            className="flex-1 bg-slate-900 border border-slate-700 focus:border-emerald-500 text-white placeholder-slate-400 text-xs sm:text-sm rounded-2xl px-4 py-3 focus:outline-hidden transition-colors min-h-[46px]"
+            className="cp-input"
           />
 
           <button
             type="submit"
             disabled={!inputText.trim() || isGenerating}
-            className="min-h-[46px] px-6 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 disabled:cursor-not-allowed text-white font-extrabold text-xs sm:text-sm rounded-2xl flex items-center gap-2 transition-all shadow-md shadow-emerald-600/20 focus-visible:ring-2 focus-visible:ring-emerald-400"
+            className="cp-send"
             aria-label={t.aiCopilot.send}
           >
             <span className="hidden sm:inline">{t.aiCopilot.send}</span>
-            <Send className="w-4 h-4" aria-hidden="true" />
+            <Send aria-hidden="true" />
           </button>
         </form>
 
-        <p className="text-center text-xs text-slate-400 font-medium mt-2.5">
+        <p className="cp-note">
           {currentLanguage === 'en'
             ? 'WhatSack Civic-LLM grounds outputs strictly in demonstration records. No personal data collected or stored.'
             : 'El Civic-LLM de WhatSack fundamenta respuestas en registros demostrativos. No se recopilan datos personales.'}
         </p>
+        </div>
       </div>
     </div>
   );
