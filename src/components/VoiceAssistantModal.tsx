@@ -37,11 +37,11 @@ export const VoiceAssistantModal: React.FC<VoiceAssistantModalProps> = ({
     {
       label: currentLanguage === 'en' ? 'Maria (Food)' : 'María (Alimentos)',
       spoken: currentLanguage === 'en'
-        ? 'Where can I get groceries in East San Jose without showing an ID or SSN?'
-        : '¿Dónde puedo conseguir despensa en el Este de San José sin mostrar identificación ni Seguro Social?',
+        ? 'Where can I find free groceries in East San Jose?'
+        : '¿Dónde puedo encontrar despensa gratuita en el Este de San José?',
       response: currentLanguage === 'en'
-        ? 'I found Sacred Heart Community Service Saturday pantry and Second Harvest Mobile Produce in East San Jose. Neither requires state ID, SSN, or income verification. You can walk in this Saturday at 9:00 AM.'
-        : 'Encontré la despensa de los sábados de Sacred Heart y el Mercado Móvil de Second Harvest en el Este de San José. Ninguno pide ID estatal, Seguro Social ni comprobante de ingresos. Puede acudir este sábado a las 9:00 AM.'
+        ? 'Second Harvest of Silicon Valley lists free grocery sites in Santa Clara and San Mateo counties with current days and times, and you can filter for sites that require no documents. Sacred Heart Community Service in San Jose offers free groceries on weekdays; new members register online. Call 1-800-984-3663 for help.'
+        : 'Second Harvest of Silicon Valley enumera sitios de alimentos gratuitos en los condados de Santa Clara y San Mateo con días y horarios actuales, y puedes filtrar los que no piden documentos. Sacred Heart Community Service en San José ofrece alimentos gratuitos entre semana; las personas nuevas se registran en línea. Llama al 1-800-984-3663 para recibir ayuda.'
     },
     {
       label: currentLanguage === 'en' ? 'Mateo (Mental Health)' : 'Mateo (Salud Mental)',

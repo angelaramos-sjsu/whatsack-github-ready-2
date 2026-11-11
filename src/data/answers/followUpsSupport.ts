@@ -374,18 +374,18 @@ Pregunta dos cosas al llamar: si el almuerzo requiere reservación y si hay plat
     answer: {
       en: `**[Elena, Intake Specialist]**
 
-*"Thank you — East San Jose, and groceries for your children. That is exactly what our Saturday pantry is for. Let me ask three quick things so I can prepare your bag.*
+*"Thank you — East San Jose, and groceries for your children. Let me ask three quick things so I can help you find the right site.*
 
-*First, how many people are in your household? Second, are there any food allergies I should write down? Third, can you come Saturday between 9 and 1, or do you need a weekday option?"*
+*First, how many people are in your household? Second, are there any food allergies I should write down? Third, which days and times work for you, so I can check the current distributions near you?"*
 
-Try answering in your own words — or ask me what to do if Saturday does not work.`,
+Try answering in your own words — or ask me what to do if a site asks for documents.`,
       es: `**[Elena, Especialista de Registro]**
 
-*"Gracias: Este de San José y despensa para sus hijos. Eso es precisamente para lo que sirve nuestra despensa del sábado. Permítame tres preguntas rápidas para preparar su bolsa.*
+*"Gracias: Este de San José y despensa para sus hijos. Permítame tres preguntas rápidas para ayudarle a encontrar el sitio adecuado.*
 
-*Primero, ¿cuántas personas hay en su hogar? Segundo, ¿alguna alergia alimentaria que deba anotar? Tercero, ¿puede venir el sábado entre 9 y 1, o necesita una opción entre semana?"*
+*Primero, ¿cuántas personas hay en su hogar? Segundo, ¿alguna alergia alimentaria que deba anotar? Tercero, ¿qué días y horarios le funcionan, para revisar las distribuciones actuales cerca de usted?"*
 
-Intenta responder con tus propias palabras o pregúntame qué hacer si el sábado no te funciona.`
+Intenta responder con tus propias palabras o pregúntame qué hacer si un sitio pide documentos.`
     },
     context: [
       { en: 'Practice call', es: 'Llamada de práctica' },

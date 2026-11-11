@@ -2,6 +2,7 @@ import type { ScriptedAnswer } from './types';
 
 /** Follow-up answers for food, workforce and college questions. */
 export const programFollowUpAnswers: ScriptedAnswer[] = [
+
   {
     id: 'ans-food-proof-of-address',
     topic: 'food',
@@ -10,53 +11,57 @@ export const programFollowUpAnswers: ScriptedAnswer[] = [
       es: '¿Debo mostrar comprobante de domicilio?'
     },
     answer: {
-      en: `**No.** The Sacred Heart Saturday Community Food Pantry does not ask for proof of address, a state ID, or an income document — households self-attest at the greeting desk. The Second Harvest Mobile Produce Market works the same way: walk up, give a first name if you are comfortable, and receive produce.
+      en: `**It depends on the site — check the listing before you go.**
 
-Pantries set their own rules, though. If a site does ask for a document, ask whether a piece of mail or a spoken address is enough — many accept that.`,
-      es: `**No.** La Despensa Comunitaria de Sábados de Sacred Heart no pide comprobante de domicilio, identificación estatal ni documento de ingresos: las familias se autodeclaran en la mesa de bienvenida. El Mercado Móvil de Second Harvest funciona igual: llega, da tu nombre si te sientes cómodo y recibe productos.
+Second Harvest's Food Locator shows each distribution's days and times, and it has a “No documents required” filter for sites that do not ask for documents. Other pantries, including Sacred Heart, ask new members to register online before the first visit.
 
-Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregunta si basta con una carta recibida o con decir tu dirección en voz alta: muchas lo aceptan.`
+If a site does ask for something, call the number in its listing and ask what it accepts. Rules change, so the official listing is the reliable answer.`,
+      es: `**Depende del sitio — revisa el listado antes de ir.**
+
+El Localizador de Alimentos de Second Harvest muestra los días y horarios de cada distribución y tiene un filtro “No documents required” para los sitios que no piden documentos. Otras despensas, como Sacred Heart, piden que las personas nuevas se registren en línea antes de la primera visita.
+
+Si un sitio sí pide algo, llama al número de su listado y pregunta qué acepta. Las reglas cambian, así que el listado oficial es la respuesta confiable.`
     },
     context: [
-      { en: 'East San Jose', es: 'Este de San José' },
       { en: 'Food access', es: 'Acceso a alimentos' },
-      { en: 'No ID required', es: 'Sin identificación' }
+      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' },
+      { en: 'Verify site rules', es: 'Verifica las reglas del sitio' }
     ],
     links: [
       {
-        label: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        url: 'https://www.sacredheartcs.org/'
-      },
-      {
-        label: { en: 'Second Harvest — find food near you', es: 'Second Harvest — encuentra alimentos cerca' },
+        label: { en: 'Second Harvest — Food Locator', es: 'Second Harvest — Localizador de Alimentos' },
         source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
         url: 'https://www.shfb.org/get-food/'
+      },
+      {
+        label: { en: 'Sacred Heart Community Service — Food Program', es: 'Sacred Heart Community Service — Programa de Alimentos' },
+        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
+        url: 'https://www.sacredheartcs.org/programs-food-clothing'
       }
     ],
     nextStep: {
-      title: { en: 'Confirm the document policy before you go', es: 'Confirma la política de documentos antes de ir' },
+      title: { en: 'Use the locator filter before you go', es: 'Usa el filtro del localizador antes de ir' },
       detail: {
-        en: 'Pantry rules differ by site. A two-minute call tells you exactly what to bring — often nothing.',
-        es: 'Las reglas cambian según el sitio. Una llamada de dos minutos te dice qué llevar: muchas veces nada.'
+        en: 'The “No documents required” filter shows sites that do not ask for documents. For any other site, the listing includes a number to call.',
+        es: 'El filtro “No documents required” muestra los sitios que no piden documentos. Para cualquier otro sitio, el listado incluye un número para llamar.'
       },
       actions: [
         {
-          id: 'food-address-save',
-          kind: 'save-plan',
-          label: { en: 'Save pantry to my plan', es: 'Guardar despensa en mi plan' },
-          resourceId: 'res-food-1'
-        },
-        {
           id: 'food-address-site',
           kind: 'open-link',
-          label: { en: 'Open Sacred Heart website', es: 'Abrir el sitio de Sacred Heart' },
-          url: 'https://www.sacredheartcs.org/'
+          label: { en: 'Open the Food Locator', es: 'Abrir el Localizador de Alimentos' },
+          url: 'https://www.shfb.org/get-food/'
+        },
+        {
+          id: 'food-address-save',
+          kind: 'save-plan',
+          label: { en: 'Save the Sacred Heart food program', es: 'Guardar el programa de alimentos de Sacred Heart' },
+          resourceId: 'res-food-1'
         }
       ]
     },
     resourceIds: ['res-food-1'],
-    followUpIds: ['ans-food-diapers-formula', 'ans-food-greeting-desk-roleplay']
+    followUpIds: ['ans-food-calfresh-help', 'ans-food-diapers-formula']
   },
   {
     id: 'ans-food-diapers-formula',
@@ -66,53 +71,58 @@ Cada despensa fija sus propias reglas. Si un sitio sí pide un documento, pregun
       es: '¿Tienen pañales o leche infantil?'
     },
     answer: {
-      en: `Pantry stock changes every week, and neither the Saturday pantry nor the produce market **guarantees** diapers or infant formula. Diapers usually appear as a separate baby-supplies table when donations allow, in limited sizes. Formula is rarer and may only be available through an infant-specific program.
+      en: `**No pantry guarantees diapers or infant formula.** Supplies depend on what was donated that week, so ask the site directly — the Food Locator lists a contact number for each distribution.
 
-For formula, the statewide **WIC** program is the reliable route: it provides infant formula and food benefits for pregnant people, new parents, and children under 5. It is a separate program from CalFresh.`,
-      es: `El inventario de las despensas cambia cada semana, y ni la despensa del sábado ni el mercado de productos **garantizan** pañales o leche infantil. Los pañales suelen aparecer en una mesa aparte de artículos para bebé cuando hay donaciones, en tallas limitadas. La leche infantil es más escasa y a veces solo se consigue por un programa específico para bebés.
+For infant formula, **WIC** is the reliable route. WIC serves pregnant and postpartum women, infants, and children up to age 5, and it is a separate program from CalFresh. Apply through your county WIC office.`,
+      es: `**Ninguna despensa garantiza pañales ni leche infantil.** Los suministros dependen de lo que se donó esa semana, así que pregunta directamente en el sitio — el Localizador de Alimentos incluye un número de contacto para cada distribución.
 
-Para la leche infantil, el programa estatal **WIC** es la vía confiable: ofrece fórmula y beneficios de alimentos para personas embarazadas, madres y padres recientes y niños menores de 5 años. Es un programa distinto de CalFresh.`
+Para la leche infantil, **WIC** es la vía confiable. WIC atiende a personas embarazadas y en posparto, bebés y niños hasta los 5 años, y es un programa distinto de CalFresh. Solicítalo en la oficina de WIC de tu condado.`
     },
     context: [
-      { en: 'East San Jose', es: 'Este de San José' },
       { en: 'Children under 5', es: 'Niños menores de 5 años' },
-      { en: 'Food access', es: 'Acceso a alimentos' }
+      { en: 'Food access', es: 'Acceso a alimentos' },
+      { en: 'WIC', es: 'WIC' }
     ],
     links: [
       {
-        label: { en: 'California WIC program', es: 'Programa WIC de California' },
-        source: { en: 'California Department of Public Health', es: 'Departamento de Salud Pública de California' },
-        url: 'https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx'
+        label: { en: 'Santa Clara County WIC', es: 'WIC del Condado de Santa Clara' },
+        source: { en: 'Santa Clara County Public Health', es: 'Salud Pública del Condado de Santa Clara' },
+        url: 'https://publichealth.sccgov.org/services/women-infants-and-children-wic'
       },
       {
-        label: { en: 'Second Harvest — get food', es: 'Second Harvest — obtener alimentos' },
+        label: { en: 'San Mateo County WIC', es: 'WIC del Condado de San Mateo' },
+        source: { en: 'San Mateo County Health', es: 'San Mateo County Health' },
+        url: 'https://www.smchealth.org/wic'
+      },
+      {
+        label: { en: 'Second Harvest — Food Locator', es: 'Second Harvest — Localizador de Alimentos' },
         source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
         url: 'https://www.shfb.org/get-food/'
       }
     ],
     nextStep: {
-      title: { en: 'Mention your children’s ages at the greeting desk', es: 'Menciona las edades de tus hijos en la mesa de bienvenida' },
+      title: { en: 'Start with your county WIC office', es: 'Empieza en la oficina de WIC de tu condado' },
       detail: {
-        en: 'Staff can point you to a baby-supplies table or an infant formula program faster than searching alone.',
-        es: 'El personal puede orientarte hacia la mesa de artículos para bebé o a un programa de fórmula más rápido que buscando por tu cuenta.'
+        en: 'WIC is separate from CalFresh and covers infant formula. The Food Locator listing tells you whom to ask about diapers at a specific site.',
+        es: 'WIC es distinto de CalFresh y cubre la leche infantil. El listado del Localizador te dice a quién preguntar por pañales en un sitio específico.'
       },
       actions: [
         {
-          id: 'food-baby-save',
-          kind: 'save-plan',
-          label: { en: 'Save pantry to my plan', es: 'Guardar despensa en mi plan' },
-          resourceId: 'res-food-1'
-        },
-        {
           id: 'food-baby-wic',
           kind: 'open-link',
-          label: { en: 'Open WIC program page', es: 'Abrir la página de WIC' },
-          url: 'https://www.cdph.ca.gov/Programs/CFH/DWICSN/Pages/Program-Landing1.aspx'
+          label: { en: 'Open Santa Clara County WIC', es: 'Abrir WIC del Condado de Santa Clara' },
+          url: 'https://publichealth.sccgov.org/services/women-infants-and-children-wic'
+        },
+        {
+          id: 'food-baby-save',
+          kind: 'save-plan',
+          label: { en: 'Save the Food Locator', es: 'Guardar el Localizador de Alimentos' },
+          resourceId: 'res-food-2'
         }
       ]
     },
-    resourceIds: ['res-food-1', 'res-food-2'],
-    followUpIds: ['ans-food-greeting-desk-roleplay', 'ans-food-proof-of-address']
+    resourceIds: ['res-food-2'],
+    followUpIds: ['ans-food-greeting-desk-roleplay', 'ans-food-calfresh-help']
   },
   {
     id: 'ans-food-greeting-desk-roleplay',
@@ -122,17 +132,17 @@ Para la leche infantil, el programa estatal **WIC** es la vía confiable: ofrece
       es: 'Ensayar la conversación en la mesa de bienvenida'
     },
     answer: {
-      en: `Here is a short script you can say out loud before Saturday:
+      en: `Here is a short script you can say out loud before your first pantry visit:
 
 **Volunteer:** “Good morning! Is this your first time here?”
-**You:** “Yes, it’s my first time. I’m here for groceries for my family.”
+**You:** “Yes, it's my first time. I'm here for groceries for my family.”
 **Volunteer:** “How many people are in your household?”
 **You:** “Four — two adults and two children.”
 **Volunteer:** “Any allergies or dietary needs?”
-**You:** “No allergies, but we’d use beans, rice, and fresh vegetables.”
+**You:** “No allergies, but we'd use beans, rice, and fresh vegetables.”
 
-You can also ask: “Do you have a baby-supplies table today?” You never need to explain **why** you need food, and you do not need to show ID.`,
-      es: `Aquí tienes un guion corto para decirlo en voz alta antes del sábado:
+You can also ask: “What do I need to bring today?” You never have to explain why you need food. If a site asks for documents, ask what it accepts before your visit.`,
+      es: `Aquí tienes un guion corto para decirlo en voz alta antes de tu primera visita a una despensa:
 
 **Voluntario:** “¡Buenos días! ¿Es su primera vez aquí?”
 **Tú:** “Sí, es mi primera vez. Vengo por alimentos para mi familia.”
@@ -141,18 +151,23 @@ You can also ask: “Do you have a baby-supplies table today?” You never need 
 **Voluntario:** “¿Alguna alergia o necesidad alimentaria?”
 **Tú:** “Sin alergias, pero nos sirven frijoles, arroz y verduras frescas.”
 
-También puedes preguntar: “¿Hoy tienen mesa de artículos para bebé?” Nunca tienes que explicar **por qué** necesitas alimentos y no necesitas mostrar identificación.`
+También puedes preguntar: “¿Qué necesito traer hoy?” Nunca tienes que explicar por qué necesitas alimentos. Si un sitio pide documentos, pregunta qué acepta antes de tu visita.`
     },
     context: [
       { en: 'Practice call', es: 'Llamada de práctica' },
-      { en: 'East San Jose', es: 'Este de San José' },
-      { en: 'No ID required', es: 'Sin identificación' }
+      { en: 'Food access', es: 'Acceso a alimentos' },
+      { en: 'No need to explain why', es: 'No hace falta explicar por qué' }
     ],
     links: [
       {
-        label: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
+        label: { en: 'Sacred Heart Community Service — Food Program', es: 'Sacred Heart Community Service — Programa de Alimentos' },
         source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        url: 'https://www.sacredheartcs.org/'
+        url: 'https://www.sacredheartcs.org/programs-food-clothing'
+      },
+      {
+        label: { en: 'Second Harvest — Food Locator', es: 'Second Harvest — Localizador de Alimentos' },
+        source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
+        url: 'https://www.shfb.org/get-food/'
       }
     ],
     nextStep: {
@@ -165,19 +180,74 @@ También puedes preguntar: “¿Hoy tienen mesa de artículos para bebé?” Nun
         {
           id: 'food-roleplay-save',
           kind: 'save-plan',
-          label: { en: 'Save pantry to my plan', es: 'Guardar despensa en mi plan' },
+          label: { en: 'Save the Sacred Heart food program', es: 'Guardar el programa de alimentos de Sacred Heart' },
           resourceId: 'res-food-1'
         },
         {
           id: 'food-roleplay-site',
           kind: 'open-link',
-          label: { en: 'Open Sacred Heart website', es: 'Abrir el sitio de Sacred Heart' },
-          url: 'https://www.sacredheartcs.org/'
+          label: { en: 'Open the Sacred Heart food page', es: 'Abrir la página de alimentos de Sacred Heart' },
+          url: 'https://www.sacredheartcs.org/programs-food-clothing'
         }
       ]
     },
     resourceIds: ['res-food-1'],
     followUpIds: ['ans-food-diapers-formula', 'ans-roleplay-nervous-start']
+  },
+  {
+    id: 'ans-food-calfresh-help',
+    topic: 'food',
+    question: {
+      en: 'Get CalFresh application help',
+      es: 'Obtener ayuda con la solicitud de CalFresh'
+    },
+    answer: {
+      en: `**CalFresh (also called SNAP, EBT or food stamps) puts money on an EBT card each month to buy food at most stores, farmers markets, and online.**
+
+Second Harvest of Silicon Valley's CalFresh page explains who may qualify and offers free help with the application: you can request a call from their Food Connection team in your language, or apply on your own through BenefitsCal. Eligibility depends on household size and income, and U.S.-born children may qualify no matter where their parents were born. Second Harvest is not a government agency.`,
+      es: `**CalFresh (también llamado SNAP, EBT o cupones de alimentos) deposita dinero cada mes en una tarjeta EBT para comprar comida en la mayoría de las tiendas, mercados de agricultores y en línea.**
+
+La página de CalFresh de Second Harvest of Silicon Valley explica quién puede calificar y ofrece ayuda gratuita con la solicitud: puedes pedir que te llame su equipo Food Connection en tu idioma o solicitar por tu cuenta a través de BenefitsCal. La elegibilidad depende del tamaño del hogar y de los ingresos, y los hijos nacidos en Estados Unidos pueden calificar sin importar dónde nacieron sus padres. Second Harvest no es una agencia de gobierno.`
+    },
+    context: [
+      { en: 'CalFresh / SNAP', es: 'CalFresh / SNAP' },
+      { en: 'Application help', es: 'Ayuda con la solicitud' },
+      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' }
+    ],
+    links: [
+      {
+        label: { en: 'Second Harvest — CalFresh help and application', es: 'Second Harvest — ayuda y solicitud de CalFresh' },
+        source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
+        url: 'https://www.shfb.org/get-food/calfresh/'
+      },
+      {
+        label: { en: 'BenefitsCal — apply for CalFresh', es: 'BenefitsCal — solicitar CalFresh' },
+        source: { en: 'State of California', es: 'Estado de California' },
+        url: 'https://benefitscal.com/'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Use the free CalFresh help page', es: 'Usa la página gratuita de ayuda de CalFresh' },
+      detail: {
+        en: 'Second Harvest can answer questions and help you apply in your language. BenefitsCal is the official application site.',
+        es: 'Second Harvest puede responder preguntas y ayudarte a solicitar en tu idioma. BenefitsCal es el sitio oficial de solicitud.'
+      },
+      actions: [
+        {
+          id: 'food-calfresh-site',
+          kind: 'open-link',
+          label: { en: 'Open CalFresh help', es: 'Abrir la ayuda de CalFresh' },
+          url: 'https://www.shfb.org/get-food/calfresh/'
+        },
+        {
+          id: 'food-calfresh-apply',
+          kind: 'open-link',
+          label: { en: 'Open BenefitsCal', es: 'Abrir BenefitsCal' },
+          url: 'https://benefitscal.com/'
+        }
+      ]
+    },
+    followUpIds: ['ans-food-east-sj-groceries', 'ans-food-proof-of-address']
   },
   {
     id: 'ans-work-edd-impact',

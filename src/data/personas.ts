@@ -46,12 +46,12 @@ export const fictionalPersonas: Persona[] = [
     ],
     sampleQuestions: [
       {
-        en: 'Where can I get groceries in East San Jose without showing an ID or SSN?',
-        es: '¿Dónde puedo conseguir despensa en el Este de San José sin mostrar identificación ni Seguro Social?'
+        en: 'Where can I find free groceries near East San Jose?',
+        es: '¿Dónde puedo encontrar despensa gratuita cerca del Este de San José?'
       },
       {
-        en: 'Are there weekend food pantries near the Alum Rock VTA light rail line?',
-        es: '¿Hay despensas comunitarias los fines de semana cerca de la línea VTA de Alum Rock?'
+        en: 'Are there food pantries open on weekends near the Alum Rock VTA light rail line?',
+        es: '¿Hay despensas abiertas los fines de semana cerca de la línea VTA de Alum Rock?'
       },
       {
         en: 'Can my kids receive food assistance even if I am undocumented?',
@@ -64,39 +64,39 @@ export const fictionalPersonas: Persona[] = [
         stepNumber: 1,
         title: { en: 'Stigma-Free Inquiry', es: 'Consulta sin Estigma' },
         narrative: {
-          en: 'Maria types a voice prompt asking if food pantries report visitors. WhatSack clarifies that charitable community pantries never share data or check legal status.',
-          es: 'María pregunta por voz si las despensas reportan a los visitantes. WhatSack aclara que las despensas benéficas no comparten datos ni revisan estatus legal.'
+          en: 'Maria asks whether food pantries check immigration status. WhatSack points her to the official Second Harvest locator, where each site listing says what, if anything, visitors need to bring.',
+          es: 'María pregunta si las despensas revisan el estatus migratorio. WhatSack la dirige al localizador oficial de Second Harvest, donde cada listado indica qué necesita llevar, si algo.'
         },
-        recommendedResourceId: 'res-food-1',
+        recommendedResourceId: 'res-food-2',
         keyTakeaway: {
-          en: 'Charitable food pantries in Santa Clara County are open to all community members regardless of immigration background.',
-          es: 'Las despensas caritativas del Condado de Santa Clara son abiertas a toda la comunidad sin importar su situación migratoria.'
+          en: 'Site rules differ — the official locator shows each distribution and whether it requires documents.',
+          es: 'Las reglas varían por sitio — el localizador oficial muestra cada distribución y si requiere documentos.'
         }
       },
       {
         stepNumber: 2,
         title: { en: 'Schedule & Transit Alignment', es: 'Alineación de Horario y Transporte' },
         narrative: {
-          en: 'WhatSack highlights the Saturday Morning Community Pantry at Sacred Heart Community Service, reachable via VTA Route 22 within 15 minutes of her home.',
-          es: 'WhatSack destaca la Despensa Comunitaria de los Sábados en Sacred Heart, accesible en autobús VTA Línea 22 a 15 minutos de su casa.'
+          en: 'WhatSack compares current times in the locator with Sacred Heart Community Service in San Jose, whose food program runs weekdays, including Tuesday until 6:00 PM.',
+          es: 'WhatSack compara los horarios actuales del localizador con Sacred Heart Community Service en San José, cuyo programa de alimentos es entre semana, incluido el martes hasta las 6:00 PM.'
         },
         recommendedResourceId: 'res-food-1',
         keyTakeaway: {
-          en: 'Weekend walk-in hours avoid her weekday work conflict completely.',
-          es: 'El horario de sábados evita por completo el conflicto con sus turnos de trabajo.'
+          en: 'Filter by day and time instead of relying on an old flyer.',
+          es: 'Filtra por día y hora en lugar de confiar en un folleto antiguo.'
         }
       },
       {
         stepNumber: 3,
         title: { en: 'Preparation Checklist', es: 'Lista de Preparación' },
         narrative: {
-          en: 'Maria saves the NextStep Insight checklist: bring 2 reusable grocery bags and arrive 20 minutes before 9:00 AM distribution.',
-          es: 'María guarda la lista de SiguientePaso: llevar 2 bolsas reutilizables y llegar 20 minutos antes de las 9:00 AM.'
+          en: 'Maria saves the Sacred Heart food program card and registers online before her first visit; the Spanish registration form is linked on the same page.',
+          es: 'María guarda la tarjeta del programa de alimentos de Sacred Heart y se registra en línea antes de su primera visita; el formulario en español está en la misma página.'
         },
         recommendedResourceId: 'res-food-1',
         keyTakeaway: {
-          en: 'No paperwork or appointments required for walk-in pantry bags.',
-          es: 'No se requiere papeleo ni citas previas para las despensas sin cita.'
+          en: 'Santa Clara County residents register online before the first food visit.',
+          es: 'Los residentes del Condado de Santa Clara se registran en línea antes de la primera visita.'
         }
       }
     ]

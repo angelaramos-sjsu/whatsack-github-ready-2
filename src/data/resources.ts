@@ -41,333 +41,326 @@ export const demonstrationResources: DemonstrationResource[] = [
     id: 'res-food-1',
     categoryId: 'food',
     title: {
-      en: 'Sacred Heart Saturday Community Food Pantry',
-      es: 'Despensa Comunitaria de Sábados en Sacred Heart'
+      en: 'Sacred Heart Community Service — Food Program',
+      es: 'Sacred Heart Community Service — Programa de Alimentos'
     },
     organization: {
-      en: 'Sacred Heart Community Service (Simulated Index)',
-      es: 'Sacred Heart Community Service (Índice Simulado)'
+      en: 'Sacred Heart Community Service',
+      es: 'Sacred Heart Community Service'
     },
     description: {
-      en: 'Walk-in grocery distribution providing fresh vegetables, fruit, dairy, and pantry staples. No proof of legal status or social security number required.',
-      es: 'Distribución de despensa sin cita con verduras frescas, frutas, lácteos y alimentos básicos. No requiere prueba de estatus legal ni Seguro Social.'
+      en: 'Free groceries for Santa Clara County residents: a three-day supplemental supply of food, plus ready-to-eat food for members who are homeless. New members register online, and a Spanish registration form is available.',
+      es: 'Despensa gratuita para residentes del Condado de Santa Clara: alimentos para tres días y comida lista para miembros sin hogar. Las personas nuevas se registran en línea y hay formulario de registro en español.'
     },
     location: {
       city: 'San Jose',
       county: 'Santa Clara County',
       transitNote: {
-        en: 'Accessible via VTA Bus Route 22 and 68; 3 blocks from Virginia light rail station',
-        es: 'Accesible por autobús VTA Líneas 22 y 68; a 3 cuadras del tren ligero estación Virginia'
+        en: '1381 South First Street, San Jose — corner of South First Street and Alma Avenue. Check VTA trip planning for your route.',
+        es: '1381 South First Street, San José — esquina de South First Street y Alma Avenue. Consulta las rutas de VTA.'
       },
-      addressSimulated: '550 S 1st St, San Jose, CA 95113 (Simulated Academic Reference)'
+      addressSimulated: '1381 South First Street, San Jose, CA 95110'
     },
     schedule: {
-      en: 'Every Saturday: 9:00 AM – 1:00 PM; Wednesdays 1:00 PM – 4:00 PM',
-      es: 'Todos los sábados: 9:00 AM – 1:00 PM; Miércoles 1:00 PM – 4:00 PM'
+      en: 'Food distribution: Monday, Wednesday, Thursday 9:00 AM–4:00 PM; Tuesday 9:00 AM–6:00 PM; Friday 9:00 AM–12:00 PM. Closed Saturday and Sunday.',
+      es: 'Distribución de alimentos: lunes, miércoles y jueves de 9:00 AM a 4:00 PM; martes de 9:00 AM a 6:00 PM; viernes de 9:00 AM a 12:00 PM. Cerrado sábado y domingo.'
     },
     costType: 'Free',
-    languagesSupported: ['English', 'Español', 'Tiếng Việt'],
+    languagesSupported: ['English', 'Español'],
     eligibilityHighlight: {
-      en: 'Self-declared residence in Santa Clara County. No tax returns or immigration checks.',
-      es: 'Autodeclaración de residencia en Santa Clara. Sin revisión de impuestos ni migración.'
+      en: 'Santa Clara County residents; food is available once per week. Register online as a member before the first visit.',
+      es: 'Residentes del Condado de Santa Clara; los alimentos se pueden recoger una vez por semana. Regístrate en línea como miembro antes de la primera visita.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Fresh Produce', 'Weekend Hours', 'Spanish Staff', 'Walk-in'],
+    noIdRequired: false,
+    confidential: false,
+    tags: ['Food Pantry', 'Santa Clara County', 'Online Registration', 'Spanish Form'],
     nextStepInsight: {
       explanation: {
-        en: 'This program was created specifically to eliminate barriers for shift workers and immigrant families who cannot visit food banks during standard 9-5 weekday hours.',
-        es: 'Este programa fue diseñado para eliminar barreras en trabajadores con turnos rotativos y familias que no pueden acudir en horarios de oficina entre semana.'
+        en: 'Sacred Heart publishes its food program online: a three-day supply of groceries for county residents, with member registration available in English and Spanish.',
+        es: 'Sacred Heart publica su programa de alimentos en línea: despensa para tres días para residentes del condado, con registro de miembros en inglés y español.'
       },
       confidenceRating: 98,
       sourceOrganization: {
-        en: 'Silicon Valley Food Coalition Benchmark 2026',
-        es: 'Alianza de Alimentos de Silicon Valley 2026'
+        en: 'Sacred Heart Community Service',
+        es: 'Sacred Heart Community Service'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'November 2026',
       dataSourceLabel: {
-        en: 'Verified via Community Service Catalog Demonstration',
-        es: 'Verificado mediante Catálogo de Demostración de Servicios'
+        en: 'Official Sacred Heart food program page',
+        es: 'Página oficial del programa de alimentos de Sacred Heart'
       },
       documentsNeeded: [
-        { en: 'No state identification required (self-attestation accepted)', es: 'No requiere ID estatal (se acepta autodeclaración verbal)' },
-        { en: 'Bring 2-3 sturdy reusable shopping bags or a wheeled cart', es: 'Llevar 2-3 bolsas reutilizables resistentes o carrito de compras' }
+        {
+          en: 'Register online as a member first; ask the organization which documents, if any, it needs.',
+          es: 'Primero regístrate en línea como miembro; pregunta a la organización qué documentos, si alguno, necesita.'
+        }
       ],
       actionItems: [
         {
           id: 'food-act-1',
-          title: { en: 'Arrive 20 minutes prior to open', es: 'Llegar 20 minutos antes de la apertura' },
-          description: { en: 'Line begins forming at 8:40 AM; first-time visitors receive a quick welcoming number.', es: 'La fila inicia a las 8:40 AM; visitantes primerizos reciben número de turno.' },
-          estimatedMinutes: 20
+          title: { en: 'Register as a member online', es: 'Regístrate en línea como miembro' },
+          description: { en: 'The official page links English and Spanish registration forms.', es: 'La página oficial enlaza formularios de registro en inglés y español.' },
+          estimatedMinutes: 10
         },
         {
           id: 'food-act-2',
-          title: { en: 'Provide family size at greeting desk', es: 'Indicar número de integrantes de familia' },
-          description: { en: 'Volunteers assemble food boxes scaled to household count (diapers available upon request).', es: 'Los voluntarios arman las cajas según el tamaño del hogar (pañales disponibles previa solicitud).' },
+          title: { en: 'Confirm the hours before you go', es: 'Confirma el horario antes de ir' },
+          description: { en: 'Distribution hours are published on the food program page and can change.', es: 'El horario de distribución se publica en la página del programa y puede cambiar.' },
           estimatedMinutes: 5
-        },
-        {
-          id: 'food-act-3',
-          title: { en: 'Optional: Inquire about CalFresh navigation', es: 'Opcional: Preguntar por asesoría de CalFresh' },
-          description: { en: 'A Spanish-speaking navigator can screen eligible children without impacting parent immigration status.', es: 'Un asesor bilingüe puede evaluar a los hijos ciudadanos sin afectar a los padres.' },
-          estimatedMinutes: 10
         }
       ],
-      commonMisconceptions: {
-        en: 'Using charitable food pantries does NOT count toward federal Public Charge determinations.',
-        es: 'Recibir alimentos de despensas benéficas NO cuenta para determinaciones federales de Carga Pública.'
-      },
       accessibilityNotes: {
-        en: 'Wheelchair ramp at front entrance; priority seating available for pregnant mothers and elders.',
-        es: 'Rampa para sillas de ruedas en la entrada principal; asientos prioritarios para embarazadas y adultos mayores.'
+        en: 'Call (408) 278-2160 to ask about accessibility and language support.',
+        es: 'Llama al (408) 278-2160 para preguntar sobre accesibilidad y apoyo en español.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-0142 (Simulated)',
-      intakeMethod: { en: 'Direct Walk-in on Distribution Days', es: 'Llegada directa en días de reparto' },
-      websiteDomainSimulated: 'sacredheartcs-prototype.local'
+      phone: '(408) 278-2160',
+      intakeMethod: { en: 'Register online, then visit during food distribution hours', es: 'Regístrate en línea y luego visita durante el horario de distribución' },
+      websiteDomainSimulated: 'sacredheartcs.org'
     }
   },
   {
     id: 'res-food-2',
     categoryId: 'food',
     title: {
-      en: 'Second Harvest Mobile Produce Pantry – East San Jose',
-      es: 'Mercado Móvil de Vegetales Second Harvest – Este de San José'
+      en: 'Second Harvest of Silicon Valley — Food Locator',
+      es: 'Second Harvest of Silicon Valley — Localizador de Alimentos'
     },
     organization: {
-      en: 'Second Harvest of Silicon Valley (Demonstration Profile)',
-      es: 'Second Harvest of Silicon Valley (Perfil Demostrativo)'
+      en: 'Second Harvest of Silicon Valley',
+      es: 'Second Harvest of Silicon Valley'
     },
     description: {
-      en: 'Pop-up outdoor refrigerated market offering free seasonal fruits, greens, carrots, and whole grains directly at community school parking lots.',
-      es: 'Mercado móvil al aire libre que ofrece frutas de temporada, verduras, zanahorias y granos enteros en estacionamientos escolares comunitarios.'
+      en: 'Free groceries and ready-to-eat meals across Santa Clara and San Mateo counties. Search the official locator by ZIP code or current location, filter by day and time, and look for sites marked “No documents required.”',
+      es: 'Alimentos gratuitos y comidas listas para llevar en los condados de Santa Clara y San Mateo. Busca en el localizador oficial por código postal o ubicación, filtra por día y hora y busca los sitios marcados como “No documents required”.'
     },
     location: {
-      city: 'East San Jose',
-      county: 'Santa Clara County',
+      city: 'San Jose',
+      county: 'Santa Clara & San Mateo Counties',
       transitNote: {
-        en: 'Located near Story Rd & King Rd; VTA Lines 23, 73 within 2 minutes walk',
-        es: 'Cerca de Story Rd y King Rd; autobuses VTA 23 y 73 a 2 minutos a pie'
+        en: 'Online locator for sites across both counties; each listing includes its address and contact number.',
+        es: 'Localizador en línea para sitios en ambos condados; cada listado incluye dirección y número de contacto.'
       },
-      addressSimulated: '1650 Story Rd, San Jose, CA 95122 (Simulated)'
+      addressSimulated: 'Online locator; Second Harvest office: 750 Curtner Avenue, San Jose, CA 95125'
     },
     schedule: {
-      en: '1st and 3rd Tuesday of each month: 3:30 PM – 5:30 PM',
-      es: '1er y 3er martes de cada mes: 3:30 PM – 5:30 PM'
+      en: 'Varies by site — the locator shows the current days and times for each distribution.',
+      es: 'Varía según el sitio — el localizador muestra los días y horarios actuales de cada distribución.'
     },
     costType: 'Free',
-    languagesSupported: ['English', 'Español', 'Vietnamese'],
+    languagesSupported: ['English', 'Español', 'Tiếng Việt', '中文', 'Tagalog'],
     eligibilityHighlight: {
-      en: 'Open to all residents; no residency documentation or income verification required.',
-      es: 'Abierto a todos los residentes; no requiere comprobante de domicilio ni ingresos.'
+      en: 'Free food sites in both counties; each listing shows whether documents are required.',
+      es: 'Sitios de alimentos gratuitos en ambos condados; cada listado indica si se requieren documentos.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Fresh Vegetables', 'Drive-Thru / Walk-Up', 'East San Jose', 'Bilingual'],
+    noIdRequired: false,
+    confidential: false,
+    tags: ['Food Locator', 'Santa Clara County', 'San Mateo County', 'No Documents Filter'],
     nextStepInsight: {
       explanation: {
-        en: 'Mobile distribution sites bring healthy farmer-direct crops into neighborhoods with fewer grocery stores and higher transit times.',
-        es: 'Los puntos móviles llevan alimentos frescos de cultivo directamente a vecindarios con menos supermercados y mayores distancias.'
+        en: 'The official Second Harvest locator lists free grocery and meal sites in both counties with current schedules and a “No documents required” filter.',
+        es: 'El localizador oficial de Second Harvest enumera sitios de alimentos y comidas gratuitas en ambos condados con horarios actuales y un filtro de “No documents required”.'
       },
       confidenceRating: 96,
       sourceOrganization: {
-        en: 'Second Harvest Demonstration Database',
-        es: 'Base de Demostración Second Harvest'
+        en: 'Second Harvest of Silicon Valley',
+        es: 'Second Harvest of Silicon Valley'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'November 2026',
       dataSourceLabel: {
-        en: 'Countywide Mobile Distribution Schedule',
-        es: 'Horario Condal de Reparto Móvil'
+        en: 'Official Second Harvest Get Food page',
+        es: 'Página oficial Get Food de Second Harvest'
       },
       documentsNeeded: [
-        { en: 'None required (name and zip code requested verbally for count metrics)', es: 'Ninguno obligatorio (nombre y código postal verbal para conteo estadístico)' }
+        {
+          en: 'Requirements vary by site — use the “No documents required” filter in the locator, or call the Food Connection team.',
+          es: 'Los requisitos varían por sitio — usa el filtro “No documents required” en el localizador o llama al equipo Food Connection.'
+        }
       ],
       actionItems: [
         {
-          id: 'food-act-4',
-          title: { en: 'Choose drive-up or walk-up lane', es: 'Elegir fila para auto o fila peatonal' },
-          description: { en: 'Both lanes operate concurrently; walk-up lane typically moves faster.', es: 'Ambas filas avanzan simultáneamente; la fila peatonal suele ser más rápida.' },
-          estimatedMinutes: 15
+          id: 'food-act-3',
+          title: { en: 'Open the Food Locator', es: 'Abre el Localizador de Alimentos' },
+          description: { en: 'Search by ZIP code or location, then filter by day and time.', es: 'Busca por código postal o ubicación y filtra por día y hora.' },
+          estimatedMinutes: 10
         },
         {
-          id: 'food-act-5',
-          title: { en: 'Request dietary substitutions if needed', es: 'Solicitar opciones dietéticas especiales' },
-          description: { en: 'Diabetic-friendly produce bags and grain-free options available upon request.', es: 'Bolsas para personas con diabetes y opciones sin granos disponibles a solicitud.' },
-          estimatedMinutes: 5
+          id: 'food-act-4',
+          title: { en: 'Call the Food Connection team', es: 'Llama al equipo Food Connection' },
+          description: { en: '1-800-984-3663 — help finding food or applying for CalFresh.', es: '1-800-984-3663 — ayuda para encontrar alimentos o solicitar CalFresh.' },
+          estimatedMinutes: 10
         }
       ],
-      commonMisconceptions: {
-        en: 'You do not need to have a child enrolled at the hosting school to receive produce.',
-        es: 'No necesita tener hijos inscritos en la escuela anfitriona para recibir alimentos.'
-      },
       accessibilityNotes: {
-        en: 'Drive-thru volunteers load boxes straight into trunk for individuals with limited mobility.',
-        es: 'Voluntarios colocan las cajas directamente en la cajuela para personas con movilidad reducida.'
+        en: 'Call 1-800-984-3663 to ask about accessibility at a specific site.',
+        es: 'Llama al 1-800-984-3663 para preguntar sobre accesibilidad en un sitio específico.'
       }
     },
     contactSimulated: {
-      phone: '(800) 555-FOOD (Simulated)',
-      intakeMethod: { en: 'Walk-up or Drive-through on distribution afternoon', es: 'Llegada en auto o a pie por la tarde' },
-      websiteDomainSimulated: 'shfb-prototype.local'
+      phone: '1-800-984-3663',
+      intakeMethod: { en: 'Call the Food Connection team or use the online locator', es: 'Llama al equipo Food Connection o usa el localizador en línea' },
+      websiteDomainSimulated: 'shfb.org'
     }
   },
   {
     id: 'res-food-3',
     categoryId: 'food',
     title: {
-      en: 'Peninsula Senior Congregate Lunch & Pantry Bags',
-      es: 'Almuerzo Comunitario y Despensa para Adultos Mayores de la Península'
+      en: 'San Mateo County Aging & Disability Services',
+      es: 'Servicios para Personas Mayores y Discapacidades del Condado de San Mateo'
     },
     organization: {
-      en: 'Peninsula Senior Alliances (Simulated)',
-      es: 'Alianzas para Mayores de la Península (Simulado)'
+      en: 'San Mateo County Health',
+      es: 'San Mateo County Health'
     },
     description: {
-      en: 'Nutritious chef-prepared hot lunches and weekly take-home grocery bags for adults 60+ in a lively, social community setting with Spanish-speaking staff.',
-      es: 'Almuerzos calientes preparados y bolsas semanales de despensa para personas de 60+ años en un ambiente comunitario alegre con personal en español.'
+      en: 'County office that connects older adults and caregivers with services. Call to ask about senior meal programs and home-delivered meals for adults 60 and older; spouses and caregivers may also be eligible depending on the location.',
+      es: 'Oficina del condado que conecta a personas mayores y cuidadores con servicios. Llama para preguntar por programas de comidas para personas mayores y comidas a domicilio para adultos de 60 años o más; los cónyuges y cuidadores también pueden ser elegibles según el lugar.'
     },
     location: {
       city: 'Redwood City',
       county: 'San Mateo County',
       transitNote: {
-        en: 'Steps from Redwood City Transit Center (Caltrain & SamTrans ECR Route)',
-        es: 'A pasos del Centro de Tránsito de Redwood City (Caltrain y SamTrans ECR)'
+        en: 'Countywide — the county page lists program offices and locations.',
+        es: 'En todo el condado — la página del condado enumera oficinas y ubicaciones de los programas.'
       },
-      addressSimulated: '711 Middlefield Rd, Redwood City, CA 94063 (Simulated)'
+      addressSimulated: 'Countywide — see the county page for office and program locations'
     },
     schedule: {
-      en: 'Monday through Friday: Lunch served at 11:45 AM; Pantry bags Thursdays at 1:00 PM',
-      es: 'Lunes a viernes: Almuerzo servido a las 11:45 AM; Despensa los jueves a la 1:00 PM'
+      en: 'Varies by program — call the county or check the official page for current information.',
+      es: 'Varía según el programa — llama al condado o consulta la página oficial para información actual.'
     },
-    costType: 'Free',
-    languagesSupported: ['Español', 'English'],
+    costType: 'Sliding Scale',
+    languagesSupported: ['English'],
     eligibilityHighlight: {
-      en: 'Adults aged 60 and older; voluntary contribution suggested but never required.',
-      es: 'Personas de 60 años en adelante; cooperación voluntaria sugerida pero no obligatoria.'
+      en: 'Adults 60 and older for senior meal programs; spouses and caregivers may also be eligible depending on the location.',
+      es: 'Adultos de 60 años o más para los programas de comidas; los cónyuges y cuidadores también pueden ser elegibles según el lugar.'
     },
     noIdRequired: false,
-    confidential: true,
-    tags: ['Seniors 60+', 'Hot Lunch', 'Spanish Socializing', 'Transit Accessible'],
+    confidential: false,
+    tags: ['Older Adults', 'Senior Meals', 'Caregivers', 'San Mateo County'],
     nextStepInsight: {
       explanation: {
-        en: 'Combines hot nutritional meals with social combat against isolation for elders across San Mateo and northern Santa Clara counties.',
-        es: 'Combina nutrición balanceada caliente con convivencia comunitaria contra la soledad en personas mayores.'
+        en: 'San Mateo County Health connects older adults and caregivers with services. Ask specifically about senior meal programs and home-delivered meals.',
+        es: 'San Mateo County Health conecta a personas mayores y cuidadores con servicios. Pregunta específicamente por los programas de comidas y las comidas a domicilio.'
       },
       confidenceRating: 95,
       sourceOrganization: {
-        en: 'San Mateo County Aging & Adult Services Directory',
-        es: 'Directorio de Servicios para Adultos Mayores del Condado de San Mateo'
+        en: 'San Mateo County Health',
+        es: 'San Mateo County Health'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'November 2026',
       dataSourceLabel: {
-        en: 'Older Americans Act Title III Nutrition Program',
-        es: 'Programa de Nutrición Título III Ley de Adultos Mayores'
+        en: 'Official San Mateo County Health page',
+        es: 'Página oficial de San Mateo County Health'
       },
       documentsNeeded: [
-        { en: 'Simple intake sheet with birth year (photo ID helpful but not strictly barred)', es: 'Hoja de registro con fecha de nacimiento (identificación con foto sugerida)' }
+        {
+          en: 'Ask the county what applies to the specific meal program; eligibility and paperwork vary by program.',
+          es: 'Pregunta al condado qué aplica al programa de comidas específico; la elegibilidad y el papeleo varían según el programa.'
+        }
       ],
       actionItems: [
         {
-          id: 'food-act-6',
-          title: { en: 'Call or drop in for day-of meal ticket', es: 'Llamar o presentarse para boleto del día' },
-          description: { en: 'Arrive by 11:15 AM to register at the Spanish welcome table.', es: 'Llegar a las 11:15 AM para registrarse en la mesa de bienvenida en español.' },
-          estimatedMinutes: 10
-        },
-        {
-          id: 'food-act-7',
-          title: { en: 'Sign up for Thursday pantry box', es: 'Inscribirse para la caja de despensa del jueves' },
-          description: { en: 'Receive shelf-stable beans, brown rice, low-sodium soups, and fresh fruit.', es: 'Recibe frijoles, arroz integral, sopas bajas en sodio y fruta fresca para llevar.' },
+          id: 'food-act-5',
+          title: { en: 'Open the county services page', es: 'Abre la página de servicios del condado' },
+          description: { en: 'Find the contact number for Aging & Disability Services.', es: 'Encuentra el número de contacto de Servicios para Personas Mayores y Discapacidades.' },
           estimatedMinutes: 5
         }
       ],
-      commonMisconceptions: {
-        en: 'No resident is ever turned away if they cannot afford the voluntary $3 suggested donation.',
-        es: 'A ninguna persona se le niega el alimento si no puede aportar la donación sugerida de $3.'
-      },
       accessibilityNotes: {
-        en: 'Full wheelchair accessibility, ADA compliant restrooms, and Redi-Wheels drop-off slipway.',
-        es: 'Accesibilidad total para sillas de ruedas, baños ADA y rampa de llegada para Redi-Wheels.'
+        en: 'Call the county to ask about accessibility and language support.',
+        es: 'Llama al condado para preguntar sobre accesibilidad y apoyo en español.'
       }
     },
     contactSimulated: {
-      phone: '(650) 555-0188 (Simulated)',
-      intakeMethod: { en: 'Drop-in before 11:30 AM or phone reservation', es: 'Llegada antes de las 11:30 AM o reserva telefónica' },
-      websiteDomainSimulated: 'peninsulaseniors-demo.local'
+      phone: 'See county website for phone numbers',
+      intakeMethod: { en: 'Call the county or check the official page', es: 'Llama al condado o consulta la página oficial' },
+      websiteDomainSimulated: 'smchealth.org'
     }
   },
   {
     id: 'res-food-4',
     categoryId: 'food',
     title: {
-      en: 'Veggielution Community Farm Fresh Market & Farm Box',
-      es: 'Mercado Comunitario y Cajas de Granja Veggielution'
+      en: 'Veggielution Farm Stand',
+      es: 'Puesto de Granja Veggielution'
     },
     organization: {
-      en: 'Veggielution Community Farm at Emma Prusch Farm Park',
-      es: 'Granja Comunitaria Veggielution en el Parque Emma Prusch'
+      en: 'Veggielution',
+      es: 'Veggielution'
     },
     description: {
-      en: 'Culturally diverse fruits, medicinal herbs, nopales, tomatillos, and greens harvested directly in East San Jose. Offers market match incentives and zero-cost family bags.',
-      es: 'Frutas y verduras de diversas culturas, hierbas medicinales, nopales, tomatillos y hortalizas cosechadas en el Este de San José con subsidios y cajas sin costo.'
+      en: 'Weekly farm stand at Emma Prusch Farm Park in East San Jose with organic produce harvested by staff and volunteers. Produce is sold at affordable prices and EBT is accepted; it is not a free distribution.',
+      es: 'Puesto de granja semanal en Emma Prusch Farm Park, en el Este de San José, con productos orgánicos cosechados por el equipo y voluntarios. Los productos se venden a precios accesibles y se acepta EBT; no es una distribución gratuita.'
     },
     location: {
       city: 'East San Jose',
       county: 'Santa Clara County',
       transitNote: {
-        en: 'At Emma Prusch Farm Park; VTA Bus Lines 22, 23, and 64B stop directly outside',
-        es: 'En el Parque Emma Prusch; autobuses VTA 22, 23 y 64B tienen parada justo enfrente'
+        en: 'At Emma Prusch Farm Park; check VTA trip planning for bus routes.',
+        es: 'En Emma Prusch Farm Park; consulta las rutas de autobús de VTA.'
       },
-      addressSimulated: '647 S King Rd, San Jose, CA 95116 (Simulated)'
+      addressSimulated: '647 S. King Road, San Jose, CA 95116 (Emma Prusch Farm Park)'
     },
     schedule: {
-      en: 'Saturdays: 10:00 AM – 2:00 PM',
-      es: 'Sábados: 10:00 AM – 2:00 PM'
+      en: 'Every Saturday, 10:00 AM–2:00 PM.',
+      es: 'Todos los sábados, de 10:00 AM a 2:00 PM.'
     },
-    costType: 'Free',
-    languagesSupported: ['Español', 'English'],
+    costType: 'Sliding Scale',
+    languagesSupported: ['English'],
     eligibilityHighlight: {
-      en: 'All East San Jose and county neighbors welcome; youth gardening activities included.',
-      es: 'Bienvenidos todos los vecinos del Este de San José; incluye actividades infantiles.'
+      en: 'Open to the public; cash, debit, credit and EBT accepted.',
+      es: 'Abierto al público; se aceptan efectivo, débito, crédito y EBT.'
     },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Fresh Farm Produce', 'East San Jose', 'Youth Activities', 'Nopales & Herbs'],
+    noIdRequired: false,
+    confidential: false,
+    tags: ['Farm Stand', 'Fresh Produce', 'EBT Accepted', 'East San Jose'],
     nextStepInsight: {
       explanation: {
-        en: 'Offers fresh organic food grown right in the urban heart of East San Jose alongside community cooking demonstrations and children’s environmental play.',
-        es: 'Ofrece alimentos orgánicos cultivados en el corazón urbano de San José, con talleres de cocina y juegos para niños.'
+        en: 'Veggielution publishes a weekly Saturday farm stand at Emma Prusch Farm Park, with organic produce and EBT accepted.',
+        es: 'Veggielution publica un puesto de granja semanal los sábados en Emma Prusch Farm Park, con productos orgánicos y EBT aceptado.'
       },
       confidenceRating: 94,
       sourceOrganization: {
-        en: 'Urban Agriculture Initiative Benchmark',
-        es: 'Iniciativa de Agricultura Urbana 2026'
+        en: 'Veggielution',
+        es: 'Veggielution'
       },
-      simulatedVerificationDate: 'October 2026',
+      simulatedVerificationDate: 'November 2026',
       dataSourceLabel: {
-        en: 'Community Partner Network',
-        es: 'Red de Organizaciones Comunitarias'
+        en: 'Official Veggielution Farm Stand page',
+        es: 'Página oficial del Puesto de Granja de Veggielution'
       },
       documentsNeeded: [
-        { en: 'None required', es: 'Ninguno requerido' }
+        {
+          en: 'No documents are described for shopping; bring a form of payment, including EBT.',
+          es: 'No se describen documentos para comprar; lleva una forma de pago, incluido EBT.'
+        }
       ],
       actionItems: [
         {
-          id: 'food-act-8',
-          title: { en: 'Visit the Farm Stand Welcome Tent', es: 'Visitar la carpa de bienvenida del huerto' },
-          description: { en: 'Ask for the East San Jose Neighbor Produce Box.', es: 'Pregunte por la Caja de Verduras para Vecinos del Este de San José.' },
+          id: 'food-act-6',
+          title: { en: 'Open the Farm Stand page', es: 'Abre la página del Puesto de Granja' },
+          description: { en: 'Confirm the current hours before you go.', es: 'Confirma el horario actual antes de ir.' },
+          estimatedMinutes: 5
+        },
+        {
+          id: 'food-act-7',
+          title: { en: 'Call with questions', es: 'Llama si tienes preguntas' },
+          description: { en: '(408) 256-0796 — the number published on the Veggielution website.', es: '(408) 256-0796 — el número publicado en el sitio de Veggielution.' },
           estimatedMinutes: 5
         }
       ],
       accessibilityNotes: {
-        en: 'Flat compacted dirt paths accessible to standard strollers and wheelchairs.',
-        es: 'Senderos planos de tierra compacta transitables con carriolas y sillas de ruedas.'
+        en: 'Call (408) 256-0796 to ask about accessibility at the farm stand.',
+        es: 'Llama al (408) 256-0796 para preguntar sobre accesibilidad en el puesto de granja.'
       }
     },
     contactSimulated: {
-      phone: '(408) 555-FARM (Simulated)',
-      intakeMethod: { en: 'Walk-in Saturday Market', es: 'Visita libre el sábado al mercado' },
-      websiteDomainSimulated: 'veggielution-prototype.local'
+      phone: '(408) 256-0796',
+      intakeMethod: { en: 'Visit the Saturday farm stand; no appointment described', es: 'Visita el puesto de granja del sábado; no se describe cita' },
+      websiteDomainSimulated: 'veggielution.org'
     }
   },
 

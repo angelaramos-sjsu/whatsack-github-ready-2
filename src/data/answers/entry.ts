@@ -10,73 +10,65 @@ export const entryAnswers: ScriptedAnswer[] = [
     id: 'ans-food-east-sj-groceries',
     topic: 'food',
     question: {
-      en: 'Where can I get groceries in East San Jose without an ID?',
-      es: '¿Dónde consigo despensa en el Este de San José sin identificación?'
+      en: 'Find groceries',
+      es: 'Encontrar despensa'
     },
     answer: {
-      en: `**I found 2 immediate, stigma-free food resources in East San Jose that fit your inquiry:**
+      en: `**Free groceries — two official starting points:**
 
-1. **Sacred Heart Saturday Community Food Pantry** (550 S 1st St, San Jose)
-   - **Schedule:** Every Saturday, 9:00 AM – 1:00 PM
-   - **ID Policy:** Zero ID, SSN, or income verification required. Self-attestation accepted.
-   - **Public Charge Clarification:** Community food pantries do **NOT** count toward federal public charge determinations under USCIS rules.
+1. **Second Harvest of Silicon Valley — Food Locator.** Search by ZIP code or location for free groceries and ready-to-eat meals across Santa Clara and San Mateo counties. Each listing shows the site's days and times, and you can filter for sites marked “No documents required.” You can also call the Food Connection team at **1-800-984-3663**.
 
-2. **Second Harvest Mobile Produce Market** (Story Rd & King Rd)
-   - Fresh vegetables, farmer produce boxes, walk-up or drive-thru lanes.
+2. **Sacred Heart Community Service — Food Program**, 1381 South First Street, San Jose. Food is distributed Monday, Wednesday and Thursday 9:00 AM–4:00 PM, Tuesday 9:00 AM–6:00 PM, and Friday 9:00 AM–12:00 PM; closed weekends. Santa Clara County residents register online first, and the form is available in Spanish.
 
-**Actionable Next Step:** Arrive at Sacred Heart around 8:40 AM this Saturday with 2 sturdy reusable bags. No pre-registration needed.`,
-      es: `**Encontré 2 opciones de despensa inmediata sin estigma en el Este de San José:**
+Schedules and site rules change. Confirm the details on the official page before you go.`,
+      es: `**Alimentos gratuitos — dos puntos de partida oficiales:**
 
-1. **Despensa Comunitaria de Sábados en Sacred Heart** (550 S 1st St, San José)
-   - **Horario:** Todos los sábados de 9:00 AM a 1:00 PM
-   - **Requisito de ID:** Cero identificación, sin Seguro Social ni comprobante de ingresos. Solo autodeclaración verbal.
-   - **Aclaración de Carga Pública:** Recibir alimentos de despensas comunitarias **NO** cuenta para la regla de carga pública de inmigración.
+1. **Second Harvest of Silicon Valley — Localizador de Alimentos.** Busca por código postal o ubicación alimentos gratuitos y comidas listas para llevar en los condados de Santa Clara y San Mateo. Cada listado muestra los días y horarios del sitio, y puedes filtrar los sitios marcados como “No documents required”. También puedes llamar al equipo Food Connection al **1-800-984-3663**.
 
-2. **Mercado Móvil Second Harvest** (Story Rd y King Rd)
-   - Frutas y verduras frescas de temporada, fila peatonal y de autos.
+2. **Sacred Heart Community Service — Programa de Alimentos**, 1381 South First Street, San José. Los alimentos se distribuyen lunes, miércoles y jueves de 9:00 AM a 4:00 PM, martes de 9:00 AM a 6:00 PM y viernes de 9:00 AM a 12:00 PM; cerrado los fines de semana. Los residentes del Condado de Santa Clara se registran en línea primero, y hay formulario en español.
 
-**Siguiente Paso Recomendado:** Llegue a Sacred Heart a las 8:40 AM este sábado con 2 bolsas reutilizables. No se requiere cita previa.`
+Los horarios y las reglas de cada sitio cambian. Confirma los detalles en la página oficial antes de ir.`
     },
     context: [
-      { en: 'East San Jose', es: 'Este de San José' },
-      { en: 'Food access', es: 'Acceso a alimentos' },
-      { en: 'No ID required', es: 'Sin identificación' }
+      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' },
+      { en: 'Free groceries', es: 'Alimentos gratuitos' },
+      { en: 'Verify hours before visiting', es: 'Confirma el horario antes de ir' }
     ],
     links: [
       {
-        label: { en: 'Sacred Heart Community Service — food programs', es: 'Sacred Heart Community Service — programas de alimentos' },
-        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
-        url: 'https://www.sacredheartcs.org/'
-      },
-      {
-        label: { en: 'Second Harvest of Silicon Valley — get food', es: 'Second Harvest of Silicon Valley — obtener alimentos' },
+        label: { en: 'Second Harvest — Food Locator', es: 'Second Harvest — Localizador de Alimentos' },
         source: { en: 'Second Harvest of Silicon Valley', es: 'Second Harvest of Silicon Valley' },
         url: 'https://www.shfb.org/get-food/'
+      },
+      {
+        label: { en: 'Sacred Heart Community Service — Food Program', es: 'Sacred Heart Community Service — Programa de Alimentos' },
+        source: { en: 'Sacred Heart Community Service', es: 'Sacred Heart Community Service' },
+        url: 'https://www.sacredheartcs.org/programs-food-clothing'
       }
     ],
     nextStep: {
-      title: { en: 'Go this Saturday with two bags', es: 'Vaya este sábado con dos bolsas' },
+      title: { en: 'Check the official listing before you go', es: 'Revisa el listado oficial antes de ir' },
       detail: {
-        en: 'The pantry opens at 9:00 AM and does not require pre-registration. Arriving around 8:40 AM keeps the line short.',
-        es: 'La despensa abre a las 9:00 AM y no pide registro previo. Llegar a las 8:40 AM mantiene la fila corta.'
+        en: 'The Food Locator shows current days, times, and whether a site asks for documents. Sacred Heart publishes its food hours and online registration on its own page.',
+        es: 'El Localizador de Alimentos muestra días, horarios y si el sitio pide documentos. Sacred Heart publica su horario de alimentos y el registro en línea en su propia página.'
       },
       actions: [
         {
           id: 'food-entry-save',
           kind: 'save-plan',
-          label: { en: 'Save pantry to my plan', es: 'Guardar despensa en mi plan' },
+          label: { en: 'Save the Sacred Heart food program', es: 'Guardar el programa de alimentos de Sacred Heart' },
           resourceId: 'res-food-1'
         },
         {
           id: 'food-entry-site',
           kind: 'open-link',
-          label: { en: 'Open Second Harvest site', es: 'Abrir el sitio de Second Harvest' },
+          label: { en: 'Open the Food Locator', es: 'Abrir el Localizador de Alimentos' },
           url: 'https://www.shfb.org/get-food/'
         }
       ]
     },
     resourceIds: ['res-food-1', 'res-food-2'],
-    followUpIds: ['ans-food-proof-of-address', 'ans-food-diapers-formula', 'ans-food-greeting-desk-roleplay']
+    followUpIds: ['ans-food-calfresh-help', 'ans-food-proof-of-address', 'ans-food-diapers-formula', 'ans-food-greeting-desk-roleplay']
   },
   {
     id: 'ans-work-tech-certificates',
