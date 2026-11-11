@@ -15,7 +15,8 @@ export const foodAnswerIds = {
   groceries: 'ans-food-east-sj-groceries',
   calfresh: 'ans-food-calfresh-help',
   documents: 'ans-food-proof-of-address',
-  formula: 'ans-food-diapers-formula'
+  formula: 'ans-food-diapers-formula',
+  mealDelivery: 'ans-food-home-delivered-meals'
 } as const;
 
 /** Case-, punctuation-, quote- and accent-insensitive form used for matching. */
@@ -66,6 +67,36 @@ const FORMULA_PHRASES = [
   'formula para bebe', 'suplemento de leche'
 ];
 
+/**
+ * Older adults who cannot leave home — home-delivered meals outrank grocery
+ * pickup. A question needs a delivery signal (or the program name) plus either
+ * a homebound situation or an older-adult reference such as “my dad is 74”.
+ */
+const HOME_BOUND_PHRASES = [
+  'homebound', 'housebound', 'home bound', "can't leave home", 'cant leave home',
+  'cannot leave home', "can't leave the house", 'cannot leave the house',
+  'trouble leaving home', 'trouble leaving the house', 'difficulty leaving home',
+  'hard to leave home', 'hard for him to leave home', 'hard for her to leave home',
+  'unable to leave home', 'unable to get out', 'stuck at home', 'never leaves home',
+  "doesn't leave home", 'does not leave home', 'rarely leaves home', 'leaving home',
+  'get out of the house', 'no puede salir', 'no pueden salir', 'no sale de casa',
+  'no sale de la casa', 'le cuesta salir', 'dificultad para salir', 'no puede salir de casa'
+];
+
+const DELIVERY_WORDS = ['delivery', 'delivered', 'deliver', 'delivers', 'entrega', 'entregas', 'entregar'];
+const DELIVERY_PHRASES = [
+  'meal delivery', 'meals on wheels', 'home delivered', 'home delivered meals',
+  'delivered to the home', 'a domicilio', 'comida a domicilio', 'comidas a domicilio',
+  'entrega a domicilio'
+];
+
+const OLDER_ADULT_WORDS = [
+  'elderly', 'senior', 'seniors', 'older', 'grandfather', 'grandmother', 'grandpa',
+  'grandma', 'abuelo', 'abuela', 'abuelito', 'abuelita', 'anciano', 'anciana',
+  'mayor', 'mayores', 'dad', 'mom', 'mother', 'father', 'mama', 'papa', 'madre',
+  'padre', 'caregiver', 'cuidador', 'cuidadora'
+];
+
 /** Identification, documents and proof of address — distinct from a photo ID. */
 const DOCUMENT_WORDS = [
   'id', 'ids', 'address', 'proof', 'papers', 'paperwork', 'papeles', 'licencia', 'pasaporte',
@@ -96,6 +127,28 @@ export const routeFoodQuestion = (text: string): string | null => {
     hasStem(normalized, DOCUMENT_STEMS) ||
     hasPhrase(padded, DOCUMENT_PHRASES);
 
+  const isDelivery =
+    hasWord(normalized, DELIVERY_WORDS) || hasPhrase(padded, DELIVERY_PHRASES);
+  const isHomeBound = hasPhrase(padded, HOME_BOUND_PHRASES);
+  // An age such as “74” marks an older adult; ZIP codes are longer tokens, so
+  // they never match here.
+  const isOlderAdult = hasWord(normalized, OLDER_ADULT_WORDS) || /\b(6\d|7\d|8\d|9\d)\b/.test(normalized);
+  const isMealDelivery =
+    (isFood || isDelivery) &&
+    (isHomeBound ||
+      (isDelivery && isOlderAdult) ||
+      hasPhrase(padded, [
+        'meals on wheels',
+        'meal delivery',
+        'home delivered meals',
+        'comida a domicilio',
+        'comidas a domicilio',
+        'comidas sobre ruedas'
+      ]));
+
+  // Someone who cannot leave home needs delivered meals, not grocery pickup.
+  // This is checked before documents because “a domicilio” means delivery.
+  if (isMealDelivery) return foodAnswerIds.mealDelivery;
   // Identification matters only when the question is about getting food.
   if (isDocuments && (isFood || isCalfresh)) return foodAnswerIds.documents;
   if (isFormula) return foodAnswerIds.formula;

@@ -273,6 +273,213 @@ La página de CalFresh de Second Harvest of Silicon Valley explica quién puede 
     followUpIds: ['ans-food-east-sj-groceries', 'ans-food-proof-of-address']
   },
   {
+    id: 'ans-food-home-delivered-meals',
+    topic: 'food',
+    question: {
+      en: 'Meals delivered to someone who cannot leave home',
+      es: 'Comidas a domicilio para quien no puede salir de casa'
+    },
+    answer: {
+      en: `**Home-delivered meals exist for someone who cannot get out to a pantry or a dining site, and each county runs its own program.** Whether your dad qualifies, what it costs, and when meals arrive are all decided when you call and enroll — this page cannot promise any of those.
+
+**Who usually qualifies**
+- **60 or older** and frail, homebound, or unable to shop and cook because of illness, disability or isolation. A spouse can often be included regardless of age.
+- A short phone assessment is part of enrolling, so expect questions about daily living as well as age.
+
+**How to start**
+- Call the program for the county where he lives — the two buttons below open each county's meal-delivery guidance.
+- Have his **city or ZIP code** ready. Coverage is decided by area, and that is enough for the first call; there is no need to share a full street address here or in this chat.
+- Ask three things: whether there is a waiting list, which days meals are delivered, and whether a contribution is expected.
+
+**What it is not**
+- Not a grocery pickup — it replaces shopping and cooking rather than adding a pantry visit.
+- CalFresh (EBT) is a separate monthly grocery benefit and can still be used for food he prepares himself.`,
+      es: `**Las comidas a domicilio son para alguien que no puede salir a una despensa ni a un comedor comunitario, y cada condado tiene su propio programa.** Si su papá califica, cuánto cuesta y cuándo llegan las comidas se decide al llamar e inscribirse; esta página no puede garantizar nada de eso.
+
+**Quién suele calificar**
+- **60 años o más** y frágil, con dificultad para salir de casa, o sin poder comprar ni cocinar por enfermedad, discapacidad o aislamiento. Muchas veces se incluye al cónyuge sin importar su edad.
+- La inscripción incluye una breve evaluación por teléfono, así que habrá preguntas sobre la vida diaria además de la edad.
+
+**Cómo empezar**
+- Llame al programa del condado donde él vive: los dos botones de abajo abren la guía de comidas a domicilio de cada condado.
+- Tenga a mano su **ciudad o código postal**. La cobertura se decide por zona y eso basta para la primera llamada; no hace falta compartir una dirección completa aquí ni en este chat.
+- Pregunte tres cosas: si hay lista de espera, qué días se entregan las comidas y si se espera una contribución.
+
+**Lo que no es**
+- No es una recogida de despensa: sustituye el comprar y cocinar, no se suma a una visita a la despensa.
+- CalFresh (EBT) es un beneficio mensual aparte para comprar comida, y sirve para los alimentos que él mismo prepare.`
+    },
+    context: [
+      { en: 'Older adults 60+', es: 'Adultos mayores de 60+' },
+      { en: 'Homebound & caregivers', es: 'Personas que no salen de casa y cuidadores' },
+      { en: 'Santa Clara & San Mateo counties', es: 'Condados de Santa Clara y San Mateo' }
+    ],
+    links: [
+      {
+        label: { en: 'Santa Clara County — meals for older adults', es: 'Condado de Santa Clara — comidas para adultos mayores' },
+        source: { en: 'County of Santa Clara Social Services Agency', es: 'Agencia de Servicios Sociales del Condado de Santa Clara' },
+        url: 'https://ssa.santaclaracounty.gov/food-assistance/meals-older-adults'
+      },
+      {
+        label: { en: 'San Mateo County — food resources for older adults', es: 'Condado de San Mateo — recursos de alimentos para adultos mayores' },
+        source: { en: 'San Mateo County Human Services Agency', es: 'Agencia de Servicios Humanos del Condado de San Mateo' },
+        url: 'https://www.smcgov.org/hsa/food-resources'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Call the county where he lives', es: 'Llame al condado donde él vive' },
+      detail: {
+        en: 'Each county enrolls home-delivered meals through its own delivery organizations. Start with the county that matches his city, then ask about the waiting list and delivery days.',
+        es: 'Cada condado inscribe las comidas a domicilio con sus propias organizaciones de reparto. Empiece por el condado que corresponde a su ciudad y pregunte por la lista de espera y los días de entrega.'
+      },
+      actions: [
+        {
+          id: 'food-meals-scc',
+          kind: 'open-link',
+          label: { en: 'Open Santa Clara County meal delivery', es: 'Abrir comidas a domicilio del Condado de Santa Clara' },
+          url: 'https://ssa.santaclaracounty.gov/food-assistance/meals-older-adults/get-meals-delivered-your-home'
+        },
+        {
+          id: 'food-meals-smc',
+          kind: 'open-link',
+          label: { en: 'Open San Mateo County food resources', es: 'Abrir recursos de alimentos del Condado de San Mateo' },
+          url: 'https://www.smcgov.org/hsa/food-resources'
+        }
+      ]
+    },
+    followUpIds: [
+      'ans-food-home-delivered-santa-clara',
+      'ans-food-home-delivered-san-mateo',
+      'ans-food-calfresh-help'
+    ]
+  },
+  {
+    id: 'ans-food-home-delivered-santa-clara',
+    topic: 'food',
+    question: {
+      en: 'Santa Clara County meal delivery',
+      es: 'Comidas a domicilio en el Condado de Santa Clara'
+    },
+    answer: {
+      en: `**Santa Clara County's Senior Nutrition Program delivers meals to residents who are 60 or older and frail or homebound** because of illness, disability or isolation. Enrollment runs through the delivery organizations listed on the county page, not a single county office.
+
+- **Countywide, weekly:** Sourcewise / Trio Community Meals — call **(408) 350-3246**. A nutrition coordinator completes a phone assessment first; Sourcewise's meals line is **(408) 350-3200, option 4**.
+- **By city:** Gilroy Senior Center — Gilroy and Morgan Hill — **(408) 762-6021** (hot meal, daily). Loaves and Fishes — San Jose, Cupertino, Mountain View, Palo Alto — **(408) 922-9085**.
+- **By ZIP code or neighborhood:** POSSO (Portuguese meals) and VASC (Vietnamese meals) serve specific San Jose ZIP codes; Yu-Ai Kai serves Japantown and Berryessa.
+
+A contribution is suggested but not required — the county says eligible people are not denied for inability to contribute. Ask about the waiting list and delivery days when you call, and have the city or ZIP code ready.`,
+      es: `**El Programa de Nutrición para Personas Mayores del Condado de Santa Clara entrega comidas a residentes de 60 años o más que estén frágiles o no puedan salir de casa** por enfermedad, discapacidad o aislamiento. La inscripción se hace con las organizaciones de reparto que aparecen en la página del condado, no en una sola oficina.
+
+- **En todo el condado, entrega semanal:** Sourcewise / Trio Community Meals — llame al **(408) 350-3246**. Un coordinador de nutrición hace primero una evaluación por teléfono; la línea de comidas de Sourcewise es **(408) 350-3200, opción 4**.
+- **Por ciudad:** Gilroy Senior Center — Gilroy y Morgan Hill — **(408) 762-6021** (comida caliente diaria). Loaves and Fishes — San José, Cupertino, Mountain View y Palo Alto — **(408) 922-9085**.
+- **Por código postal o vecindario:** POSSO (comida portuguesa) y VASC (comida vietnamita) sirven códigos postales específicos de San José; Yu-Ai Kai sirve Japantown y Berryessa.
+
+Se sugiere una contribución, pero no es obligatoria: el condado indica que no se niega la participación a quien no puede contribuir. Pregunte por la lista de espera y los días de entrega al llamar, y tenga a mano la ciudad o el código postal.`
+    },
+    context: [
+      { en: 'Santa Clara County', es: 'Condado de Santa Clara' },
+      { en: 'Adults 60+', es: 'Adultos de 60+' },
+      { en: 'Home-delivered meals', es: 'Comidas a domicilio' }
+    ],
+    links: [
+      {
+        label: { en: 'Santa Clara County — get meals delivered to your home', es: 'Condado de Santa Clara — comidas a domicilio' },
+        source: { en: 'County of Santa Clara Social Services Agency', es: 'Agencia de Servicios Sociales del Condado de Santa Clara' },
+        url: 'https://ssa.santaclaracounty.gov/food-assistance/meals-older-adults/get-meals-delivered-your-home'
+      },
+      {
+        label: { en: 'Sourcewise — Meals on Wheels enrollment', es: 'Sourcewise — inscripción a Meals on Wheels' },
+        source: { en: 'Sourcewise', es: 'Sourcewise' },
+        url: 'https://mysourcewise.com/senior-nutrition-program/'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Call for a phone assessment', es: 'Llame para la evaluación por teléfono' },
+      detail: {
+        en: 'Sourcewise asks for the older adult’s name, phone number and a brief message, then a nutrition coordinator calls back. Have the city or ZIP code ready so they can check the route.',
+        es: 'Sourcewise pide el nombre de la persona mayor, un teléfono y un mensaje breve; luego llama un coordinador de nutrición. Tenga a mano la ciudad o el código postal para que revisen la ruta.'
+      },
+      actions: [
+        {
+          id: 'food-scc-delivery',
+          kind: 'open-link',
+          label: { en: 'Open county delivery services list', es: 'Abrir la lista de servicios de entrega del condado' },
+          url: 'https://ssa.santaclaracounty.gov/food-assistance/meals-older-adults/get-meals-delivered-your-home'
+        },
+        {
+          id: 'food-scc-sourcewise',
+          kind: 'open-link',
+          label: { en: 'Open Sourcewise meal program', es: 'Abrir el programa de comidas de Sourcewise' },
+          url: 'https://mysourcewise.com/senior-nutrition-program/'
+        }
+      ]
+    },
+    followUpIds: ['ans-food-home-delivered-san-mateo', 'ans-food-calfresh-help']
+  },
+  {
+    id: 'ans-food-home-delivered-san-mateo',
+    topic: 'food',
+    question: {
+      en: 'San Mateo County meal delivery',
+      es: 'Comidas a domicilio en el Condado de San Mateo'
+    },
+    answer: {
+      en: `**San Mateo County's Aging and Adult Services funds home-delivered meals for older adults**, and Peninsula Volunteers (PVI) Meals on Wheels is the main provider.
+
+- **To enroll, call PVI Meals on Wheels at (650) 323-2022.** A family member or caregiver can apply by phone. Subsidized eligibility generally means **60 or older, homebound or needing help leaving home, and unable to shop or cook reliably**.
+- **Delivery and cost:** PVI delivers Monday–Friday, 10:00 AM–2:00 PM. County-funded meals have no charge, and donations are appreciated. PVI says its waiting list changes week by week depending on where in the county you live.
+- **County line:** San Mateo County Aging and Adult Services' TIES line, **1-800-675-8437**, also explains the nutrition programs for adults 60 and older.
+
+Have the city or ZIP code ready so the program can check the route. Cost, eligibility and timing are confirmed by the provider, not guaranteed here.`,
+      es: `**Los Servicios para Personas Mayores y Adultos del Condado de San Mateo financian comidas a domicilio para adultos mayores**, y Peninsula Volunteers (PVI) Meals on Wheels es el principal proveedor.
+
+- **Para inscribirse, llame a PVI Meals on Wheels al (650) 323-2022.** Un familiar o cuidador puede solicitar por teléfono. La elegibilidad subsidiada normalmente significa **60 años o más, no poder salir de casa o necesitar ayuda para hacerlo, y no poder comprar ni cocinar de forma confiable**.
+- **Entrega y costo:** PVI entrega de lunes a viernes, de 10:00 AM a 2:00 PM. Las comidas financiadas por el condado no tienen costo y se agradecen las donaciones. PVI indica que su lista de espera cambia cada semana según la zona del condado donde viva la persona.
+- **Línea del condado:** la línea TIES de Servicios para Personas Mayores y Adultos del Condado de San Mateo, **1-800-675-8437**, también explica los programas de nutrición para adultos de 60 años o más.
+
+Tenga a mano la ciudad o el código postal para que el programa revise la ruta. El costo, la elegibilidad y los tiempos los confirma el proveedor; aquí no se garantizan.`
+    },
+    context: [
+      { en: 'San Mateo County', es: 'Condado de San Mateo' },
+      { en: 'Adults 60+', es: 'Adultos de 60+' },
+      { en: 'Home-delivered meals', es: 'Comidas a domicilio' }
+    ],
+    links: [
+      {
+        label: { en: 'PVI Meals on Wheels — apply for home-delivered meals', es: 'PVI Meals on Wheels — solicitar comidas a domicilio' },
+        source: { en: 'Peninsula Volunteers, Inc.', es: 'Peninsula Volunteers, Inc.' },
+        url: 'https://1pvi.org/mealsonwheels/'
+      },
+      {
+        label: { en: 'San Mateo County — food resources for older adults', es: 'Condado de San Mateo — recursos de alimentos para adultos mayores' },
+        source: { en: 'San Mateo County Human Services Agency', es: 'Agencia de Servicios Humanos del Condado de San Mateo' },
+        url: 'https://www.smcgov.org/hsa/food-resources'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Apply by phone with PVI', es: 'Solicite por teléfono con PVI' },
+      detail: {
+        en: 'PVI takes applications by phone from the older adult, a family member or a caregiver, and a short assessment decides which funding covers the meals.',
+        es: 'PVI recibe solicitudes por teléfono de la persona mayor, un familiar o un cuidador, y una breve evaluación decide qué financiamiento cubre las comidas.'
+      },
+      actions: [
+        {
+          id: 'food-smc-pvi',
+          kind: 'open-link',
+          label: { en: 'Open PVI Meals on Wheels', es: 'Abrir PVI Meals on Wheels' },
+          url: 'https://1pvi.org/mealsonwheels/'
+        },
+        {
+          id: 'food-smc-county',
+          kind: 'open-link',
+          label: { en: 'Open San Mateo County food resources', es: 'Abrir recursos de alimentos del Condado de San Mateo' },
+          url: 'https://www.smcgov.org/hsa/food-resources'
+        }
+      ]
+    },
+    followUpIds: ['ans-food-home-delivered-santa-clara', 'ans-food-calfresh-help']
+  },
+  {
     id: 'ans-work-edd-impact',
     topic: 'work',
     question: {
