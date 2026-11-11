@@ -66,8 +66,8 @@ export const bilingualFoodAnswers: ScriptedAnswer[] = [
       "es": "Nunca he solicitado CalFresh. ¿Alguien puede ayudarme?"
     },
     "answer": {
-      "en": "**Yes—Second Harvest offers information and help with CalFresh applications.** Visit its CalFresh assistance page to find support. You can also apply yourself through BenefitsCal, California's benefits portal. CalFresh eligibility and verification requirements are determined by the county; WhatSack cannot decide eligibility.",
-      "es": "**Sí. Second Harvest ofrece información y ayuda para solicitar CalFresh.** Visita su página de asistencia de CalFresh para encontrar apoyo. También puedes solicitarlo por tu cuenta en BenefitsCal, el portal de beneficios de California. El condado determina la elegibilidad y los documentos necesarios; WhatSack no puede decidir si calificas."
+      "en": "**Yes—Second Harvest offers CalFresh application assistance.** Its team can help you understand and complete an application. You can also apply independently through BenefitsCal, California's benefits portal. CalFresh eligibility and verification requirements are determined by the county; WhatSack cannot decide eligibility.",
+      "es": "**Sí. Second Harvest ofrece ayuda con la solicitud de CalFresh.** Su equipo puede ayudarte a entender y completar una solicitud. También puedes solicitarlo por tu cuenta en BenefitsCal, el portal de beneficios de California. El condado determina la elegibilidad y los documentos necesarios; WhatSack no puede decidir si calificas."
     },
     "context": [],
     "links": [
@@ -190,8 +190,8 @@ export const bilingualFoodAnswers: ScriptedAnswer[] = [
       "es": "No tengo identificación. ¿Puedo recibir comida?"
     },
     "answer": {
-      "en": "**You can still look for food assistance without a photo ID.** Each distribution site has its own intake and document rules. Use Second Harvest's Food Locator to find a nearby site and check whether it asks for identification or proof of address; contact that site to confirm. **Do not assume every pantry has the same rules.** CalFresh has a separate verification process.",
-      "es": "**Puedes buscar ayuda alimentaria aunque no tengas identificación con foto.** Cada lugar tiene sus propios requisitos de registro y documentos. Usa el Localizador de Alimentos de Second Harvest para encontrar un lugar cercano y revisar si pide identificación o comprobante de domicilio; comunícate con ese lugar para confirmar. **No todas las despensas tienen las mismas reglas.** CalFresh tiene un proceso de verificación diferente."
+      "en": "**You can still look for food assistance without a photo ID.** Identification requirements vary by distribution site; some locations may not require ID. Use Second Harvest's Food Locator to find a nearby site, review its requirements, and contact it to confirm before visiting. **Do not assume every pantry has the same rules.** CalFresh has a separate verification process.",
+      "es": "**Puedes buscar ayuda alimentaria aunque no tengas identificación con foto.** Los requisitos varían según el lugar; algunos sitios pueden no pedir identificación. Usa el Localizador de Alimentos de Second Harvest para encontrar un lugar cercano, revisar sus requisitos y confirmar directamente antes de ir. **No todas las despensas tienen las mismas reglas.** CalFresh tiene un proceso de verificación diferente."
     },
     "context": [],
     "links": [
@@ -302,8 +302,8 @@ export const bilingualFoodAnswers: ScriptedAnswer[] = [
       "es": "Necesito fórmula para mi bebé. ¿Dónde puedo pedir ayuda?"
     },
     "answer": {
-      "en": "**Contact your county WIC program for infant-formula and nutrition assistance.** WIC has its own eligibility and enrollment process. If you live in Santa Clara County, start with the county WIC page linked below. If you live elsewhere, tell me your county so you can find the right local WIC office. A food pantry may sometimes have formula, but stock is not guaranteed.",
-      "es": "**Comunícate con el programa WIC de tu condado para pedir ayuda con la fórmula infantil y la nutrición.** WIC tiene sus propios requisitos e inscripción. Si vives en el Condado de Santa Clara, comienza con la página de WIC que aparece abajo. Si vives en otro lugar, identifica tu condado para buscar la oficina de WIC correspondiente. Algunas despensas pueden tener fórmula, pero no se garantiza su disponibilidad."
+      "en": "**WIC provides nutrition assistance, including help with infant formula, to eligible families with infants and young children.** Contact your county WIC program to ask about its eligibility and enrollment process. If you live in Santa Clara County, start with the county WIC page linked below. If you live elsewhere, tell me your county so you can find the right local WIC office. A food pantry may sometimes have formula, but stock is not guaranteed.",
+      "es": "**WIC ofrece asistencia de nutrición, incluida ayuda con fórmula infantil, a familias elegibles con bebés y niños pequeños.** Comunícate con el programa WIC de tu condado para preguntar sobre los requisitos y la inscripción. Si vives en el Condado de Santa Clara, comienza con la página de WIC que aparece abajo. Si vives en otro lugar, dime tu condado para buscar la oficina de WIC correspondiente. Algunas despensas pueden tener fórmula, pero no se garantiza su disponibilidad."
     },
     "context": [],
     "links": [

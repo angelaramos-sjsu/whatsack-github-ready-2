@@ -51,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navLinks = [
     { label: t.nav.home, onClick: goHome, active: activeView === 'home' },
     {
-      label: currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack',
+      label: currentLanguage === 'en' ? 'Ask Sackie' : 'Preguntar a Sackie',
       onClick: () => { setActiveView('copilot'); setIsMenuOpen(false); },
       active: activeView === 'copilot'
     },

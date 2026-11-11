@@ -49,7 +49,7 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
   const isEnglish = currentLanguage === 'en';
 
   return (
-    <aside className="sprout-helper" aria-label={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}>
+    <aside className="sprout-helper" aria-label={isEnglish ? 'Ask Sackie' : 'Preguntar a Sackie'}>
       {showGreeting && (
         <div className="sprout-helper-bubble">
           <button
@@ -61,7 +61,7 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
             <X aria-hidden="true" size={16} />
           </button>
           <p className="sprout-helper-greeting">
-            {isEnglish ? "Hi! I'm WhatSack." : '¡Hola! Soy WhatSack.'}
+            {isEnglish ? "Hi! I'm Sackie." : '¡Hola! Soy Sackie.'}
           </p>
           <p className="sprout-helper-description">
             {isEnglish
@@ -74,13 +74,13 @@ export const SproutAssistant: React.FC<SproutAssistantProps> = ({ currentLanguag
         type="button"
         onClick={onOpenChat}
         className="sprout-helper-button"
-        aria-label={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
-        title={isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
+        aria-label={isEnglish ? 'Ask Sackie' : 'Preguntar a Sackie'}
+        title={isEnglish ? 'Ask Sackie' : 'Preguntar a Sackie'}
       >
         <SproutMascot className="sprout-helper-character" />
         <span className="sprout-helper-chat-icon" aria-hidden="true"><MessageCircle size={18} /></span>
       </button>
-      <span className="sprout-helper-label" aria-hidden="true">{isEnglish ? 'Ask WhatSack' : 'Preguntar a WhatSack'}</span>
+      <span className="sprout-helper-label" aria-hidden="true">{isEnglish ? 'Ask Sackie' : 'Preguntar a Sackie'}</span>
     </aside>
   );
 };

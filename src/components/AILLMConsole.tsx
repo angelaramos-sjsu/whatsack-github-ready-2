@@ -160,8 +160,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     id: 'msg-init-1',
     sender: 'llm',
     text: currentLanguage === 'en'
-      ? "Hi! I'm WhatSack, your guide. I can help you explore local food, school, work, mental health, and community resources. What would you like help with today? This chat uses prepared example answers."
-      : "¡Hola! Soy WhatSack, su guía. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
+      ? "Hi! I'm Sackie, your guide. I can help you explore local food, school, work, mental health, and community resources. What would you like help with today? This chat uses prepared example answers."
+      : "¡Hola! Soy Sackie, su guía. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
     timestamp: currentLanguage === 'en' ? 'Welcome' : 'Bienvenida',
     followUpIds: [
       'ans-food-es-family-groceries',
@@ -297,12 +297,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           </div>
           <div className="min-w-0">
             <h1 className="text-xl font-semibold tracking-tight text-white">
-              {currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack'}
+              {currentLanguage === 'en' ? 'Ask Sackie' : 'Preguntar a Sackie'}
             </h1>
             <p className="mt-1 text-sm leading-relaxed text-slate-300">
               {currentLanguage === 'en'
-                ? 'Meet WhatSack, your friendly guide. This is a scripted demo.'
-                : 'Conozca a WhatSack, su guía. Esta es una demostración con respuestas preparadas.'}
+                ? 'Meet Sackie, your friendly guide. This is a scripted demo.'
+                : 'Conozca a Sackie, su guía. Esta es una demostración con respuestas preparadas.'}
             </p>
           </div>
         </div>
@@ -346,7 +346,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     ) : (
                       <>
                         <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                        <span>{currentLanguage === 'en' ? 'WhatSack guide' : 'Guía de WhatSack'}</span>
+                        <span>{currentLanguage === 'en' ? 'Sackie guide' : 'Guía de Sackie'}</span>
                       </>
                     )}
                   </span>

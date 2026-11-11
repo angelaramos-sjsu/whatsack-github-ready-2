@@ -147,14 +147,14 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                 📑
               </div>
               <p className="text-sm text-slate-700 leading-relaxed font-semibold">
-                {currentLanguage === 'en' ? 'No steps or resources saved yet. Save a step from Ask WhatSack or a resource from Find Resources.' : 'Aún no hay pasos ni recursos guardados. Guarde un paso desde Preguntar a WhatSack o un recurso desde Buscar Recursos.'}
+                {currentLanguage === 'en' ? 'No steps or resources saved yet. Save a step from Ask Sackie or a resource from Find Resources.' : 'Aún no hay pasos ni recursos guardados. Guarde un paso desde Preguntar a Sackie o un recurso desde Buscar Recursos.'}
               </p>
             </div>
           ) : (
             <>
             {savedScriptedSteps.length > 0 && (
-              <section aria-label={currentLanguage === 'en' ? 'Steps saved from Ask WhatSack' : 'Pasos guardados de Preguntar a WhatSack'} className="space-y-3">
-                <h3 className="font-bold text-slate-900 text-base">{currentLanguage === 'en' ? 'Steps from Ask WhatSack' : 'Pasos de Preguntar a WhatSack'}</h3>
+              <section aria-label={currentLanguage === 'en' ? 'Steps saved from Ask Sackie' : 'Pasos guardados de Preguntar a Sackie'} className="space-y-3">
+                <h3 className="font-bold text-slate-900 text-base">{currentLanguage === 'en' ? 'Steps from Ask Sackie' : 'Pasos de Preguntar a Sackie'}</h3>
                 {savedScriptedSteps.map((step) => (
                   <div key={step.id} className="p-4 rounded-xl border border-emerald-300 bg-emerald-50">
                     <label className="flex gap-3 items-start text-slate-900">
