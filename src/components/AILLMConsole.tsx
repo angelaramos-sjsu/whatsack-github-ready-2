@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { Language, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { demonstrationResources } from '../data/resources';
@@ -151,7 +151,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const responseLanguageRef = useRef<Language>(currentLanguage);
 
   useEffect(() => { responseLanguageRef.current = currentLanguage; }, [currentLanguage]);
@@ -256,9 +256,27 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer, language)]);
   };
 
-  // Auto scroll to bottom
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  // Keep the submitted question or new answer at the top of the chat panel.
+  useLayoutEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    const targetMessage = isGenerating
+      ? [...messages].reverse().find((message) => message.sender === 'user')
+      : [...messages].reverse().find((message) => message.sender === 'llm');
+    if (!targetMessage) return;
+
+    const target = Array.from(container.querySelectorAll<HTMLElement>('[data-chat-message-id]'))
+      .find((message) => message.dataset.chatMessageId === targetMessage.id);
+    if (!target) return;
+
+    const containerTop = container.getBoundingClientRect().top;
+    const targetTop = target.getBoundingClientRect().top;
+    const topPadding = Number.parseFloat(window.getComputedStyle(container).paddingTop) || 0;
+    container.scrollTo({
+      top: container.scrollTop + targetTop - containerTop - topPadding,
+      behavior: 'auto'
+    });
   }, [messages, isGenerating]);
 
   const handleSendMessage = (textToSend?: string, personaTag?: string) => {
@@ -288,7 +306,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   };
 
   return (
-    <div id="main-content" role="main" tabIndex={-1} className="bg-slate-900 min-h-screen text-slate-100 flex flex-col">
+    <div id="main-content" role="main" tabIndex={-1} className="bg-slate-900 flex-1 min-h-0 text-slate-100 flex flex-col">
       {/* Simple chat heading. Demo menus and persona shortcuts were removed for clarity. */}
       <header className="border-b border-slate-800 bg-slate-950 px-4 py-5 sm:px-6">
         <div className="mx-auto flex max-w-5xl items-center gap-3">
@@ -315,13 +333,14 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         {isGenerating ? (currentLanguage === 'en' ? ' Loading an answer.' : ' Cargando una respuesta.') : ''}
       </p>
       {/* Main Chat Stream Container */}
-      <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
+      <div ref={messagesContainerRef} className="flex-1 min-h-0 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
 
           return (
             <div
               key={msg.id}
+              data-chat-message-id={msg.id}
               className={`flex gap-3 sm:gap-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {isLlm && (
@@ -486,7 +505,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           </div>
         )}
 
-        <div ref={messagesEndRef} />
+        <div aria-hidden="true" className="h-screen shrink-0" />
       </div>
 
       {/* Input Bar Form */}

@@ -247,7 +247,7 @@ export function App() {
   };
 
   return (
-    <div className="qc min-h-screen flex flex-col selection:bg-[#047857] selection:text-white">
+    <div className={`qc ${activeView === 'copilot' ? 'h-dvh overflow-hidden' : 'min-h-screen'} flex flex-col selection:bg-[#047857] selection:text-white`}>
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
@@ -540,7 +540,7 @@ export function App() {
       )}
 
       {/* Footer */}
-      {activeView !== 'extension' && (
+      {activeView !== 'extension' && activeView !== 'copilot' && (
         <Footer
           currentLanguage={currentLanguage}
           onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
