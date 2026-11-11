@@ -14,6 +14,11 @@ import {
   topicEntryAnswerIds
 } from '../data/answers';
 import { detectMessageLanguage } from '../data/answers/messageLanguage';
+import {
+  parseZipCodeOnlyMessage,
+  zipCodeGroceriesReply,
+  zipCodeHelpPrompt
+} from '../data/answers/zipCode';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { 
   Bot, 
@@ -156,6 +161,32 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   });
 
   /**
+   * A bare ZIP code is location information, not a new question and not a
+   * language signal, so it keeps the conversation's language. It answers the
+   * need already on the table: groceries go to the reviewed Second Harvest
+   * locator, which the user searches with the ZIP — nothing is looked up here,
+   * so no specific sites are claimed. With no earlier question it asks what
+   * kind of help is wanted.
+   */
+  const buildZipCodeMessage = (zip: string, language: Language, groceries: boolean): ChatMessage => ({
+    id: `llm-${Date.now()}-zip`,
+    sender: 'llm',
+    text: (groceries ? zipCodeGroceriesReply(zip) : zipCodeHelpPrompt(zip))[language],
+    language,
+    timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    ragTrace: {
+      intent: groceries ? 'ZIP code received — grocery next step' : 'ZIP code received — ask what kind of help',
+      retrievedResources: groceries ? ['res-food-2'] : [],
+      guardrailsPassed: ['PublicChargeSafetyFilter', 'NoHallucinationPolicy', 'StigmaFreeToneAudit'],
+      confidence: 100
+    },
+    recommendedResourceIds: groceries ? ['res-food-2'] : undefined,
+    followUpIds: groceries
+      ? ['ans-food-calfresh-help', 'ans-food-proof-of-address']
+      : ['ans-food-east-sj-groceries', 'ans-work-tech-certificates', 'ans-mental-confidential-teens', 'ans-roleplay-intake-open']
+  });
+
+  /**
    * One approved answer per question. College questions enter Sara's scripted
    * college journey at the stage that answers them; persona questions keep
    * their own topic entry answer.
@@ -263,9 +294,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     if (!textToSend) setInputText('');
     setIsGenerating(true);
 
+    // A bare ZIP answers the need already on the table. Only a food/grocery
+    // conversation gets the locator; a fresh chat asks what kind of help is
+    // wanted rather than guessing from the number alone.
+    const zipCode = parseZipCodeOnlyMessage(text);
+    const wantsGroceries =
+      Boolean(zipCode) &&
+      messages.some(
+        (m) =>
+          m.sender === 'user' &&
+          (detectTopic(m.text.toLowerCase(), isRoleplayMode) === 'food' || routeFoodQuestion(m.text) !== null)
+      );
+
     // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)), replyLanguage)]);
+      setMessages(prev => [
+        ...prev,
+        zipCode
+          ? buildZipCodeMessage(zipCode, replyLanguage, wantsGroceries)
+          : buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)), replyLanguage)
+      ]);
       setIsGenerating(false);
     }, 900);
   };
