@@ -50,32 +50,43 @@ const ENGLISH_REQUESTS = [
   'en ingles por favor'
 ];
 
-/** Function words and a few markers that are Spanish only. */
+/** Function words, verb forms and Spanish-only spellings. */
 const SPANISH_WORDS = new Set([
   'el', 'la', 'los', 'las', 'un', 'una', 'unos', 'unas', 'este', 'esta', 'estos', 'estas',
   'mi', 'mis', 'tu', 'tus', 'su', 'sus', 'nuestro', 'nuestra',
   'de', 'del', 'en', 'con', 'por', 'para', 'sin', 'sobre', 'entre', 'y', 'pero', 'que',
   'como', 'cuando', 'donde', 'porque',
-  'es', 'estoy', 'estas', 'estamos', 'soy', 'eres', 'tengo', 'tienes', 'tiene', 'tenemos',
-  'necesito', 'necesitamos', 'necesitas', 'necesita', 'quiero', 'quieres', 'quisiera',
-  'puedo', 'puedes', 'puede', 'podemos', 'hay', 'vivo', 'vives', 'vive', 'hacer', 'hago',
-  'ayuda', 'ayudame', 'aplicar', 'solicitar', 'solicitud',
+  'es', 'estan', 'estoy', 'estas', 'estamos', 'soy', 'eres', 'somos', 'seria',
+  'tengo', 'tienes', 'tiene', 'tenemos', 'necesito', 'necesitamos', 'necesitas',
+  'necesita', 'necesitan', 'quiero', 'quieres', 'quiere', 'quieren', 'queremos',
+  'quisiera', 'puedo', 'puedes', 'puede', 'pueden', 'podemos', 'podria', 'podrian',
+  'hay', 'vivo', 'vives', 'vive', 'hacer', 'hago', 'haga',
+  'ayuda', 'ayudame', 'ayudar', 'ayudarme', 'ayudarle', 'ayudarnos', 'ayudarlos',
+  'ayudarlas', 'aplicar', 'aplico', 'solicitar', 'solicitud', 'calificar',
+  'obtener', 'recibir', 'encontrar', 'buscar', 'conseguir', 'pagar', 'trabajar',
+  'comer', 'llevar', 'pedir', 'preguntar', 'llamar', 'saber', 'decir',
   'quien', 'cual', 'cuanto', 'cuanta', 'cuantos', 'cuantas',
   'muy', 'mas', 'tambien', 'ahora', 'hoy', 'manana', 'favor', 'gracias', 'hola',
-  'buenos', 'dias', 'tardes', 'noches', 'algo', 'todo', 'todos',
+  'buenos', 'dias', 'tardes', 'noches', 'algo', 'todo', 'todos', 'solo', 'solamente',
   'familia', 'hijo', 'hija', 'hijos', 'nino', 'nina', 'ninos', 'ninas',
   'abuelo', 'abuela', 'mama', 'papa', 'comida', 'despensa', 'trabajo', 'dinero',
   'identificacion', 'identificaciones', 'documentos', 'domicilio', 'cita', 'tarjeta',
-  'cupones', 'estampillas'
+  'cupones', 'estampillas',
+  'informacion', 'programa', 'programas', 'recurso', 'recursos', 'servicio',
+  'servicios', 'comunidad', 'condado', 'estado', 'gratuito', 'gratuitos', 'salud',
+  'escuela', 'empleo', 'beneficio', 'beneficios', 'ingresos', 'aplicacion',
+  'formulario', 'requisitos', 'pregunta', 'respuesta'
 ]);
 
-/** Function words and a few markers that are English only. */
+/** Function words, verb forms and English-only spellings. */
 const ENGLISH_WORDS = new Set([
   'the', 'an', 'is', 'are', 'was', 'were', 'am', 'be', 'been', 'being',
   'i', 'you', 'your', 'we', 'our', 'us', 'they', 'them', 'their', 'he', 'she', 'it', 'its',
   'my', 'mine', 'his', 'her', 'this', 'that', 'these', 'those',
   'what', 'which', 'who', 'whom', 'whose', 'when', 'where', 'why', 'how',
-  'do', 'does', 'did', 'done', "don't", 'can', 'could', 'should', 'would', 'will',
+  'do', 'does', 'did', 'done', "don't", "doesn't", "didn't", "isn't", "aren't",
+  "can't", "couldn't", "won't", "i'm", "im", "what's", "you're", "we're", "let's",
+  'can', 'could', 'should', 'would', 'will',
   'may', 'might', 'must', 'need', 'needs', 'needed', 'want', 'wants',
   'have', 'has', 'had', 'get', 'got', 'apply', 'applying', 'application',
   'help', 'please', 'thanks', 'thank', 'hello', 'hi', 'hey', 'yes', 'not',
@@ -84,8 +95,17 @@ const ENGLISH_WORDS = new Set([
   'now', 'today', 'tomorrow', 'family', 'child', 'children', 'kids',
   'living', 'live', 'lives', 'pay', 'paying', 'work', 'working', 'job', 'school',
   'college', 'scholarship', 'documents', 'address', 'county', 'city', 'groceries',
-  'grocery', 'pantry'
+  'grocery', 'pantry',
+  'program', 'programs', 'information', 'resource', 'resources', 'service',
+  'services', 'community', 'state', 'free', 'eligibility', 'eligible', 'income',
+  'benefit', 'benefits', 'form', 'forms', 'submit', 'submitting', 'online',
+  'phone', 'call', 'office', 'hours', 'location', 'here', 'there',
+  'identification', 'morning', 'afternoon'
 ]);
+
+/** Spanish-only orthography: inverted marks and characters English never uses. */
+const SPANISH_LETTERS = /[ñáéíóúü]/i;
+const SPANISH_MARKS = /[¿¡]/;
 
 /**
  * The language a typed message clearly asks to be answered in, or `null` when
@@ -105,15 +125,24 @@ export const detectMessageLanguage = (text: string): Language | null => {
   // “OK”, “WIC”, “CalFresh”, “95112”: a single token carries no language signal.
   if (words.length < 2) return null;
 
-  let spanishScore = 0;
-  let englishScore = 0;
+  let spanishWords = 0;
+  let englishWords = 0;
   for (const word of words) {
-    if (SPANISH_WORDS.has(word)) spanishScore += 1;
-    else if (ENGLISH_WORDS.has(word)) englishScore += 1;
+    if (SPANISH_WORDS.has(word)) spanishWords += 1;
+    else if (ENGLISH_WORDS.has(word)) englishWords += 1;
   }
 
-  // Two or more signals on one side, and no tie: only then is it "clear".
-  if (spanishScore >= 2 && spanishScore > englishScore) return 'es';
-  if (englishScore >= 2 && englishScore > spanishScore) return 'en';
-  return null;
+  // “¿”, “¡”, “ñ” and Spanish accents cannot decide a message on their own —
+  // “San José” is still just a place name — but they break a tie between words
+  // and confirm a lone Spanish word such as “¿Puedo?”.
+  const hasSpanishOrthography = SPANISH_MARKS.test(text) || SPANISH_LETTERS.test(text);
+
+  if (spanishWords === englishWords) {
+    return spanishWords > 0 && hasSpanishOrthography ? 'es' : null;
+  }
+
+  const winner: Language = spanishWords > englishWords ? 'es' : 'en';
+  const winningScore = Math.max(spanishWords, englishWords);
+  if (winningScore >= 2) return winner;
+  return winner === 'es' && hasSpanishOrthography ? 'es' : null;
 };
