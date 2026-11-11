@@ -31,6 +31,7 @@ import {
   PhoneCall,
   Activity,
   Sliders,
+  X,
 } from 'lucide-react';
 
 interface ChatMessage {
@@ -62,6 +63,8 @@ interface AILLMConsoleProps {
   onOpenDecoderModal: () => void;
   /** A question submitted from the homepage; the copilot opens already answered. */
   initialQuestion?: { text: string; key: number } | null;
+  /** Collapses the floating chat panel. */
+  onClose?: () => void;
 }
 
 const topicIntents: Record<AnswerTopic, string> = {
@@ -113,7 +116,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   onOpenInsights,
   onOpenArchitectureModal,
   onOpenDecoderModal,
-  initialQuestion
+  initialQuestion,
+  onClose
 }) => {
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
@@ -315,6 +319,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
             >
               <Download className="h-4 w-4" aria-hidden="true" />
             </button>
+
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="cp-icon cp-close"
+                title={t.a11y.closeModal}
+                aria-label={currentLanguage === 'en' ? 'Close the co-pilot' : 'Cerrar el copiloto'}
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
         </div>
       </div>

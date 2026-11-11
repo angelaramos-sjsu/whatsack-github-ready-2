@@ -1,0 +1,187 @@
+/* ==========================================================================
+   WhatSack Civic-LLM Co-Pilot — floating pop-out chat panel.
+   The panel reuses the copilot-chat.css surface and compacts it to fit.
+   ========================================================================== */
+
+.cp-pop {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 45;
+  width: min(430px, calc(100vw - 32px));
+  height: min(720px, calc(100vh - 48px));
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.24s ease, transform 0.24s ease, visibility 0.24s;
+}
+
+.cp-pop.is-open {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.cp-pop-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--qc-line-strong);
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 24px 70px rgba(10, 10, 10, 0.22);
+}
+
+.cp-pop-panel:focus {
+  outline: none;
+}
+
+/* The console fills the panel and scrolls only its conversation. */
+.cp-pop .cp {
+  height: 100%;
+  min-height: 0;
+}
+
+.cp-pop .cp > * {
+  flex-shrink: 0;
+}
+
+.cp-pop .cp-stream {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.cp-pop .cp-composer {
+  position: static;
+  padding: 12px 0 14px;
+}
+
+/* — Compact header — */
+.cp-pop .qc-shell {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.cp-pop .cp-bar-in {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  padding-top: 14px;
+  padding-bottom: 12px;
+}
+
+.cp-pop .cp-mark {
+  width: 30px;
+  height: 30px;
+}
+
+.cp-pop .cp-mark svg {
+  width: 15px;
+  height: 15px;
+}
+
+.cp-pop .cp-id {
+  gap: 10px;
+}
+
+.cp-pop .cp-title {
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+/* The panel already says what the co-pilot is; keep its header one line tall. */
+.cp-pop .cp-tag,
+.cp-pop .cp-status {
+  display: none;
+}
+
+.cp-pop .cp-actions {
+  gap: 6px;
+}
+
+.cp-pop .cp-ghost {
+  padding: 6px 9px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+
+/* Panel is narrow, so always use the compact action labels it renders for small screens. */
+.cp-pop .cp-ghost span.hidden {
+  display: none;
+}
+
+.cp-pop .cp-ghost span.sm\:hidden {
+  display: inline;
+}
+
+.cp-pop .cp-close {
+  border-color: var(--qc-line-strong);
+  color: var(--qc-ink);
+}
+
+.cp-pop .cp-close:hover,
+.cp-pop .cp-close:focus-visible {
+  color: var(--qc-ink);
+  border-color: var(--qc-gold);
+  background: var(--qc-ivory);
+}
+
+/* — Quick profiles & conversation tuned for a narrow column — */
+.cp-pop .cp-profiles-in {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+.cp-pop .cp-feed {
+  max-width: none;
+}
+
+.cp-pop .cp-res-grid {
+  grid-template-columns: 1fr;
+}
+
+.cp-pop .cp-msg--user {
+  max-width: 88%;
+}
+
+.cp-pop .cp-bubble {
+  font-size: 14px;
+}
+
+.cp-pop .cp-note {
+  font-size: 9.5px;
+}
+
+/* — Small screens: the chat takes the whole screen — */
+@media (max-width: 640px) {
+  .cp-pop {
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+  }
+
+  .cp-pop.is-open {
+    transform: none;
+  }
+
+  .cp-pop-panel {
+    border: 0;
+    border-radius: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cp-pop {
+    transition: none;
+    transform: none;
+  }
+}

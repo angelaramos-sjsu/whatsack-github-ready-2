@@ -21,6 +21,7 @@ import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSideba
 import { VoiceAssistantModal } from './components/VoiceAssistantModal';
 import { SavedResourcesDrawer } from './components/SavedResourcesDrawer';
 import { AILLMConsole } from './components/AILLMConsole';
+import { CopilotPopout } from './components/CopilotPopout';
 import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
@@ -222,23 +223,8 @@ export function App() {
         setActiveView={setActiveView}
       />
 
-      {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
-      {activeView === 'copilot' ? (
-        <AILLMConsole
-          currentLanguage={currentLanguage}
-          userProfile={userProfile}
-          savedResourceIds={savedResourceIds}
-          onSavePlanAction={(resourceId) =>
-            setSavedResourceIds((prev) =>
-              prev.includes(resourceId) ? prev : [...prev, resourceId]
-            )
-          }
-          onOpenInsights={(res) => setSelectedResourceForInsights(res)}
-          onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
-          onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
-          initialQuestion={copilotQuestion}
-        />
-      ) : activeView === 'extension' ? (
+      {/* Main View: Home Platform or Browser Extension. The co-pilot floats above the page. */}
+      {activeView === 'extension' ? (
         <SimulatedExtensionSidebar
           currentLanguage={currentLanguage}
           onClose={() => setActiveView('home')}
@@ -359,12 +345,14 @@ export function App() {
         </main>
       )}
 
-      {/* Floating AI Copilot summon pill */}
+      {/* Floating co-pilot launcher — opens the chat panel from anywhere on the page */}
       {activeView === 'home' && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
             type="button"
             onClick={() => setActiveView('copilot')}
+            aria-controls="civic-copilot-panel"
+            aria-expanded={false}
             className="group flex items-center gap-2 rounded-full border border-[#0A0A0A] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0A0A0A] shadow-[0_10px_30px_rgba(10,10,10,0.12)] transition-colors hover:bg-[#0A0A0A] hover:text-white"
             title="Open WhatSack Civic-LLM Chat Assistant"
           >
@@ -389,6 +377,29 @@ export function App() {
           onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
         />
       )}
+
+      {/* Pop-out Civic-LLM co-pilot chat panel, mounted once so the conversation survives closing */}
+      <CopilotPopout
+        open={activeView === 'copilot'}
+        onClose={() => setActiveView('home')}
+        label={t.aiCopilot.title}
+      >
+        <AILLMConsole
+          currentLanguage={currentLanguage}
+          userProfile={userProfile}
+          savedResourceIds={savedResourceIds}
+          onSavePlanAction={(resourceId) =>
+            setSavedResourceIds((prev) =>
+              prev.includes(resourceId) ? prev : [...prev, resourceId]
+            )
+          }
+          onOpenInsights={(res) => setSelectedResourceForInsights(res)}
+          onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
+          onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
+          initialQuestion={copilotQuestion}
+          onClose={() => setActiveView('home')}
+        />
+      </CopilotPopout>
 
       {/* Introduction Assessment Modal */}
       {isIntroductionFormOpen && (
