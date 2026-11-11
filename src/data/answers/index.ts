@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { bilingualFoodAnswers, routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion } from './foodBilingual';
 import { programFollowUpAnswers } from './followUpsPrograms';
 import { supportFollowUpAnswers } from './followUpsSupport';
 import { routeSaraCollegeQuestion, saraCollegePathwayAnswers, saraCollegeStageIds } from './saraCollegePathway';
@@ -7,11 +8,13 @@ import type { AnswerTopic, BilingualText, ScriptedAnswer } from './types';
 
 export type { AnswerTopic, BilingualText, NextStepMeta, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep, SavedScriptedStep } from './types';
 export { routeSaraCollegeQuestion, saraCollegeStageIds };
+export { routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion };
 
 /** Every approved scripted answer, keyed by its unique id. */
 export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
   ...programFollowUpAnswers,
+  ...bilingualFoodAnswers,
   ...supportFollowUpAnswers,
   ...saraCollegePathwayAnswers
 ]);
