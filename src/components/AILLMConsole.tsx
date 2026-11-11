@@ -10,6 +10,8 @@ import {
   getScriptedAnswer,
   resolveFollowUps,
   routeSaraCollegeQuestion,
+  routeBilingualFoodQuestion,
+  isSpanishBilingualFoodQuestion,
   topicEntryAnswerIds
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
@@ -56,6 +58,8 @@ interface ChatMessage {
   followUpIds?: string[];
   /** The approved scripted answer behind this message. */
   scriptedAnswer?: ScriptedAnswer;
+  /** Language used for this specific reply, even if the site's UI is English. */
+  language?: Language;
 }
 
 interface AILLMConsoleProps {
@@ -148,6 +152,9 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const responseLanguageRef = useRef<Language>(currentLanguage);
+
+  useEffect(() => { responseLanguageRef.current = currentLanguage; }, [currentLanguage]);
 
   const greetingMessage: ChatMessage = {
     id: 'msg-init-1',
@@ -157,7 +164,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       : "¡Hola! Soy WhatSack, su guía. Puedo ayudarle a explorar recursos de comida, estudios, trabajo, salud mental y comunidad. ¿En qué necesita ayuda hoy? Este chat usa respuestas de ejemplo.",
     timestamp: currentLanguage === 'en' ? 'Welcome' : 'Bienvenida',
     followUpIds: [
-      'ans-food-east-sj-groceries',
+      'ans-food-es-family-groceries',
       'ans-work-tech-certificates',
       'ans-mental-confidential-teens',
       'ans-community-connections'
@@ -165,10 +172,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   };
 
   /** Turn an approved scripted answer into a chat bubble. */
-  const buildAnswerMessage = (answer: ScriptedAnswer): ChatMessage => ({
+  const buildAnswerMessage = (answer: ScriptedAnswer, answerLanguage: Language = currentLanguage): ChatMessage => ({
     id: `llm-${Date.now()}-${answer.id}`,
     sender: 'llm',
-    text: answer.answer[currentLanguage],
+    text: answer.answer[answerLanguage],
+    language: answerLanguage,
     timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     ragTrace: {
       intent: answer.topic === 'fallback' ? 'Unscripted inquiry — no approved answer' : topicIntents[answer.topic],
@@ -191,8 +199,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const topic = detectTopic(text);
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
-    const answer = saraStageId
-      ? getScriptedAnswer(saraStageId)
+    // Prefer precise bilingual food intents over generic food topic matching.
+    const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
+    const answer = bilingualFoodId
+      ? getScriptedAnswer(bilingualFoodId)
+      : saraStageId
+        ? getScriptedAnswer(saraStageId)
       : topic
         ? getScriptedAnswer(topicEntryAnswerIds[topic])
         : undefined;
@@ -210,6 +222,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const seededKey = initialQuestion?.key;
     if (!seededQuestion || seededKey === undefined || seededQuestionKeyRef.current === seededKey) return;
     seededQuestionKeyRef.current = seededKey;
+    const seedLanguage: Language = routeBilingualFoodQuestion(seededQuestion) && isSpanishBilingualFoodQuestion(seededQuestion) ? 'es' : currentLanguage;
+    responseLanguageRef.current = seedLanguage;
 
     setMessages(prev => [
       ...prev,
@@ -219,7 +233,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         text: seededQuestion,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       },
-      buildAnswerMessage(resolveAnswer(seededQuestion))
+      buildAnswerMessage(resolveAnswer(seededQuestion), seedLanguage)
     ]);
   }, [initialQuestion]);
 
@@ -227,18 +241,19 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
    * A follow-up button replays its own approved answer by id, so two different
    * questions never collapse into one generic reply.
    */
-  const handleFollowUpClick = (answerId: string) => {
+  const handleFollowUpClick = (answerId: string, language: Language = responseLanguageRef.current) => {
     const answer = getScriptedAnswer(answerId);
     if (!answer) return;
+    responseLanguageRef.current = language;
 
     const questionMessage: ChatMessage = {
       id: `usr-${Date.now()}`,
       sender: 'user',
-      text: answer.question[currentLanguage],
+      text: answer.question[language],
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
-    setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
+    setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer, language)]);
   };
 
   // Auto scroll to bottom
@@ -249,6 +264,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const handleSendMessage = (textToSend?: string, personaTag?: string) => {
     const text = textToSend || inputText;
     if (!text.trim() || isGenerating) return;
+    const answerLanguage: Language = routeBilingualFoodQuestion(text) && isSpanishBilingualFoodQuestion(text) ? 'es' : currentLanguage;
+    responseLanguageRef.current = answerLanguage;
 
     const userMsgId = `usr-${Date.now()}`;
     const userMessage: ChatMessage = {
@@ -265,7 +282,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
     // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)))]);
+      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)), answerLanguage)]);
       setIsGenerating(false);
     }, 900);
   };
@@ -341,7 +358,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   {msg.sender === 'llm'
                     ? renderScriptedAnswer(
                         msg.scriptedAnswer
-                          ? msg.scriptedAnswer.answer[currentLanguage]
+                          ? msg.scriptedAnswer.answer[msg.language ?? currentLanguage]
                           : msg.id === 'msg-init-1' ? greetingMessage.text : msg.text
                       )
                     : msg.text}
@@ -396,7 +413,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.scriptedAnswer && (
                   <ScriptedAnswerExtras
                     answer={msg.scriptedAnswer}
-                    currentLanguage={currentLanguage}
+                    currentLanguage={msg.language ?? currentLanguage}
                     savedResourceIds={savedResourceIds}
                     onSavePlan={(resourceId) => onSavePlanAction?.(resourceId)}
                     savedSteps={savedScriptedSteps}
@@ -415,10 +432,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                         <button
                           key={followUp.id}
                           type="button"
-                          onClick={() => handleFollowUpClick(followUp.id)}
+                          onClick={() => handleFollowUpClick(followUp.id, msg.language ?? currentLanguage)}
                           className="min-h-[44px] text-sm px-3 py-2.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-white border border-slate-600 hover:border-emerald-400 text-left leading-snug transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
                         >
-                          💬 {followUp.question[currentLanguage]}
+                          💬 {followUp.question[msg.language ?? currentLanguage]}
                         </button>
                       ))}
                       {shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
