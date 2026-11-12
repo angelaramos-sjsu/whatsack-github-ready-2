@@ -446,8 +446,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
                 {isLlm && !!msg.followUpIds?.length && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
-                    <span className="text-sm font-bold uppercase tracking-wider text-slate-400 block mb-1.5">
-                      {currentLanguage === 'en' ? 'Follow-up Prompts:' : 'Preguntas Sugeridas:'}
+                    <span className="text-sm font-bold tracking-wider text-slate-400 block mb-1.5">
+                      {currentLanguage === 'en' ? 'You may also want to know...' : 'También te puede interesar saber...'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
                       {resolveFollowUps(msg.followUpIds).filter((followUp) => followUp.topic !== 'roleplay').map((followUp) => (
