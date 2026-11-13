@@ -33,24 +33,6 @@
   min-width: 0;
 }
 
-.cp-mark {
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--qc-line-strong);
-  border-radius: 2px;
-  background: var(--qc-ivory);
-  color: var(--qc-gold-deep);
-}
-
-.cp-mark svg {
-  width: 18px;
-  height: 18px;
-  stroke-width: 1.5;
-}
-
 .cp-title-row {
   display: flex;
   align-items: center;

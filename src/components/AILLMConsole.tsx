@@ -14,7 +14,6 @@ import {
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { 
-  Bot, 
   Send, 
   Sparkles, 
   Brain, 
@@ -333,9 +332,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       <div className="cp-bar">
         <div className="qc-shell cp-bar-in">
           <div className="cp-id">
-            <span className="cp-mark" aria-hidden="true">
-              <Bot />
-            </span>
             <div>
               <div className="cp-title-row">
                 <h2 className="cp-title">{t.aiCopilot.title}</h2>

@@ -77,16 +77,6 @@
   padding-bottom: 12px;
 }
 
-.cp-pop .cp-mark {
-  width: 30px;
-  height: 30px;
-}
-
-.cp-pop .cp-mark svg {
-  width: 15px;
-  height: 15px;
-}
-
 .cp-pop .cp-id {
   gap: 10px;
 }
