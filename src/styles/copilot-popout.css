@@ -8,8 +8,8 @@
   right: 24px;
   bottom: 24px;
   z-index: 45;
-  width: min(430px, calc(100vw - 32px));
-  height: min(720px, calc(100vh - 48px));
+  width: min(392px, calc(100vw - 32px));
+  height: min(640px, calc(100vh - 48px));
   visibility: hidden;
   opacity: 0;
   transform: translateY(16px);
@@ -30,7 +30,7 @@
   height: 100%;
   overflow: hidden;
   border: 1px solid var(--qc-line-strong);
-  border-radius: 3px;
+  border-radius: 20px;
   background: #fff;
   box-shadow: 0 24px 70px rgba(10, 10, 10, 0.22);
 }
