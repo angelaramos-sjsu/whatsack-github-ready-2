@@ -340,17 +340,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               <Download className="h-4 w-4" aria-hidden="true" />
             </button>
 
-            {onClose && (
-              <button
-                type="button"
-                onClick={onClose}
-                className="cp-icon cp-close"
-                title={t.a11y.closeModal}
-                aria-label={currentLanguage === 'en' ? 'Close the co-pilot' : 'Cerrar el copiloto'}
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -560,11 +549,26 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           </button>
         </form>
 
-        <p className="cp-note">
-          {currentLanguage === 'en'
-            ? 'Answers come from demonstration records only. No personal data is collected or stored.'
-            : 'Las respuestas vienen solo de registros de demostración. No se recopilan ni guardan datos personales.'}
-        </p>
+        <div className="cp-foot">
+          <p className="cp-note">
+            {currentLanguage === 'en'
+              ? 'Answers come from demonstration records only. No personal data is collected or stored.'
+              : 'Las respuestas vienen solo de registros de demostración. No se recopilan ni guardan datos personales.'}
+          </p>
+
+          {/* Lower-right corner control: always in view, never scrolls with the chat. */}
+          {onClose && (
+            <button
+              type="button"
+              onClick={onClose}
+              className="cp-icon cp-close cp-close--foot"
+              title={t.a11y.closeModal}
+              aria-label={currentLanguage === 'en' ? 'Close the assistant' : 'Cerrar el asistente'}
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
+          )}
+        </div>
         </div>
       </div>
     </div>
