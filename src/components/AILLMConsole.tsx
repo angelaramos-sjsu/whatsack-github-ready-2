@@ -98,6 +98,12 @@ const asksAboutMentalHealthCost = (lower: string) =>
 const asksAboutMediCalTherapist = (lower: string) =>
   /medi[\s-]?cal/.test(lower) && /therap|counsel|terapia|consejer|salud mental/.test(lower);
 
+/** "What now?" questions after a visit open the reviewed after-session answer. */
+const asksAboutAfterSession = (lower: string) =>
+  /after|next|despu[eé]s|siguiente/.test(lower) &&
+  /consult|session|appointment|visit|therap|counsel|sesi[oó]n|cita|terapia|consejer|consulta/.test(lower) &&
+  !/cost|price|pay|fee|cu[aá]nto|precio|cuesta|medi[\s-]?cal|find|looking for|donde|dónde|specialist/.test(lower);
+
 /** Consultation and "where do I find a therapist" questions open the reviewed specialist list. */
 const asksForBayAreaSpecialist = (lower: string) =>
   /consult|specialist|especialista/.test(lower) ||
@@ -183,10 +189,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const topic = detectTopic(lower, isRoleplayMode);
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
+    const asksAboutAfterVisit = asksAboutAfterSession(lower);
     const asksAboutCost = asksAboutMentalHealthCost(lower);
     const asksAboutMediCal = asksAboutMediCalTherapist(lower);
     const asksForSpecialist = asksForBayAreaSpecialist(lower);
-    const answer = asksAboutMediCal
+    const answer = asksAboutAfterVisit
+      ? getScriptedAnswer('ans-mental-after-session')
+      : asksAboutMediCal
       ? getScriptedAnswer('ans-mental-medi-cal-therapist')
       : asksAboutCost
         ? getScriptedAnswer('ans-mental-session-cost')

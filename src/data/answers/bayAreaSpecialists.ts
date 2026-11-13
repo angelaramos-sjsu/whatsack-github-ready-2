@@ -31,6 +31,6 @@ Toque un especialista para ver idiomas, costo, horario y cómo comunicarse.`
       en: 'Mental health specialists in the Bay Area',
       es: 'Especialistas en salud mental del Área de la Bahía'
     },
-    followUpIds: ['ans-mental-session-cost', 'ans-mental-medi-cal-therapist']
+    followUpIds: ['ans-mental-session-cost', 'ans-mental-medi-cal-therapist', 'ans-mental-after-session']
   }
 ];

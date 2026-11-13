@@ -251,7 +251,7 @@ Tú controlas la conversación: puedes parar, cambiar de tema o pedir otro tipo 
       ]
     },
     resourceIds: ['res-mental-3'],
-    followUpIds: ['ans-mental-medi-cal-therapist', 'ans-mental-drop-in-what-happens', 'ans-mental-school-privacy']
+    followUpIds: ['ans-mental-medi-cal-therapist', 'ans-mental-after-session', 'ans-mental-drop-in-what-happens', 'ans-mental-school-privacy']
   },
   {
     id: 'ans-mental-medi-cal-therapist',

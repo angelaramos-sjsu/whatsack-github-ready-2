@@ -1,3 +1,4 @@
+import { afterSessionAnswers } from './afterSession';
 import { bayAreaSpecialistAnswers } from './bayAreaSpecialists';
 import { entryAnswers } from './entry';
 import { programFollowUpAnswers } from './followUpsPrograms';
@@ -14,6 +15,7 @@ export const scriptedAnswers: ScriptedAnswer[] = [
   ...programFollowUpAnswers,
   ...supportFollowUpAnswers,
   ...bayAreaSpecialistAnswers,
+  ...afterSessionAnswers,
   ...saraCollegePathwayAnswers
 ];
 
