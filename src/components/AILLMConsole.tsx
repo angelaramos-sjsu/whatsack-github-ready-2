@@ -24,6 +24,8 @@ import {
   Download, 
   RotateCcw, 
   CheckCircle2, 
+  BookmarkPlus,
+  Check,
   Layers, 
   ArrowRight,
   MessageSquare,
@@ -183,6 +185,27 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   /** The message at the end of the feed — always the answer you just asked for. */
   const newestMessageRef = useRef<HTMLDivElement | null>(null);
   const newestMessageId = messages[messages.length - 1]?.id;
+
+  /** Plan items the newest answer offers to save — kept in reach by the footer button. */
+  const newestAnswer = [...messages].reverse().find((m) => m.sender === 'llm')?.scriptedAnswer;
+  const newestSaveIds = newestAnswer
+    ? Array.from(
+        new Set(
+          [newestAnswer.nextStep, ...(newestAnswer.nextSteps ?? [])]
+            .flatMap((step) => step?.actions ?? [])
+            .map((action) => (action.kind === 'save-plan' ? action.resourceId : null))
+            .filter((id): id is string => Boolean(id))
+        )
+      )
+    : [];
+  const newestPlanSaved =
+    newestSaveIds.length > 0 && newestSaveIds.every((id) => savedResourceIds.includes(id));
+
+  const handleSaveCurrentPlan = () => {
+    newestSaveIds.forEach((id) => {
+      if (!savedResourceIds.includes(id)) onSavePlanAction?.(id);
+    });
+  };
 
   // A question submitted from the homepage opens the copilot already answered.
   const seededQuestionKeyRef = useRef<number | null>(null);
@@ -470,6 +493,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     currentLanguage={currentLanguage}
                     savedResourceIds={savedResourceIds}
                     onSavePlan={(resourceId) => onSavePlanAction?.(resourceId)}
+                    hideSaveActions={msg.id === newestMessageId}
                   />
                 )}
 
@@ -556,7 +580,25 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
               : 'Las respuestas vienen solo de registros de demostración. No se recopilan ni guardan datos personales.'}
           </p>
 
-          {/* Lower-right corner control: always in view, never scrolls with the chat. */}
+          {/* Lower-right corner controls: always in view, never scroll with the chat. */}
+          {onSavePlanAction && (
+            <button
+              type="button"
+              onClick={handleSaveCurrentPlan}
+              disabled={newestSaveIds.length === 0 || newestPlanSaved}
+              aria-pressed={newestPlanSaved}
+              className="cp-icon cp-close--foot cp-save--foot"
+              title={newestPlanSaved ? 'Saved to your plan' : 'Save to my plan'}
+              aria-label={newestPlanSaved ? 'Saved to your plan' : 'Save to my plan'}
+            >
+              {newestPlanSaved ? (
+                <Check className="h-4 w-4" aria-hidden="true" />
+              ) : (
+                <BookmarkPlus className="h-4 w-4" aria-hidden="true" />
+              )}
+            </button>
+          )}
+
           {onClose && (
             <button
               type="button"

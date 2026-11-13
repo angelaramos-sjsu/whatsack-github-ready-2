@@ -8,6 +8,8 @@ interface ScriptedAnswerExtrasProps {
   currentLanguage: Language;
   savedResourceIds: string[];
   onSavePlan: (resourceId: string) => void;
+  /** The footer already offers Save for the newest answer, so its card omits it. */
+  hideSaveActions?: boolean;
 }
 
 interface NextStepCardProps {
@@ -16,6 +18,7 @@ interface NextStepCardProps {
   currentLanguage: Language;
   savedResourceIds: string[];
   onSavePlan: (resourceId: string) => void;
+  hideSaveActions?: boolean;
 }
 
 /** One NextStep Insight: its title, detail and actions. */
@@ -24,10 +27,12 @@ const NextStepCard: React.FC<NextStepCardProps> = ({
   index,
   currentLanguage,
   savedResourceIds,
-  onSavePlan
+  onSavePlan,
+  hideSaveActions = false
 }) => {
   const lang = currentLanguage;
   const isEn = currentLanguage === 'en';
+  const actions = hideSaveActions ? step.actions.filter((action) => action.kind !== 'save-plan') : step.actions;
 
   return (
     <div className="cp-step">
@@ -38,7 +43,7 @@ const NextStepCard: React.FC<NextStepCardProps> = ({
       <p className="cp-step-detail">{step.detail[lang]}</p>
 
       <div className="cp-step-actions">
-        {step.actions.map((action) => {
+        {actions.map((action) => {
           if (action.kind === 'open-link') {
             return (
               <a
@@ -85,7 +90,8 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
   answer,
   currentLanguage,
   savedResourceIds,
-  onSavePlan
+  onSavePlan,
+  hideSaveActions = false
 }) => {
   const lang = currentLanguage;
   const isEn = currentLanguage === 'en';
@@ -141,6 +147,7 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
             currentLanguage={currentLanguage}
             savedResourceIds={savedResourceIds}
             onSavePlan={onSavePlan}
+            hideSaveActions={hideSaveActions}
           />
         </div>
       )}
@@ -160,6 +167,7 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
               currentLanguage={currentLanguage}
               savedResourceIds={savedResourceIds}
               onSavePlan={onSavePlan}
+              hideSaveActions={hideSaveActions}
             />
           ))}
         </div>

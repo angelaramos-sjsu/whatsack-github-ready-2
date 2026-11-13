@@ -683,6 +683,17 @@
   background: var(--qc-ivory);
 }
 
+/* Save control sits just left of the close control and follows the newest answer. */
+.cp-save--foot {
+  border-color: var(--qc-gold);
+  color: var(--qc-gold-deep);
+}
+
+.cp-save--foot:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
 /* — Scripted answer extras — */
 .cp-extras {
   display: flex;
