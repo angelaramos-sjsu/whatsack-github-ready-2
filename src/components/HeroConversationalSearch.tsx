@@ -75,9 +75,6 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
 
   const handleCategory = (id: CategoryId) => {
     onSelectCategory(id);
-    window.setTimeout(() => {
-      document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 0);
   };
 
   return (

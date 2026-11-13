@@ -29,7 +29,7 @@ import { Footer } from './components/Footer';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'extension'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'directory' | 'extension'>('home');
   // The chat is a floating panel, not a page: opening it never changes the view.
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   // A question submitted from the homepage opens the copilot already answered.
@@ -232,6 +232,27 @@ export function App() {
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
         />
+      ) : activeView === 'directory' ? (
+        <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
+          {/* Community resource directory — kept on its own tab */}
+          <CommunityDirectory
+            currentLanguage={currentLanguage}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            selectedCity={selectedCity}
+            onSelectCity={setSelectedCity}
+            availableCities={availableCities}
+            searchQuery={searchQuery}
+            freeOnly={freeOnly}
+            onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
+            noIdRequiredOnly={noIdRequiredOnly}
+            onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
+            onResetFilters={resetAllFilters}
+            demonstrationCount={filteredResources.length}
+            isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
+            onToggleEntrySave={handleToggleDirectorySave}
+          />
+        </main>
       ) : (
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
           {/* Conversational AI Search Hero */}
@@ -254,26 +275,10 @@ export function App() {
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
             selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
-
-          {/* Community resource directory with filters */}
-          <CommunityDirectory
-            currentLanguage={currentLanguage}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-            selectedCity={selectedCity}
-            onSelectCity={setSelectedCity}
-            availableCities={availableCities}
-            searchQuery={searchQuery}
-            freeOnly={freeOnly}
-            onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
-            noIdRequiredOnly={noIdRequiredOnly}
-            onToggleNoIdRequired={() => setNoIdRequiredOnly(!noIdRequiredOnly)}
-            onResetFilters={resetAllFilters}
-            demonstrationCount={filteredResources.length}
-            isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
-            onToggleEntrySave={handleToggleDirectorySave}
+            onSelectCategory={(category) => {
+              setSelectedCategory(category);
+              if (category !== 'all') setActiveView('directory');
+            }}
           />
 
           {/* Demonstration resources */}
@@ -370,8 +375,8 @@ export function App() {
           onOpenDisclaimer={() => setIsDisclaimerOpen(true)}
           onNavigateCategory={(cat) => {
             setSelectedCategory(cat);
-            setActiveView('home');
-            window.setTimeout(() => document.getElementById('directory')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
+            setActiveView('directory');
+            window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
           }}
           onOpenExtension={() => setActiveView('extension')}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}

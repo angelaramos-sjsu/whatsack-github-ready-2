@@ -14,8 +14,8 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'extension';
-  setActiveView: (view: 'home' | 'extension') => void;
+  activeView: 'home' | 'directory' | 'extension';
+  setActiveView: (view: 'home' | 'directory' | 'extension') => void;
   /** Opens the floating chat panel in place — it is not a page. */
   onOpenCopilot: () => void;
 }
@@ -44,12 +44,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
-  const goToSection = (id: string) => {
-    setActiveView('home');
-    setIsMenuOpen(false);
-    window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 0);
-  };
-
   const toggleLanguage = () => onLanguageChange(currentLanguage === 'en' ? 'es' : 'en');
   const textSizeLabel = textSize === 'normal' ? '1x' : textSize === 'large' ? '1.2x' : '1.4x';
 
@@ -62,8 +56,12 @@ export const Navbar: React.FC<NavbarProps> = ({
     },
     {
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
-      onClick: () => goToSection('directory'),
-      active: false
+      onClick: () => {
+        setActiveView('directory');
+        setIsMenuOpen(false);
+        window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
+      },
+      active: activeView === 'directory'
     },
     {
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',
