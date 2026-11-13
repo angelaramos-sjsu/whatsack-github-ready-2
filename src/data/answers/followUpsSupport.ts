@@ -251,7 +251,73 @@ Tú controlas la conversación: puedes parar, cambiar de tema o pedir otro tipo 
       ]
     },
     resourceIds: ['res-mental-3'],
-    followUpIds: ['ans-mental-drop-in-what-happens', 'ans-mental-school-privacy']
+    followUpIds: ['ans-mental-medi-cal-therapist', 'ans-mental-drop-in-what-happens', 'ans-mental-school-privacy']
+  },
+  {
+    id: 'ans-mental-medi-cal-therapist',
+    topic: 'mental',
+    question: {
+      en: 'How do I find a therapist who takes Medi-Cal in the Bay Area?',
+      es: '¿Cómo encuentro un terapeuta que acepte Medi-Cal en el Área de la Bahía?'
+    },
+    answer: {
+      en: `**Start with your Medi-Cal plan, then a community clinic.**
+
+1. **Call the care line on your Medi-Cal card.** Say you want a therapist near your ZIP code. Your plan has to give you a list of in-network therapists, and the visit is usually $0.
+2. **Call county behavioral health.** Santa Clara County Behavioral Health Services helps residents of any immigration status and can assign a therapist directly.
+3. **Try a community clinic.** Alum Rock Family Counseling in East San Jose takes Medi-Cal and offers a sliding scale.
+4. **If the list is full,** ask for a "single case agreement". That lets you see an outside therapist and Medi-Cal still pays.
+
+**Next step:** Have your Medi-Cal card ready, call your plan's care line, and ask for three therapists within 10 miles that have openings this month.`,
+      es: `**Empiece con su plan de Medi-Cal y luego una clínica comunitaria.**
+
+1. **Llame a la línea de atención de su tarjeta de Medi-Cal.** Diga que busca un terapeuta cerca de su código postal. Su plan debe darle una lista de terapeutas en la red y la visita suele costar $0.
+2. **Llame a salud conductual del condado.** Los Servicios de Salud Conductual del Condado de Santa Clara atienden a residentes de cualquier estatus migratorio y pueden asignarle un terapeuta.
+3. **Pruebe una clínica comunitaria.** Alum Rock Family Counseling en el Este de San José acepta Medi-Cal y ofrece tarifa a escala.
+4. **Si la lista está llena,** pida un "acuerdo de caso único". Así puede ver a un terapeuta fuera de la red y Medi-Cal sigue pagando.
+
+**Próximo paso:** Tenga su tarjeta de Medi-Cal a mano, llame a la línea de su plan y pida tres terapeutas a menos de 10 millas con citas este mes.`
+    },
+    context: [
+      { en: 'Bay Area', es: 'Área de la Bahía' },
+      { en: 'Medi-Cal coverage', es: 'Cobertura de Medi-Cal' },
+      { en: 'Low-cost counseling', es: 'Consejería de bajo costo' }
+    ],
+    links: [
+      {
+        label: { en: 'Santa Clara County Behavioral Health Services', es: 'Servicios de Salud Conductual del Condado de Santa Clara' },
+        source: { en: 'County of Santa Clara', es: 'Condado de Santa Clara' },
+        url: 'https://bhsd.sccgov.org/'
+      },
+      {
+        label: { en: 'Medi-Cal — covered mental health services', es: 'Medi-Cal — servicios de salud mental cubiertos' },
+        source: { en: 'California Department of Health Care Services', es: 'Departamento de Servicios de Salud de California' },
+        url: 'https://www.dhcs.ca.gov/services/medi-cal/'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Ask your plan for three open therapists', es: 'Pida a su plan tres terapeutas con citas' },
+      detail: {
+        en: 'Names, distance and current openings — one call with your card gets you all three.',
+        es: 'Nombres, distancia y citas disponibles: una llamada con su tarjeta le da los tres datos.'
+      },
+      actions: [
+        {
+          id: 'mental-medi-cal-save',
+          kind: 'save-plan',
+          label: { en: 'Save Medi-Cal counseling to my plan', es: 'Guardar consejería de Medi-Cal en mi plan' },
+          resourceId: 'res-mental-3'
+        },
+        {
+          id: 'mental-medi-cal-link',
+          kind: 'open-link',
+          label: { en: 'Open county behavioral health site', es: 'Abrir el sitio del condado' },
+          url: 'https://bhsd.sccgov.org/'
+        }
+      ]
+    },
+    resourceIds: ['res-mental-3'],
+    followUpIds: ['ans-mental-session-cost', 'ans-mental-drop-in-what-happens']
   },
   {
     id: 'ans-senior-redi-wheels',

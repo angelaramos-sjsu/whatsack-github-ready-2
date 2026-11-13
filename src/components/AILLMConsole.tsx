@@ -95,6 +95,10 @@ const asksAboutMentalHealthCost = (lower: string) =>
   /cost|price|pay|afford|fee|expensive|cu[aá]nto|cuesta|precio/.test(lower) &&
   /therap|counsel|mental|terapia|consejer|ansiedad|anxiety/.test(lower);
 
+/** Medi-Cal therapy questions open the reviewed coverage answer instead of a topic entry. */
+const asksAboutMediCalTherapist = (lower: string) =>
+  /medi[\s-]?cal/.test(lower) && /therap|counsel|terapia|consejer|salud mental/.test(lower);
+
 /** Approved answer copy uses **emphasis** and dash bullets; render it without raw markup. */
 const formatAnswerText = (text: string) =>
   text.split('\n').map((line, index) => {
@@ -176,13 +180,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const asksAboutCost = asksAboutMentalHealthCost(lower);
-    const answer = asksAboutCost
-      ? getScriptedAnswer('ans-mental-session-cost')
-      : saraStageId
-        ? getScriptedAnswer(saraStageId)
-        : topic
-          ? getScriptedAnswer(topicEntryAnswerIds[topic])
-          : undefined;
+    const asksAboutMediCal = asksAboutMediCalTherapist(lower);
+    const answer = asksAboutMediCal
+      ? getScriptedAnswer('ans-mental-medi-cal-therapist')
+      : asksAboutCost
+        ? getScriptedAnswer('ans-mental-session-cost')
+        : saraStageId
+          ? getScriptedAnswer(saraStageId)
+          : topic
+            ? getScriptedAnswer(topicEntryAnswerIds[topic])
+            : undefined;
 
     // No approved answer exists for this question: say so instead of inventing one.
     return answer ?? buildUnscriptedFallback({ en: text, es: text });
