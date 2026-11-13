@@ -32,7 +32,7 @@ export const translations = {
       closeModal: 'Close dialog (Esc)',
     },
     aiCopilot: {
-      title: 'Web Assistant',
+      title: 'Mentos 🍬',
       subtitle: 'Free, friendly AI help with verified Silicon Valley community resources.',
       badge: 'Grounded answers • Civic-LLM 70B',
       systemStatus: 'Online. Santa Clara and San Mateo programs are loaded.',
@@ -222,7 +222,7 @@ export const translations = {
       closeModal: 'Cerrar ventana (Esc)',
     },
     aiCopilot: {
-      title: 'Copiloto Civic-LLM de WhatSack',
+      title: 'Mentos 🍬',
       subtitle: 'Ayuda gratuita y amable con recursos comunitarios verificados de Silicon Valley.',
       badge: 'Respuestas verificadas • Civic-LLM 70B',
       systemStatus: 'En línea. Programas de Santa Clara y San Mateo cargados.',

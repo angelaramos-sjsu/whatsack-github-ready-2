@@ -141,8 +141,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       id: 'msg-init-1',
       sender: 'llm',
       text: currentLanguage === 'en'
-        ? `Hi, I am the Web Assistant.\n\nI help Silicon Valley residents find free local programs. I can also explain confusing letters and help you practice a phone call. What do you need help with today?`
-        : `Hola, soy el Copiloto Civic-LLM de WhatSack.\n\nAyudo a residentes de Silicon Valley a encontrar programas gratuitos. También explico cartas confusas y le ayudo a practicar una llamada. ¿En qué le puedo ayudar hoy?`,
+        ? `Hi, I am Mentos 🍬.\n\nI help Silicon Valley residents find free local programs. I can also explain confusing letters and help you practice a phone call. What do you need help with today?`
+        : `Hola, soy Mentos 🍬.\n\nAyudo a residentes de Silicon Valley a encontrar programas gratuitos. También explico cartas confusas y le ayudo a practicar una llamada. ¿En qué le puedo ayudar hoy?`,
       timestamp: 'Just now',
       followUpIds: [
         'ans-food-east-sj-groceries',
@@ -315,7 +315,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
   const handleExportChat = () => {
     const textContent = messages
-      .map(m => `[${m.timestamp}] ${m.sender === 'user' ? (m.personaName || 'Resident') : 'Web Assistant'}:\n${m.text}\n`)
+      .map(m => `[${m.timestamp}] ${m.sender === 'user' ? (m.personaName || 'Resident') : 'Mentos 🍬'}:\n${m.text}\n`)
       .join('\n----------------------------------------\n\n');
 
     const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
@@ -452,7 +452,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 <span className="cp-who">
                   {msg.sender === 'user'
                     ? (msg.personaName || (currentLanguage === 'en' ? 'You' : 'Usted'))
-                    : 'Web Assistant'}
+                    : 'Mentos 🍬'}
                 </span>
                 <span className="cp-time">{msg.timestamp}</span>
               </div>

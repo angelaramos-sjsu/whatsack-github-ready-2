@@ -354,10 +354,10 @@ export function App() {
             aria-controls="civic-copilot-panel"
             aria-expanded={false}
             className="group flex items-center gap-2 rounded-full border border-[#0A0A0A] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0A0A0A] shadow-[0_10px_30px_rgba(10,10,10,0.12)] transition-colors hover:bg-[#0A0A0A] hover:text-white"
-            title="Open Web Assistant"
+            title="Open Mentos"
           >
             <Bot className="h-4 w-4 text-[#8A6A1F] transition-colors group-hover:text-[#D6B36A]" aria-hidden="true" />
-            <span>{currentLanguage === 'en' ? 'Ask Web Assistant' : 'Preguntar al Asistente Web'}</span>
+            <span>{currentLanguage === 'en' ? 'Ask Mentos 🍬' : 'Preguntar a Mentos 🍬'}</span>
           </button>
         </aside>
       )}
