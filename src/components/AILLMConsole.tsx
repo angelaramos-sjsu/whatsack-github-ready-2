@@ -98,6 +98,11 @@ const asksAboutMentalHealthCost = (lower: string) =>
 const asksAboutMediCalTherapist = (lower: string) =>
   /medi[\s-]?cal/.test(lower) && /therap|counsel|terapia|consejer|salud mental/.test(lower);
 
+/** Consultation and "where do I find a therapist" questions open the reviewed specialist list. */
+const asksForBayAreaSpecialist = (lower: string) =>
+  /consult|specialist|especialista/.test(lower) ||
+  /(find|looking for|recommend|list|donde|dónde).{0,30}(therap|counsel|terapeuta|consejer)/.test(lower);
+
 /** Approved answer copy uses **emphasis** and dash bullets; render it without raw markup. */
 const formatAnswerText = (text: string) =>
   text.split('\n').map((line, index) => {
@@ -180,15 +185,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const asksAboutCost = asksAboutMentalHealthCost(lower);
     const asksAboutMediCal = asksAboutMediCalTherapist(lower);
+    const asksForSpecialist = asksForBayAreaSpecialist(lower);
     const answer = asksAboutMediCal
       ? getScriptedAnswer('ans-mental-medi-cal-therapist')
       : asksAboutCost
         ? getScriptedAnswer('ans-mental-session-cost')
-        : saraStageId
-          ? getScriptedAnswer(saraStageId)
-          : topic
-            ? getScriptedAnswer(topicEntryAnswerIds[topic])
-            : undefined;
+        : asksForSpecialist
+          ? getScriptedAnswer('ans-mental-bay-area-consultation')
+          : saraStageId
+            ? getScriptedAnswer(saraStageId)
+            : topic
+              ? getScriptedAnswer(topicEntryAnswerIds[topic])
+              : undefined;
 
     // No approved answer exists for this question: say so instead of inventing one.
     return answer ?? buildUnscriptedFallback({ en: text, es: text });
@@ -460,7 +468,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
                   <div className="cp-block">
                     <span className="cp-block-label">
-                      {currentLanguage === 'en' ? 'Programs that match' : 'Programas relacionados'}
+                      {msg.scriptedAnswer?.resourceListLabel?.[currentLanguage]
+                        ?? (currentLanguage === 'en' ? 'Programs that match' : 'Programas relacionados')}
                     </span>
                     <div className="cp-res-grid">
                       {msg.recommendedResourceIds.map((resId) => {

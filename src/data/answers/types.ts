@@ -42,6 +42,8 @@ export interface ScriptedAnswer {
   nextSteps?: ScriptedNextStep[];
   /** Grounded demonstration resources rendered under the answer. */
   resourceIds?: string[];
+  /** Heading above those resources; defaults to the generic "Programs that match". */
+  resourceListLabel?: BilingualText;
   /** Only ids that resolve to another implemented answer are displayed. */
   followUpIds: string[];
 }

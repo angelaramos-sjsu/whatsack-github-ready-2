@@ -266,7 +266,7 @@ export const entryAnswers: ScriptedAnswer[] = [
       ]
     },
     resourceIds: ['res-mental-1', 'res-mental-2'],
-    followUpIds: ['ans-mental-school-privacy', 'ans-mental-drop-in-what-happens', 'ans-mental-text-practice', 'ans-mental-session-cost', 'ans-mental-medi-cal-therapist']
+    followUpIds: ['ans-mental-school-privacy', 'ans-mental-drop-in-what-happens', 'ans-mental-text-practice', 'ans-mental-session-cost', 'ans-mental-medi-cal-therapist', 'ans-mental-bay-area-consultation']
   },
   {
     id: 'ans-senior-cultural-circles',
