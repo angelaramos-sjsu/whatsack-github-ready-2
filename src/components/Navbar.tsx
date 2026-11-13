@@ -14,8 +14,10 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension';
-  setActiveView: (view: 'home' | 'copilot' | 'extension') => void;
+  activeView: 'home' | 'extension';
+  setActiveView: (view: 'home' | 'extension') => void;
+  /** Opens the floating chat panel in place — it is not a page. */
+  onOpenCopilot: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -29,7 +31,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   textSize,
   onCycleTextSize,
   activeView,
-  setActiveView
+  setActiveView,
+  onOpenCopilot
 }) => {
   const t = translations[currentLanguage];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -54,8 +57,8 @@ export const Navbar: React.FC<NavbarProps> = ({
     { label: t.nav.home, onClick: goHome, active: activeView === 'home' },
     {
       label: currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack',
-      onClick: () => { setActiveView('copilot'); setIsMenuOpen(false); },
-      active: activeView === 'copilot'
+      onClick: () => { onOpenCopilot(); setIsMenuOpen(false); },
+      active: false
     },
     {
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',

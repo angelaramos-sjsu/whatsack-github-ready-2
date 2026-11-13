@@ -29,7 +29,9 @@ import { Footer } from './components/Footer';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'extension'>('home');
+  // The chat is a floating panel, not a page: opening it never changes the view.
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -60,10 +62,10 @@ export function App() {
 
   const t = translations[currentLanguage];
 
-  // The homepage question seeds the copilot once, then clears when you leave it.
+  // The homepage question seeds the copilot once, then clears when the chat closes.
   useEffect(() => {
-    if (activeView !== 'copilot') setCopilotQuestion(null);
-  }, [activeView]);
+    if (!isCopilotOpen) setCopilotQuestion(null);
+  }, [isCopilotOpen]);
 
   // High contrast mode effect
   useEffect(() => {
@@ -220,6 +222,7 @@ export function App() {
         onCycleTextSize={handleCycleTextSize}
         activeView={activeView}
         setActiveView={setActiveView}
+        onOpenCopilot={() => setIsCopilotOpen(true)}
       />
 
       {/* Main View: Home Platform or Browser Extension. The co-pilot floats above the page. */}
@@ -239,11 +242,11 @@ export function App() {
             onExecuteSearch={(q) => {
               setSearchQuery(q);
               setCopilotQuestion({ text: q, key: Date.now() });
-              setActiveView('copilot');
+              setIsCopilotOpen(true);
             }}
             onOpenVoiceModal={() => setIsVoiceModalOpen(true)}
             onSelectPrompt={(p) => setSearchQuery((currentQuery) => currentQuery === p ? '' : p)}
-            onOpenCopilot={() => setActiveView('copilot')}
+            onOpenCopilot={() => setIsCopilotOpen(true)}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
             onClearProfile={handleClearProfile}
@@ -345,11 +348,11 @@ export function App() {
       )}
 
       {/* Floating co-pilot launcher — opens the chat panel from anywhere on the page */}
-      {activeView === 'home' && (
+      {!isCopilotOpen && (
         <aside aria-label="AI Assistant" className="fixed bottom-6 right-6 z-30">
           <button
             type="button"
-            onClick={() => setActiveView('copilot')}
+            onClick={() => setIsCopilotOpen(true)}
             aria-controls="civic-copilot-panel"
             aria-expanded={false}
             className="group flex items-center gap-2 rounded-full border border-[#0A0A0A] bg-white px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#0A0A0A] shadow-[0_10px_30px_rgba(10,10,10,0.12)] transition-colors hover:bg-[#0A0A0A] hover:text-white"
@@ -378,8 +381,8 @@ export function App() {
 
       {/* Pop-out Civic-LLM co-pilot chat panel, mounted once so the conversation survives closing */}
       <CopilotPopout
-        open={activeView === 'copilot'}
-        onClose={() => setActiveView('home')}
+        open={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
         label={t.aiCopilot.title}
       >
         <AILLMConsole
@@ -395,7 +398,7 @@ export function App() {
           onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}
           onOpenDecoderModal={() => setIsDecoderModalOpen(true)}
           initialQuestion={copilotQuestion}
-          onClose={() => setActiveView('home')}
+          onClose={() => setIsCopilotOpen(false)}
         />
       </CopilotPopout>
 
