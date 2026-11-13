@@ -188,6 +188,72 @@ Tú controlas la conversación: puedes parar, cambiar de tema o pedir otro tipo 
     followUpIds: ['ans-mental-school-privacy', 'ans-mental-drop-in-what-happens']
   },
   {
+    id: 'ans-mental-session-cost',
+    topic: 'mental',
+    question: {
+      en: 'How much does mental health counseling cost in the Bay Area?',
+      es: '¿Cuánto cuesta la consejería de salud mental en el Área de la Bahía?'
+    },
+    answer: {
+      en: `**One counseling session in the Bay Area usually costs $100 to $400.**
+
+- **Private practice:** $100 to $400 for a 50-minute session. Licensed therapists in San Jose, Sunnyvale and San Francisco charge the most; interns and trainees charge less.
+- **Insurance:** With Medi-Cal or an employer plan, the copay is often $0 to $40 per visit. Ask if the therapist takes your plan before you book.
+- **Sliding scale:** Many community clinics lower the price based on your income. Alum Rock Family Counseling offers a sliding scale and takes Medi-Cal.
+- **Free support:** Crisis lines, peer text lines and youth drop-in centers cost nothing.
+
+**Next step:** Call two clinics and ask three things: the full price per session, the sliding-scale price, and whether they take your insurance.`,
+      es: `**Una sesión de consejería en el Área de la Bahía suele costar entre $100 y $400.**
+
+- **Consulta privada:** De $100 a $400 por una sesión de 50 minutos. Los terapeutas con licencia en San José, Sunnyvale y San Francisco cobran más; los practicantes cobran menos.
+- **Seguro:** Con Medi-Cal o un plan del trabajo, el copago suele ser de $0 a $40 por visita. Pregunte si aceptan su plan antes de agendar.
+- **Tarifa a escala:** Muchas clínicas comunitarias bajan el precio según sus ingresos. Alum Rock Family Counseling ofrece tarifa a escala y acepta Medi-Cal.
+- **Apoyo gratis:** Las líneas de crisis, las líneas de texto entre pares y los centros juveniles no cobran nada.
+
+**Próximo paso:** Llame a dos clínicas y pregunte tres cosas: el precio completo por sesión, el precio a escala y si aceptan su seguro.`
+    },
+    context: [
+      { en: 'Bay Area', es: 'Área de la Bahía' },
+      { en: 'Cost per session', es: 'Costo por sesión' },
+      { en: 'Sliding scale & insurance', es: 'Tarifa a escala y seguro' }
+    ],
+    links: [
+      {
+        label: { en: 'Santa Clara County Behavioral Health Services', es: 'Servicios de Salud Conductual del Condado de Santa Clara' },
+        source: { en: 'County of Santa Clara', es: 'Condado de Santa Clara' },
+        url: 'https://bhsd.sccgov.org/'
+      },
+      {
+        label: { en: 'SAMHSA — find low-cost treatment', es: 'SAMHSA — encontrar tratamiento de bajo costo' },
+        source: { en: 'SAMHSA', es: 'SAMHSA' },
+        url: 'https://findtreatment.gov/'
+      }
+    ],
+    nextStep: {
+      title: { en: 'Ask two clinics for the sliding-scale price', es: 'Pida a dos clínicas el precio a escala' },
+      detail: {
+        en: 'Asking about a lower fee is normal and does not change the care you get.',
+        es: 'Preguntar por una tarifa más baja es normal y no cambia la atención que recibe.'
+      },
+      actions: [
+        {
+          id: 'mental-cost-save',
+          kind: 'save-plan',
+          label: { en: 'Save sliding-scale counseling to my plan', es: 'Guardar consejería a escala en mi plan' },
+          resourceId: 'res-mental-3'
+        },
+        {
+          id: 'mental-cost-link',
+          kind: 'open-link',
+          label: { en: 'Open county behavioral health site', es: 'Abrir el sitio del condado' },
+          url: 'https://bhsd.sccgov.org/'
+        }
+      ]
+    },
+    resourceIds: ['res-mental-3'],
+    followUpIds: ['ans-mental-drop-in-what-happens', 'ans-mental-school-privacy']
+  },
+  {
     id: 'ans-senior-redi-wheels',
     topic: 'senior',
     question: {
