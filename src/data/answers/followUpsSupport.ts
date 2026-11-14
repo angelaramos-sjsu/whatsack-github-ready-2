@@ -3,6 +3,248 @@ import type { ScriptedAnswer } from './types';
 /** Follow-up answers for mental health, senior services and roleplay practice. */
 export const supportFollowUpAnswers: ScriptedAnswer[] = [
   {
+    "id": "ans-mental-parent-consent",
+    "topic": "mental",
+    "question": {
+      "en": "Can I talk to a counselor without my parents knowing?",
+      "es": "¿Puedo hablar con un consejero sin que mis padres lo sepan?"
+    },
+    "answer": {
+      "en": "In California, a person age 12 or older may consent to certain outpatient mental health counseling if an attending professional decides they are mature enough to participate intelligently. They do not have to be in a crisis. Under Family Code § 6924, the provider generally involves a parent or guardian unless, after consulting the teen, the provider finds that involvement would be inappropriate. Privacy has limits and depends on the service and circumstances; this is not a promise of secrecy. Ask the provider what stays private, when a caregiver might be involved, and whether insurance notices could reach home. WhatSack is a student demonstration, not confidential counseling.",
+      "es": "En California, una persona de 12 años o más puede dar su consentimiento para ciertos servicios ambulatorios de salud mental si un profesional considera que tiene la madurez suficiente para participar. No necesita estar en una crisis. Según el Código de Familia § 6924, el profesional generalmente involucra a la madre, el padre o el tutor, a menos que, tras consultar con el adolescente, considere inapropiada esa participación. La privacidad tiene límites y depende del servicio y las circunstancias; no se garantiza el secreto. Pregunta qué datos son privados, cuándo podrían contactar a un adulto responsable y si el seguro podría enviar avisos a casa. WhatSack es una demostración estudiantil, no un servicio de consejería confidencial."
+    },
+    "context": [
+      {
+        "en": "Youth mental health — academic demonstration",
+        "es": "Salud mental juvenil — demostración académica"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "California Family Code § 6924",
+          "es": "Código de Familia de California § 6924"
+        },
+        "source": {
+          "en": "California Legislative Information",
+          "es": "Información Legislativa de California"
+        },
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=FAM&sectionNum=6924."
+      },
+      {
+        "label": {
+          "en": "Santa Clara County Behavioral Health Services",
+          "es": "Servicios de Salud Conductual del Condado de Santa Clara"
+        },
+        "source": {
+          "en": "County of Santa Clara",
+          "es": "Condado de Santa Clara"
+        },
+        "url": "https://bhsd.santaclaracounty.gov/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "NextStep Insight",
+        "es": "Próximo paso"
+      },
+      "detail": {
+        "en": "Ask a qualified youth provider to explain minor consent and confidentiality before sharing sensitive details.",
+        "es": "Pide a un profesional de salud mental juvenil que explique el consentimiento y la confidencialidad antes de compartir datos delicados."
+      },
+      "actions": [
+        {
+          "id": "ans-mental-parent-consent-link",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official resource",
+            "es": "Abrir recurso oficial"
+          },
+          "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=FAM&sectionNum=6924."
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-mental-affordable-care",
+      "ans-mental-school-privacy",
+      "ans-mental-medication-consent"
+    ]
+  },
+  {
+    "id": "ans-mental-affordable-care",
+    "topic": "mental",
+    "question": {
+      "en": "Can I get mental health help without insurance?",
+      "es": "¿Puedo recibir ayuda de salud mental sin seguro médico?"
+    },
+    "answer": {
+      "en": "Some California youth services are offered at no cost, and eligible minors may be able to use limited-scope Medi-Cal Minor Consent Services for certain outpatient mental health care. Eligibility, provider participation, cost, and communications are not the same for everyone. Do not assume care is free or that no notices will be sent home. Ask the county Medi-Cal office or a qualified provider how to apply, what information is needed, and how confidential communications are handled. WhatSack does not determine eligibility or collect insurance identification. For information about California's minor-consent rules, see the official DHCS guidance linked below.",
+      "es": "Algunos servicios para jóvenes en California no tienen costo. Además, ciertos menores que cumplan los requisitos pueden usar los Servicios de Consentimiento de Menores de Medi-Cal de alcance limitado para recibir atención ambulatoria de salud mental. La elegibilidad, los costos y las comunicaciones varían. No supongas que todo será gratuito o que nunca llegará un aviso al hogar. Pregunta a la oficina de Medi-Cal del condado o a un profesional cómo solicitar servicios, qué información se necesita y cómo se manejan las comunicaciones privadas. WhatSack no determina la elegibilidad ni pide datos del seguro. Consulta la guía oficial de DHCS."
+    },
+    "context": [
+      {
+        "en": "Youth mental health — academic demonstration",
+        "es": "Salud mental juvenil — demostración académica"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "California DHCS — AB 665 implementation FAQ",
+          "es": "DHCS de California — Preguntas frecuentes sobre AB 665"
+        },
+        "source": {
+          "en": "California Department of Health Care Services",
+          "es": "Departamento de Servicios de Atención Médica de California"
+        },
+        "url": "https://www.dhcs.ca.gov/fa/wp-content/uploads/2025/10/AB-665-FAQ.pdf"
+      },
+      {
+        "label": {
+          "en": "Santa Clara County Behavioral Health Services",
+          "es": "Servicios de Salud Conductual del Condado de Santa Clara"
+        },
+        "source": {
+          "en": "County of Santa Clara",
+          "es": "Condado de Santa Clara"
+        },
+        "url": "https://bhsd.santaclaracounty.gov/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "NextStep Insight",
+        "es": "Próximo paso"
+      },
+      "detail": {
+        "en": "Contact the county or a qualified youth provider to confirm current eligibility, costs and private communication options.",
+        "es": "Consulta al condado o a un proveedor de servicios juveniles sobre elegibilidad, costos y opciones de comunicación privada."
+      },
+      "actions": [
+        {
+          "id": "ans-mental-affordable-care-link",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official resource",
+            "es": "Abrir recurso oficial"
+          },
+          "url": "https://www.dhcs.ca.gov/fa/wp-content/uploads/2025/10/AB-665-FAQ.pdf"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-mental-parent-consent"
+    ]
+  },
+  {
+    "id": "ans-mental-medication-consent",
+    "topic": "mental",
+    "question": {
+      "en": "Can I get anxiety medication without my parents' consent?",
+      "es": "¿Puedo obtener medicamentos para la ansiedad sin el consentimiento de mis padres?"
+    },
+    "answer": {
+      "en": "California Family Code § 6924 lets some minors age 12 or older consent to certain outpatient mental health counseling after a professional assesses their maturity. That law does not authorize minors to consent on their own to psychotropic medication. Medication decisions and consent requirements must be discussed with a qualified healthcare professional. WhatSack cannot prescribe, recommend a medication, or determine whether someone can consent to a particular treatment. Ask a healthcare provider to explain the consent rules for the specific service.",
+      "es": "El Código de Familia de California § 6924 permite a algunos menores de 12 años o más dar su consentimiento para ciertos servicios ambulatorios de salud mental después de que un profesional evalúe su madurez. Esa ley no autoriza a los menores a dar su consentimiento por sí solos para medicamentos psicotrópicos. Habla con un profesional de salud sobre los requisitos de consentimiento para cada tratamiento. WhatSack no receta medicamentos ni determina quién puede consentir a un tratamiento."
+    },
+    "context": [
+      {
+        "en": "Youth mental health — academic demonstration",
+        "es": "Salud mental juvenil — demostración académica"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "California Family Code § 6924",
+          "es": "Código de Familia de California § 6924"
+        },
+        "source": {
+          "en": "California Legislative Information",
+          "es": "Información Legislativa de California"
+        },
+        "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=FAM&sectionNum=6924."
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "NextStep Insight",
+        "es": "Próximo paso"
+      },
+      "detail": {
+        "en": "Ask a qualified healthcare provider about consent requirements for medication and treatment options.",
+        "es": "Consulta a un profesional de salud sobre los requisitos de consentimiento para medicamentos y otras opciones."
+      },
+      "actions": [
+        {
+          "id": "ans-mental-medication-consent-link",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official resource",
+            "es": "Abrir recurso oficial"
+          },
+          "url": "https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=FAM&sectionNum=6924."
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-mental-parent-consent"
+    ]
+  },
+  {
+    "id": "ans-mental-crisis-support",
+    "topic": "mental",
+    "question": {
+      "en": "I'm scared I might hurt myself. What do I do?",
+      "es": "Tengo miedo de hacerme daño. ¿Qué hago?"
+    },
+    "answer": {
+      "en": "I'm sorry you're feeling this way. WhatSack is a student-made resource guide, not a live counselor or emergency service. If you may hurt yourself or need help right now in the United States, call or text 988 to connect with a trained crisis counselor, or visit the official 988 website for chat options. If you are in immediate danger, call 911. If possible, tell a trusted adult or someone nearby who can stay with you while you reach out for help. You do not have to handle this alone.",
+      "es": "Siento que estés pasando por esto. WhatSack es una guía de recursos creada por estudiantes; no es un consejero en vivo ni un servicio de emergencias. Si piensas que podrías hacerte daño o necesitas ayuda ahora en Estados Unidos, llama o envía un mensaje al 988 para hablar con un consejero de crisis; también hay opciones de chat en el sitio oficial. Si estás en peligro inmediato, llama al 911. Si puedes, habla con un adulto de confianza o alguien cercano que pueda acompañarte mientras pides ayuda."
+    },
+    "context": [
+      {
+        "en": "Youth mental health — academic demonstration",
+        "es": "Salud mental juvenil — demostración académica"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "988 Suicide & Crisis Lifeline",
+          "es": "Línea 988 de Prevención del Suicidio y Crisis"
+        },
+        "source": {
+          "en": "988 Lifeline",
+          "es": "Línea 988"
+        },
+        "url": "https://988lifeline.org/get-help/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "NextStep Insight",
+        "es": "Próximo paso"
+      },
+      "detail": {
+        "en": "Call or text 988 for immediate support, or call 911 if in immediate danger.",
+        "es": "Llama o envía un mensaje al 988 para recibir apoyo; llama al 911 si hay peligro inmediato."
+      },
+      "actions": [
+        {
+          "id": "ans-mental-crisis-support-link",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official resource",
+            "es": "Abrir recurso oficial"
+          },
+          "url": "https://988lifeline.org/get-help/"
+        }
+      ]
+    },
+    "followUpIds": []
+  },
+  {
     id: 'ans-mental-school-privacy',
     topic: 'mental',
     question: {
@@ -10,8 +252,8 @@ export const supportFollowUpAnswers: ScriptedAnswer[] = [
       es: '¿Se enterará mi escuela si envío un mensaje?'
     },
     answer: {
-      en: `I can't guarantee that a school will never learn about a service you use; privacy depends on the provider, service, and circumstances. California Health & Safety Code § 124260 allows a minor age 12 or older to consent to certain outpatient mental health treatment only when the professional determines the minor is mature enough, and parent or guardian involvement is generally included unless the professional finds it inappropriate. Ask the provider how confidentiality and its limits apply before sharing personal information.`,
-      es: `No puedo garantizar que la escuela nunca se entere de un servicio que uses; la privacidad depende del proveedor, el servicio y las circunstancias. El Código de Salud y Seguridad de California § 124260 permite que un menor de 12 años o más dé su consentimiento para ciertos tratamientos ambulatorios de salud mental solo cuando el profesional determina que tiene madurez suficiente; por lo general se incluye a los padres o tutores, salvo que el profesional considere que no es apropiado. Pregunta al proveedor cómo se aplican la confidencialidad y sus límites antes de compartir información personal.`
+      en: "I can't promise that a school, parent, or anyone else will never learn about a support service you use. Privacy depends on whether you contact a school counselor, healthcare provider, or crisis line, as well as the service's rules and legal duties. California Family Code § 6924 covers consent for some outpatient mental health services for teens 12 and older, but that does not automatically make school messages or this website confidential. Before texting or sharing personal details, ask what records are kept, who might be contacted, and whether you are using a school-managed device. WhatSack is only a fictional class demonstration.",
+      es: "No puedo prometer que la escuela, tu familia u otras personas nunca se enteren de un servicio que uses. La privacidad depende de si contactas a un consejero escolar, un proveedor médico o una línea de crisis, y de las normas y obligaciones legales del servicio. El Código de Familia de California § 6924 trata del consentimiento para ciertos servicios ambulatorios de salud mental a partir de los 12 años, pero no significa que los mensajes escolares o este sitio sean confidenciales. Antes de compartir datos, pregunta qué registros se guardan, a quién podrían contactar y si usas un dispositivo administrado por la escuela. WhatSack es una demostración académica ficticia."
     },
     context: [
       { en: 'Sunnyvale', es: 'Sunnyvale' },
