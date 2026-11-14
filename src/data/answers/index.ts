@@ -1,5 +1,6 @@
 import { entryAnswers } from './entry';
 import { bilingualFoodAnswers, routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion } from './foodBilingual';
+import { foodEnhancementAnswers } from './foodEnhancements';
 import { programFollowUpAnswers } from './followUpsPrograms';
 import { supportFollowUpAnswers } from './followUpsSupport';
 import { routeSaraCollegeQuestion, saraCollegePathwayAnswers, saraCollegeStageIds } from './saraCollegePathway';
@@ -15,6 +16,7 @@ export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
   ...programFollowUpAnswers,
   ...bilingualFoodAnswers,
+  ...foodEnhancementAnswers,
   ...supportFollowUpAnswers,
   ...saraCollegePathwayAnswers
 ]);
