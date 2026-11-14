@@ -78,7 +78,7 @@ export const translations = {
     },
     disclaimer: {
       title: 'Academic Demonstration Prototype Notice',
-      body: 'WhatSack is a student/research prototype evaluating human-AI interaction in local social services. All resource records, telephone numbers, and contact links are simulated placeholders. No personally identifiable data is stored or transmitted. In a true emergency, call 911 or 988.',
+      body: 'WhatSack is a student-built classroom demonstration with prepared answers and fictional scenarios. It is not a healthcare provider, confidential counseling service, or emergency service. Use fictional details only; intake drafts may be stored temporarily in this browser session. Directory entries may include simulations and official resource links; confirm current availability, eligibility, costs, and privacy practices with providers. For immediate danger call 911; for emotional support or crisis call or text 988.',
       understood: 'I Understand',
       simulatedNoticeBadge: 'Simulated Data',
     },
@@ -268,7 +268,7 @@ export const translations = {
     },
     disclaimer: {
       title: 'Aviso de Prototipo de Demostración Académica',
-      body: 'WhatSack es un prototipo estudiantil y de investigación para evaluar la interacción entre humanos e IA en servicios sociales locales. Toda la información de recursos, teléfonos y enlaces son simulados. No se guardan ni transmiten datos personales. En caso de emergencia real, llame al 911 o al 988.',
+      body: 'WhatSack es una demostración académica creada por estudiantes con respuestas preparadas y situaciones ficticias. No es un proveedor médico, un servicio de consejería confidencial ni un servicio de emergencias. Usa solo datos ficticios; los borradores del formulario pueden guardarse temporalmente en esta sesión del navegador. El directorio puede incluir ejemplos simulados y enlaces oficiales. Confirma disponibilidad, requisitos, costos y privacidad con cada proveedor. Si hay peligro inmediato, llama al 911; para apoyo emocional o crisis, llama o envía un mensaje al 988.',
       understood: 'Entendido',
       simulatedNoticeBadge: 'Datos Simulados',
     },
