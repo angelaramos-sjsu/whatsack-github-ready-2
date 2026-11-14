@@ -16,6 +16,7 @@ import {
   topicEntryAnswerIds
 } from '../data/answers';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
+import { buildCombinedNeedsAnswer, detectSupportedNeeds, isSpanishResourceQuestion, mentionsHousing, routeFoodEnhancement } from '../data/answers/foodEnhancements';
 import { 
   Send, 
   Sparkles, 
@@ -230,8 +231,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
    * college journey at the stage that answers them; persona questions keep
    * their own topic entry answer.
    */
-  const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
+  const resolveAnswer = (text: string, isPersonaQuestion = false, priorMessages: ChatMessage[] = []): ScriptedAnswer => {
     const lower = text.toLowerCase();
+    const previousUserQuestion = [...priorMessages].reverse().find((message) => message.sender === 'user')?.text;
+    const enhancedId = !isPersonaQuestion ? routeFoodEnhancement(text, previousUserQuestion) : undefined;
+    const needs = !isPersonaQuestion ? detectSupportedNeeds(text) : [];
+    const housingRequested = !isPersonaQuestion && mentionsHousing(text);
+    const combinedAnswer = !isPersonaQuestion && (needs.length >= 2 || (housingRequested && needs.length === 1))
+      ? buildCombinedNeedsAnswer(needs, getScriptedAnswer, housingRequested)
+      : undefined;
+    const housingOnlyId = housingRequested && needs.length === 0 ? 'ans-food-housing-out-of-scope' : undefined;
     // Explicit crisis/consent routing takes precedence over all generic topic matches.
     const mateoAnswerId = routeMateoSupportQuestion(text);
     const topic = detectTopic(text);
@@ -241,6 +250,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
     const answer = mateoAnswerId
       ? getScriptedAnswer(mateoAnswerId)
+      : enhancedId
+      ? getScriptedAnswer(enhancedId)
+      : housingOnlyId
+      ? getScriptedAnswer(housingOnlyId)
+      : combinedAnswer
+      ? combinedAnswer
       : exactScriptedAnswer
       ? exactScriptedAnswer
       : bilingualFoodId
@@ -264,7 +279,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const seededKey = initialQuestion?.key;
     if (!seededQuestion || seededKey === undefined || seededQuestionKeyRef.current === seededKey) return;
     seededQuestionKeyRef.current = seededKey;
-    const seedLanguage: Language = routeBilingualFoodQuestion(seededQuestion) && isSpanishBilingualFoodQuestion(seededQuestion) ? 'es' : currentLanguage;
+    const seedLanguage: Language = isSpanishResourceQuestion(seededQuestion) || (routeBilingualFoodQuestion(seededQuestion) && isSpanishBilingualFoodQuestion(seededQuestion)) ? 'es' : currentLanguage;
     responseLanguageRef.current = seedLanguage;
 
     setMessages(prev => [
@@ -275,7 +290,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         text: seededQuestion,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       },
-      buildAnswerMessage(resolveAnswer(seededQuestion), seedLanguage)
+      buildAnswerMessage(resolveAnswer(seededQuestion, false, prev), seedLanguage)
     ]);
   }, [initialQuestion]);
 
@@ -324,7 +339,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const handleSendMessage = (textToSend?: string, personaTag?: string) => {
     const text = textToSend || inputText;
     if (!text.trim() || isGenerating) return;
-    const answerLanguage: Language = routeBilingualFoodQuestion(text) && isSpanishBilingualFoodQuestion(text) ? 'es' : currentLanguage;
+    const answerLanguage: Language = isSpanishResourceQuestion(text) || (routeBilingualFoodQuestion(text) && isSpanishBilingualFoodQuestion(text)) ? 'es' : currentLanguage;
     responseLanguageRef.current = answerLanguage;
 
     const userMsgId = `usr-${Date.now()}`;
@@ -342,7 +357,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
     // Scripted prototype: route the question to its approved answer, never a live model.
     setTimeout(() => {
-      setMessages(prev => [...prev, buildAnswerMessage(resolveAnswer(text, Boolean(personaTag)), answerLanguage)]);
+      setMessages(prev => [
+        ...prev,
+        buildAnswerMessage(resolveAnswer(text, Boolean(personaTag), prev.filter((msg) => msg.id !== userMsgId)), answerLanguage)
+      ]);
       setIsGenerating(false);
     }, 900);
   };
