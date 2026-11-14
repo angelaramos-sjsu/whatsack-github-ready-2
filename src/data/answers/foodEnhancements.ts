@@ -50,7 +50,7 @@ export const isApplicationDelegationRequest = (question: string): boolean => {
   return /\b(can you do it for me|can you do this for me|can you apply for me|can you fill (?:it|this|out my application) out|can you fill it out|can you fill out my application|will you submit|can you submit|submit (?:it|my application) for me|do the application for me|puedes hacerlo por mi|puede hacerlo por mi|puedes solicitarlo por mi|puedes llenar mi solicitud|puedes enviar mi solicitud|puedes presentar mi solicitud)\b/.test(q);
 };
 
-const eligibilityTerms = /\b(qualify|qualifies|qualified|eligible|eligibility|income limit|income limits|income threshold|do i meet|can i get calfresh|can college students get|would i qualify|califico|califica|calificar|elegible|elegibilidad|limite de ingresos|requisitos para calificar|si gano)\b/;
+const eligibilityTerms = /\b(qualify|qualifies|qualified|eligible|eligibility|income limit|income limits|income threshold|do i meet|can i get calfresh|can college students get|can college students receive|can students get|can students receive|would i qualify|califico|califica|calificar|elegible|elegibilidad|limite de ingresos|requisitos para calificar|si gano)\b/;
 export const isCalFreshEligibilityQuestion = (question: string, previousUserQuestion?: string): boolean => {
   const q = normalize(question);
   if (!eligibilityTerms.test(q)) return false;
