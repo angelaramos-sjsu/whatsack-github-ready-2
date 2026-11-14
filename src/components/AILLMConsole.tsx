@@ -163,6 +163,10 @@ const routeMateoSupportQuestion = (question: string): string | undefined => {
   if (mentionsParent && asksPrivacy && mentionsCare) {
     return 'ans-mental-parent-consent';
   }
+  // Distinguish school messaging privacy from a healthcare provider's consent rules.
+  if (/(?:school|escuela)/.test(text) && /(?:see|read|find out|know|tell|text|message|share|ver|leer|enterar|mensaje|avisar)/.test(text)) {
+    return 'ans-mental-school-privacy';
+  }
   if (/(?:without insurance|no insurance|uninsured|medi-cal|minor consent services|sin seguro|no tengo seguro)/.test(text) && mentionsCare) {
     return 'ans-mental-affordable-care';
   }
