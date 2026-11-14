@@ -139,6 +139,37 @@ const detectTopic = (question: string): AnswerTopic | null => {
   return null;
 };
 
+
+/**
+ * A narrow, auditable safety-first router for the fictional Mateo pathway.
+ * The prototype has no live AI system prompt. Each match returns an approved script.
+ * Crisis language must be checked before general keyword/topic matching.
+ */
+const routeMateoSupportQuestion = (question: string): string | undefined => {
+  const text = question.toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/[’']/g, '');
+
+  if (/(?:hurt myself|harm myself|kill myself|cut myself|end my life|take my life|want to die|suicid|not safe with myself|dont feel safe|hacerme dano|lastimarme|matarme|quitarme la vida|quiero morir|no quiero vivir|estoy en peligro|no me siento segur)/.test(text)) {
+    return 'ans-mental-crisis-support';
+  }
+
+  const mentionsCare = /(?:mental|counsel|therap|psycholog|psychiatr|talk to someone|see someone|salud mental|consejer|terapeut|psicolog|ansiedad)/.test(text);
+  const mentionsParent = /(?:parents?|mom|dad|guardian|mother|father|mis padres|mi mama|mi papa|tutor)/.test(text);
+  const asksPrivacy = /(?:without|consent|permission|knowing|know|tell|find out|secret|private|confidential|sin que|permiso|sepan|avisar|confidencial)/.test(text);
+
+  if (/(?:medication|medicine|prescription|psychotropic|meds|medicamento|pastillas|receta)/.test(text) && mentionsParent) {
+    return 'ans-mental-medication-consent';
+  }
+  if (mentionsParent && asksPrivacy && mentionsCare) {
+    return 'ans-mental-parent-consent';
+  }
+  if (/(?:without insurance|no insurance|uninsured|medi-cal|minor consent services|sin seguro|no tengo seguro)/.test(text) && mentionsCare) {
+    return 'ans-mental-affordable-care';
+  }
+
+  return undefined;
+};
+
 export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   currentLanguage,
   savedResourceIds = [],
@@ -197,12 +228,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
    */
   const resolveAnswer = (text: string, isPersonaQuestion = false): ScriptedAnswer => {
     const lower = text.toLowerCase();
+    // Explicit crisis/consent routing takes precedence over all generic topic matches.
+    const mateoAnswerId = routeMateoSupportQuestion(text);
     const topic = detectTopic(text);
     const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
-    const answer = exactScriptedAnswer
+    const answer = mateoAnswerId
+      ? getScriptedAnswer(mateoAnswerId)
+      : exactScriptedAnswer
       ? exactScriptedAnswer
       : bilingualFoodId
         ? getScriptedAnswer(bilingualFoodId)

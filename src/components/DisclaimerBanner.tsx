@@ -73,16 +73,16 @@ export const DisclaimerBanner: React.FC<DisclaimerBannerProps> = ({
               <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" aria-hidden="true" />
               <span className="font-medium">
                 {currentLanguage === 'en'
-                  ? 'No sensitive information, social security numbers, or credentials are requested or stored.'
-                  : 'No se solicita ni almacena información personal delicada, Seguro Social ni contraseñas.'}
+                  ? 'Use fictional details only. Intake drafts can be temporarily stored in your browser session; avoid real sensitive information.'
+                  : 'Usa solo datos ficticios. Los borradores del formulario pueden guardarse temporalmente en el navegador; evita datos delicados reales.'}
               </span>
             </div>
             <div className="p-3.5 bg-blue-50 text-blue-950 rounded-2xl border border-blue-300 flex items-start gap-2.5">
               <CheckCircle2 className="w-4 h-4 text-blue-700 shrink-0 mt-0.5" aria-hidden="true" />
               <span className="font-medium">
                 {currentLanguage === 'en'
-                  ? 'Organizations and contact numbers are realistic demonstration placeholders for Silicon Valley research.'
-                  : 'Los recursos y teléfonos son simulaciones realistas diseñadas para investigación en Silicon Valley.'}
+                  ? 'Some entries are demonstration placeholders; verify official links, contact details, costs and availability with each provider.'
+                  : 'Algunos recursos son simulados; confirma enlaces oficiales, contactos, costos y disponibilidad con cada proveedor.'}
               </span>
             </div>
           </div>

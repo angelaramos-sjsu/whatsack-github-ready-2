@@ -183,12 +183,8 @@ Empieza con las páginas oficiales de ayuda y pregunta en la oficina de ayuda fi
       es: '¿Qué apoyo emocional para jóvenes es confidencial en Sunnyvale?'
     },
     answer: {
-      en: `I can't confirm the privacy practices, hours, or services of a specific youth center from this information. California Health & Safety Code § 124260 allows a minor age 12 or older to consent to certain outpatient mental health treatment only when a professional determines the minor is mature enough; parent or guardian involvement is generally included unless the professional finds it inappropriate. This is not a blanket guarantee of confidentiality.
-
-For support, contact Santa Clara County Behavioral Health Services or use the official 988 website to review available crisis support and contact options. Ask any provider about cost, eligibility, privacy, and its limits before sharing personal information.`,
-      es: `No puedo confirmar las prácticas de privacidad, los horarios ni los servicios de un centro juvenil específico con esta información. El Código de Salud y Seguridad de California § 124260 permite que un menor de 12 años o más dé su consentimiento para ciertos tratamientos ambulatorios de salud mental solo cuando un profesional determina que tiene madurez suficiente; por lo general se incluye a los padres o tutores, salvo que el profesional considere que no es apropiado. Esto no es una garantía general de confidencialidad.
-
-Para obtener apoyo, comunícate con los Servicios de Salud Conductual del Condado de Santa Clara o consulta el sitio oficial de 988 para revisar las opciones de apoyo en crisis y cómo contactarlas. Antes de compartir información personal, pregunta a cualquier proveedor sobre costos, requisitos, privacidad y sus límites.`
+      en: "California law (Family Code § 6924 and Health & Safety Code § 124260) permits someone age 12 or older to consent to certain outpatient mental health counseling if a qualified professional determines they can participate intelligently. A teen does not need to be in a crisis to seek care. A provider generally involves a parent or guardian unless, after talking with the teen, the provider decides that involvement would be inappropriate. Confidentiality has exceptions; do not assume everything stays secret. WhatSack is a class demonstration, not a confidential counseling service. Ask a provider about privacy, parent contact, cost, eligibility, and insurance notices before sharing sensitive details.",
+      es: "La ley de California (Código de Familia § 6924 y Código de Salud y Seguridad § 124260) permite que una persona de 12 años o más consienta a ciertos servicios ambulatorios de salud mental si un profesional determina que puede participar con madurez suficiente. No necesita estar en una crisis. Por lo general, el profesional involucra a la madre, el padre o el tutor, salvo que, tras consultar con el adolescente, determine que no sería apropiado. La confidencialidad tiene excepciones; no supongas que todo será secreto. WhatSack es una demostración académica, no un servicio de consejería confidencial. Pregunta sobre privacidad, participación familiar, costos, requisitos y avisos del seguro antes de compartir datos delicados."
     },
     context: [
       { en: 'Sunnyvale', es: 'Sunnyvale' },
@@ -196,6 +192,11 @@ Para obtener apoyo, comunícate con los Servicios de Salud Conductual del Condad
       { en: 'Confidential care', es: 'Atención confidencial' }
     ],
     links: [
+      {
+        label: { en: 'California Family Code § 6924 (minor consent)', es: 'Código de Familia § 6924 (consentimiento de menores)' },
+        source: { en: 'California Legislative Information', es: 'Información Legislativa de California' },
+        url: 'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=FAM&sectionNum=6924.'
+      },
       {
         label: { en: '988 Suicide & Crisis Lifeline', es: 'Línea 988 de Prevención del Suicidio y Crisis' },
         source: { en: '988 Lifeline', es: 'Línea 988' },
@@ -229,7 +230,7 @@ Para obtener apoyo, comunícate con los Servicios de Salud Conductual del Condad
       ]
     },
     resourceIds: ['res-mental-1', 'res-mental-2'],
-    followUpIds: ['ans-mental-school-privacy', 'ans-mental-drop-in-what-happens', 'ans-mental-text-practice']
+    followUpIds: ['ans-mental-parent-consent', 'ans-mental-affordable-care', 'ans-mental-school-privacy', 'ans-mental-drop-in-what-happens']
   },
   {
     id: 'ans-community-connections',
