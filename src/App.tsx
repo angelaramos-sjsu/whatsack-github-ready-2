@@ -15,7 +15,6 @@ import { Navbar } from './components/Navbar';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
 import { IntroductionForm } from './components/IntroductionForm';
-import { ResourceCard } from './components/ResourceCard';
 import { CommunityDirectory } from './components/CommunityDirectory';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
@@ -168,7 +167,6 @@ export function App() {
   // Available unique cities for filtering
   const availableCities = useMemo(() => {
     const cities = new Set<string>();
-    demonstrationResources.forEach((r) => cities.add(r.location.city));
     directoryEntries.forEach((r) => { if (!['Online', 'Statewide', 'Multiple campuses'].includes(r.city)) cities.add(r.city); });
     return Array.from(cities);
   }, []);
@@ -307,8 +305,8 @@ export function App() {
           <h2 className="qc-about-h2">{currentLanguage === 'en' ? 'What is real?' : '¿Qué es real?'}</h2>
           <p className="qc-dsub">
             {currentLanguage === 'en'
-              ? 'Organization listings link to real websites, but details can change. Sample programs and chat answers are for class testing only. Check the organization website before making plans.'
-              : 'El directorio enlaza a sitios reales, pero los datos pueden cambiar. Los programas y respuestas de ejemplo son solo para pruebas de clase. Revise el sitio oficial antes de hacer planes.'}
+              ? 'Organization listings link to real websites, but details can change. Chat answers and demonstrations are for class testing only. Check each organization website before making plans.'
+              : 'El directorio enlaza a sitios reales, pero los datos pueden cambiar. Las respuestas del chatbot y las demostraciones son solo para pruebas de clase. Revise el sitio oficial antes de hacer planes.'}
           </p>
           <button type="button" className="qc-btn-sm mt-8" onClick={() => setIsDisclaimerOpen(true)}>
             {currentLanguage === 'en' ? 'Read the safety notice' : 'Leer el aviso de seguridad'}
@@ -373,7 +371,7 @@ export function App() {
           <div className="qc-shell qc-page-heading">
             <div className="qc-eyebrow">{currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos'}</div>
             <h1 id="directory-page-heading" tabIndex={-1} className="qc-h2 qc-page-title">{currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos'}</h1>
-            <p className="qc-dsub">{currentLanguage === 'en' ? 'Browse organizations and sample programs. Check each organization website for current details.' : 'Explore organizaciones y programas de ejemplo. Consulte cada sitio oficial para ver datos actuales.'}</p>
+            <p className="qc-dsub">{currentLanguage === 'en' ? 'Browse organization websites and confirm current details directly with each provider.' : 'Explore sitios de organizaciones y confirme los datos actuales directamente con cada proveedor.'}</p>
           </div>
 
           {/* Context from the optional intake; never imply benefits eligibility. */}
@@ -460,56 +458,11 @@ export function App() {
             onSelectCity={setSelectedCity}
             availableCities={availableCities}
             searchQuery={searchQuery}
-            freeOnly={freeOnly}
-            onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
-            demonstrationCount={filteredResources.length}
             isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
             onToggleEntrySave={handleToggleDirectorySave}
           />
 
-          {/* Demonstration resources */}
-          <section id="resources" aria-labelledby="resources-heading" className="qc-shell pt-16 scroll-mt-28">
-            <h2 id="resources-heading" className="qc-h2">
-              {currentLanguage === 'en' ? 'Sample programs (class examples)' : 'Programas de ejemplo (para clase)'}
-            </h2>
-            <p className="qc-dsub mb-8">
-              {currentLanguage === 'en'
-                ? `${filteredResources.length} sample programs. These are not live services; do not use the sample phone numbers or addresses.`
-                : `${filteredResources.length} programas de ejemplo. No son servicios reales; no use los números ni las direcciones de ejemplo.`}
-            </p>
-            {filteredResources.length === 0 ? (
-              <div className="border-t border-[#f0eef8] py-16 text-center">
-                <h3 className="text-[18px] font-medium text-[#1A1A24]">
-                  {currentLanguage === 'en' ? 'No matching demonstration resources found' : 'No se encontraron recursos de demostración'}
-                </h3>
-                <p className="mt-2 text-[14px] text-[#5a5870]">
-                  {currentLanguage === 'en'
-                    ? 'Try broadening your search filters or resetting your inquiry.'
-                    : 'Intente ampliar los filtros de búsqueda o restablecer la consulta.'}
-                </p>
-                <button
-                  type="button"
-                  onClick={resetAllFilters}
-                  className="qc-btn-sm mt-6"
-                >
-                  {t.filters.reset}
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {filteredResources.map((resource) => (
-                  <ResourceCard
-                    key={resource.id}
-                    resource={resource}
-                    currentLanguage={currentLanguage}
-                    onOpenInsights={(res) => setSelectedResourceForInsights(res)}
-                    isSaved={savedResourceIds.includes(resource.id)}
-                    onToggleSave={handleToggleSave}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
+
 
           </>)}
 

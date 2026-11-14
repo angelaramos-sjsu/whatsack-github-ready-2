@@ -13,9 +13,6 @@ interface CommunityDirectoryProps {
   onSelectCity: (city: string) => void;
   availableCities: string[];
   searchQuery: string;
-  freeOnly: boolean;
-  onToggleFreeOnly: () => void;
-  demonstrationCount: number;
   isEntrySaved: (entryId: string) => boolean;
   onToggleEntrySave: (entryId: string) => void;
 }
@@ -44,9 +41,6 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   onSelectCity,
   availableCities,
   searchQuery,
-  freeOnly,
-  onToggleFreeOnly,
-  demonstrationCount,
   isEntrySaved,
   onToggleEntrySave
 }) => {
@@ -73,7 +67,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     return true;
   });
 
-  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedNeeds.join(','), selectedCity, searchQuery, freeOnly]);
+  useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedNeeds.join(','), selectedCity, searchQuery]);
 
   useEffect(() => {
     if (!focusNextRow.current) return;
@@ -84,7 +78,6 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
 
   const visibleMatches = matches.slice(0, visibleCount);
   const organizationsLabel = currentLanguage === 'en' ? 'organization listings' : 'organizaciones';
-  const samplesLabel = currentLanguage === 'en' ? 'sample programs' : 'programas de ejemplo';
   const eyebrow =
     selectedNeeds.length > 0
       ? (currentLanguage === 'en' ? 'Your selected needs' : 'Sus necesidades seleccionadas')
@@ -115,23 +108,18 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           {t.filters.allCities}
         </button>
 
-        <label>
-          <input type="checkbox" checked={freeOnly} onChange={onToggleFreeOnly} />
-          <span>{t.filters.freeOnly}</span>
-        </label>
-
-        <span className="qc-cnt">{matches.length} {organizationsLabel} · {demonstrationCount} {samplesLabel}</span>
+        <span className="qc-cnt">{matches.length} {organizationsLabel}</span>
       </div>
 
       <p className="qc-filter-note">
         {currentLanguage === 'en'
-          ? 'Organization websites are real. Check their details before visiting. The Free filter applies only to sample programs; organization fees are not checked here.'
-          : 'Los sitios de organizaciones son reales. Revise sus datos antes de visitarlas. El filtro Gratis solo se aplica a programas de ejemplo; aquí no se verifican los costos de las organizaciones.'}
+          ? 'Visit each organization website to confirm current services, eligibility, costs and hours.'
+          : 'Visite el sitio de cada organización para confirmar servicios, requisitos, costos y horarios actuales.'}
       </p>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {currentLanguage === 'en'
-          ? `${matches.length} organization listings and ${demonstrationCount} sample programs found.`
-          : `Se encontraron ${matches.length} organizaciones y ${demonstrationCount} programas de ejemplo.`}
+          ? `${matches.length} organization listings found.`
+          : `Se encontraron ${matches.length} organizaciones.`}
       </p>
 
       {/* City selector (kept from the existing filter set) */}
