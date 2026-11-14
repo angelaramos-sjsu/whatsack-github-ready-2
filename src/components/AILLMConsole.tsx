@@ -246,7 +246,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     // Explicitly refused needs must not leak back in through the older broad keyword router.
     const normalized = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const excludesNeed = /\b(don.t need|dont need|do not need|don.t want|not looking for|no necesito|no quiero|no busco)\b/.test(normalized);
-    const topic = excludesNeed && needs.length === 1 ? needs[0] : detectTopic(text);
+    const legacyTopic = detectTopic(text);
+    const topic = excludesNeed && needs.length === 1
+      ? needs[0]
+      : (legacyTopic ?? (needs.length === 1 ? needs[0] : null));
     const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
