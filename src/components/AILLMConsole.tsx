@@ -243,7 +243,10 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const housingOnlyId = housingRequested && needs.length === 0 ? 'ans-food-housing-out-of-scope' : undefined;
     // Explicit crisis/consent routing takes precedence over all generic topic matches.
     const mateoAnswerId = routeMateoSupportQuestion(text);
-    const topic = detectTopic(text);
+    // Explicitly refused needs must not leak back in through the older broad keyword router.
+    const normalized = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const excludesNeed = /\b(don.t need|dont need|do not need|don.t want|not looking for|no necesito|no quiero|no busco)\b/.test(normalized);
+    const topic = excludesNeed && needs.length === 1 ? needs[0] : detectTopic(text);
     const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
