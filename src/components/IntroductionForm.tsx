@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, CheckCircle2, X } from 'lucide-react';
-import type { AccessPreference, CategoryId, IntakeProfile, Language, OtherBasicNeed } from '../types';
+import type { AccessPreference, CategoryId, IntakeProfile, Language } from '../types';
 import { StepLocation, StepNeeds, StepOptionalDetails, StepPreferences, type NeedChoice, type UrgencyChoice } from './intake/IntakeSteps';
 
 interface IntroductionFormProps {
@@ -35,6 +35,14 @@ interface DraftState {
 
 const STORAGE_KEY = 'whatsack-intake-draft';
 
+// Ignore legacy housing selections in previously saved intake drafts.
+const SUPPORTED_NEEDS = new Set<NeedChoice>(['food', 'mental-health', 'workforce', 'community']);
+const sanitizeNeeds = (needs: unknown): NeedChoice[] =>
+  Array.isArray(needs)
+    ? Array.from(new Set(needs.filter((need): need is NeedChoice =>
+        typeof need === 'string' && SUPPORTED_NEEDS.has(need as NeedChoice))))
+    : [];
+
 const makeDefaultDraft = (existingProfile: IntakeProfile | null): DraftState => ({
   name: existingProfile?.name ?? '',
   ageRange: existingProfile?.ageRange ?? 'prefer-not-to-say',
@@ -44,7 +52,7 @@ const makeDefaultDraft = (existingProfile: IntakeProfile | null): DraftState => 
   hasSeniors: existingProfile?.hasSeniors ?? false,
   monthlyIncome: existingProfile?.monthlyIncome ?? 'prefer-not-to-say',
   employmentStatus: existingProfile?.employmentStatus ?? 'prefer-not-to-say',
-  servicePriorities: (existingProfile?.servicePriorities ?? []).map((item) => item as NeedChoice),
+  servicePriorities: sanitizeNeeds(existingProfile?.servicePriorities),
   preferredLanguage: existingProfile?.preferredLanguage ?? 'No preference',
   noIdRequiredPreference: existingProfile?.noIdRequiredPreference ?? false,
   transitDependent: existingProfile?.transitDependent ?? false,
@@ -65,16 +73,7 @@ const makeDefaultDraft = (existingProfile: IntakeProfile | null): DraftState => 
   ),
 });
 
-const normalizeNeeds = (needs: NeedChoice[]): CategoryId[] => {
-  const categories = new Set<CategoryId>();
-  needs.forEach((need) => {
-    if (need === 'housing') {
-      return;
-    }
-    categories.add(need as CategoryId);
-  });
-  return Array.from(categories);
-};
+const normalizeNeeds = (needs: NeedChoice[]): CategoryId[] => sanitizeNeeds(needs);
 
 const stepTitles = {
   en: [
@@ -157,7 +156,7 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
           ...prev,
           ...restoredDraft,
           city: restoredDraft.city ?? prev.city,
-          servicePriorities: restoredDraft.servicePriorities ?? prev.servicePriorities,
+          servicePriorities: sanitizeNeeds(restoredDraft.servicePriorities ?? prev.servicePriorities),
         }));
       }
       if (typeof parsed.step === 'number') setStep(parsed.step);
@@ -274,9 +273,6 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
       employmentStatus: draft.includeHouseholdDetails ? draft.employmentStatus : 'prefer-not-to-say',
       servicePriorities: normalizeNeeds(draft.servicePriorities),
       urgency: draft.urgency === 'this-week' ? 'soon' : draft.urgency,
-      otherNeeds: draft.servicePriorities.includes('housing')
-        ? ['housing', 'utilities', 'transportation'] satisfies OtherBasicNeed[]
-        : [],
       accessPreferences: [
         ...(draft.preferPhoneOrOnline ? ['remote' as const] : []),
         ...(draft.needEveningWeekend ? ['evenings' as const] : []),
@@ -331,7 +327,6 @@ export const IntroductionForm: React.FC<IntroductionFormProps> = ({
         'mental-health': currentLanguage === 'en' ? 'Mental health' : 'Salud mental',
         workforce: currentLanguage === 'en' ? 'Education & workforce' : 'Educación y trabajo',
         community: currentLanguage === 'en' ? 'Community connection' : 'Conexión comunitaria',
-        housing: currentLanguage === 'en' ? 'Housing / bills / transportation' : 'Vivienda / pagos / transporte',
       })[item]).join(', ') : (currentLanguage === 'en' ? 'No need selected yet' : 'Todavía no eligió ninguna necesidad'), step: 0 },
     { label: currentLanguage === 'en' ? 'Area' : 'Zona', value: draft.city === 'Other Silicon Valley' ? (currentLanguage === 'en' ? 'Anywhere in Silicon Valley' : 'Cualquier lugar en Silicon Valley') : draft.city, step: 1 },
     { label: currentLanguage === 'en' ? 'Preferences' : 'Preferencias', value: [

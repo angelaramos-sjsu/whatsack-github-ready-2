@@ -440,13 +440,13 @@
           "id": "x",
           "stage": "Basic needs (cross-category)",
           "keep_in_mind": [
-            "Every California community college funds a Basic Needs Center ($43.5M/yr statewide) with a coordinator for food, housing, transportation, technology, and childcare.",
+            "Campus Basic Needs Centers can help students explore food assistance and other campus support. Available services vary by college.",
             "This is the bridge from the education pathway to WhatSack's food category and to Maria's CalFresh scenario."
           ],
           "options": [
             {
               "label": "Schedule a basic needs resource-navigation appointment",
-              "why": "Non-clinical, one-on-one help connecting to food, housing, transit, hygiene, health, and emergency funds; Ohlone's team includes a Basic Needs Coordinator and MSW intern.",
+              "why": "Non-clinical, one-on-one guidance on food support, transit options, hygiene, health and emergency funds; confirm current services with Ohlone's Basic Needs team.",
               "who": "Ohlone Basic Needs Resource Center",
               "area": "Ohlone students",
               "contact": "basicneeds@ohlone.edu; Basic Needs Assistance form",

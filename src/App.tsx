@@ -409,14 +409,6 @@ export function App() {
                     {' '}<a href="tel:211" className="font-bold text-[#03543b] underline">{currentLanguage === 'en' ? 'Call 211' : 'Llamar al 211'}</a>
                   </p>
                 )}
-                {(userProfile.otherNeeds?.length ?? 0) > 0 && (
-                  <p>
-                    {currentLanguage === 'en'
-                      ? 'For housing, utilities, or transportation assistance, WhatSack does not yet have reviewed listings in those categories. Use a local human referral service instead:'
-                      : 'Para vivienda, servicios públicos o transporte, WhatSack aún no cuenta con listados revisados en esas categorías. Consulte un servicio de referencia local:'}
-                    {' '}<a className="font-bold text-[#03543b] underline" href="https://211bayarea.org/" target="_blank" rel="noopener noreferrer">{currentLanguage === 'en' ? '211 Bay Area (opens new tab)' : '211 Bay Area (abre otra pestaña)'}</a>
-                  </p>
-                )}
                 {(userProfile.transitDependent || (userProfile.accessPreferences?.length ?? 0) > 0 || (userProfile.preferredLanguage !== 'No preference' && userProfile.preferredLanguage)) && (
                   <p>
                     <strong>{currentLanguage === 'en' ? 'Before visiting:' : 'Antes de visitar:'}</strong>{' '}

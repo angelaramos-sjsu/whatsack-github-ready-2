@@ -2,7 +2,7 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import type { CategoryId, IntakeProfile, Language } from '../../types';
 
-export type NeedChoice = CategoryId | 'housing';
+export type NeedChoice = CategoryId;
 export type UrgencyChoice = 'today' | 'this-week' | 'exploring';
 
 const needOptions: Array<{
@@ -16,7 +16,6 @@ const needOptions: Array<{
   { id: 'mental-health', en: 'Mental health', es: 'Salud mental', hintEn: 'Counseling, peer support, crisis help', hintEs: 'Consejería, apoyo entre pares y ayuda' },
   { id: 'workforce', en: 'Education & workforce', es: 'Educación y trabajo', hintEn: 'School, classes, job training', hintEs: 'Escuela, clases y capacitación' },
   { id: 'community', en: 'Community connection', es: 'Conexión comunitaria', hintEn: 'Groups, senior programs, local events', hintEs: 'Grupos, programas para mayores y eventos' },
-  { id: 'housing', en: 'Housing / bills / transportation', es: 'Vivienda / pagos / transporte', hintEn: 'Rent, utility help, rides, buses', hintEs: 'Renta, ayuda de servicios y transporte' },
 ];
 
 const urgencyOptions: Array<{ value: UrgencyChoice; en: string; es: string }> = [
@@ -136,15 +135,15 @@ export const StepNeeds: React.FC<StepNeedsProps> = ({
       </div>
     </fieldset>
 
-    {selected.includes('housing') || urgency === 'today' ? (
+    {urgency === 'today' ? (
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-slate-800">
         <p className="font-bold text-slate-900">
           {currentLanguage === 'en' ? 'External referral' : 'Referencia externa'}
         </p>
         <p className="mt-1">
           {currentLanguage === 'en'
-            ? 'We can connect you with 211 Bay Area for urgent support with rent, bills, or transportation.'
-            : 'Podemos conectarle con 211 Bay Area para apoyo urgente con renta, pagos o transporte.'}
+            ? 'For urgent support beyond WhatSack’s four resource areas, 211 Bay Area can help you find local referrals. This is not an emergency service.'
+            : 'Para recibir apoyo urgente fuera de las cuatro áreas de WhatSack, 211 Bay Area puede ayudarle a encontrar servicios locales. No es un servicio de emergencias.'}
         </p>
         <a
           href="https://211bayarea.org/"

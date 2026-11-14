@@ -83,7 +83,6 @@ export interface Persona {
 }
 
 export type IntakeUrgency = 'today' | 'soon' | 'exploring' | 'prefer-not-to-say';
-export type OtherBasicNeed = 'housing' | 'utilities' | 'transportation';
 export type AccessPreference = 'remote' | 'evenings' | 'accessible';
 
 export interface IntakeProfile {
@@ -94,7 +93,6 @@ export interface IntakeProfile {
   hasChildren?: boolean;
   hasSeniors?: boolean;
   urgency?: IntakeUrgency;
-  otherNeeds?: OtherBasicNeed[];
   accessPreferences?: AccessPreference[];
   monthlyIncome: '< $2,500' | '$2,500 - $4,500' | '$4,500 - $7,000' | '$7,000+' | 'prefer-not-to-say';
   employmentStatus: 'employed' | 'part-time' | 'laid-off' | 'seeking-work' | 'student' | 'retired' | 'prefer-not-to-say';

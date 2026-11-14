@@ -101,7 +101,7 @@ export const translations = {
       workforce: 'Education & Workforce',
       workforceDesc: 'Tech upskilling, apprenticeships, community college, financial aid & FAFSA/Dream Act',
       community: 'Community Connection',
-      communityDesc: 'Senior socialization, youth hubs, tenant rights clinics, multilingual community groups',
+      communityDesc: 'Senior socialization, youth hubs, neighborhood activities, multilingual community groups',
     },
     filters: {
       filterBy: 'Filter Resources',
@@ -291,7 +291,7 @@ export const translations = {
       workforce: 'Educación y Capacitación Laboral',
       workforceDesc: 'Capacitación tecnológica, pasantías, colegios comunitarios, ayuda financiera FAFSA / Dream Act',
       community: 'Conexión Comunitaria',
-      communityDesc: 'Programas para adultos mayores, centros juveniles, derechos de inquilinos, círculos comunitarios',
+      communityDesc: 'Programas para adultos mayores, centros juveniles, actividades locales y círculos comunitarios',
     },
     filters: {
       filterBy: 'Filtrar Recursos',
