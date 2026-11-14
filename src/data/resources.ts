@@ -28,10 +28,10 @@ export const categoriesData: CategoryInfo[] = [
   {
     id: 'community',
     name: { en: 'Community Connection', es: 'Conexión Comunitaria' },
-    tagline: { en: 'Senior social clubs, youth recreation & tenant rights clinics', es: 'Programas de adultos mayores, espacios juveniles y derechos comunitarios' },
+    tagline: { en: 'Senior social clubs, youth recreation & local community activities', es: 'Programas de adultos mayores, espacios juveniles y actividades comunitarias' },
     icon: 'Users',
     badgeColor: 'amber',
-    count: 4
+    count: 3
   }
 ];
 
@@ -1217,78 +1217,4 @@ export const demonstrationResources: DemonstrationResource[] = [
       websiteDomainSimulated: 'fairoaksseniors-prototype.local'
     }
   },
-  {
-    id: 'res-comm-4',
-    categoryId: 'community',
-    title: {
-      en: 'Somos Mayfair Community Leadership & Tenant Rights Clinic',
-      es: 'Clínica de Derechos de Inquilinos y Liderazgo Comunitario Somos Mayfair'
-    },
-    organization: {
-      en: 'Somos Mayfair (Simulated Community Registry)',
-      es: 'Somos Mayfair (Registro Comunitario Simulado)'
-    },
-    description: {
-      en: 'Grassroots community defense network in East San Jose providing free tenant rights consultations, rent relief navigation, bilingual family leadership circles, and immigration know-your-rights clinics.',
-      es: 'Red comunitaria en el Este de San José con asesoría gratuita en derechos de inquilinos, apoyos de renta, círculos familiares bilingües y talleres Conozca Sus Derechos.'
-    },
-    location: {
-      city: 'East San Jose',
-      county: 'Santa Clara County',
-      transitNote: {
-        en: 'Heart of the Mayfair neighborhood; 1 block from Alum Rock Ave VTA stops',
-        es: 'En el corazón del barrio Mayfair; a 1 cuadra de las paradas VTA de Alum Rock Ave'
-      },
-      addressSimulated: '370 S King Rd, San Jose, CA 95116 (Simulated)'
-    },
-    schedule: {
-      en: 'Monday – Thursday: 9:00 AM – 5:30 PM; Tenant clinic Tuesdays 5:30 PM – 7:30 PM',
-      es: 'Lunes a jueves: 9:00 AM – 5:30 PM; Clínica de inquilinos martes 5:30 PM – 7:30 PM'
-    },
-    costType: 'Free',
-    languagesSupported: ['Español', 'English'],
-    eligibilityHighlight: {
-      en: 'Open to all tenants, workers, and families in East San Jose; strictly confidential.',
-      es: 'Abierto a todos los inquilinos y familias del Este de San José; confidencialidad estricta.'
-    },
-    noIdRequired: true,
-    confidential: true,
-    tags: ['Tenant Rights', 'East San Jose', 'Bilingual Promotores', 'Zero Cost'],
-    nextStepInsight: {
-      explanation: {
-        en: 'Connects tenants with trained community promotores who understand local Santa Clara County rent ordinances and eviction protection laws without charging attorney fees.',
-        es: 'Conecta a inquilinos con promotores comunitarios capacitados en leyes locales de protección contra desalojos sin cobrar honorarios.'
-      },
-      confidenceRating: 97,
-      sourceOrganization: {
-        en: 'East San Jose Community Resilience Benchmark 2026',
-        es: 'Evaluación de Resiliencia Comunitaria del Este de San José 2026'
-      },
-      simulatedVerificationDate: 'October 2026',
-      dataSourceLabel: {
-        en: 'Community Advocacy Network Benchmark',
-        es: 'Red de Apoyo Comunitario Certificada'
-      },
-      documentsNeeded: [
-        { en: 'Rental agreement / lease or rent increase letter (if receiving legal consultation)', es: 'Contrato de arrendamiento o aviso de aumento de renta (para asesoría legal)' }
-      ],
-      actionItems: [
-        {
-          id: 'comm-act-7',
-          title: { en: 'Sign up for Tuesday evening tenant legal clinic', es: 'Anotarse en la clínica legal de inquilinos de los martes' },
-          description: { en: 'Meet with a volunteer housing attorney and bilingual interpreter.', es: 'Consulte con un abogado voluntario de vivienda y un intérprete bilingüe.' },
-          estimatedMinutes: 25
-        }
-      ],
-      accessibilityNotes: {
-        en: 'Childcare provided on-site during evening clinic sessions so parents can participate freely.',
-        es: 'Cuidado infantil gratuito durante las sesiones nocturnas para que los padres asistan con calma.'
-      }
-    },
-    contactSimulated: {
-      phone: '(408) 555-MAYS (Simulated)',
-      intakeMethod: { en: 'Walk-in or call Spanish hotline', es: 'Llegada libre o llamada a línea en español' },
-      websiteDomainSimulated: 'somosmayfair-demo.local'
-    }
-  }
 ];
