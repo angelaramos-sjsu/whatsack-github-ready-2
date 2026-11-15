@@ -355,7 +355,7 @@ export const directoryEntries: DirectoryEntry[] = [
     categoryId: 'workforce',
     city: 'Multiple campuses',
     address: 'California community colleges',
-    website: 'https://www.cccco.edu'
+    website: 'https://www.cccco.edu/about-us/chancellors-office/divisions/educational-services-and-support/student-service/what-we-do/extended-opportunity-programs-and-services/'
   },
   {
     id: 'dir-cooperative-agencies-resources-for-education-care-44',
@@ -419,7 +419,7 @@ export const directoryEntries: DirectoryEntry[] = [
     categoryId: 'workforce',
     city: 'Statewide',
     address: 'Statewide EDD program',
-    website: 'https://edd.ca.gov'
+    website: 'https://edd.ca.gov/CTB/'
   },
   {
     id: 'dir-fafsa-52',
@@ -497,8 +497,8 @@ export const directoryEntries: DirectoryEntry[] = [
     id: "dir-ew-scholarship-svcf",
     name: "Silicon Valley Community Foundation — Scholarship Applications",
     categoryId: 'workforce',
-    city: "Santa Clara County / Bay Area",
-    address: "Regional scholarship application and search portal",
+    city: "Online",
+    address: "California/Bay Area scholarships; individual eligibility varies",
     website: "https://www.svcf.org/scholarships/find-scholarships"
   },
   {
