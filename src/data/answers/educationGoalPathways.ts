@@ -1605,11 +1605,42 @@ export const educationGoalPathwayAnswers: ScriptedAnswer[] = [
 export const routeGoalExplorationQuestion = (input: string): string | undefined => {
   const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[’‘]/g, "'").replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
-  const sofiaGoal = /(?:after high school|after graduation|graduating (?:from )?high school|finish(?:ing)? high school|college or work|university or work|despues de (?:la )?(?:preparatoria|secundaria)|terminar (?:la )?preparatoria|universidad o trabajar)/;
+  const sofiaGoal = /(?:after high school|after graduation|graduating soon|graduating (?:from )?high school|finish(?:ing)? high school|college or work|university or work|despues de (?:la )?(?:preparatoria|secundaria)|terminar (?:la )?preparatoria|universidad o trabajar)/;
   const sofiaExploration = /(?:what|which|options|choices|not sure|don t know|undecided|should i|could i|want to do|explore|start|decide|que|cuales|opciones|no se|no estoy seg)/;
   if (sofiaGoal.test(q) && sofiaExploration.test(q)) return 'ans-goal-sofia-entry';
-  const danielGoal = /(?:lost my job|laid off|layoff|lost (?:a|the) job|recently unemployed|change careers|career change|next career move|new career|manufacturing experience|job or go back to school|find another job or go back to school|perdi (?:mi|el) (?:empleo|trabajo)|despidieron|cambiar de (?:carrera|profesion)|cambio de carrera)/;
+  const danielGoal = /(?:lost my job|laid off|layoff|lost (?:a|the) job|recently unemployed|chang(?:e|ing) careers?|career change|next career move|new career|manufacturing experience|job or go back to school|find another job or go back to school|perdi (?:mi|el) (?:empleo|trabajo)|despidieron|cambiar de (?:carrera|profesion)|cambio de carrera)/;
   const danielExploration = /(?:what|which|options|choices|not sure|don t know|should i|could i|how|want to|help|explore|start|decide|career|work|school|job|que|cuales|opciones|ayuda|hacer|puedo|quiero)/;
+  // A visitor who explicitly needs an immediate job should receive job help first.
+  if (/(?:need (?:a|another) job (?:right away|immediately|now|today)|job right away|job asap|trabajo urgente|empleo urgente)/.test(q)) return undefined;
   if (danielGoal.test(q) && danielExploration.test(q)) return 'ans-goal-daniel-entry';
   return undefined;
+};
+
+/**
+ * Conservative direct routing for paraphrases of the 16 researched questions.
+ * Only unambiguous specific requests resolve here; broad options go to the chooser.
+ * Crisis/privacy and multi-need routing still run first in the chat.
+ */
+export const routeGoalDetailQuestion = (input: string): string | undefined => {
+  const q = input.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
+    .replace(/[’‘]/g, "'").replace(/[^a-z0-9 ]/g, ' ').replace(/\\s+/g, ' ').trim();
+  const rules: Array<[RegExp, string]> = [
+    [/(?:straight|directly|right after high school).*(?:four year|university|csu|uc)|(?:four year|university).*(?:straight|directly).*high school/, 'ans-pathway-sofia-s1'],
+    [/(?:difference|compare).*(?:community college|csu|uc|private universit)/, 'ans-pathway-sofia-s2'],
+    [/(?:afford|pay for).*(?:four year|university)/, 'ans-pathway-sofia-s3'],
+    [/(?:biology|healthcare).*(?:colleges|university|degrees|programs|careers)/, 'ans-pathway-sofia-s4'],
+    [/(?:out of state|outside california).*(?:university|college)|(?:university|college).*(?:outside california|out of state)/, 'ans-pathway-sofia-s5'],
+    [/apply.*(?:universit|csu|uc).*(?:community college)|apply.*(?:community college).*(?:universit|csu|uc)/, 'ans-pathway-sofia-s6'],
+    [/(?:iep|504 plan|disability accommodations).*(?:college|university|csu|uc)/, 'ans-pathway-sofia-s7'],
+    [/(?:gap year|wait before college|not.*college.*(?:right away|immediately))/, 'ans-pathway-sofia-s8'],
+    [/(?:lost.*job.*(?:return to school|need.*training)|change careers without school)/, 'ans-pathway-daniel-d1'],
+    [/(?:adult|older|45).*(?:four year university|university)|(?:four year university|university).*(?:adult|older|at 45)/, 'ans-pathway-daniel-d2'],
+    [/(?:manufactur).*(?:supervisor|management|higher level).*(?:without.*degree)|(?:manufactur.*experience).*(?:higher position|advance)/, 'ans-pathway-daniel-d3'],
+    [/(?:paid apprenticeship|apprenticeship.*(?:earn|paid|wage)|earn.*while.*learn)/, 'ans-pathway-daniel-d4'],
+    [/(?:bachelor.*(?:management|another industry|change careers)|(?:management|another industry).*bachelor)/, 'ans-pathway-daniel-d5'],
+    [/(?:online|hybrid).*(?:university|bachelor|degree).*(?:work|part time)|(?:university|bachelor).*(?:online|hybrid)/, 'ans-pathway-daniel-d6'],
+    [/(?:disability).*(?:new career|work i can do|attend university)|(?:accommodations).*(?:job interview|career change)/, 'ans-pathway-daniel-d7'],
+    [/(?:start (?:my|our|a) (?:own |small )?business|self employment|entrepreneurship)/, 'ans-pathway-daniel-d8']
+  ];
+  return rules.find(([pattern]) => pattern.test(q))?.[1];
 };
