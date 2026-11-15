@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { crossCategoryDiscoveryAnswers } from './crossCategoryDiscovery';
 import { educationGoalPathwayAnswers, routeGoalExplorationQuestion, routeGoalDetailQuestion } from './educationGoalPathways';
 import { educationWorkforceAnswers, routeEducationWorkforceQuestion } from './educationWorkforce';
 import { bilingualFoodAnswers, routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion } from './foodBilingual';
@@ -16,6 +17,7 @@ export { routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion };
 /** Every approved scripted answer, keyed by its unique id. */
 export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
+  ...crossCategoryDiscoveryAnswers,
   ...educationWorkforceAnswers,
   ...educationGoalPathwayAnswers,
   ...programFollowUpAnswers,
