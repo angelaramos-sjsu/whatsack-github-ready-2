@@ -11,6 +11,13 @@ export interface OfficialResourceLink {
   url: string;
 }
 
+/** A selectable route in a goal-first conversation. Each choice links to one reviewed answer. */
+export interface GoalPathwayChoice {
+  id: string;
+  label: BilingualText;
+  answerId: string;
+}
+
 export type ScriptedAction =
   | { id: string; kind: 'open-link'; label: BilingualText; url: string }
   | { id: string; kind: 'save-plan'; label: BilingualText; resourceId: string };
@@ -67,4 +74,6 @@ export interface ScriptedAnswer {
   resourceIds?: string[];
   /** Only ids that resolve to another implemented answer are displayed. */
   followUpIds: string[];
+  /** Optional, single-select goals rendered inside the chatbot; never medical intake. */
+  pathwayChoices?: GoalPathwayChoice[];
 }
