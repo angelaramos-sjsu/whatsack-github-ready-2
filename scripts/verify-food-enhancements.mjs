@@ -102,7 +102,7 @@ assert.match(consoleCode, /prev\.filter\(\(msg\) => msg\.id !== userMsgId\)/);
 const extrasCode = readFileSync('src/components/ScriptedAnswerExtras.tsx', 'utf8');
 assert(extrasCode.includes('needSuggestions.map((suggestion, index) =>'), 'The UI must render one card per need');
 assert(extrasCode.includes('suggestion.links.map((link) =>'), 'Each card needs its own official links');
-assert(extrasCode.includes('stepId={`\${answer.id}-next-steps-\${index}`}'), 'Saveable NextStep IDs must stay stable');
+assert(extrasCode.includes('stepId={`${answer.id}-next-steps-${index}`}'), 'Saveable NextStep IDs must stay stable');
 
 
 console.log('PASS: CalFresh context and ambiguity, application boundaries, eligibility, bilingual routes,');
