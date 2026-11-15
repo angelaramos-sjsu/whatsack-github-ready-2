@@ -1622,8 +1622,8 @@ export const routeGoalExplorationQuestion = (input: string): string | undefined 
  * Crisis/privacy and multi-need routing still run first in the chat.
  */
 export const routeGoalDetailQuestion = (input: string): string | undefined => {
-  const q = input.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')
-    .replace(/[’‘]/g, "'").replace(/[^a-z0-9 ]/g, ' ').replace(/\\s+/g, ' ').trim();
+  const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[’‘]/g, "'").replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const rules: Array<[RegExp, string]> = [
     [/(?:straight|directly|right after high school).*(?:four year|university|csu|uc)|(?:four year|university).*(?:straight|directly).*high school/, 'ans-pathway-sofia-s1'],
     [/(?:difference|compare).*(?:community college|csu|uc|private universit)/, 'ans-pathway-sofia-s2'],
