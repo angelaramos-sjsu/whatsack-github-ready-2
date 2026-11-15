@@ -1625,6 +1625,7 @@ export const routeGoalDetailQuestion = (input: string): string | undefined => {
   const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .replace(/[’‘]/g, "'").replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const rules: Array<[RegExp, string]> = [
+    [/(?:adult|older|45).*(?:four year university|university)|(?:four year university|university).*(?:adult|older|at 45)/, 'ans-pathway-daniel-d2'],
     [/(?:straight|directly|right after high school).*(?:four year|university|csu|uc)|(?:four year|university).*(?:straight|directly).*high school/, 'ans-pathway-sofia-s1'],
     [/(?:difference|compare).*(?:community college|csu|uc|private universit)/, 'ans-pathway-sofia-s2'],
     [/(?:afford|pay for).*(?:four year|university)/, 'ans-pathway-sofia-s3'],
@@ -1634,7 +1635,6 @@ export const routeGoalDetailQuestion = (input: string): string | undefined => {
     [/(?:iep|504 plan|disability accommodations).*(?:college|university|csu|uc)/, 'ans-pathway-sofia-s7'],
     [/(?:gap year|wait before college|not.*college.*(?:right away|immediately))/, 'ans-pathway-sofia-s8'],
     [/(?:lost.*job.*(?:return to school|need.*training)|change careers without school)/, 'ans-pathway-daniel-d1'],
-    [/(?:adult|older|45).*(?:four year university|university)|(?:four year university|university).*(?:adult|older|at 45)/, 'ans-pathway-daniel-d2'],
     [/(?:manufactur).*(?:supervisor|management|higher level).*(?:without.*degree)|(?:manufactur.*experience).*(?:higher position|advance)/, 'ans-pathway-daniel-d3'],
     [/(?:paid apprenticeship|apprenticeship.*(?:earn|paid|wage)|earn.*while.*learn)/, 'ans-pathway-daniel-d4'],
     [/(?:bachelor.*(?:management|another industry|change careers)|(?:management|another industry).*bachelor)/, 'ans-pathway-daniel-d5'],
