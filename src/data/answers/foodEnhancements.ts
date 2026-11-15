@@ -31,7 +31,9 @@ const mentalTerms = /\b(mental health|counseling|counsell?or|therapist|therapy|p
 const communityTerms = /\b(community|community groups|social activities|social group|friends|friendship|lonely|isolation|comunidad|actividades comunitarias|amistades|amigos|soledad)\b/;
 
 export const detectSupportedNeeds = (question: string): SupportedNeed[] => {
-  const q = removeNegatedNeeds(normalize(question));
+  // "community college" names a school, not a request for community activities.
+  // Preserve separate community support when it is explicitly requested elsewhere.
+  const q = removeNegatedNeeds(normalize(question)).replace(/\bcommunity colleges?\b/g, 'college');
   const needs: SupportedNeed[] = [];
   if (foodTerms.test(q)) needs.push('food');
   // Workforce and college are subpaths of one WhatSack Education & Workforce category.
