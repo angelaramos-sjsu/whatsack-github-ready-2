@@ -2307,7 +2307,7 @@ export const routeEducationWorkforceQuestion = (input: string): string | undefin
     [/(scholarships? or grants? for adults|scholarships?.*(returning|adult|career training))/, 'ans-ew-d4'],
     [/(free or low cost training|affordable training programs?)/, 'ans-ew-d5'],
     [/(college credit for.*(skills|work|experience)|credit for prior learning)/, 'ans-ew-d6'],
-    [/(job right away|find a job before.*training|job help before.*training)/, 'ans-ew-d7'],
+    [/(job right away|find a job before.*training|job help before.*training|(?:need|find|looking for|want to).*(?:work|job).*(?:right away|immediately|asap|today|now)|(?:work|job).*(?:right away|immediately|asap))/, 'ans-ew-d7'],
     [/(unemployment benefits.*(training|school)|training.*unemployment benefits)/, 'ans-ew-d8'],
     // High-confidence paraphrases of the already reviewed Education & Workforce
     // follow-ups. Answer them directly, not through a generic tuition/job entry.
