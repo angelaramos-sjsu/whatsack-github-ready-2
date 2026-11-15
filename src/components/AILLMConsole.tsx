@@ -473,7 +473,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     {msg.sender === 'user' ? (
                       <>
                         <User className="w-3.5 h-3.5 text-emerald-200" />
-                        <span>{msg.personaName ? `${msg.personaName}` : (currentLanguage === 'en' ? 'Resident Inquiry' : 'Consulta Ciudadana')}</span>
+                        <span>{msg.personaName ? `${msg.personaName}` : (currentLanguage === 'en' ? 'You asked' : 'Tu pregunta')}</span>
                       </>
                     ) : (
                       <>
