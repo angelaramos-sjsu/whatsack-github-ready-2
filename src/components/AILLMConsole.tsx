@@ -11,6 +11,7 @@ import {
   getScriptedAnswer,
   resolveFollowUps,
   routeSaraCollegeQuestion,
+  routeEducationWorkforceQuestion,
   routeBilingualFoodQuestion,
   isSpanishBilingualFoodQuestion,
   topicEntryAnswerIds
@@ -251,6 +252,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? needs[0]
       : (legacyTopic ?? (needs.length === 1 ? needs[0] : null));
     const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
+    const educationAnswerId = !isPersonaQuestion ? routeEducationWorkforceQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
@@ -264,6 +266,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? combinedAnswer
       : exactScriptedAnswer
       ? exactScriptedAnswer
+      : educationAnswerId
+      ? getScriptedAnswer(educationAnswerId)
       : bilingualFoodId
         ? getScriptedAnswer(bilingualFoodId)
       : saraStageId
