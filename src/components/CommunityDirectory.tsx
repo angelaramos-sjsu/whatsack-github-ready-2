@@ -53,7 +53,8 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   const matches = directoryEntries.filter((entry) => {
     if (selectedNeeds.length > 0 && !selectedNeeds.includes(entry.categoryId)) return false;
     if (selectedCategory !== 'all' && entry.categoryId !== selectedCategory) return false;
-    if (selectedCity !== 'all' && entry.city !== selectedCity) return false;
+    // Statewide and online services remain available regardless of the selected city.
+    if (selectedCity !== 'all' && entry.city !== selectedCity && !['Online', 'Statewide', 'Multiple campuses'].includes(entry.city)) return false;
     if (words.length) {
       const haystack = [
         entry.name,
