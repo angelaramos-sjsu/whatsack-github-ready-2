@@ -232,6 +232,7 @@ Empezar cerca y transferirse después es normal, y suele ser la ruta más econó
 - **California College Promise Grant** waives community college enrollment fees for eligible California residents. It does not automatically cover books, supplies, or transportation.
 - **College Promise programs** at individual colleges can add more — for example, the Foothill & De Anza College Promise covers tuition and mandatory fees for eligible students and adds book support.
 - **Books, food, transit, and supplies** are usually paid for through financial aid, campus programs, and Promise benefits rather than tuition waivers.
+- **Scholarships** from college foundations, Silicon Valley Community Foundation and Scholarship America may help eligible students with approved educational expenses; check each application.
 
 So "free" is accurate for enrollment fees if you qualify, and the rest is what financial aid and campus support are for.
 
@@ -241,6 +242,7 @@ The next step is figuring out which aid application fits your situation.`,
 - **El California College Promise Grant** exime las cuotas de inscripción del community college a residentes de California elegibles. No cubre automáticamente libros, útiles ni transporte.
 - **Los programas College Promise** de cada colegio pueden sumar más — por ejemplo, el Foothill & De Anza College Promise cubre la matrícula y las cuotas obligatorias a estudiantes elegibles y agrega apoyo para libros.
 - **Libros, comida, transporte y útiles** suelen pagarse con ayuda financiera, programas del campus y beneficios Promise, no con la exención de matrícula.
+- **Las becas** de fundaciones universitarias, Silicon Valley Community Foundation y Scholarship America pueden ayudar con gastos autorizados. Revise cada solicitud.
 
 Así que "gratis" es correcto para las cuotas de inscripción si cumple los requisitos, y el resto es justamente para lo que sirven la ayuda financiera y el apoyo del campus.
 
@@ -267,7 +269,8 @@ El siguiente paso es ver qué solicitud de ayuda corresponde a su situación.`
     followUpIds: [
       saraCollegeStageIds.fafsa,
       saraCollegeStageIds.nearby,
-      saraCollegeStageIds.firstGeneration
+      saraCollegeStageIds.firstGeneration,
+      'ans-ew-s3'
     ]
   },
   {
@@ -405,6 +408,7 @@ No tiene que hacerlo sola — existe ayuda gratuita para estos formularios.`
 - **Your high school counselor** can help with applications, deadlines, and fee waivers. You are not bothering them; this is their job.
 - **The college's admissions and financial aid offices** will walk you through forms and can tell you which documents they need.
 - **First-generation and transfer centers** on community college campuses offer advising, study space, and peer mentors.
+- **EOPS** may offer additional counseling and student support at California community colleges; **CSU and UC EOP** have separate application rules. First-generation status alone does not guarantee eligibility.
 - **10,000 Degrees** provides free college-access advising in participating communities.
 
 You do not need to know the vocabulary to ask. "I'm the first in my family to do this — what do I do next?" is a complete question.
@@ -415,6 +419,7 @@ Ready to turn this into a plan?`,
 - **Su consejero de la preparatoria** puede ayudar con solicitudes, fechas límite y exenciones de cuotas. No está molestando; es parte de su trabajo.
 - **Las oficinas de admisiones y ayuda financiera del colegio** le explican los formularios y le dicen qué documentos piden.
 - **Los centros de primera generación y de transferencia** en los campus ofrecen asesoría, espacio de estudio y mentores.
+- **EOPS** puede ofrecer apoyo adicional en community colleges; **EOP** en CSU y UC tiene sus propios requisitos. Ser primera generación no garantiza elegibilidad.
 - **10,000 Degrees** ofrece asesoría gratuita para entrar a la universidad en comunidades participantes.
 
 No necesita saber el vocabulario para preguntar. "Soy la primera en mi familia en hacer esto, ¿qué sigue?" es una pregunta completa.
@@ -436,10 +441,25 @@ No necesita saber el vocabulario para preguntar. "Soy la primera en mi familia e
         label: { en: 'California Community Colleges — student support programs', es: 'California Community Colleges — programas de apoyo estudiantil' },
         source: { en: 'California Community Colleges', es: 'California Community Colleges' },
         url: 'https://www.cccco.edu/'
+      },
+      {
+        label: { en: 'California community college EOPS', es: 'EOPS en colegios comunitarios de California' },
+        source: { en: 'California Community Colleges', es: 'California Community Colleges' },
+        url: 'https://www.cccco.edu/about-us/chancellors-office/divisions/educational-services-and-support/student-service/what-we-do/extended-opportunity-programs-and-services/'
+      },
+      {
+        label: { en: 'CSU EOP student support', es: 'Programa EOP de CSU' },
+        source: { en: 'California State University', es: 'California State University' },
+        url: 'https://www.calstate.edu/attend/student-services/eop'
+      },
+      {
+        label: { en: 'UC EOP student support', es: 'Programa EOP de UC' },
+        source: { en: 'University of California', es: 'University of California' },
+        url: 'https://admission.universityofcalifornia.edu/campuses-majors/campus-programs-and-support-services/educational-opportunity-program-eop.html'
       }
     ],
     resourceIds: ['res-work-3'],
-    followUpIds: [saraCollegeStageIds.nextSteps, saraCollegeStageIds.afterGraduation]
+    followUpIds: [saraCollegeStageIds.nextSteps, saraCollegeStageIds.afterGraduation, 'ans-ew-s1', 'ans-ew-s3']
   },
   // TODO: Spanish review — this new stage was translated for the sourced summer-transition options.
   {
