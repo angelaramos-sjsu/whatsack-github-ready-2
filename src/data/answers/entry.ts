@@ -63,8 +63,12 @@ export const entryAnswers: ScriptedAnswer[] = [
     answer: {
       en: `NOVAworks is a local workforce resource where you can ask about current technology training and career services. I can't confirm that a particular certificate is free, that funding is available, or that you qualify; programs and requirements can change. Contact NOVAworks to ask what training is currently accepting participants and whether assistance may apply to your situation.
 
+For an employer-connected program or other manufacturing options, compare approved college and workforce programs before applying. Tesla MDP focuses on early-career applicants, so adults should verify suitability and consider alternatives.
+
 If you receive unemployment benefits, California Training Benefits (CTB) is a separate EDD program. Do not assume training is approved or that benefits will continue unchanged. Review EDD's rules and contact EDD about your claim.`,
       es: `NOVAworks es un recurso laboral local donde puedes preguntar por capacitación tecnológica y servicios de carrera actuales. No puedo confirmar que un certificado específico sea gratuito, que haya fondos disponibles o que califiques; los programas y requisitos pueden cambiar. Comunícate con NOVAworks para preguntar qué capacitación acepta participantes actualmente y si podrías recibir asistencia.
+
+Para opciones de manufactura y alianzas con empleadores, compare programas de colegios y centros laborales. Tesla MDP se enfoca en personas al comienzo de su carrera; confirme requisitos y explore alternativas.
 
 Si recibes beneficios de desempleo, California Training Benefits (CTB) es un programa separado del EDD. No des por sentado que la capacitación esté aprobada ni que los beneficios continúen sin cambios. Revisa las reglas del EDD y comunícate con el EDD sobre tu reclamo.`
     },
@@ -107,7 +111,7 @@ Si recibes beneficios de desempleo, California Training Benefits (CTB) es un pro
       ]
     },
     resourceIds: ['res-work-1'],
-    followUpIds: ['ans-work-edd-impact', 'ans-work-evening-classes', 'ans-work-interview-practice']
+    followUpIds: ['ans-work-edd-impact', 'ans-work-evening-classes', 'ans-ew-d1', 'ans-ew-d4', 'ans-ew-d7']
   },
   {
     id: 'ans-college-tuition-free',
@@ -119,10 +123,10 @@ Si recibes beneficios de desempleo, California Training Benefits (CTB) es un pro
     answer: {
       en: `College aid depends on your school, program, and circumstances. Students may explore federal aid through FAFSA, California aid through CADAA when eligible, and campus programs such as College Promise. These programs have different requirements and may not cover every cost, such as books or living expenses. I can't determine eligibility or promise a specific award.
 
-Start with the official aid pages and ask the college financial aid office which programs apply to your campus and entry year.`,
+Start with the official aid pages and ask the college financial aid office which programs apply to your campus and entry year. Also check scholarship applications through Silicon Valley Community Foundation and Scholarship America rather than relying only on campus-based aid.`,
       es: `La ayuda universitaria depende de la institución, el programa y tus circunstancias. Puedes consultar la ayuda federal mediante FAFSA, la ayuda de California mediante CADAA si eres elegible y programas del campus como College Promise. Estos programas tienen distintos requisitos y quizá no cubran todos los gastos, como libros o vivienda. No puedo determinar tu elegibilidad ni prometer una cantidad específica.
 
-Empieza con las páginas oficiales de ayuda y pregunta en la oficina de ayuda financiera qué programas corresponden a tu campus y año de ingreso.`
+Empieza con las páginas oficiales de ayuda y pregunta en la oficina de ayuda financiera qué programas corresponden a tu campus y año de ingreso. También revise las solicitudes de becas de Silicon Valley Community Foundation y Scholarship America.`
     },
     context: [
       { en: 'Silicon Valley', es: 'Silicon Valley' },
@@ -173,7 +177,7 @@ Empieza con las páginas oficiales de ayuda y pregunta en la oficina de ayuda fi
       ]
     },
     resourceIds: ['res-work-3'],
-    followUpIds: ['ans-college-fafsa-vs-cadaa', 'ans-college-campus-help', 'ans-college-promise-requirements']
+    followUpIds: ['ans-college-fafsa-vs-cadaa', 'ans-college-campus-help', 'ans-college-promise-requirements', 'ans-ew-s2', 'ans-ew-s3']
   },
   {
     id: 'ans-mental-confidential-teens',
