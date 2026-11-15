@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { educationGoalPathwayAnswers, routeGoalExplorationQuestion } from './educationGoalPathways';
 import { educationWorkforceAnswers, routeEducationWorkforceQuestion } from './educationWorkforce';
 import { bilingualFoodAnswers, routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion } from './foodBilingual';
 import { foodEnhancementAnswers } from './foodEnhancements';
@@ -8,14 +9,15 @@ import { routeSaraCollegeQuestion, saraCollegePathwayAnswers, saraCollegeStageId
 import { attachSourcedNextSteps } from './nextStepOptions';
 import type { AnswerTopic, BilingualText, ScriptedAnswer } from './types';
 
-export type { AnswerTopic, BilingualText, NextStepMeta, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep, SavedScriptedStep } from './types';
-export { routeSaraCollegeQuestion, saraCollegeStageIds, routeEducationWorkforceQuestion };
+export type { AnswerTopic, BilingualText, NextStepMeta, OfficialResourceLink, ScriptedAction, ScriptedAnswer, ScriptedNextStep, SavedScriptedStep, GoalPathwayChoice } from './types';
+export { routeSaraCollegeQuestion, saraCollegeStageIds, routeEducationWorkforceQuestion, routeGoalExplorationQuestion };
 export { routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion };
 
 /** Every approved scripted answer, keyed by its unique id. */
 export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
   ...educationWorkforceAnswers,
+  ...educationGoalPathwayAnswers,
   ...programFollowUpAnswers,
   ...bilingualFoodAnswers,
   ...foodEnhancementAnswers,
