@@ -2308,7 +2308,30 @@ export const routeEducationWorkforceQuestion = (input: string): string | undefin
     [/(free or low cost training|affordable training programs?)/, 'ans-ew-d5'],
     [/(college credit for.*(skills|work|experience)|credit for prior learning)/, 'ans-ew-d6'],
     [/(job right away|find a job before.*training|job help before.*training)/, 'ans-ew-d7'],
-    [/(unemployment benefits.*(training|school)|training.*unemployment benefits)/, 'ans-ew-d8']
+    [/(unemployment benefits.*(training|school)|training.*unemployment benefits)/, 'ans-ew-d8'],
+    // High-confidence paraphrases of the already reviewed Education & Workforce
+    // follow-ups. Answer them directly, not through a generic tuition/job entry.
+    [/(?:who|where|someone|counselor).*(?:help|advise).*(?:choose|pick|select).*(?:classes|courses)|(?:help|counselor).*(?:choose|pick|select).*(?:classes|courses)/, 'ans-ew-support-classes'],
+    [/(?:extra support|eop|eops|support services).*(?:transfer|university)|(?:transfer|university).*(?:eop|eops|support services)/, 'ans-ew-support-transfer'],
+    [/(?:textbooks?|books|supplies).*(?:help|aid|support|free|pay|afford)|(?:help|aid|support|free).*(?:textbooks?|books|supplies)/, 'ans-ew-support-supplies'],
+    [/(?:scholarships?).*(?:first gen|first generation)|(?:first gen|first generation).*(?:scholarships?)/, 'ans-ew-support-firstgen-scholar'],
+    [/(?:scholarships?).*(?:high school|graduating senior)|(?:high school|graduating senior).*(?:scholarships?)/, 'ans-ew-support-highschool-scholar'],
+    [/(?:fail|failed|withdraw|drop).*(?:college |dual enrollment )?(?:class|course)|(?:college|dual enrollment).*(?:withdraw|drop|failed)/, 'ans-ew-support-withdraw'],
+    [/(?:part time|parttime).*(?:financial aid|grants|student aid|pell)|(?:financial aid|grants|student aid|pell).*(?:part time|parttime)/, 'ans-ew-support-parttime'],
+    [/(?:what is|how does|eligible for|apply for).*(?:federal )?work study|\bwork study\b/, 'ans-ew-support-workstudy'],
+    [/(?:employer|company).*(?:training).*(?:job|hire|employment)|(?:training).*(?:lead to|result in).*(?:job|employment)/, 'ans-ew-support-employer'],
+    [/(?:short term|short|technical).*(?:certificates?|credential|job training)|(?:certificate).*(?:how long|fast|short term)/, 'ans-ew-support-shortcert'],
+    [/(?:pell grant).*(?:45|age|older|adult)|(?:45|age|older|adult).*(?:pell grant)/, 'ans-ew-support-pell'],
+    [/(?:wioa|workforce funding|job center funding).*(?:pay|certificate|training|eligible|qualify)|(?:fund|pay).*(?:certificate|training).*(?:wioa|workforce)/, 'ans-ew-support-wioa'],
+    [/(?:scholarships?).*(?:tools?|equipment)|(?:tools?|equipment).*(?:scholarships?)/, 'ans-ew-support-scholar-costs'],
+    [/(?:documents?|records?|proof|evidence).*(?:work experience|prior learning|employment history)|(?:work experience).*(?:documents?|records?|proof|evidence)/, 'ans-ew-support-cpl-evidence'],
+    [/(?:where|find|locate|near me).*(?:job center|workforce center|american job center)|(?:workforce|job) center.*(?:near|local)/, 'ans-ew-support-ajcc'],
+    [/(?:help|review|update|write|improve).*(?:resume|cv)|(?:resume|cv).*(?:help|review|update)/, 'ans-ew-support-resume'],
+    [/(?:edd).*(?:report|notify|tell).*(?:training|school|classes)|(?:report|notify|tell).*(?:training|school|classes).*(?:edd)/, 'ans-ew-support-reportedd'],
+    [/(?:look|search).*(?:for )?(?:work|job).*(?:while|during).*(?:training|school|classes)|(?:while|during).*(?:training|school|classes).*(?:need to|have to).*(?:search|look).*(?:work|job)/, 'ans-ew-support-ctb-search'],
+    [/(?:work|working|job).*(?:attend|taking|in).*(?:college|school|classes).*(?:financial aid|aid)|(?:financial aid|aid).*(?:while|and).*(?:working|work).*(?:college|school)/, 'ans-ew-s6'],
+    [/(?:where|how).*(?:start|begin|find).*(?:new technical skills|technical training)|(?:learn|learning).*(?:technical|computer).*(?:skills)/, 'ans-ew-d2'],
+    [/(?:free|low cost|affordable).*(?:job training|workforce training|career training)|(?:job training|workforce training).*(?:free|affordable|low cost)/, 'ans-ew-d5']
   ];
   return rules.find(([pattern])=>pattern.test(q))?.[1];
 };
