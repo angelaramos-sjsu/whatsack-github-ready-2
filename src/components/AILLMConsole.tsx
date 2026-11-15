@@ -3,6 +3,7 @@ import { Language, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
+import { PathwayChoiceList } from './PathwayChoiceList';
 import { SproutMascot } from './SproutAssistant';
 import type { SavedScriptedStep } from '../data/answers';
 import {
@@ -12,6 +13,7 @@ import {
   resolveFollowUps,
   routeSaraCollegeQuestion,
   routeEducationWorkforceQuestion,
+  routeGoalExplorationQuestion,
   routeBilingualFoodQuestion,
   isSpanishBilingualFoodQuestion,
   topicEntryAnswerIds
@@ -203,6 +205,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     timestamp: currentLanguage === 'en' ? 'Welcome' : 'Bienvenida',
     followUpIds: [
       'ans-food-es-family-groceries',
+      'ans-goal-sofia-entry',
+      'ans-goal-daniel-entry',
       'ans-work-tech-certificates',
       'ans-mental-confidential-teens',
       'ans-community-connections'
@@ -253,6 +257,9 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       : (legacyTopic ?? (needs.length === 1 ? needs[0] : null));
     const exactScriptedAnswer = !isPersonaQuestion ? findScriptedAnswerByQuestion(text) : undefined;
     const educationAnswerId = !isPersonaQuestion ? routeEducationWorkforceQuestion(text) : undefined;
+    // Offer broad education/career pathways only when the visitor has not asked a specific reviewed question.
+    // Preserve safety, multi-need routing, and exact-match priority.
+    const goalExplorationId = !isPersonaQuestion ? routeGoalExplorationQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
@@ -266,6 +273,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? combinedAnswer
       : exactScriptedAnswer
       ? exactScriptedAnswer
+      : goalExplorationId
+      ? getScriptedAnswer(goalExplorationId)
       : educationAnswerId
       ? getScriptedAnswer(educationAnswerId)
       : bilingualFoodId
@@ -303,6 +312,28 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       buildAnswerMessage(resolveAnswer(seededQuestion, false, prev), seedLanguage)
     ]);
   }, [initialQuestion]);
+
+  /** Selecting a goal displays the exact chosen answer, not an unrelated keyword match. */
+  const handlePathwayChoiceClick = (
+    answerId: string,
+    choiceLabel: string,
+    language: Language = responseLanguageRef.current
+  ) => {
+    if (isGenerating) return;
+    const answer = getScriptedAnswer(answerId);
+    if (!answer) return; // Never show a control that has no approved destination.
+    responseLanguageRef.current = language;
+    setMessages(prev => [
+      ...prev,
+      {
+        id: `usr-path-${Date.now()}-${answerId}`,
+        sender: 'user',
+        text: choiceLabel,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      },
+      buildAnswerMessage(answer, language)
+    ]);
+  };
 
   /**
    * A follow-up button replays its own approved answer by id, so two different
@@ -452,6 +483,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       )
                     : msg.text}
                 </div>
+
+                {/* Goal-first, non-sensitive exploration choices for Sofia and Daniel. */}
+                {isLlm && !!msg.scriptedAnswer?.pathwayChoices?.length && (
+                  <PathwayChoiceList
+                    choices={msg.scriptedAnswer.pathwayChoices}
+                    currentLanguage={msg.language ?? currentLanguage}
+                    onSelect={(answerId, label) => handlePathwayChoiceClick(answerId, label, msg.language ?? currentLanguage)}
+                    disabled={isGenerating}
+                  />
+                )}
 
                 {/* Grounded Resource Cards Preview */}
                 {isLlm && msg.recommendedResourceIds && msg.recommendedResourceIds.length > 0 && (
