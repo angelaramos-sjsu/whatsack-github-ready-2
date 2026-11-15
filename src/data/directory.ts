@@ -492,5 +492,165 @@ export const directoryEntries: DirectoryEntry[] = [
     city: 'Redwood City',
     address: '1775 Woodside Rd, Suite 301, Redwood City, CA 94061',
     website: 'https://rivamh.com'
+  },
+  {
+    id: "dir-ew-scholarship-svcf",
+    name: "Silicon Valley Community Foundation — Scholarship Applications",
+    categoryId: 'workforce',
+    city: "Santa Clara County / Bay Area",
+    address: "Regional scholarship application and search portal",
+    website: "https://www.svcf.org/scholarships/find-scholarships"
+  },
+  {
+    id: "dir-ew-scholarship-america",
+    name: "Scholarship America — Browse Scholarship Applications",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Online scholarship application directory; individual eligibility rules",
+    website: "https://scholarshipamerica.org/students/browse-scholarships/"
+  },
+  {
+    id: "dir-ew-scholarship-bigfuture",
+    name: "College Board BigFuture — Scholarship Directory",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Online scholarship search; individual organizations administer awards",
+    website: "https://bigfuture.collegeboard.org/pay-for-college/scholarship-directory"
+  },
+  {
+    id: "dir-ew-scholarship-live-mas",
+    name: "Taco Bell Foundation — Live Más Scholarship",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Application and eligibility; age restrictions apply",
+    website: "https://tacobellfoundation.org/live-mas-scholarship/"
+  },
+  {
+    id: "dir-ew-scholarship-gates",
+    name: "The Gates Scholarship — Application and Eligibility",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Selective four-year undergraduate scholarship; verify applicant criteria",
+    website: "https://www.thegatesscholarship.org/scholarship/"
+  },
+  {
+    id: "dir-ew-csu-eop",
+    name: "California State University — Educational Opportunity Program (EOP)",
+    categoryId: 'workforce',
+    city: "Multiple campuses",
+    address: "CSU campuses; campus-specific requirements and application",
+    website: "https://www.calstate.edu/attend/student-services/eop"
+  },
+  {
+    id: "dir-ew-uc-eop",
+    name: "University of California — Educational Opportunity Program (EOP)",
+    categoryId: 'workforce',
+    city: "Multiple campuses",
+    address: "UC campuses; check campus EOP or comparable student support",
+    website: "https://admission.universityofcalifornia.edu/campuses-majors/campus-programs-and-support-services/educational-opportunity-program-eop.html"
+  },
+  {
+    id: "dir-ew-dual-enrollment",
+    name: "California Community Colleges — Dual Enrollment",
+    categoryId: 'workforce',
+    city: "Multiple campuses",
+    address: "High-school college coursework; contact high-school and college counselors",
+    website: "https://www.cccco.edu/About-Us/Chancellors-Office/Divisions/Educational-Services-and-Support/What-we-do/Dual-Enrollment/"
+  },
+  {
+    id: "dir-ew-assist-transfer",
+    name: "ASSIST — California College Transfer Agreements",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Statewide public university articulation and course transfer planning",
+    website: "https://assist.org/"
+  },
+  {
+    id: "dir-ew-federal-workstudy",
+    name: "Federal Student Aid — Work-Study",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Federal student aid information; institutional aid decisions apply",
+    website: "https://studentaid.gov/articles/8-things-federal-work-study/"
+  },
+  {
+    id: "dir-ew-federal-pell",
+    name: "Federal Student Aid — Pell Grant Information",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Federal grant information and program-eligibility requirements",
+    website: "https://studentaid.gov/understand-aid/types/grants/pell"
+  },
+  {
+    id: "dir-ew-tesla-mdp",
+    name: "Tesla — Manufacturing Development Program",
+    categoryId: 'workforce',
+    city: "Multiple campuses",
+    address: "Employer-connected training; primarily early-career; confirm current partner college",
+    website: "https://www.tesla.com/careers/manufacturing-development-program"
+  },
+  {
+    id: "dir-ew-ohlone-ssba",
+    name: "Semiconductor Skills Bridge Academy — Ohlone Example",
+    categoryId: 'workforce',
+    city: "Fremont",
+    address: "College-specific semiconductor training example; check cohort and stipend terms",
+    website: "https://www.ohlone.edu/ssba"
+  },
+  {
+    id: "dir-ew-ccc-cpl",
+    name: "California Community Colleges — Credit for Prior Learning",
+    categoryId: 'workforce',
+    city: "Multiple campuses",
+    address: "Prior learning assessment depends on individual college policies",
+    website: "https://www.cccco.edu/About-Us/Chancellors-Office/Divisions/Educational-Services-and-Support/credit-for-prior-learning/"
+  },
+  {
+    id: "dir-ew-american-job-center",
+    name: "CareerOneStop — Find an American Job Center",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Find a workforce center by city or ZIP code",
+    website: "https://www.careeronestop.org/LocalHelp/AmericanJobCenters/american-job-centers.aspx"
+  },
+  {
+    id: "dir-ew-skills-matcher",
+    name: "CareerOneStop — Skills Matcher",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Compare transferable skills and related occupations",
+    website: "https://www.careeronestop.org/toolkit/Skills/skills-matcher.aspx"
+  },
+  {
+    id: "dir-ew-occupational-outlook",
+    name: "Bureau of Labor Statistics — Occupational Outlook Handbook",
+    categoryId: 'workforce',
+    city: "Online",
+    address: "Federal occupational descriptions and employment outlook information",
+    website: "https://www.bls.gov/ooh/"
+  },
+  {
+    id: "dir-ew-wioa-help",
+    name: "California EDD — WIOA Workforce Training Assistance",
+    categoryId: 'workforce',
+    city: "Statewide",
+    address: "Eligibility-based workforce training services; no funding guarantee",
+    website: "https://edd.ca.gov/en/Jobs_and_Training/Workforce_Innovation_and_Opportunity_Act/"
+  },
+  {
+    id: "dir-ew-edd-report-training",
+    name: "California EDD — Report School or Training",
+    categoryId: 'workforce',
+    city: "Statewide",
+    address: "Report starting school or training when certifying for unemployment",
+    website: "https://edd.ca.gov/en/unemployment/how_to_report_school_or_training/"
+  },
+  {
+    id: "dir-ew-california-ctb-faq",
+    name: "California EDD — California Training Benefits",
+    categoryId: 'workforce',
+    city: "Statewide",
+    address: "California Training Benefits program guidance and eligibility",
+    website: "https://edd.ca.gov/CTB/"
   }
 ];
