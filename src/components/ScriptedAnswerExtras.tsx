@@ -166,7 +166,76 @@ export const ScriptedAnswerExtras: React.FC<ScriptedAnswerExtrasProps> = ({
   const [showAllNextSteps, setShowAllNextSteps] = useState(false);
   const visibleNextSteps = showAllNextSteps ? nextSteps : nextSteps.slice(0, 3);
 
-  if (links.length === 0 && !nextStep && nextSteps.length === 0 && answer.context.length === 0 && !answer.keepInMind?.length) return null;
+  if (links.length === 0 && !nextStep && nextSteps.length === 0 && answer.context.length === 0 && !answer.keepInMind?.length && !answer.needSuggestions?.length) return null;
+
+  // Multiple requested areas must remain independent: own answer, own vetted
+  // links, own saveable next step. Never show the combined links a second time.
+  const needSuggestions = answer.needSuggestions ?? [];
+  if (needSuggestions.length > 0) {
+    return (
+      <section className="mt-4 space-y-3" aria-label={isEn ? 'Separate suggestions by area of help' : 'Sugerencias separadas por área de ayuda'}>
+        <h3 className="text-base font-bold text-emerald-200">
+          {isEn ? 'Suggestions for each area of help' : 'Sugerencias para cada área de ayuda'}
+        </h3>
+        <div className="space-y-3">
+          {needSuggestions.map((suggestion, index) => (
+            <section
+              key={suggestion.id}
+              aria-labelledby={`${answer.id}-${suggestion.id}-heading`}
+              className="rounded-xl border border-emerald-600/70 bg-slate-900/80 p-4 space-y-3"
+            >
+              <h4 id={`${answer.id}-${suggestion.id}-heading`} className="text-lg font-semibold text-white">
+                <span className="mr-2 inline-flex h-7 w-7 items-center justify-center rounded-full bg-emerald-800 text-sm font-bold text-white" aria-hidden="true">
+                  {index + 1}
+                </span>
+                {suggestion.title[lang]}
+              </h4>
+              <p className="text-base leading-relaxed text-slate-100">{suggestion.description[lang]}</p>
+              {suggestion.links.length > 0 && (
+                <div className="border-t border-slate-700 pt-3">
+                  <h5 className="mb-1 text-sm font-semibold text-emerald-200">
+                    {isEn ? 'Official resources for this area' : 'Recursos oficiales para esta área'}
+                  </h5>
+                  <ul className="space-y-1">
+                    {suggestion.links.map((link) => (
+                      <li key={link.url}>
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex min-h-[44px] items-start gap-2 rounded py-2 text-sm leading-relaxed text-emerald-200 underline underline-offset-2 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+                        >
+                          <ExternalLink aria-hidden="true" className="mt-0.5 h-4 w-4 shrink-0" />
+                          <span>{link.label[lang]}<span className="block text-xs text-slate-300">{link.source[lang]}</span></span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {suggestion.nextStep && (
+                <div className="border-t border-slate-700 pt-3">
+                  <div className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-emerald-200">
+                    <Sparkles aria-hidden="true" className="h-4 w-4" />
+                    {isEn ? 'NextStep Insight for this area' : 'Siguiente paso para esta área'}
+                  </div>
+                  <NextStepCard
+                    step={suggestion.nextStep}
+                    stepId={`${answer.id}-next-steps-${index}`}
+                    savedSteps={savedSteps}
+                    onSaveStep={onSaveStep}
+                    currentLanguage={currentLanguage}
+                    savedResourceIds={savedResourceIds}
+                    onSavePlan={onSavePlan}
+                  />
+                </div>
+              )}
+            </section>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <div className="mt-4 space-y-3">

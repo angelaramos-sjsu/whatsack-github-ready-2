@@ -238,12 +238,25 @@ export const buildCombinedNeedsAnswer = (
     .filter((item): item is { need: SupportedNeed; answer: ScriptedAnswer } => Boolean(item.answer));
   if (approved.length !== needs.length || approved.length === 0) return undefined;
 
-  const buildText = (lang: 'en' | 'es'): string =>
-    approved.map(({ need }) => '**' + headings[need][lang] + '**\n' + summaries[need][lang]).join('\n\n')
-    + (withHousingNotice
+  // Each requested area gets its own heading, brief reason, official links and
+  // separately saveable NextStep. Do not mix sources between areas in the UI.
+  const needSuggestions = approved.map(({ need, answer }) => ({
+    id: need,
+    title: headings[need],
+    description: summaries[need],
+    links: (answer.links ?? []).slice(0, 2),
+    nextStep: answer.nextStep ?? answer.nextSteps?.[0]
+  }));
+
+  const buildText = (lang: 'en' | 'es'): string => {
+    const intro = lang === 'en'
+      ? `I found ${approved.length} separate suggestions for the areas you mentioned. Each has its own official resources and next step below.`
+      : `Encontré ${approved.length} sugerencias separadas para las áreas que mencionaste. Cada una tiene recursos oficiales y un siguiente paso propio.`;
+    return intro + (withHousingNotice
       ? (lang === 'en' ? '\n\nHousing assistance is outside the current WhatSack prototype; no housing recommendations are available.'
         : '\n\nLa ayuda para vivienda está fuera del alcance del prototipo WhatSack; no hay recomendaciones de vivienda.')
       : '');
+  };
 
   const uniqueLinks = new Map<string, OfficialResourceLink>();
   for (const { answer } of approved) {
@@ -262,6 +275,9 @@ export const buildCombinedNeedsAnswer = (
     question: bilingual('Help with multiple resources', 'Ayuda con varios recursos'),
     answer: bilingual(buildText('en'), buildText('es')),
     context: approved.map(({ need }) => headings[need]),
+    needSuggestions,
+    // Retain the source arrays so old scripted tests and integrations work;
+    // the chat UI now displays sources and saveable steps inside each card.
     links: [...uniqueLinks.values()],
     nextSteps: steps,
     resourceIds: [],

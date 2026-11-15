@@ -36,6 +36,15 @@ export interface ScriptedNextStep {
   meta?: NextStepMeta;
 }
 
+/** One independent, sourced recommendation when a visitor requests multiple areas of help. */
+export interface NeedSuggestion {
+  id: string;
+  title: BilingualText;
+  description: BilingualText;
+  links: OfficialResourceLink[];
+  nextStep?: ScriptedNextStep;
+}
+
 export interface NextStepMeta {
   who?: string;
   area?: string;
@@ -74,6 +83,8 @@ export interface ScriptedAnswer {
   resourceIds?: string[];
   /** Only ids that resolve to another implemented answer are displayed. */
   followUpIds: string[];
+  /** Cards with separate links and saveable NextSteps for each requested need. */
+  needSuggestions?: NeedSuggestion[];
   /** Optional, single-select goals rendered inside the chatbot; never medical intake. */
   pathwayChoices?: GoalPathwayChoice[];
 }
