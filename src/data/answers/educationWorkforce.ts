@@ -54,8 +54,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Compare EOPS and EOP student support",
+        "es": "Compare el apoyo EOPS y EOP"
       },
       "detail": {
         "en": "Compare EOPS/EOP services at two colleges or universities you are considering. Record eligibility criteria, application steps and deadlines.",
@@ -161,8 +161,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Compare total college costs and financial aid",
+        "es": "Compare costos y ayuda financiera"
       },
       "detail": {
         "en": "Compare the total estimated costs of two colleges after financial aid; shortlist two scholarships that fit your actual education pathway.",
@@ -268,8 +268,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Shortlist three scholarship applications",
+        "es": "Seleccione tres becas para solicitar"
       },
       "detail": {
         "en": "Find three scholarships whose age, location and school requirements match your plans. Save each application link, deadline and required documents.",
@@ -342,8 +342,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Create an enrollment checklist",
+        "es": "Prepare una lista de inscripción"
       },
       "detail": {
         "en": "Open your chosen college's new-student checklist and write down remaining orientation, counseling and registration tasks and dates.",
@@ -416,8 +416,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Check dual enrollment and future credits",
+        "es": "Revise créditos de inscripción dual"
       },
       "detail": {
         "en": "Ask your counselor about two available dual-enrollment courses. Confirm their costs, transcript impact and potential transfer application before registering.",
@@ -490,8 +490,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Check financial aid before changing course load",
+        "es": "Consulte la ayuda antes de reducir clases"
       },
       "detail": {
         "en": "Compare full-time and part-time class schedules with your likely work hours and request a financial-aid estimate for each.",
@@ -575,8 +575,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Compare two suitable training programs",
+        "es": "Compare dos programas de capacitación"
       },
       "detail": {
         "en": "Compare two training options for adult eligibility, cost, schedule and actual job connections; check written program terms before relying on employment claims.",
@@ -660,8 +660,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Match your existing skills to new careers",
+        "es": "Relacione sus habilidades con nuevas carreras"
       },
       "detail": {
         "en": "Write down three tasks you performed at work, identify two related occupations, and compare their required training.",
@@ -734,8 +734,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Check steps for returning to college",
+        "es": "Revise los pasos para regresar a estudiar"
       },
       "detail": {
         "en": "Pick one program, gather old transcripts if available, and ask the college about re-entry and prior-credit evaluation.",
@@ -830,8 +830,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Find two returning-adult scholarships",
+        "es": "Encuentre dos becas para adultos"
       },
       "detail": {
         "en": "Identify two scholarships for returning adults, verify that your exact program qualifies, and save application deadlines.",
@@ -926,8 +926,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Calculate the full costs of training",
+        "es": "Calcule el costo total de capacitación"
       },
       "detail": {
         "en": "Compare two programs using total costs—tuition, fees, tools, books, transportation—and all funding you may qualify for.",
@@ -989,8 +989,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Prepare a Credit for Prior Learning review",
+        "es": "Prepare la evaluación de experiencia previa"
       },
       "detail": {
         "en": "Gather relevant employment training records and certifications. Ask which specific courses offer CPL and how credits would apply to your goal.",
@@ -1063,8 +1063,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Find your local job center",
+        "es": "Busque su centro de empleo local"
       },
       "detail": {
         "en": "Use the American Job Center locator for your ZIP code, then choose a résumé or job-search workshop. Bring a summary of your recent work.",
@@ -1137,8 +1137,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
     ],
     "nextStep": {
       "title": {
-        "en": "NextStep Insight",
-        "es": "Siguiente paso"
+        "en": "Report training and review CTB eligibility",
+        "es": "Informe la capacitación y revise CTB"
       },
       "detail": {
         "en": "Check CTB requirements before training begins and report school to EDD in the starting week. Ask if the extension timing rule applies to your claim.",
