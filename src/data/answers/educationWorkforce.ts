@@ -2293,7 +2293,7 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
 
 /** Conservative routing for common variations, after exact-match resolution. */
 export const routeEducationWorkforceQuestion = (input: string): string | undefined => {
-  const q = input.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\\s+/g, ' ').trim();
+  const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const rules: Array<[RegExp,string]> = [
     [/(first (person|one) in my family|first generation).*(college|school|support|help)/, 'ans-ew-s1'],
     [/(family.*(little|much|not much) money|afford college|pay for college)/, 'ans-ew-s2'],
