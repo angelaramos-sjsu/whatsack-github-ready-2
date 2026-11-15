@@ -19,6 +19,7 @@ import {
   isSpanishBilingualFoodQuestion,
   topicEntryAnswerIds
 } from '../data/answers';
+import { getRelevantFollowUpIds } from '../data/answers/relevantFollowUps';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { buildCombinedNeedsAnswer, detectSupportedNeeds, isSpanishResourceQuestion, mentionsHousing, routeFoodEnhancement } from '../data/answers/foodEnhancements';
 import { 
@@ -169,7 +170,10 @@ const routeMateoSupportQuestion = (question: string): string | undefined => {
     return 'ans-mental-parent-consent';
   }
   // Distinguish school messaging privacy from a healthcare provider's consent rules.
-  if (/(?:school|escuela)/.test(text) && /(?:see|read|find out|know|tell|text|message|share|ver|leer|enterar|mensaje|avisar)/.test(text)) {
+  // Only route school *message/privacy* questions here, not admissions or college choices.
+  if (/(?:school|escuela)/.test(text)
+    && /(?:see|read|find out|know|tell|text|message|share|ver|leer|enterar|mensaje|avisar)/.test(text)
+    && /(?:text|message|sms|988|hotline|crisis line|counsel|therap|mental health|numero de ayuda|mensaje|consejer|terap|salud mental)/.test(text)) {
     return 'ans-mental-school-privacy';
   }
   if (/(?:without insurance|no insurance|uninsured|medi-cal|minor consent services|sin seguro|no tengo seguro)/.test(text) && mentionsCare) {
@@ -269,18 +273,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? getScriptedAnswer(mateoAnswerId)
       : enhancedId
       ? getScriptedAnswer(enhancedId)
+      : exactScriptedAnswer
+      ? exactScriptedAnswer
       : housingOnlyId
       ? getScriptedAnswer(housingOnlyId)
       : combinedAnswer
       ? combinedAnswer
-      : exactScriptedAnswer
-      ? exactScriptedAnswer
       : goalSpecificId
       ? getScriptedAnswer(goalSpecificId)
-      : goalExplorationId
-      ? getScriptedAnswer(goalExplorationId)
       : educationAnswerId
       ? getScriptedAnswer(educationAnswerId)
+      : goalExplorationId
+      ? getScriptedAnswer(goalExplorationId)
       : bilingualFoodId
         ? getScriptedAnswer(bilingualFoodId)
       : saraStageId
@@ -439,8 +443,12 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       </p>
       {/* Main Chat Stream Container */}
       <div ref={messagesContainerRef} className="flex-1 min-h-0 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
-        {messages.map((msg) => {
+        {messages.map((msg, messageIndex) => {
           const isLlm = msg.sender === 'llm';
+          const recommendedFollowUpIds = isLlm && msg.scriptedAnswer
+            ? getRelevantFollowUpIds(msg.scriptedAnswer)
+            : [];
+          const isLatestReply = isLlm && !messages.slice(messageIndex + 1).some((message) => message.sender === 'llm');
 
           return (
             <div
@@ -556,13 +564,13 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
-                {isLlm && !!msg.followUpIds?.length && (
+                {isLlm && (recommendedFollowUpIds.length > 0 || (isLatestReply && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && !msg.scriptedAnswer?.pathwayChoices?.length)) && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-sm font-bold tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'You may also want to ask' : 'También puedes preguntar'}
                     </span>
                     <div className="flex flex-wrap gap-1.5">
-                      {resolveFollowUps(msg.followUpIds).filter((followUp) => followUp.topic !== 'roleplay').map((followUp) => (
+                      {resolveFollowUps(recommendedFollowUpIds).filter((followUp) => followUp.topic !== 'roleplay').map((followUp) => (
                         <button
                           key={followUp.id}
                           type="button"
@@ -572,7 +580,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           💬 {followUp.question[msg.language ?? currentLanguage]}
                         </button>
                       ))}
-                      {shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
+                      {isLatestReply && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
                         <button
                           type="button"
                           onClick={() => onOpenIntroductionForm?.('assistant-chip')}
