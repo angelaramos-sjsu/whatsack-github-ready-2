@@ -564,7 +564,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
-                {isLlm && (recommendedFollowUpIds.length > 0 || (isLatestReply && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && !msg.scriptedAnswer?.pathwayChoices?.length)) && (
+                {isLlm && (recommendedFollowUpIds.length > 0 || (isLatestReply && recommendedFollowUpIds.length === 0 && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text))) && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-sm font-bold tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'You may also want to ask' : 'También puedes preguntar'}
@@ -580,7 +580,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                           💬 {followUp.question[msg.language ?? currentLanguage]}
                         </button>
                       ))}
-                      {isLatestReply && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
+                      {isLatestReply && !msg.scriptedAnswer?.pathwayChoices?.length && recommendedFollowUpIds.length === 0 && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text) && (
                         <button
                           type="button"
                           onClick={() => onOpenIntroductionForm?.('assistant-chip')}
