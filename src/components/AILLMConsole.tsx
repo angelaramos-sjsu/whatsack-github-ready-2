@@ -4,6 +4,7 @@ import { translations } from '../data/translations';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
 import { PathwayChoiceList } from './PathwayChoiceList';
+import { ExploreOtherSupport } from './ExploreOtherSupport';
 import { SproutMascot } from './SproutAssistant';
 import type { SavedScriptedStep } from '../data/answers';
 import {
@@ -20,6 +21,7 @@ import {
   topicEntryAnswerIds
 } from '../data/answers';
 import { getRelevantFollowUpIds } from '../data/answers/relevantFollowUps';
+import { getOtherSupportAreas, canExploreOtherSupport } from '../data/answers/crossCategoryDiscovery';
 import type { AnswerTopic, ScriptedAnswer } from '../data/answers';
 import { buildCombinedNeedsAnswer, detectSupportedNeeds, isSpanishResourceQuestion, mentionsHousing, routeFoodEnhancement } from '../data/answers/foodEnhancements';
 import { 
@@ -343,6 +345,28 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     ]);
   };
 
+  /** User chose another support area: show its approved neutral overview, without inferring need. */
+  const handleOtherSupportSelection = (
+    answerId: string,
+    areaLabel: string,
+    language: Language = responseLanguageRef.current
+  ) => {
+    if (isGenerating) return;
+    const answer = getScriptedAnswer(answerId);
+    if (!answer) return;
+    responseLanguageRef.current = language;
+    setMessages(prev => [
+      ...prev,
+      {
+        id: `usr-other-support-${Date.now()}-${answerId}`,
+        sender: 'user',
+        text: language === 'en' ? `Explore ${areaLabel}` : `Explorar ${areaLabel}`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      },
+      buildAnswerMessage(answer, language)
+    ]);
+  };
+
   /**
    * A follow-up button replays its own approved answer by id, so two different
    * questions never collapse into one generic reply.
@@ -591,6 +615,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                       )}
                     </div>
                   </div>
+                )}
+
+                {/* Optional, non-presumptive discovery across the OTHER WhatSack categories. */}
+                {isLlm && isLatestReply && msg.scriptedAnswer && canExploreOtherSupport(msg.scriptedAnswer) && (
+                  <ExploreOtherSupport
+                    areas={getOtherSupportAreas(msg.scriptedAnswer)}
+                    currentLanguage={msg.language ?? currentLanguage}
+                    onSelect={(answerId, label) => handleOtherSupportSelection(answerId, label, msg.language ?? currentLanguage)}
+                    disabled={isGenerating}
+                  />
                 )}
               </div>
 

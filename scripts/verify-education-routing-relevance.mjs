@@ -17,10 +17,12 @@ import { programFollowUpAnswers } from '../src/data/answers/followUpsPrograms.ts
 import { supportFollowUpAnswers } from '../src/data/answers/followUpsSupport.ts';
 import { bilingualFoodAnswers } from '../src/data/answers/foodBilingual.ts';
 import { foodEnhancementAnswers, buildCombinedNeedsAnswer, detectSupportedNeeds } from '../src/data/answers/foodEnhancements.ts';
+import { crossCategoryDiscoveryAnswers } from '../src/data/answers/crossCategoryDiscovery.ts';
 import { getRelevantFollowUpIds } from '../src/data/answers/relevantFollowUps.ts';
 
 const all = [
   ...entryAnswers,
+  ...crossCategoryDiscoveryAnswers,
   ...educationWorkforceAnswers,
   ...educationGoalPathwayAnswers,
   ...programFollowUpAnswers,
@@ -35,7 +37,7 @@ const allById = new Map(all.map((answer) => [answer.id, answer]));
 const allByQuestion = new Map();
 
 assert.equal(allById.size, all.length, 'All scripted IDs must be unique');
-assert.equal(all.length, 107, 'Expected 107 registered scripts');
+assert.equal(all.length, 111, 'Expected 111 registered scripts (107 existing + four neutral category overviews)');
 for (const answer of all) {
   for (const lang of ['en', 'es']) {
     const norm = normalize(answer.question[lang]);
@@ -127,7 +129,7 @@ assert(job.includes('ans-ew-support-resume') && job.includes('ans-ew-support-ajc
 const med = getRelevantFollowUpIds(allById.get('ans-ew-s4'));
 assert(!med.includes('ans-ew-s5'), 'College registration must not suggest high-school dual enrollment by default');
 
-console.log('PASS: 107 registered scripts, all 72 exact Education & Workforce questions,');
+console.log('PASS: 111 registered scripts, all 72 exact Education & Workforce questions,');
 console.log('      correct routing priority, six former community-college false matches,');
 console.log('      curated, valid, relevant next questions, approved multi-need cards,');
 console.log('      school privacy scope and preserved goal-based pathways.');
