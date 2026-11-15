@@ -14,6 +14,7 @@ import {
   routeSaraCollegeQuestion,
   routeEducationWorkforceQuestion,
   routeGoalExplorationQuestion,
+  routeGoalDetailQuestion,
   routeBilingualFoodQuestion,
   isSpanishBilingualFoodQuestion,
   topicEntryAnswerIds
@@ -260,6 +261,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     // Offer broad education/career pathways only when the visitor has not asked a specific reviewed question.
     // Preserve safety, multi-need routing, and exact-match priority.
     const goalExplorationId = !isPersonaQuestion ? routeGoalExplorationQuestion(text) : undefined;
+    const goalSpecificId = !isPersonaQuestion ? routeGoalDetailQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
@@ -273,6 +275,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? combinedAnswer
       : exactScriptedAnswer
       ? exactScriptedAnswer
+      : goalSpecificId
+      ? getScriptedAnswer(goalSpecificId)
       : goalExplorationId
       ? getScriptedAnswer(goalExplorationId)
       : educationAnswerId
