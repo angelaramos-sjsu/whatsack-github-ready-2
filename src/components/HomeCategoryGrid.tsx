@@ -12,11 +12,11 @@ interface HomeCategoryGridProps {
 }
 
 /** Reading order matches the resource directory tabs. */
-const categoryOrder: CategoryId[] = ['food', 'workforce', 'community', 'mental-health'];
+const categoryOrder: CategoryId[] = ['food', 'workforce', 'mental-health'];
 
 /**
- * The homepage's four category paths. Each card opens the same resource
- * directory filtered to that category, so the homepage, the main navigation
+ * The homepage's featured category shortcuts. All four categories, including Community, remain in the resource
+ * directory. Each featured card opens the directory filtered to its category; the homepage, the main navigation
  * and the extension sidebar all lead to one set of resources.
  */
 export const HomeCategoryGrid: React.FC<HomeCategoryGridProps> = ({
@@ -47,12 +47,12 @@ export const HomeCategoryGrid: React.FC<HomeCategoryGridProps> = ({
       <div className="qc-catgrid-head">
         <p className="qc-eyebrow">{isEnglish ? 'Browse by category' : 'Explorar por categoría'}</p>
         <h2 id="home-categories-heading" className="qc-h2">
-          {isEnglish ? 'Four kinds of local support' : 'Cuatro tipos de apoyo local'}
+          {isEnglish ? 'Explore local support' : 'Explore recursos locales'}
         </h2>
         <p className="qc-dsub">
           {isEnglish
-            ? 'Pick a category to see organization listings and sample programs for that kind of support. You can change category any time.'
-            : 'Elija una categoría para ver organizaciones y programas de ejemplo de ese tipo de apoyo. Puede cambiar de categoría cuando quiera.'}
+            ? 'Start with Food, Education or Mental Health. Community resources are available alongside these categories in Find Resources.'
+            : 'Empiece con Comida, Educación o Salud Mental. Los recursos comunitarios también están disponibles en Buscar Recursos.'}
         </p>
       </div>
 
