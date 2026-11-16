@@ -25,13 +25,22 @@ import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
+import { CommunityConnector } from './components/community/CommunityConnector';
+import { SpeechProvider } from './speech/SpeechProvider';
+import { ReadAloudButton } from './speech/ReadAloudButton';
+import { HomeCategoryGrid } from './components/HomeCategoryGrid';
+import { HomeHowItWorks } from './components/HomeHowItWorks';
+import { ExtensionSidebar } from './components/ExtensionSidebar';
+import type { CompanionState } from './components/ExtensionSidebar';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community'>('home');
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [showSproutGreeting, setShowSproutGreeting] = useState(true);
+  const [companionState, setCompanionState] = useState<CompanionState>('closed');
+  const [companionExpanded, setCompanionExpanded] = useState(false);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
   const [intakeSelectedNeeds, setIntakeSelectedNeeds] = useState<CategoryId[]>([]);
@@ -236,6 +245,19 @@ export function App() {
     return directoryEntries.filter((entry) => savedDirectoryIds.includes(entry.id));
   }, [savedDirectoryIds]);
 
+  const categoryCounts = useMemo(() => {
+    const directoryCounts: Record<CategoryId, number> = { food: 0, workforce: 0, community: 0, 'mental-health': 0 };
+    const sampleCounts: Record<CategoryId, number> = { food: 0, workforce: 0, community: 0, 'mental-health': 0 };
+    directoryEntries.forEach(entry => { directoryCounts[entry.categoryId] += 1; });
+    demonstrationResources.forEach(item => { sampleCounts[item.categoryId] += 1; });
+    return { directoryCounts, sampleCounts };
+  }, []);
+  const openCategory = (cat: CategoryId | 'all') => {
+    setIntakeSelectedNeeds([]);
+    setSelectedCategory(cat);
+    setActiveView('resources');
+  };
+
   const resetAllFilters = () => {
     setIntakeSelectedNeeds([]);
     setSelectedCategory('all');
@@ -245,6 +267,7 @@ export function App() {
   };
 
   return (
+    <SpeechProvider language={currentLanguage} resetKey={activeView}>
     <div className={`qc ${activeView === 'copilot' ? 'h-dvh overflow-hidden' : 'min-h-screen'} flex flex-col selection:bg-[#047857] selection:text-white`}>
       {/* Navbar */}
       <Navbar
@@ -259,6 +282,7 @@ export function App() {
         onCycleTextSize={handleCycleTextSize}
         activeView={activeView}
         setActiveView={setActiveView}
+        onOpenCategory={openCategory}
       />
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
@@ -285,12 +309,17 @@ export function App() {
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
         />
+      ) : activeView === 'community' ? (
+        <main id="main-content" tabIndex={-1} className="flex-1">
+          <CommunityConnector currentLanguage={currentLanguage} />
+        </main>
       ) : activeView === 'about' ? (
         <main id="main-content" tabIndex={-1} className="flex-1 qc-shell qc-page" aria-labelledby="about-heading">
           <div className="qc-eyebrow">{currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}</div>
           <h1 id="about-heading" tabIndex={-1} className="qc-h2 qc-page-title">
             {currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}
           </h1>
+          <ReadAloudButton id="about-intro" language={currentLanguage} kind="instructions" label={currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'} text={currentLanguage === 'en' ? 'WhatSack helps people explore education, employment, food, mental health, and community resources.' : 'WhatSack ayuda a explorar recursos de educación, empleo, alimentos, salud mental y comunidad.'} />
           <p className="qc-dsub">
             {currentLanguage === 'en'
               ? 'WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley.'
@@ -337,7 +366,19 @@ export function App() {
             selectedCategory={selectedCategory}
             onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
           />
-          <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
+          <HomeHowItWorks
+             currentLanguage={currentLanguage}
+             onFocusSearch={() => document.getElementById('search-input')?.focus()}
+             onBrowseCategories={() => setActiveView('resources')}
+             onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
+           />
+           <HomeCategoryGrid
+             currentLanguage={currentLanguage}
+             directoryCounts={categoryCounts.directoryCounts}
+             sampleCounts={categoryCounts.sampleCounts}
+             onOpenCategory={(category) => openCategory(category)}
+           />
+           <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
             <div className="qc-home-start-card">
               <div className="qc-home-start-copy">
                 <p className="qc-home-start-eyebrow">
@@ -484,6 +525,31 @@ export function App() {
         />
       )}
 
+      {['home', 'resources', 'community', 'about'].includes(activeView) && (
+        <ExtensionSidebar
+          currentLanguage={currentLanguage}
+          state={companionState}
+          expanded={companionExpanded}
+          onOpen={() => setCompanionState('open')}
+          onClose={() => setCompanionState('closed')}
+          onMinimize={() => setCompanionState('minimized')}
+          onRestore={() => setCompanionState('open')}
+          onToggleExpanded={() => setCompanionExpanded(v => !v)}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          onSearchSubmit={() => { setActiveView('resources'); setCompanionState('closed'); }}
+          selectedCategory={selectedCategory}
+          onSelectCategory={openCategory}
+          counts={categoryCounts.directoryCounts}
+          totalCount={directoryEntries.length}
+          savedCount={savedResourceIds.length + savedDirectoryIds.length + savedScriptedSteps.length}
+          onOpenSaved={() => setIsSavedDrawerOpen(true)}
+          onOpenCopilot={() => setActiveView('copilot')}
+          onOpenExtensionDemo={() => setActiveView('extension')}
+          onNavigateHome={() => setActiveView('home')}
+        />
+      )}
+
       {/* Footer */}
       {activeView !== 'extension' && activeView !== 'copilot' && (
         <Footer
@@ -577,6 +643,7 @@ export function App() {
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
     </div>
+    </SpeechProvider>
   );
 }
 

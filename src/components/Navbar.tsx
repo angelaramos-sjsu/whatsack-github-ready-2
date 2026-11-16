@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
 import { Menu, X } from 'lucide-react';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
+import { ReadAloudLauncher } from '../speech/ReadAloudLauncher';
+import { CategoryMenu } from './CategoryMenu';
+import type { DirectoryCategoryId } from './CategoryTabs';
 
 interface NavbarProps {
   currentLanguage: Language;
@@ -14,8 +18,9 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about';
-  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about') => void;
+  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community';
+  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community') => void;
+  onOpenCategory: (category: DirectoryCategoryId) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -29,11 +34,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   textSize,
   onCycleTextSize,
   activeView,
-  setActiveView
+  setActiveView,
+  onOpenCategory
 }) => {
   const t = translations[currentLanguage];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAccOpen, setIsAccOpen] = useState(false);
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
   const goHome = () => {
     setActiveView('home');
@@ -41,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
-  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about') => {
+  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about' | 'community') => {
     setActiveView(view);
     setIsMenuOpen(false);
   };
@@ -59,6 +66,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
       onClick: () => navigate('resources'),
       active: activeView === 'resources'
+    },
+    {
+      label: currentLanguage === 'en' ? 'Community' : 'Comunidad',
+      onClick: () => navigate('community'),
+      active: activeView === 'community'
     },
     {
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',
@@ -109,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             <div className="qc-nav-links hidden lg:flex">
-              {navLinks.map((link) => (
+              {navLinks.filter((link) => link.label !== (currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos')).map((link) => (
                 <button
                   key={link.label}
                   type="button"
@@ -120,6 +132,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {link.label}
                 </button>
               ))}
+              <CategoryMenu
+                label={currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos'}
+                currentLanguage={currentLanguage}
+                active={activeView === 'resources'}
+                open={isCategoryMenuOpen}
+                onOpenChange={setIsCategoryMenuOpen}
+                onSelectCategory={(category) => { onOpenCategory(category); setIsMenuOpen(false); }}
+              />
             </div>
           </div>
 
@@ -128,6 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button type="button" lang="en" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}>EN</button>
               <button type="button" lang="es" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}>Español</button>
             </div>
+            <ReadAloudLauncher language={currentLanguage} resetKey={activeView} variant="header" />
             <details
               className="qc-acc"
               open={isAccOpen}
@@ -135,6 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
+                <ReadAloudButton id="read-navigation" kind="navigation" language={currentLanguage} label={currentLanguage === 'en' ? 'Navigation instructions' : 'Instrucciones de navegación'} text={currentLanguage === 'en' ? 'Use Ask Sackie to ask questions, Find Resources to browse programs, Community to find activities, and My Next Steps to review saved items.' : 'Use Preguntar a Sackie para hacer preguntas, Buscar Recursos para explorar programas, Comunidad para actividades y Mis Próximos Pasos para elementos guardados.'} />
                 <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
                   {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
                 </button>
