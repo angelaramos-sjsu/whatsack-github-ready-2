@@ -3,6 +3,7 @@ import { Language, DemonstrationResource } from '../types';
 import { translations } from '../data/translations';
 import { demonstrationResources } from '../data/resources';
 import { ScriptedAnswerExtras } from './ScriptedAnswerExtras';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
 import { SproutMascot } from './SproutAssistant';
 import type { SavedScriptedStep } from '../data/answers';
 import {
@@ -311,6 +312,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 ? 'Meet WhatSack, your friendly guide. This is a scripted demo.'
                 : 'Conozca a WhatSack, su guía. Esta es una demostración con respuestas preparadas.'}
             </p>
+            <ReadAloudButton
+              id="copilot-intro"
+              kind="heading"
+              tone="dark"
+              language={currentLanguage}
+              label={currentLanguage === 'en' ? 'Chat introduction and instructions' : 'Introducción e instrucciones del chat'}
+              text={currentLanguage === 'en'
+                ? 'Ask WhatSack. Meet WhatSack, your friendly guide. This is a scripted demo. Type a question below or choose a suggested prompt. WhatSack uses scripted example answers for this class project. Check official sources before making decisions.'
+                : 'Preguntar a WhatSack. Conozca a WhatSack, su guía. Esta es una demostración con respuestas preparadas. Escriba una pregunta abajo o elija una pregunta sugerida. WhatSack usa respuestas de ejemplo para este proyecto de clase. Consulte fuentes oficiales antes de tomar decisiones.'}
+              className="mt-3"
+            />
           </div>
         </div>
       </header>
@@ -328,6 +340,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       >
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
+          const spokenText = msg.scriptedAnswer
+            ? msg.scriptedAnswer.answer[currentLanguage]
+            : msg.id === 'msg-init-1'
+              ? greetingMessage.text
+              : msg.text;
 
           return (
             <div
@@ -346,6 +363,20 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                   ? 'bg-emerald-700 text-white ml-8 rounded-tr-xs'
                   : 'bg-slate-800/90 text-slate-100 border border-slate-700/80 rounded-tl-xs'
               }`}>
+                {/* Read this reply aloud, from its beginning. */}
+                {isLlm && (
+                  <div className="mb-2">
+                    <ReadAloudButton
+                      id={`chat-${msg.id}`}
+                      kind="chat"
+                      tone="dark"
+                      language={currentLanguage}
+                      label={`${currentLanguage === 'en' ? 'WhatSack response' : 'Respuesta de WhatSack'}: ${spokenText.slice(0, 48).trim()}${spokenText.length > 48 ? '…' : ''}`}
+                      text={spokenText}
+                    />
+                  </div>
+                )}
+
                 {/* Message Header */}
                 <div className="flex flex-wrap items-center justify-between gap-1 mb-2 pb-2 border-b border-slate-700/40 text-sm">
                   <span className="font-bold flex items-center gap-1.5">

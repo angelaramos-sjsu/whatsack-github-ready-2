@@ -3,6 +3,7 @@ import { ChevronDown, ExternalLink, MapPin, Phone } from 'lucide-react';
 import { DirectoryEntry } from '../data/directory';
 import { CategoryId, Language } from '../types';
 import { directoryCategoryLabels } from './CategoryTabs';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
 
 interface DirectoryEntryRowProps {
   entry: DirectoryEntry;
@@ -58,6 +59,17 @@ export const DirectoryEntryRow: React.FC<DirectoryEntryRowProps> = ({
   const phone = entry.contact?.phone;
   const email = entry.contact?.email;
 
+  const entrySpeech = [
+    entry.name,
+    entry.services ? entry.services[currentLanguage] : notConfirmed(currentLanguage),
+    `${t('Categories', 'Categorías')}: ${entry.categories.map(categoriesLabel).join(', ')}`,
+    `${t('Location', 'Ubicación')}: ${entry.address}, ${serviceAreaLabel(entry, currentLanguage)}`,
+    entry.audience ? entry.audience[currentLanguage] : '',
+    entry.languages && entry.languages.length > 0 ? entry.languages.map((item) => item[currentLanguage]).join(', ') : '',
+    entry.hours ? entry.hours[currentLanguage] : '',
+    t('Check the organization website for current details.', 'Consulte el sitio de la organización para datos actuales.')
+  ].filter(Boolean).join('. ');
+
   return (
     <article
       id={`directory-entry-${entry.id}`}
@@ -84,6 +96,16 @@ export const DirectoryEntryRow: React.FC<DirectoryEntryRowProps> = ({
         <div className="qc-mt">
           <span>{entry.address}</span>
           <span>{serviceAreaLabel(entry, currentLanguage)}</span>
+        </div>
+        <div className="mt-3">
+          <ReadAloudButton
+            id={`directory-${entry.id}`}
+            kind="resource"
+            language={currentLanguage}
+            label={entry.name}
+            text={entrySpeech}
+            className="min-h-0"
+          />
         </div>
       </div>
 

@@ -88,7 +88,7 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                         {persona.age}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1 text-[11px] text-slate-500 mt-0.5">
+                    <div className="flex items-center gap-1 text-[0.6875rem] text-slate-500 mt-0.5">
                       <MapPin className="w-3 h-3 text-slate-400" />
                       <span className="truncate">{persona.location}</span>
                     </div>
@@ -99,19 +99,19 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                   {persona.tagline[currentLanguage]}
                 </p>
 
-                <p className="text-[11px] text-slate-600 leading-relaxed line-clamp-3 mb-3">
+                <p className="text-[0.6875rem] text-slate-600 leading-relaxed line-clamp-3 mb-3">
                   {persona.background[currentLanguage]}
                 </p>
 
                 {/* Primary Barrier Badge */}
-                <div className="p-2 rounded-xl bg-amber-50/80 border border-amber-200/60 mb-3 text-[11px] text-amber-900 flex items-start gap-1.5">
+                <div className="p-2 rounded-xl bg-amber-50/80 border border-amber-200/60 mb-3 text-[0.6875rem] text-amber-900 flex items-start gap-1.5">
                   <span className="font-bold shrink-0">⚠️ {currentLanguage === 'en' ? 'Barrier:' : 'Barrera:'}</span>
                   <span className="line-clamp-2">{persona.barriers[0][currentLanguage]}</span>
                 </div>
 
                 {/* Interactive Sample Inquiries */}
                 <div className="space-y-1.5 mb-2">
-                  <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  <div className="flex items-center gap-1 text-[0.625rem] font-bold text-slate-400 uppercase tracking-wider">
                     <MessageCircleQuestion className="w-3 h-3" />
                     <span>{currentLanguage === 'en' ? 'Sample Questions' : 'Preguntas de Prueba'}</span>
                   </div>
@@ -123,7 +123,7 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                         onSelectPersona(persona);
                         onSelectSampleQuestion(q[currentLanguage]);
                       }}
-                      className="w-full text-left text-[11px] p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200/80 text-slate-700 hover:text-emerald-900 transition-colors line-clamp-2"
+                      className="w-full text-left text-[0.6875rem] p-2 rounded-xl bg-slate-50 hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200/80 text-slate-700 hover:text-emerald-900 transition-colors line-clamp-2"
                       title="Click to ask this question"
                     >
                       "{q[currentLanguage]}"

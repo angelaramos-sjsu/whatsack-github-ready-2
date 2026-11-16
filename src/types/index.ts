@@ -112,3 +112,6 @@ export interface SearchFilterState {
   freeOnly: boolean;
   noIdRequired: boolean;
 }
+
+/** Visitor-selected reading size for all page text (WCAG 1.4.4 support). */
+export type TextSize = 'small' | 'medium' | 'large' | 'xlarge';

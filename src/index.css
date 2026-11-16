@@ -65,7 +65,13 @@
   }
 }
 
-/* Accessible text sizing modes */
+/* Accessible text sizing modes.
+   Every size is expressed in rem, so one root change scales headings, body
+   copy, buttons, navigation, form fields, cards, chat and dialogs together. */
+html.text-small {
+  font-size: 93.75%; /* 15px base */
+}
+
 html.text-large {
   font-size: 112.5%; /* 18px base */
 }

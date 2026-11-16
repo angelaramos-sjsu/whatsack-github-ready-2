@@ -1,8 +1,9 @@
 import React from 'react';
 import { useState } from 'react';
-import { Language } from '../types';
+import { Language, TextSize } from '../types';
 import { translations } from '../data/translations';
 import { Menu, X } from 'lucide-react';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
 
 interface NavbarProps {
   currentLanguage: Language;
@@ -12,8 +13,8 @@ interface NavbarProps {
   savedCount: number;
   highContrast: boolean;
   onToggleHighContrast: () => void;
-  textSize: 'normal' | 'large' | 'xlarge';
-  onCycleTextSize: () => void;
+  textSize: TextSize;
+  onTextSizeChange: (size: TextSize) => void;
   activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community';
   setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community') => void;
 }
@@ -27,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   highContrast,
   onToggleHighContrast,
   textSize,
-  onCycleTextSize,
+  onTextSizeChange,
   activeView,
   setActiveView
 }) => {
@@ -46,7 +47,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     setIsMenuOpen(false);
   };
 
-  const textSizeLabel = textSize === 'normal' ? '1x' : textSize === 'large' ? '1.2x' : '1.4x';
+  const textSizeOptions: { id: TextSize; label: string }[] = currentLanguage === 'en'
+    ? [
+        { id: 'small', label: 'Small' },
+        { id: 'medium', label: 'Medium' },
+        { id: 'large', label: 'Large' },
+        { id: 'xlarge', label: 'Extra large' }
+      ]
+    : [
+        { id: 'small', label: 'Pequeña' },
+        { id: 'medium', label: 'Mediana' },
+        { id: 'large', label: 'Grande' },
+        { id: 'xlarge', label: 'Muy grande' }
+      ];
 
   const navLinks = [
     { label: t.nav.home, onClick: goHome, active: activeView === 'home' },
@@ -77,6 +90,10 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   ];
 
+  const navigationSpeech = currentLanguage === 'en'
+    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls are directly under the menu.`
+    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta están debajo del menú.`;
+
   return (
     <header className="relative z-40 bg-white">
       <a
@@ -94,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onOpenDisclaimer}
-            className="qc-link min-h-0 ml-auto text-[12px] text-[#047857]"
+            className="qc-link min-h-0 ml-auto text-[0.75rem] text-[#047857]"
           >
             {currentLanguage === 'en' ? 'Safety Notice' : 'Aviso de Seguridad'}
           </button>
@@ -140,9 +157,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
-                <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
-                  {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
-                </button>
+                <div className="qc-accp-group" role="group" aria-label={currentLanguage === 'en' ? 'Text size' : 'Tamaño de letra'}>
+                  <span className="qc-accp-label">{currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'}</span>
+                  {textSizeOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => {
+                        onTextSizeChange(option.id);
+                        setIsAccOpen(false);
+                      }}
+                      aria-pressed={textSize === option.id}
+                      title={`${currentLanguage === 'en' ? 'Text size' : 'Tamaño de letra'}: ${option.label}`}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+                <ReadAloudButton
+                  id="nav-navigation"
+                  kind="navigation"
+                  language={currentLanguage}
+                  label={currentLanguage === 'en' ? 'Menu and accessibility controls' : 'Menú y controles de accesibilidad'}
+                  text={navigationSpeech}
+                  className="qc-read--popover"
+                />
                 <button
                   type="button"
                   onClick={onToggleHighContrast}
@@ -173,7 +212,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {isMenuOpen && (
         <div id="mobile-navigation" className="lg:hidden border-t border-[#e3f3ea] bg-white">
-          <div className="qc-shell py-5 flex flex-col gap-3 text-[14px] tracking-[.06em]">
+          <div className="qc-shell py-5 flex flex-col gap-3 text-[0.875rem] tracking-[.06em]">
             {navLinks.map((link) => (
               <button
                 key={link.label}

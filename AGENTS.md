@@ -23,7 +23,22 @@ The pinned Vite is **5.4.21**, which rejects unknown `Host` headers but does *no
 
 Symptom if this breaks: the preview shows `Blocked request. This host ("3000-…") is not allowed.` with HTTP 403.
 
+## Text size (accessibility)
+
+- The four modes are `small | medium | large | xlarge` (`TextSize` in `src/types/index.ts`), picked in the header's Accessibility menu and applied as `text-small` / `text-large` / `text-xlarge` on `<html>` (`src/index.css`); medium is the unmodified default.
+- **Every font size must stay relative.** A root `font-size` change only scales `rem`/`em` values, so `px` font sizes silently ignore the control. `src/styles/quiet-canvas.css` was converted from `px` to `rem`, and Tailwind arbitrary text utilities use `rem` (`text-[0.75rem]`, never `text-[12px]`). Add new text styles in `rem`/`em` only.
+- The Accessibility panel is an absolutely positioned dropdown anchored to `.qc-nav` (`.qc-acc` is `position: static`); it stays on screen at every width instead of crowding the nav links.
+
+## Read aloud (accessibility)
+
+- `src/speech/SpeechProvider.tsx` owns the single `speechSynthesis` utterance: play, pause, resume, stop, restart. Starting any passage cancels the previous one, so two voices never talk over each other, and changing page/view/language stops speech (`resetKey` prop from `App`).
+- `src/speech/ReadAloudButton.tsx` is the labelled "Read aloud" button placed next to content; mounting it registers the passage with the provider, which is how `src/speech/SpeechBar.tsx` (the control bar under the header) can list everything readable on the page, grouped by kind.
+- The bar also renders the spoken text as a visible transcript for people who cannot or do not want audio.
+- **The headless preview browser has no installed voice engine** (`speechSynthesis.getVoices()` returns `[]`), so `speak()` fails immediately and the bar shows "Read aloud could not start in this browser". Audible playback and pause/resume can therefore only be checked in a real browser; the control states, passage registration and transcript are testable in the preview.
+
 ## Verifying
 
 - `curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/` → `200`, and the HTML must contain `/@vite/client` + `/src/main.tsx` (dev source, not a prebuilt bundle) — that is what proves the edit loop is live.
 - Type-check/build (optional): `docker compose -f docker-compose.base44.yml exec -T web npx tsc --noEmit`.
+- Tests: `docker compose -f docker-compose.base44.yml exec -T web npx vitest run`.
+- Text-size check in the preview: open Accessibility → pick a size, then read `getComputedStyle(document.querySelector('#hero-title')).fontSize` and confirm `document.documentElement.scrollWidth` still equals `clientWidth` at 375/768/desktop widths.

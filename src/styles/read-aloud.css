@@ -1,0 +1,225 @@
+/* ==========================================================================
+   Read aloud — one shared voice with visible, keyboard-friendly controls.
+   Styled with the Quiet Canvas tokens so it sits inside the existing header.
+   ========================================================================== */
+
+.qc-read-bar {
+  background: #f7fdfa;
+  border-bottom: 1px solid #e3f3ea;
+  color: #1a1a24;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.qc-read-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.qc-read-bar__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.qc-read-bar__icon {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+  color: #047857;
+}
+
+.qc-read-bar__title {
+  margin: 0;
+  font-family: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #047857;
+}
+
+.qc-read-bar__label {
+  font-size: 0.8125rem;
+  color: #414155;
+}
+
+.qc-read-bar__select {
+  min-height: 2.25rem;
+  max-width: min(20rem, 100%);
+  padding: 5px 10px;
+  border: 1px solid #9fd6bd;
+  border-radius: 8px;
+  background: #fff;
+  color: #1a1a24;
+  font: inherit;
+  font-size: 0.8125rem;
+}
+
+.qc-read-bar__select:focus-visible {
+  outline: 3px solid #047857;
+  outline-offset: 2px;
+}
+
+.qc-read-bar__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.qc-read-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 2.25rem;
+  padding: 5px 12px;
+  border: 1px solid #9fd6bd;
+  border-radius: 8px;
+  background: #fff;
+  color: #03543b;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.qc-read-btn:hover:not(:disabled) {
+  background: #eafaf1;
+  border-color: #047857;
+}
+
+.qc-read-btn:focus-visible {
+  outline: 3px solid #047857;
+  outline-offset: 2px;
+}
+
+.qc-read-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.qc-read-bar__status {
+  flex: 1 1 16rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: #414155;
+}
+
+.qc-read-bar__text {
+  flex: 1 1 100%;
+  max-height: 6.5rem;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px 0 4px 12px;
+  border-left: 3px solid #9fd6bd;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: #1a1a24;
+}
+
+/* "Read aloud" buttons placed next to the content they speak. */
+.qc-read {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 2rem;
+  padding: 0.3em 0.65em;
+  border: 1px solid #9fd6bd;
+  border-radius: 6px;
+  background: #fff;
+  color: #03543b;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.qc-read:hover:not(:disabled) {
+  background: #eafaf1;
+  border-color: #047857;
+}
+
+.qc-read:focus-visible {
+  outline: 3px solid #047857;
+  outline-offset: 2px;
+}
+
+.qc-read:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.qc-read[aria-pressed="true"] {
+  background: #047857;
+  border-color: #047857;
+  color: #fff;
+}
+
+.qc-read__icon {
+  width: 1em;
+  height: 1em;
+  flex: 0 0 auto;
+}
+
+/* Dark chat surfaces keep the same control with light-on-dark contrast. */
+.qc-read--dark {
+  background: rgba(15, 23, 42, 0.65);
+  border-color: #64748b;
+  color: #6ee7b7;
+}
+
+.qc-read--dark:hover:not(:disabled) {
+  background: #1e293b;
+  border-color: #34d399;
+}
+
+.qc-read--dark:focus-visible {
+  outline-color: #6ee7b7;
+}
+
+.qc-read--dark[aria-pressed="true"] {
+  background: #047857;
+  border-color: #34d399;
+  color: #fff;
+}
+
+/* The accessibility popover keeps its compact, textual look. */
+.qc-accp .qc-read--popover {
+  border: 0;
+  background: none;
+  padding: 0;
+  min-height: 2.25rem;
+  font-size: 0.8125rem;
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+.qc-accp .qc-read--popover:hover:not(:disabled) {
+  background: none;
+  color: #047857;
+}
+
+.qc-accp-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+
+.qc-accp .qc-accp-group {
+  row-gap: 8px;
+}
+
+.qc-accp-label {
+  color: #5a5870;
+}

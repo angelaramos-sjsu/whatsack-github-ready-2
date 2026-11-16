@@ -3,7 +3,8 @@ import {
   Language, 
   CategoryId, 
   DemonstrationResource, 
-  IntakeProfile 
+  IntakeProfile,
+  TextSize
 } from './types';
 import { demonstrationResources } from './data/resources';
 import { directoryEntries } from './data/directory';
@@ -27,6 +28,9 @@ import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
 import { CommunityConnector } from './community/components/CommunityConnector';
+import { SpeechProvider } from './speech/SpeechProvider';
+import { SpeechBar } from './speech/SpeechBar';
+import { ReadAloudButton } from './speech/ReadAloudButton';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
@@ -71,7 +75,7 @@ export function App() {
     prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
   );
   const [highContrast, setHighContrast] = useState<boolean>(false);
-  const [textSize, setTextSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
+  const [textSize, setTextSize] = useState<TextSize>('medium');
 
   const t = translations[currentLanguage];
 
@@ -111,15 +115,12 @@ export function App() {
     }
   }, [highContrast]);
 
-  // Text scaling mode handler
-  const handleCycleTextSize = () => {
-    setTextSize((prev) => {
-      const next = prev === 'normal' ? 'large' : prev === 'large' ? 'xlarge' : 'normal';
-      document.documentElement.classList.remove('text-large', 'text-xlarge');
-      if (next === 'large') document.documentElement.classList.add('text-large');
-      if (next === 'xlarge') document.documentElement.classList.add('text-xlarge');
-      return next;
-    });
+  // Text scaling mode: one class scales every rem-based size on the page.
+  const handleTextSizeChange = (size: TextSize) => {
+    setTextSize(size);
+    const root = document.documentElement;
+    root.classList.remove('text-small', 'text-large', 'text-xlarge');
+    if (size !== 'medium') root.classList.add(`text-${size}`);
   };
 
   const handleToggleSave = (resourceId: string) => {
@@ -248,6 +249,7 @@ export function App() {
   };
 
   return (
+    <SpeechProvider language={currentLanguage} resetKey={activeView}>
     <div className="qc min-h-screen flex flex-col selection:bg-[#047857] selection:text-white">
       {/* Navbar */}
       <Navbar
@@ -259,10 +261,13 @@ export function App() {
         highContrast={highContrast}
         onToggleHighContrast={() => setHighContrast(!highContrast)}
         textSize={textSize}
-        onCycleTextSize={handleCycleTextSize}
+        onTextSizeChange={handleTextSizeChange}
         activeView={activeView}
         setActiveView={setActiveView}
       />
+
+      {/* Read-aloud controls sit directly under the navigation on every page. */}
+      <SpeechBar language={currentLanguage} />
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
       {activeView === 'copilot' ? (
@@ -304,6 +309,16 @@ export function App() {
               ? 'WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley.'
               : 'WhatSack es un sitio creado por estudiantes para explorar ayuda con estudios, trabajo, comida, salud mental y servicios comunitarios en Silicon Valley.'}
           </p>
+          <ReadAloudButton
+            id="about-intro"
+            kind="heading"
+            language={currentLanguage}
+            label={currentLanguage === 'en' ? 'About page introduction' : 'Introducción de la página Acerca de'}
+            text={currentLanguage === 'en'
+              ? 'About WhatSack. WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley. Ask a question or choose a category. Open the resource directory to view organization websites. Save useful items in My Next Steps. Organization listings link to real websites, but details can change. Sample programs and chat answers are for class testing only. Check the organization website before making plans.'
+              : 'Acerca de WhatSack. WhatSack es un sitio creado por estudiantes para explorar ayuda con estudios, trabajo, comida, salud mental y servicios comunitarios en Silicon Valley. Haga una pregunta o elija una categoría. Visite el directorio para ver sitios de organizaciones. Guarde recursos en Mis Próximos Pasos. El directorio enlaza a sitios reales, pero los datos pueden cambiar. Los programas y respuestas de ejemplo son solo para pruebas de clase. Revise el sitio oficial antes de hacer planes.'}
+            className="mt-5"
+          />
           <h2 className="qc-about-h2">{currentLanguage === 'en' ? 'How it works' : 'Cómo funciona'}</h2>
           <p className="qc-dsub">
             {currentLanguage === 'en'
@@ -518,10 +533,10 @@ export function App() {
             </p>
             {filteredResources.length === 0 ? (
               <div className="border-t border-[#f0eef8] py-16 text-center">
-                <h3 className="text-[18px] font-medium text-[#1A1A24]">
+                <h3 className="text-[1.125rem] font-medium text-[#1A1A24]">
                   {currentLanguage === 'en' ? 'No matching demonstration resources found' : 'No se encontraron recursos de demostración'}
                 </h3>
-                <p className="mt-2 text-[14px] text-[#5a5870]">
+                <p className="mt-2 text-[0.875rem] text-[#5a5870]">
                   {currentLanguage === 'en'
                     ? 'Try broadening your search filters or resetting your inquiry.'
                     : 'Intente ampliar los filtros de búsqueda o restablecer la consulta.'}
@@ -663,6 +678,7 @@ export function App() {
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
     </div>
+    </SpeechProvider>
   );
 }
 

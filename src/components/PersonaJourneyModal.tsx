@@ -86,7 +86,7 @@ export const PersonaJourneyModal: React.FC<PersonaJourneyModalProps> = ({
                   <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight">
                     {persona.name}, {persona.age}
                   </h2>
-                  <span className="text-[11px] font-bold px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
+                  <span className="text-[0.6875rem] font-bold px-2 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30">
                     {t.personas.personaJourneyTitle}
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export const PersonaJourneyModal: React.FC<PersonaJourneyModalProps> = ({
                     : 'bg-white/10 text-white/80 hover:bg-white/20'
                 }`}
               >
-                <span className="w-4 h-4 rounded-full bg-black/20 flex items-center justify-center text-[10px]">
+                <span className="w-4 h-4 rounded-full bg-black/20 flex items-center justify-center text-[0.625rem]">
                   {idx + 1}
                 </span>
                 <span>{step.title[currentLanguage]}</span>
@@ -176,7 +176,7 @@ export const PersonaJourneyModal: React.FC<PersonaJourneyModalProps> = ({
                 <span className="text-xs font-bold text-emerald-900 uppercase tracking-wider">
                   {currentLanguage === 'en' ? 'Connected Demonstration Resource' : 'Recurso de Demostración Vinculado'}
                 </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">
+                <span className="text-[0.625rem] font-bold px-2 py-0.5 rounded-full bg-emerald-200 text-emerald-900">
                   {matchedResource.costType}
                 </span>
               </div>

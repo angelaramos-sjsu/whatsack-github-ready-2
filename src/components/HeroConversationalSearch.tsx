@@ -2,6 +2,7 @@ import React from 'react';
 import { Language, IntakeProfile, CategoryId } from '../types';
 import { translations } from '../data/translations';
 import { X } from 'lucide-react';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
 
 interface HeroConversationalSearchProps {
   currentLanguage: Language;
@@ -88,6 +89,15 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
         <p className="qc-sub qc-rise" style={{ animationDelay: '.45s' }}>
           {t.hero.subtitle}
         </p>
+
+        <ReadAloudButton
+          id="home-hero"
+          kind="heading"
+          language={currentLanguage}
+          label={currentLanguage === 'en' ? 'Page heading and introduction' : 'Título e introducción de la página'}
+          text={`${t.hero.title}. ${t.hero.subtitle}`}
+          className="mt-5 qc-rise"
+        />
 
         <form
           onSubmit={handleSubmit}

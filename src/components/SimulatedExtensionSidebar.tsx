@@ -164,7 +164,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
             <Sparkles className="w-4 h-4 text-emerald-400" />
             <span>{t.extension.title}</span>
-            <span className="text-[10px] bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full">
+            <span className="text-[0.625rem] bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full">
               Chrome & Safari Prototype Extension
             </span>
           </div>
@@ -252,7 +252,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
           <div className="flex items-center gap-2 p-2 bg-slate-100 rounded-xl mb-6 text-xs text-slate-600 border border-slate-200">
             <span className="text-slate-400">🔒</span>
             <span className="font-mono text-slate-700 truncate">{currentPortalData.url}</span>
-            <span className="ml-auto text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold uppercase">
+            <span className="ml-auto text-[0.625rem] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold uppercase">
               {currentLanguage === 'en' ? 'Simulated Portal' : 'Portal Simulado'}
             </span>
           </div>
@@ -339,7 +339,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                   <span>WhatSack Extension</span>
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                 </h3>
-                <span className="text-[10px] text-emerald-400 font-medium">
+                <span className="text-[0.625rem] text-emerald-400 font-medium">
                   {currentLanguage === 'en' ? 'Active Web Companion' : 'Acompañante Web Activo'}
                 </span>
               </div>
@@ -369,7 +369,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
             {/* Hidden Barriers & Myths Decoded */}
             <div className="space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <span className="text-[0.6875rem] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{t.extension.identifiedBarriers}</span>
               </span>
@@ -379,7 +379,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                   <h4 className="font-bold text-amber-300 mb-0.5">
                     💡 {barrier.label}
                   </h4>
-                  <p className="text-slate-300 leading-relaxed text-[11px]">
+                  <p className="text-slate-300 leading-relaxed text-[0.6875rem]">
                     {barrier.desc}
                   </p>
                 </div>
@@ -405,10 +405,10 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             {/* Interactive Extension Chat */}
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                <span className="text-[0.6875rem] font-bold text-slate-400 uppercase tracking-wider">
                   {currentLanguage === 'en' ? 'Ask Extension About This Page' : 'Preguntar a la Extensión'}
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">AI v2.6</span>
+                <span className="text-[0.625rem] text-emerald-400 font-mono">AI v2.6</span>
               </div>
 
               <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
@@ -451,10 +451,10 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
           {/* Extension Footer */}
           <div className="extension-footer p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-            <span className="text-[11px]">WhatSack Browser Companion</span>
+            <span className="text-[0.6875rem]">WhatSack Browser Companion</span>
             <button
               onClick={onNavigateHome}
-              className="text-emerald-400 font-bold hover:underline text-[11px]"
+              className="text-emerald-400 font-bold hover:underline text-[0.6875rem]"
             >
               {currentLanguage === 'en' ? 'Back to Full App' : 'Volver a la App'}
             </button>

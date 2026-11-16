@@ -188,7 +188,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
       </p>
 
       {/* City selector (kept from the existing filter set) */}
-      <div className="mt-4 text-[14px] text-[#5a5870]">
+      <div className="mt-4 text-[0.875rem] text-[#5a5870]">
         <label htmlFor="city-filter-dropdown" className="mr-2">
           {t.filters.city}:
         </label>
@@ -216,7 +216,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         className="qc-dir-panel"
       >
         {matches.length === 0 ? (
-          <p className="py-10 text-[15px] text-[#5a5870]">
+          <p className="py-10 text-[0.9375rem] text-[#5a5870]">
             {currentLanguage === 'en'
               ? 'No directory listings match these filters yet. Try All Resources or another city.'
               : 'Ningún registro del directorio coincide con estos filtros. Pruebe Todos los recursos u otra ciudad.'}

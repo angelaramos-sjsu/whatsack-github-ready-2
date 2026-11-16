@@ -75,7 +75,7 @@ CORE CIVIC DIRECTIVES:
                 <h2 id="ai-engine-modal-title" className="text-lg sm:text-xl font-extrabold text-white">
                   {t.aiEngine.title}
                 </h2>
-                <span className="text-[10px] font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full">
+                <span className="text-[0.625rem] font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.5 rounded-full">
                   Architecture v2.6
                 </span>
               </div>
@@ -151,7 +151,7 @@ CORE CIVIC DIRECTIVES:
           {activeTab === 'rag' && (
             <div className="space-y-6">
               <div className="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-500/30 text-xs text-indigo-200">
-                <span className="font-bold uppercase tracking-wider text-[11px] block text-indigo-400 mb-1">
+                <span className="font-bold uppercase tracking-wider text-[0.6875rem] block text-indigo-400 mb-1">
                   How WhatSack Civic-RAG Works:
                 </span>
                 <p className="leading-relaxed">
@@ -167,7 +167,7 @@ CORE CIVIC DIRECTIVES:
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-white mb-1">Resident Inquiry</h4>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[0.6875rem] text-slate-400 leading-relaxed">
                       Accepts natural voice or text in English or Spanish. Tokenizes intent, city location, and emotional barriers.
                     </p>
                   </div>
@@ -179,7 +179,7 @@ CORE CIVIC DIRECTIVES:
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-white mb-1">Dense Vector Search</h4>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[0.6875rem] text-slate-400 leading-relaxed">
                       Retrieves top-K vetted programs from the Silicon Valley Community Index with zero-ID and transit tags.
                     </p>
                   </div>
@@ -191,7 +191,7 @@ CORE CIVIC DIRECTIVES:
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-white mb-1">Policy Guardrails</h4>
-                    <p className="text-[11px] text-slate-400 leading-relaxed">
+                    <p className="text-[0.6875rem] text-slate-400 leading-relaxed">
                       Checks public charge safety, minor consent laws (§ 124260), and crisis interception before generation.
                     </p>
                   </div>
@@ -203,7 +203,7 @@ CORE CIVIC DIRECTIVES:
                   </div>
                   <div>
                     <h4 className="font-bold text-sm text-white mb-1">Grounded Synthesis</h4>
-                    <p className="text-[11px] text-slate-300 leading-relaxed">
+                    <p className="text-[0.6875rem] text-slate-300 leading-relaxed">
                       Generates plain-language advice, document requirements, and an actionable NextStep checklist.
                     </p>
                   </div>
@@ -214,15 +214,15 @@ CORE CIVIC DIRECTIVES:
               <div className="p-4 rounded-2xl bg-slate-800/60 border border-slate-700 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
                 <div>
                   <span className="text-2xl font-extrabold text-emerald-400 block">99.4%</span>
-                  <span className="text-[11px] text-slate-400 font-medium">Grounding Precision (Simulated)</span>
+                  <span className="text-[0.6875rem] text-slate-400 font-medium">Grounding Precision (Simulated)</span>
                 </div>
                 <div>
                   <span className="text-2xl font-extrabold text-indigo-400 block">&lt; 180ms</span>
-                  <span className="text-[11px] text-slate-400 font-medium">Vector Index Retrieval Latency</span>
+                  <span className="text-[0.6875rem] text-slate-400 font-medium">Vector Index Retrieval Latency</span>
                 </div>
                 <div>
                   <span className="text-2xl font-extrabold text-amber-400 block">100% Zero</span>
-                  <span className="text-[11px] text-slate-400 font-medium">PII Ingestion / Data Retention</span>
+                  <span className="text-[0.6875rem] text-slate-400 font-medium">PII Ingestion / Data Retention</span>
                 </div>
               </div>
             </div>
@@ -268,7 +268,7 @@ CORE CIVIC DIRECTIVES:
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">
                   Civic Model System Prompt (Read-Only Transparency):
                 </span>
-                <span className="text-[11px] text-emerald-400 font-mono">EN/ES Dual Instruction</span>
+                <span className="text-[0.6875rem] text-emerald-400 font-mono">EN/ES Dual Instruction</span>
               </div>
               <pre className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-slate-300 font-mono text-xs leading-relaxed overflow-x-auto whitespace-pre-wrap">
                 {systemPromptEnglish}
@@ -279,7 +279,7 @@ CORE CIVIC DIRECTIVES:
           {activeTab === 'settings' && (
             <div className="space-y-5 text-xs">
               <div>
-                <label className="block text-slate-400 font-bold uppercase tracking-wider text-[11px] mb-2">
+                <label className="block text-slate-400 font-bold uppercase tracking-wider text-[0.6875rem] mb-2">
                   {t.aiEngine.modelSelector}
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -292,7 +292,7 @@ CORE CIVIC DIRECTIVES:
                     }`}
                   >
                     <span className="font-bold block text-sm">WhatSack CivicLLM-70B</span>
-                    <span className="text-[10px] text-slate-400">Optimized for public benefits reasoning</span>
+                    <span className="text-[0.625rem] text-slate-400">Optimized for public benefits reasoning</span>
                   </button>
 
                   <button
@@ -304,7 +304,7 @@ CORE CIVIC DIRECTIVES:
                     }`}
                   >
                     <span className="font-bold block text-sm">Civic-Gemini-Flash</span>
-                    <span className="text-[10px] text-slate-400">Sub-100ms multi-turn voice streaming</span>
+                    <span className="text-[0.625rem] text-slate-400">Sub-100ms multi-turn voice streaming</span>
                   </button>
 
                   <button
@@ -316,7 +316,7 @@ CORE CIVIC DIRECTIVES:
                     }`}
                   >
                     <span className="font-bold block text-sm">Llama-3-Civic-8B-Local</span>
-                    <span className="text-[10px] text-slate-400">Edge client-side privacy model</span>
+                    <span className="text-[0.625rem] text-slate-400">Edge client-side privacy model</span>
                   </button>
                 </div>
               </div>

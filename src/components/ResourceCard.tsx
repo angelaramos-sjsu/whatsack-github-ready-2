@@ -12,6 +12,7 @@ import {
   Bus, 
   CheckCircle2
 } from 'lucide-react';
+import { ReadAloudButton } from '../speech/ReadAloudButton';
 
 interface ResourceCardProps {
   resource: DemonstrationResource;
@@ -32,6 +33,17 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
 
   const resourceTitle = resource.title[currentLanguage];
   const resourceOrg = resource.organization[currentLanguage];
+  const resourceSpeech = [
+    resourceTitle,
+    resourceOrg,
+    resource.description[currentLanguage],
+    `${resource.location.city}, ${resource.location.county}. ${resource.location.transitNote[currentLanguage]}`,
+    resource.schedule[currentLanguage],
+    `${currentLanguage === 'en' ? 'Languages' : 'Idiomas'}: ${resource.languagesSupported.join(', ')}`,
+    `${currentLanguage === 'en' ? 'Cost' : 'Costo'}: ${resource.costType}`,
+    resource.noIdRequired ? t.resourceCard.noIdBadge : '',
+    resource.nextStepInsight.explanation[currentLanguage]
+  ].filter(Boolean).join('. ');
 
   return (
     <article
@@ -39,7 +51,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
       className="qc-card flex flex-col justify-between overflow-hidden"
     >
       {/* Academic record indicator */}
-      <div className="flex items-center justify-between gap-3 border-b border-[#e3f3ea] px-5 py-2 text-[11px] uppercase tracking-[0.12em] text-[#8a879f]">
+      <div className="flex items-center justify-between gap-3 border-b border-[#e3f3ea] px-5 py-2 text-[0.6875rem] uppercase tracking-[0.12em] text-[#8a879f]">
         <span>{currentLanguage === 'en' ? 'Sample program — not a live service' : 'Programa de ejemplo — no es un servicio real'}</span>
         <span>{resource.location.city}</span>
       </div>
@@ -54,7 +66,7 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
                   : resource.categoryId
               ] || resource.categoryId}
             </span>
-            <span className="text-[12px] tracking-[0.02em] text-[#8a879f]">{resource.costType}</span>
+            <span className="text-[0.75rem] tracking-[0.02em] text-[#8a879f]">{resource.costType}</span>
           </div>
 
           <button
@@ -75,17 +87,17 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
 
         <h3
           id={`resource-title-${resource.id}`}
-          className="text-[20px] font-medium leading-snug tracking-[-0.02em] text-[#1A1A24]"
+          className="text-[1.25rem] font-medium leading-snug tracking-[-0.02em] text-[#1A1A24]"
         >
           {resourceTitle}
         </h3>
-        <p className="mt-1 text-[13px] text-[#5a5870]">{resourceOrg}</p>
+        <p className="mt-1 text-[0.8125rem] text-[#5a5870]">{resourceOrg}</p>
 
-        <p className="mt-4 text-[14px] leading-relaxed text-[#5a5870]">
+        <p className="mt-4 text-[0.875rem] leading-relaxed text-[#5a5870]">
           {resource.description[currentLanguage]}
         </p>
 
-        <div className="mt-5 space-y-2 border-t border-[#f0eef8] pt-4 text-[13px] text-[#5a5870]">
+        <div className="mt-5 space-y-2 border-t border-[#f0eef8] pt-4 text-[0.8125rem] text-[#5a5870]">
           <div className="flex items-start gap-2">
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#8a879f]" aria-hidden="true" />
             <div>
@@ -121,22 +133,31 @@ export const ResourceCard: React.FC<ResourceCardProps> = ({
               {t.resourceCard.confidentialBadge}
             </span>
           )}
-          <span className="ml-auto text-[12px] text-[#8a879f]">
+          <span className="ml-auto text-[0.75rem] text-[#8a879f]">
             {currentLanguage === 'en' ? 'Sample match' : 'Coincidencia de ejemplo'}
           </span>
         </div>
 
         <div className="mt-5 rounded-xl border border-[#e3f3ea] bg-[#f7fdfa] p-4">
           <div className="qc-eyebrow">{t.insights.whyRecommended}</div>
-          <p className="mt-2 line-clamp-2 text-[13px] leading-relaxed text-[#5a5870]">
+          <p className="mt-2 line-clamp-2 text-[0.8125rem] leading-relaxed text-[#5a5870]">
             {resource.nextStepInsight.explanation[currentLanguage]}
           </p>
         </div>
 
+        <ReadAloudButton
+          id={`resource-${resource.id}`}
+          kind="resource"
+          language={currentLanguage}
+          label={`${resourceTitle} — ${resourceOrg}`}
+          text={resourceSpeech}
+          className="mt-5 self-start"
+        />
+
         <button
           type="button"
           onClick={() => onOpenInsights(resource)}
-          className="qc-btn-sm mt-5 flex w-full items-center justify-center gap-2"
+          className="qc-btn-sm mt-3 flex w-full items-center justify-center gap-2"
           aria-label={`${t.resourceCard.viewInsights} for ${resourceTitle}`}
         >
           <FileText className="h-4 w-4" aria-hidden="true" />

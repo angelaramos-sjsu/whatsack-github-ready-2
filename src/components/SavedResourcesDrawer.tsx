@@ -242,7 +242,7 @@ export const SavedResourcesDrawer: React.FC<SavedResourcesDrawerProps> = ({
                 className="p-4 rounded-2xl border-2 border-slate-200 bg-white hover:border-emerald-400 shadow-2xs transition-all"
               >
                 <div className="flex items-start justify-between gap-2 mb-2">
-                  <span className="text-[11px] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-300">
+                  <span className="text-[0.6875rem] font-extrabold px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-800 border border-slate-300">
                     {currentLanguage === 'en' ? 'Directory listing' : 'Registro del directorio'}
                   </span>
                   <button
