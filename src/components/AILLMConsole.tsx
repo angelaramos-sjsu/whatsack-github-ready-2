@@ -147,7 +147,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   const t = translations[currentLanguage];
   const [inputText, setInputText] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const streamRef = useRef<HTMLDivElement>(null);
+  const thinkingRef = useRef<HTMLDivElement>(null);
 
   const greetingMessage: ChatMessage = {
     id: 'msg-init-1',
@@ -202,6 +203,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
   };
 
   const [messages, setMessages] = useState<ChatMessage[]>([greetingMessage]);
+  // The newest reply is brought to the beginning of its text, never its end.
+  const lastResponseIdRef = useRef<string>(greetingMessage.id);
 
   // A question submitted from the homepage opens the copilot already answered.
   const seededQuestionKeyRef = useRef<number | null>(null);
@@ -241,10 +244,31 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     setMessages(prev => [...prev, questionMessage, buildAnswerMessage(answer)]);
   };
 
-  // Auto scroll to bottom
+  /** Bring an element's top edge into view, keeping its heading readable. */
+  const scrollToStart = (element: HTMLElement | null) => {
+    if (!element) return;
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  };
+
+  const latestResponseId = messages[messages.length - 1]?.sender === 'llm'
+    ? messages[messages.length - 1].id
+    : null;
+
+  // A new reply: read from its first line instead of the bottom of the answer.
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isGenerating]);
+    if (!latestResponseId || latestResponseId === lastResponseIdRef.current) return;
+    lastResponseIdRef.current = latestResponseId;
+    const target = streamRef.current?.querySelector<HTMLElement>(
+      `[data-response-id="${latestResponseId}"]`
+    );
+    scrollToStart(target ?? null);
+  }, [latestResponseId]);
+
+  // While an answer loads, show the start of the reply area rather than its end.
+  useEffect(() => {
+    if (isGenerating) scrollToStart(thinkingRef.current);
+  }, [isGenerating]);
 
   const handleSendMessage = (textToSend?: string, personaTag?: string) => {
     const text = textToSend || inputText;
@@ -298,14 +322,18 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
         {isGenerating ? (currentLanguage === 'en' ? ' Loading an answer.' : ' Cargando una respuesta.') : ''}
       </p>
       {/* Main Chat Stream Container */}
-      <div className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5">
+      <div
+        ref={streamRef}
+        className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 overflow-y-auto space-y-5"
+      >
         {messages.map((msg) => {
           const isLlm = msg.sender === 'llm';
 
           return (
             <div
               key={msg.id}
-              className={`flex gap-3 sm:gap-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              data-response-id={msg.id}
+              className={`flex gap-3 sm:gap-4 scroll-mt-4 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {isLlm && (
                 <div aria-hidden="true" className="h-10 w-10 shrink-0 rounded-xl border border-emerald-300/50 bg-emerald-50 p-1">
@@ -446,7 +474,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
 
         {/* Live Generating & Thinking Animation */}
         {isGenerating && (
-          <div className="flex gap-3 items-start animate-in fade-in duration-200">
+          <div ref={thinkingRef} className="flex gap-3 items-start animate-in fade-in duration-200 scroll-mt-4">
             <div aria-hidden="true" className="h-10 w-10 shrink-0 rounded-xl border border-emerald-300/50 bg-emerald-50 p-1">
               <SproutMascot className="h-full w-full" />
             </div>
@@ -469,7 +497,6 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
           </div>
         )}
 
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Bar Form */}
