@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { collegeOptionAnswers, routeCollegeOptionsQuestion } from './collegeOptions';
 import { crossCategoryDiscoveryAnswers } from './crossCategoryDiscovery';
 import { educationGoalPathwayAnswers, routeGoalExplorationQuestion, routeGoalDetailQuestion } from './educationGoalPathways';
 import { educationWorkforceAnswers, routeEducationWorkforceQuestion } from './educationWorkforce';
@@ -15,6 +16,7 @@ export type { AnswerTopic, BilingualText, NextStepMeta, OfficialResourceLink, Sc
 export { routeSaraCollegeQuestion, saraCollegeStageIds, routeEducationWorkforceQuestion, routeGoalExplorationQuestion, routeGoalDetailQuestion };
 export { routeBilingualFoodQuestion, isSpanishBilingualFoodQuestion };
 export { routeMentalHealthAccessQuestion };
+export { routeCollegeOptionsQuestion };
 
 /** Every approved scripted answer, keyed by its unique id. */
 export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
@@ -26,6 +28,7 @@ export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...bilingualFoodAnswers,
   ...foodEnhancementAnswers,
   ...mentalHealthAccessAnswers,
+  ...collegeOptionAnswers,
   ...supportFollowUpAnswers,
   ...saraCollegePathwayAnswers
 ]);

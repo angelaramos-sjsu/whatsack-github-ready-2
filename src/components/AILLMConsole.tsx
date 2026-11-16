@@ -19,6 +19,7 @@ import {
   routeBilingualFoodQuestion,
   isSpanishBilingualFoodQuestion,
   routeMentalHealthAccessQuestion,
+  routeCollegeOptionsQuestion,
   topicEntryAnswerIds
 } from '../data/answers';
 import { getRelevantFollowUpIds } from '../data/answers/relevantFollowUps';
@@ -271,6 +272,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     // Preserve safety, multi-need routing, and exact-match priority.
     const goalExplorationId = !isPersonaQuestion ? routeGoalExplorationQuestion(text) : undefined;
     const goalSpecificId = !isPersonaQuestion ? routeGoalDetailQuestion(text) : undefined;
+    // A broad "I want to go to college" opens the CCC/CSU/UC options prompt before the older entry answers.
+    const collegeOptionsId = !isPersonaQuestion ? routeCollegeOptionsQuestion(text) : undefined;
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
@@ -290,6 +293,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
       ? combinedAnswer
       : goalSpecificId
       ? getScriptedAnswer(goalSpecificId)
+      : collegeOptionsId
+      ? getScriptedAnswer(collegeOptionsId)
       : educationAnswerId
       ? getScriptedAnswer(educationAnswerId)
       : goalExplorationId
