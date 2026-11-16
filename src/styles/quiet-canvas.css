@@ -1166,3 +1166,191 @@
   .qc-nav-tools { justify-content: flex-start; }
   .qc-header-language button { padding: 8px 9px; }
 }
+
+/* — Category tabs — */
+.qc-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.qc-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 9px 16px;
+  border: 1px solid #e3f3ea;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1a24;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.qc-tab:hover {
+  border-color: #047857;
+  color: #03543b;
+}
+
+.qc-tab.on {
+  background: #047857;
+  border-color: #047857;
+  color: #fff;
+  font-weight: 600;
+}
+
+.qc-tab:focus-visible {
+  outline: 3px solid #1a1a24;
+  outline-offset: 3px;
+}
+
+.qc-tab-count {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #eaf7f0;
+  color: #03543b;
+}
+
+.qc-tab.on .qc-tab-count {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .qc-tabs {
+    gap: 6px;
+  }
+
+  .qc-tab {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}
+
+/* — Category sections inside the directory — */
+.qc-dir-panel:focus-visible {
+  outline: 3px solid #047857;
+  outline-offset: 6px;
+}
+
+.qc-dir-section {
+  margin-top: 38px;
+}
+
+.qc-dir-section:first-of-type {
+  margin-top: 26px;
+}
+
+.qc-dir-section-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1a1a24;
+}
+
+.qc-dir-section-count {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8a879f;
+}
+
+/* — Directory entry details — */
+.qc-entry-services {
+  margin: 8px 0 0;
+  max-width: 640px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #1a1a24;
+}
+
+.qc-cat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.qc-cat-chip {
+  font-size: 12px;
+  font-weight: 600;
+  color: #03543b;
+  background: #eaf7f0;
+  border: 1px solid #cdeedd;
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+
+.qc-chevron {
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  transition: transform 0.2s;
+}
+
+.qc-chevron.open {
+  transform: rotate(180deg);
+}
+
+.qc-entry-details {
+  grid-column: 1 / -1;
+  margin-top: 6px;
+  padding: 18px 20px;
+  border: 1px solid #e3f3ea;
+  border-radius: 12px;
+  background: #f7fdfa;
+}
+
+.qc-entry-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .qc-entry-meta {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.qc-detail-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5a5870;
+}
+
+.qc-detail-value {
+  margin: 2px 0 0;
+  font-size: 15px;
+  color: #1a1a24;
+}
+
+.qc-detail-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #047857;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.qc-detail-note {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: #414155;
+}

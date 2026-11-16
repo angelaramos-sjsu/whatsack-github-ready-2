@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { CategoryId, Language } from '../types';
 import { translations } from '../data/translations';
 import { directoryEntries } from '../data/directory';
 import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
+import { CategoryTabs, DirectoryCategoryId, directoryCategoryLabels } from './CategoryTabs';
+import { DirectoryEntryRow } from './DirectoryEntryRow';
 
 interface CommunityDirectoryProps {
   currentLanguage: Language;
-  selectedCategory: CategoryId | 'all';
+  selectedCategory: DirectoryCategoryId;
   selectedNeeds?: CategoryId[];
-  onSelectCategory: (category: CategoryId | 'all') => void;
+  onSelectCategory: (category: DirectoryCategoryId) => void;
   selectedCity: string;
   onSelectCity: (city: string) => void;
   availableCities: string[];
@@ -20,19 +22,16 @@ interface CommunityDirectoryProps {
   onToggleEntrySave: (entryId: string) => void;
 }
 
-const categoryLabels: Record<CategoryId, { en: string; es: string }> = {
-  food: { en: 'Food Access', es: 'Acceso a alimentos' },
-  'mental-health': { en: 'Mental Health', es: 'Salud Mental' },
-  workforce: { en: 'Education & Workforce', es: 'Educación y Trabajo' },
-  community: { en: 'Community Connection', es: 'Conexión comunitaria' }
-};
+const PANEL_ID = 'directory-panel';
 
-const displayAddress = (address: string, language: Language) => {
-  if (/^\d/.test(address)) return address;
-  if (address === 'California community colleges' || address === 'Participating community colleges') {
-    return language === 'en' ? 'Participating California community colleges' : 'Colegios comunitarios participantes de California';
-  }
-  return address;
+/** Category sections in reading order, used by the "All Resources" view. */
+const sectionOrder: CategoryId[] = ['food', 'workforce', 'community', 'mental-health'];
+
+const sectionTitles: Record<CategoryId, { en: string; es: string }> = {
+  food: { en: 'Food resources', es: 'Recursos de comida' },
+  workforce: { en: 'Education resources', es: 'Recursos de educación' },
+  community: { en: 'Community resources', es: 'Recursos comunitarios' },
+  'mental-health': { en: 'Mental Health resources', es: 'Recursos de salud mental' }
 };
 
 export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
@@ -56,22 +55,53 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   const focusNextRow = useRef<string | null>(null);
   const words = searchQuery.toLowerCase().trim().split(/\s+/).filter((w) => w.length > 2);
 
-  const matches = directoryEntries.filter((entry) => {
-    if (selectedNeeds.length > 0 && !selectedNeeds.includes(entry.categoryId)) return false;
-    if (selectedCategory !== 'all' && entry.categoryId !== selectedCategory) return false;
+  const categoryLabels = (category: CategoryId) => directoryCategoryLabels[category][currentLanguage];
+
+  // Everything that matches the non-category filters, so tab counts stay honest.
+  const baseMatches = directoryEntries.filter((entry) => {
+    if (selectedNeeds.length > 0 && !entry.categories.some((category) => selectedNeeds.includes(category))) {
+      return false;
+    }
     if (selectedCity !== 'all' && entry.city !== selectedCity) return false;
     if (words.length) {
       const haystack = [
         entry.name,
         entry.address,
         entry.city,
-        categoryLabels[entry.categoryId].en,
-        categoryLabels[entry.categoryId].es
+        entry.services?.en ?? '',
+        entry.services?.es ?? '',
+        entry.audience?.en ?? '',
+        entry.audience?.es ?? '',
+        ...entry.categories.map((category) => `${directoryCategoryLabels[category].en} ${directoryCategoryLabels[category].es}`)
       ].join(' ').toLowerCase();
       return words.some((word) => haystack.includes(word));
     }
     return true;
   });
+
+  const matches = baseMatches.filter(
+    (entry) => selectedCategory === 'all' || entry.categories.includes(selectedCategory)
+  );
+
+  const counts: Record<DirectoryCategoryId, number> = {
+    all: baseMatches.length,
+    food: baseMatches.filter((entry) => entry.categories.includes('food')).length,
+    workforce: baseMatches.filter((entry) => entry.categories.includes('workforce')).length,
+    community: baseMatches.filter((entry) => entry.categories.includes('community')).length,
+    'mental-health': baseMatches.filter((entry) => entry.categories.includes('mental-health')).length
+  };
+
+  // "All Resources" lists each organization once, under the first category it
+  // serves in tab order, so the groups agree with the category tabs.
+  const sectionFor = (entry: { categories: CategoryId[] }): CategoryId =>
+    sectionOrder.find((category) => entry.categories.includes(category)) ?? entry.categories[0];
+
+  const orderedMatches =
+    selectedCategory === 'all'
+      ? [...matches].sort(
+        (a, b) => sectionOrder.indexOf(sectionFor(a)) - sectionOrder.indexOf(sectionFor(b))
+      )
+      : matches;
 
   useEffect(() => { setVisibleCount(10); }, [selectedCategory, selectedNeeds.join(','), selectedCity, searchQuery, freeOnly]);
 
@@ -82,15 +112,26 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
     document.getElementById(id)?.focus();
   }, [visibleCount]);
 
-  const visibleMatches = matches.slice(0, visibleCount);
+  const visibleMatches = orderedMatches.slice(0, visibleCount);
   const organizationsLabel = currentLanguage === 'en' ? 'organization listings' : 'organizaciones';
   const samplesLabel = currentLanguage === 'en' ? 'sample programs' : 'programas de ejemplo';
   const eyebrow =
     selectedNeeds.length > 0
       ? (currentLanguage === 'en' ? 'Your selected needs' : 'Sus necesidades seleccionadas')
-      : selectedCategory === 'all'
-      ? t.filters.allCities
-      : categoryLabels[selectedCategory][currentLanguage];
+      : directoryCategoryLabels[selectedCategory][currentLanguage];
+
+  const sections: { category: CategoryId; items: typeof visibleMatches }[] =
+    selectedCategory === 'all'
+      ? sectionOrder
+        .map((category) => ({
+          category,
+          items: visibleMatches.filter((entry) => sectionFor(entry) === category)
+        }))
+        .filter((section) => section.items.length > 0)
+      : [{
+        category: selectedCategory as CategoryId,
+        items: visibleMatches
+      }];
 
   return (
     <section id="directory" aria-labelledby="directory-heading" className="qc-sec qc-shell scroll-mt-28">
@@ -98,8 +139,21 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
       <h2 id="directory-heading" className="qc-h2">
         {currentLanguage === 'en' ? 'Community Resource Directory' : 'Directorio de Recursos Comunitarios'}
       </h2>
+      <p className="qc-dsub">
+        {currentLanguage === 'en'
+          ? 'Each organization appears under the categories it actually serves. Choose a category to see only those resources, or keep All Resources to see every organization once.'
+          : 'Cada organización aparece en las categorías que realmente atiende. Elija una categoría para ver solo esos recursos o mantenga Todos los recursos para ver cada organización una vez.'}
+      </p>
 
-      {/* Filters */}
+      <CategoryTabs
+        currentLanguage={currentLanguage}
+        selectedCategory={selectedCategory}
+        counts={counts}
+        onSelectCategory={onSelectCategory}
+        panelId={PANEL_ID}
+      />
+
+      {/* Secondary filters */}
       <div className="qc-fs">
         <span>{t.filters.filterBy}:</span>
 
@@ -109,10 +163,9 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
             onSelectCategory('all');
             onSelectCity('all');
           }}
-          aria-pressed={selectedCategory === 'all' && selectedCity === 'all'}
-          className={`qc-t min-h-0 ${selectedCategory === 'all' && selectedCity === 'all' ? 'on' : ''}`}
+          className="qc-t min-h-0"
         >
-          {t.filters.allCities}
+          {t.filters.reset}
         </button>
 
         <label>
@@ -130,8 +183,8 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
       </p>
       <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">
         {currentLanguage === 'en'
-          ? `${matches.length} organization listings and ${demonstrationCount} sample programs found.`
-          : `Se encontraron ${matches.length} organizaciones y ${demonstrationCount} programas de ejemplo.`}
+          ? `${matches.length} organization listings in ${directoryCategoryLabels[selectedCategory].en} and ${demonstrationCount} sample programs found.`
+          : `Se encontraron ${matches.length} organizaciones en ${directoryCategoryLabels[selectedCategory].es} y ${demonstrationCount} programas de ejemplo.`}
       </p>
 
       {/* City selector (kept from the existing filter set) */}
@@ -154,76 +207,80 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         </select>
       </div>
 
-      {/* Listings */}
-      {matches.length === 0 ? (
-        <p className="py-10 text-[15px] text-[#5a5870]">
-          {currentLanguage === 'en'
-            ? 'No directory listings match these filters yet.'
-            : 'Ningún registro del directorio coincide con estos filtros.'}
-        </p>
-      ) : (
-        <div>
-          {visibleMatches.map((entry) => {
-            const saved = isEntrySaved(entry.id);
-            return (
-              <article key={entry.id} id={`directory-entry-${entry.id}`} tabIndex={-1} className="qc-row" aria-labelledby={`directory-name-${entry.id}`}>
-                <div>
-                  <h3 id={`directory-name-${entry.id}`} className="qc-nm">{entry.name}</h3>
-                  <p className="qc-org-badge">{currentLanguage === 'en' ? 'Organization website — check details' : 'Sitio de organización — confirme los datos'}</p>
-                  <div className="qc-mt">
-                    <span>{displayAddress(entry.address, currentLanguage)}</span>
-                    <span>{categoryLabels[entry.categoryId][currentLanguage]}</span>
-                  </div>
-                </div>
-                <div className="qc-ac">
-                  {entry.id === 'dir-ohlone-college-24' && (
-                    <button
-                      type="button"
-                      onClick={() => setIsOhloneAidOpen(true)}
-                      aria-haspopup="dialog"
-                      className="min-h-0"
-                    >
-                      {currentLanguage === 'en' ? 'Financial aid guide' : 'Guía de ayuda financiera'}
-                    </button>
-                  )}
-                  <a href={entry.website} target="_blank" rel="noopener noreferrer">
-                    {currentLanguage === 'en'
-                      ? `Visit ${entry.name}${new URL(entry.website).pathname === '/' ? ' homepage' : ' page'} (opens new tab)`
-                      : `Visitar ${entry.name}${new URL(entry.website).pathname === '/' ? ' (inicio)' : ' (información)'} (abre otra pestaña)`}
-                  </a>
-                  <button
-                    type="button"
-                    onClick={() => onToggleEntrySave(entry.id)}
-                    aria-pressed={saved}
-                    className="qc-primary min-h-0"
-                    aria-label={saved
-                      ? `${currentLanguage === 'en' ? 'Saved' : 'Guardado'}: ${entry.name}`
-                      : `${currentLanguage === 'en' ? 'Save' : 'Guardar'}: ${entry.name}`}
-                  >
-                    {saved
-                      ? (currentLanguage === 'en' ? 'Saved' : 'Guardado')
-                      : t.resourceCard.save}
-                  </button>
-                </div>
-              </article>
-            );
-          })}
-          {visibleCount < matches.length && (
-            <button
-              type="button"
-              className="qc-btn-sm qc-load-more"
-              onClick={() => {
-                focusNextRow.current = `directory-entry-${matches[visibleCount].id}`;
-                setVisibleCount((count) => count + 10);
-              }}
-            >
-              {currentLanguage === 'en'
-                ? `Show ${Math.min(10, matches.length - visibleCount)} more organizations`
-                : `Mostrar ${Math.min(10, matches.length - visibleCount)} organizaciones más`}
-            </button>
-          )}
-        </div>
-      )}
+      {/* Listings, grouped by category */}
+      <div
+        id={PANEL_ID}
+        role="tabpanel"
+        aria-labelledby={`directory-tab-${selectedCategory}`}
+        tabIndex={0}
+        className="qc-dir-panel"
+      >
+        {matches.length === 0 ? (
+          <p className="py-10 text-[15px] text-[#5a5870]">
+            {currentLanguage === 'en'
+              ? 'No directory listings match these filters yet. Try All Resources or another city.'
+              : 'Ningún registro del directorio coincide con estos filtros. Pruebe Todos los recursos u otra ciudad.'}
+          </p>
+        ) : (
+          <>
+            {sections.map((section) => (
+              <div
+                key={section.category}
+                className="qc-dir-section"
+                role="group"
+                aria-labelledby={`directory-section-${section.category}`}
+              >
+                <h3 id={`directory-section-${section.category}`} className="qc-dir-section-title">
+                  {sectionTitles[section.category][currentLanguage]}
+                  <span className="qc-dir-section-count">
+                    {(() => {
+                      const total = selectedCategory === 'all'
+                        ? matches.filter((entry) => sectionFor(entry) === section.category).length
+                        : matches.length;
+                      const shown = section.items.length;
+                      if (currentLanguage === 'en') {
+                        return shown < total ? `${shown} of ${total} listings` : `${total} ${total === 1 ? 'listing' : 'listings'}`;
+                      }
+                      return shown < total ? `${shown} de ${total} registros` : `${total} ${total === 1 ? 'registro' : 'registros'}`;
+                    })()}
+                  </span>
+                </h3>
+                {section.items.map((entry) => (
+                  <DirectoryEntryRow
+                    key={entry.id}
+                    entry={entry}
+                    currentLanguage={currentLanguage}
+                    isSaved={isEntrySaved(entry.id)}
+                    onToggleSave={onToggleEntrySave}
+                    onOpenOhloneAid={() => setIsOhloneAidOpen(true)}
+                  />
+                ))}
+              </div>
+            ))}
+
+            {visibleCount < orderedMatches.length && (
+              <button
+                type="button"
+                className="qc-btn-sm qc-load-more"
+                onClick={() => {
+                  focusNextRow.current = `directory-entry-${orderedMatches[visibleCount].id}`;
+                  setVisibleCount((count) => count + 10);
+                }}
+              >
+                {currentLanguage === 'en'
+                  ? `Show ${Math.min(10, orderedMatches.length - visibleCount)} more organizations`
+                  : `Mostrar ${Math.min(10, orderedMatches.length - visibleCount)} organizaciones más`}
+              </button>
+            )}
+          </>
+        )}
+      </div>
+
+      <p className="qc-filter-note">
+        {currentLanguage === 'en'
+          ? '“Not confirmed” means the organization does not publish that detail in this listing. Call them before you visit.'
+          : '“No confirmado” significa que la organización no publica ese dato en este registro. Llame antes de visitarla.'}
+      </p>
 
       {isOhloneAidOpen && (
         <OhloneFinancialAidDialog currentLanguage={currentLanguage} onClose={() => setIsOhloneAidOpen(false)} />
