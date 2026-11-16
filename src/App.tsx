@@ -29,7 +29,7 @@ import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
 import { CommunityConnector } from './community/components/CommunityConnector';
 import { SpeechProvider } from './speech/SpeechProvider';
-import { SpeechBar } from './speech/SpeechBar';
+import { ReadAloudLauncher } from './speech/ReadAloudLauncher';
 import { ReadAloudButton } from './speech/ReadAloudButton';
 
 export function App() {
@@ -266,8 +266,8 @@ export function App() {
         setActiveView={setActiveView}
       />
 
-      {/* Read-aloud controls sit directly under the navigation on every page. */}
-      <SpeechBar language={currentLanguage} />
+      {/* One side "Read aloud" button opens the reading controls on every page. */}
+      <ReadAloudLauncher language={currentLanguage} resetKey={activeView} />
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
       {activeView === 'copilot' ? (

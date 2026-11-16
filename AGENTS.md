@@ -32,8 +32,8 @@ Symptom if this breaks: the preview shows `Blocked request. This host ("3000-…
 ## Read aloud (accessibility)
 
 - `src/speech/SpeechProvider.tsx` owns the single `speechSynthesis` utterance: play, pause, resume, stop, restart. Starting any passage cancels the previous one, so two voices never talk over each other, and changing page/view/language stops speech (`resetKey` prop from `App`).
-- `src/speech/ReadAloudButton.tsx` is the labelled "Read aloud" button placed next to content; mounting it registers the passage with the provider, which is how `src/speech/SpeechBar.tsx` (the control bar under the header) can list everything readable on the page, grouped by kind.
-- The bar also renders the spoken text as a visible transcript for people who cannot or do not want audio.
+- `src/speech/ReadAloudButton.tsx` is the labelled "Read aloud" button placed next to content; mounting it registers the passage with the provider.
+- `src/speech/ReadAloudLauncher.tsx` is the single, always-visible "Read aloud" control on the side of the page (bottom-left pill below 1080px, right-edge tab above). It opens `src/speech/ReadAloudPanel.tsx`, a compact panel that lists every registered passage grouped by kind, holds play/pause/resume/stop/restart, and repeats the spoken text as a visible transcript. Closing the panel (button or Escape) stops speech; a page or language change closes it too.
 - **The headless preview browser has no installed voice engine** (`speechSynthesis.getVoices()` returns `[]`), so `speak()` fails immediately and the bar shows "Read aloud could not start in this browser". Audible playback and pause/resume can therefore only be checked in a real browser; the control states, passage registration and transcript are testable in the preview.
 
 ## Verifying

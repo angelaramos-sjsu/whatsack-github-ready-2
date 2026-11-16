@@ -91,8 +91,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const navigationSpeech = currentLanguage === 'en'
-    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls are directly under the menu.`
-    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta están debajo del menú.`;
+    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls open from the Read aloud button at the side of the page.`
+    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta se abren con el botón Leer en voz alta al lado de la página.`;
 
   return (
     <header className="relative z-40 bg-white">
