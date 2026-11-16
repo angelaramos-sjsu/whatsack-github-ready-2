@@ -15,6 +15,8 @@ import type { SavedScriptedStep } from './data/answers';
 import { Navbar } from './components/Navbar';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
+import { HomeCategoryGrid } from './components/HomeCategoryGrid';
+import type { DirectoryCategoryId } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { ResourceCard } from './components/ResourceCard';
 import { CommunityDirectory } from './components/CommunityDirectory';
@@ -77,6 +79,19 @@ export function App() {
   const [highContrast, setHighContrast] = useState<boolean>(false);
   const [textSize, setTextSize] = useState<TextSize>('medium');
 
+  // Short confirmation message shared by every save control.
+  const [saveNotice, setSaveNotice] = useState<string>('');
+  const saveNoticeTimer = useRef<number | null>(null);
+  const announceSave = (message: string) => {
+    setSaveNotice(message);
+    if (saveNoticeTimer.current) window.clearTimeout(saveNoticeTimer.current);
+    saveNoticeTimer.current = window.setTimeout(() => setSaveNotice(''), 3200);
+  };
+
+  useEffect(() => () => {
+    if (saveNoticeTimer.current) window.clearTimeout(saveNoticeTimer.current);
+  }, []);
+
   const t = translations[currentLanguage];
 
   useEffect(() => {
@@ -124,19 +139,41 @@ export function App() {
   };
 
   const handleToggleSave = (resourceId: string) => {
-    setSavedResourceIds((prev) => 
-      prev.includes(resourceId) 
-        ? prev.filter((id) => id !== resourceId) 
+    const wasSaved = savedResourceIds.includes(resourceId);
+    setSavedResourceIds((prev) =>
+      prev.includes(resourceId)
+        ? prev.filter((id) => id !== resourceId)
         : [...prev, resourceId]
+    );
+    const title = demonstrationResources.find((resource) => resource.id === resourceId)?.title[currentLanguage];
+    announceSave(
+      wasSaved
+        ? (currentLanguage === 'en' ? 'Removed from My Next Steps' : 'Eliminado de Mis Próximos Pasos') + (title ? `: ${title}` : '')
+        : (currentLanguage === 'en' ? 'Saved to My Next Steps' : 'Guardado en Mis Próximos Pasos') + (title ? `: ${title}` : '')
     );
   };
 
   const handleToggleDirectorySave = (entryId: string) => {
+    const wasSaved = savedDirectoryIds.includes(entryId);
     setSavedDirectoryIds((prev) =>
       prev.includes(entryId)
         ? prev.filter((id) => id !== entryId)
         : [...prev, entryId]
     );
+    const name = directoryEntries.find((entry) => entry.id === entryId)?.name;
+    announceSave(
+      wasSaved
+        ? (currentLanguage === 'en' ? 'Removed from My Next Steps' : 'Eliminado de Mis Próximos Pasos') + (name ? `: ${name}` : '')
+        : (currentLanguage === 'en' ? 'Saved to My Next Steps' : 'Guardado en Mis Próximos Pasos') + (name ? `: ${name}` : '')
+    );
+  };
+
+  // One shared category entry point for the homepage cards, the navigation
+  // menu and the extension sidebar.
+  const openCategory = (category: DirectoryCategoryId) => {
+    setIntakeSelectedNeeds([]);
+    setSelectedCategory(category);
+    setActiveView('resources');
   };
 
   // Handle saving introduction profile
@@ -166,6 +203,18 @@ export function App() {
     setUserProfile(null);
     resetAllFilters();
   };
+
+  // Counts for the homepage category cards, taken from the same data the
+  // directory and sample-program sections use.
+  const categoryCounts = useMemo(() => {
+    const directoryCounts: Record<CategoryId, number> = { food: 0, workforce: 0, community: 0, 'mental-health': 0 };
+    directoryEntries.forEach((entry) => {
+      entry.categories.forEach((category) => { directoryCounts[category] += 1; });
+    });
+    const sampleCounts: Record<CategoryId, number> = { food: 0, workforce: 0, community: 0, 'mental-health': 0 };
+    demonstrationResources.forEach((resource) => { sampleCounts[resource.categoryId] += 1; });
+    return { directoryCounts, sampleCounts };
+  }, []);
 
   // Available unique cities for filtering
   const availableCities = useMemo(() => {
@@ -264,10 +313,15 @@ export function App() {
         onTextSizeChange={handleTextSizeChange}
         activeView={activeView}
         setActiveView={setActiveView}
+        onOpenCategory={openCategory}
+        onOpenExtension={() => setActiveView('extension')}
       />
 
-      {/* One side "Read aloud" button opens the reading controls on every page. */}
-      <ReadAloudLauncher language={currentLanguage} resetKey={activeView} />
+      {/* One side "Read aloud" button opens the reading controls on every page
+          except the extension demo, whose sidebar sits in that same corner. */}
+      {activeView !== 'extension' && (
+        <ReadAloudLauncher language={currentLanguage} resetKey={activeView} />
+      )}
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
       {activeView === 'copilot' ? (
@@ -292,6 +346,7 @@ export function App() {
           currentLanguage={currentLanguage}
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
+          onOpenCategory={openCategory}
         />
       ) : activeView === 'community' ? (
         <CommunityConnector
@@ -357,8 +412,12 @@ export function App() {
             userProfile={userProfile}
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
-            selectedCategory={selectedCategory}
-            onSelectCategory={(cat) => { setIntakeSelectedNeeds([]); setSelectedCategory(cat); setActiveView('resources'); }}
+          />
+          <HomeCategoryGrid
+            currentLanguage={currentLanguage}
+            directoryCounts={categoryCounts.directoryCounts}
+            sampleCounts={categoryCounts.sampleCounts}
+            onOpenCategory={openCategory}
           />
           <section className="qc-shell qc-home-start" aria-labelledby="start-here-heading">
             <div className="qc-home-start-card">
@@ -594,6 +653,7 @@ export function App() {
             setSelectedCategory(cat);
             setActiveView('resources');
           }}
+          onOpenExtension={() => setActiveView('extension')}
         />
       )}
 
@@ -677,6 +737,11 @@ export function App() {
         }}
         onOpenInsights={(res) => setSelectedResourceForInsights(res)}
       />
+
+      {/* Short confirmation after saving or removing an item. */}
+      <div className="qc-save-toast" role="status" aria-live="polite" aria-atomic="true">
+        {saveNotice}
+      </div>
     </div>
     </SpeechProvider>
   );

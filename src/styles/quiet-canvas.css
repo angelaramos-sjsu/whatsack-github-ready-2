@@ -746,7 +746,7 @@
   padding-top: 56px;
   padding-bottom: 70px;
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(220px, 1fr);
+  grid-template-columns: minmax(0, 1.4fr) minmax(180px, 1fr) minmax(180px, 1fr);
   gap: 50px;
 }
 

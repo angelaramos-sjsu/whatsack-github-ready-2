@@ -4,6 +4,8 @@ import { Language, TextSize } from '../types';
 import { translations } from '../data/translations';
 import { Menu, X } from 'lucide-react';
 import { ReadAloudButton } from '../speech/ReadAloudButton';
+import { CategoryMenu } from './CategoryMenu';
+import { DirectoryCategoryId, directoryCategoryLabels, directoryCategoryOrder } from './CategoryTabs';
 
 interface NavbarProps {
   currentLanguage: Language;
@@ -17,6 +19,8 @@ interface NavbarProps {
   onTextSizeChange: (size: TextSize) => void;
   activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community';
   setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community') => void;
+  onOpenCategory: (category: DirectoryCategoryId) => void;
+  onOpenExtension: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -30,11 +34,14 @@ export const Navbar: React.FC<NavbarProps> = ({
   textSize,
   onTextSizeChange,
   activeView,
-  setActiveView
+  setActiveView,
+  onOpenCategory,
+  onOpenExtension
 }) => {
   const t = translations[currentLanguage];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAccOpen, setIsAccOpen] = useState(false);
+  const [isCatOpen, setIsCatOpen] = useState(false);
 
   const goHome = () => {
     setActiveView('home');
@@ -62,28 +69,33 @@ export const Navbar: React.FC<NavbarProps> = ({
       ];
 
   const navLinks = [
-    { label: t.nav.home, onClick: goHome, active: activeView === 'home' },
+    { id: 'home' as const, label: t.nav.home, onClick: goHome, active: activeView === 'home' },
     {
+      id: 'copilot' as const,
       label: currentLanguage === 'en' ? 'Ask WhatSack' : 'Preguntar a WhatSack',
       onClick: () => { setActiveView('copilot'); setIsMenuOpen(false); },
       active: activeView === 'copilot'
     },
     {
+      id: 'resources' as const,
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
       onClick: () => navigate('resources'),
       active: activeView === 'resources'
     },
     {
+      id: 'community' as const,
       label: currentLanguage === 'en' ? 'Community' : 'Comunidad',
       onClick: () => navigate('community'),
       active: activeView === 'community'
     },
     {
+      id: 'saved' as const,
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',
       onClick: () => { onOpenSavedDrawer(); setIsMenuOpen(false); },
       active: false
     },
     {
+      id: 'about' as const,
       label: currentLanguage === 'en' ? 'About' : 'Acerca de',
       onClick: () => navigate('about'),
       active: activeView === 'about'
@@ -91,8 +103,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const navigationSpeech = currentLanguage === 'en'
-    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls open from the Read aloud button at the side of the page.`
-    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta se abren con el botón Leer en voz alta al lado de la página.`;
+    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Find Resources opens the four resource categories. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls open from the Read aloud button at the side of the page.`
+    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Buscar Recursos abre las cuatro categorías de recursos. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta se abren con el botón Leer en voz alta al lado de la página.`;
 
   return (
     <header className="relative z-40 bg-white">
@@ -131,17 +143,35 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             <div className="qc-nav-links hidden lg:flex">
-              {navLinks.map((link) => (
-                <button
-                  key={link.label}
-                  type="button"
-                  onClick={link.onClick}
-                  aria-current={link.active ? 'page' : undefined}
-                  className={`qc-link min-h-0 ${link.active ? 'on' : ''}`}
-                >
-                  {link.label}
-                </button>
-              ))}
+              {navLinks.map((link) =>
+                link.id === 'resources' ? (
+                  <CategoryMenu
+                    key={link.id}
+                    label={link.label}
+                    currentLanguage={currentLanguage}
+                    active={link.active}
+                    open={isCatOpen}
+                    onOpenChange={(open) => {
+                      setIsCatOpen(open);
+                      if (open) setIsAccOpen(false);
+                    }}
+                    onSelectCategory={(category) => {
+                      setIsCatOpen(false);
+                      onOpenCategory(category);
+                    }}
+                  />
+                ) : (
+                  <button
+                    key={link.id}
+                    type="button"
+                    onClick={link.onClick}
+                    aria-current={link.active ? 'page' : undefined}
+                    className={`qc-link min-h-0 ${link.active ? 'on' : ''}`}
+                  >
+                    {link.label}
+                  </button>
+                )
+              )}
             </div>
           </div>
 
@@ -153,7 +183,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <details
               className="qc-acc"
               open={isAccOpen}
-              onToggle={(e) => setIsAccOpen(e.currentTarget.open)}
+              onToggle={(e) => {
+                setIsAccOpen(e.currentTarget.open);
+                if (e.currentTarget.open) setIsCatOpen(false);
+              }}
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
@@ -215,7 +248,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="qc-shell py-5 flex flex-col gap-3 text-[0.875rem] tracking-[.06em]">
             {navLinks.map((link) => (
               <button
-                key={link.label}
+                key={link.id}
                 type="button"
                 onClick={link.onClick}
                 aria-current={link.active ? 'page' : undefined}
@@ -224,6 +257,34 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {link.label}
               </button>
             ))}
+
+            <div className="qc-m-cats" role="group" aria-label={currentLanguage === 'en' ? 'Resource categories' : 'Categorías de recursos'}>
+              <span className="qc-m-cats-title">{currentLanguage === 'en' ? 'Categories' : 'Categorías'}</span>
+              {directoryCategoryOrder.map((category) => (
+                <button
+                  key={category}
+                  type="button"
+                  className="qc-m-cat"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                    onOpenCategory(category);
+                  }}
+                >
+                  {directoryCategoryLabels[category][currentLanguage]}
+                </button>
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setIsMenuOpen(false);
+                onOpenExtension();
+              }}
+              className="qc-link min-h-0 self-start"
+            >
+              {currentLanguage === 'en' ? 'Browser extension demo' : 'Demostración de la extensión'}
+            </button>
           </div>
         </div>
       )}

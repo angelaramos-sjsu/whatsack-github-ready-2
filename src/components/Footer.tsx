@@ -6,12 +6,14 @@ interface FooterProps {
   currentLanguage: Language;
   onOpenDisclaimer: () => void;
   onNavigateCategory: (cat: any) => void;
+  onOpenExtension: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   currentLanguage,
   onOpenDisclaimer,
-  onNavigateCategory
+  onNavigateCategory,
+  onOpenExtension
 }) => {
   const t = translations[currentLanguage];
 
@@ -40,6 +42,16 @@ export const Footer: React.FC<FooterProps> = ({
           </button>
           <button type="button" className="c min-h-0" onClick={() => onNavigateCategory('community')}>
             {t.categories.community}
+          </button>
+        </div>
+
+        <div>
+          <h4>{currentLanguage === 'en' ? 'Explore' : 'Explorar'}</h4>
+          <button type="button" className="c min-h-0" onClick={() => onNavigateCategory('all')}>
+            {currentLanguage === 'en' ? 'All resources' : 'Todos los recursos'}
+          </button>
+          <button type="button" className="c min-h-0" onClick={onOpenExtension}>
+            {currentLanguage === 'en' ? 'Browser extension demo' : 'Demostración de la extensión'}
           </button>
         </div>
 

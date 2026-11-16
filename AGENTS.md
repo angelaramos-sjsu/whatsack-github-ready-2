@@ -23,6 +23,23 @@ The pinned Vite is **5.4.21**, which rejects unknown `Host` headers but does *no
 
 Symptom if this breaks: the preview shows `Blocked request. This host ("3000-…") is not allowed.` with HTTP 403.
 
+## Design standards
+
+- `src/styles/design-system.css` (imported last in `src/main.tsx`) holds the shared tokens — brand green `#047857`, mint surfaces, ink/muted text, radii, shadows, and the Inter / Plus Jakarta display pairing — plus the homepage category cards, the navigation category menu, mobile category chips and the save confirmation toast.
+- New UI should use those variables (`var(--qc-green)`, `var(--qc-radius-lg)`, …) and the existing `.qc-btn` / `.qc-card` shapes rather than inventing new colours. Font sizes must stay in `rem` so the text-size control still scales them.
+
+## Categories, homepage and navigation
+
+- The four categories are `food`, `workforce`, `community`, `mental-health` (`CategoryId`); short labels and tab order live in `src/components/CategoryTabs.tsx`.
+- `openCategory()` in `App` is the single entry point: it clears intake needs, sets the category and opens the resources view. `HomeCategoryGrid` (homepage cards), the "Find Resources" menu in `Navbar`/`CategoryMenu`, the mobile menu chips and the extension sidebar all call it.
+- Category counts on the homepage come from `directoryEntries` (one count per category per entry) and `demonstrationResources`, so they always match the directory tabs.
+
+## Browser extension demo
+
+- Reachable from the footer ("Browser extension demo") and the mobile menu; the view is `src/components/SimulatedExtensionSidebar.tsx`.
+- The companion pane can be minimized (narrow rail with an expand button), expanded (wider pane) or closed (returns home); on phones the pane stacks above the simulated portal. Its category chips open the same directory via `onOpenCategory`.
+- The read-aloud launcher is hidden while the extension demo is open because its sidebar uses that screen edge.
+
 ## Text size (accessibility)
 
 - The four modes are `small | medium | large | xlarge` (`TextSize` in `src/types/index.ts`), picked in the header's Accessibility menu and applied as `text-small` / `text-large` / `text-xlarge` on `<html>` (`src/index.css`); medium is the unmodified default.

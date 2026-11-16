@@ -1,0 +1,307 @@
+/* ==========================================================================
+   Shared design standards — the single place new UI takes its colours,
+   spacing, radii, type voices and shadows from. Existing Quiet Canvas rules
+   stay as they are; new components reuse these tokens so they look native.
+   ========================================================================== */
+
+:root {
+  /* Brand */
+  --qc-green: #047857;
+  --qc-green-hover: #059669;
+  --qc-green-dark: #03543b;
+  --qc-mint: #f7fdfa;
+  --qc-mint-2: #eafaf1;
+  --qc-line: #e3f3ea;
+  --qc-line-strong: #cdeedd;
+
+  /* Text */
+  --qc-ink: #1a1a24;
+  --qc-body: #414155;
+  --qc-muted: #5a5870;
+  --qc-surface: #ffffff;
+
+  /* Shape and depth */
+  --qc-radius-sm: 8px;
+  --qc-radius-md: 10px;
+  --qc-radius-lg: 16px;
+  --qc-radius-xl: 22px;
+  --qc-shadow-sm: 0 6px 18px rgb(4 120 87 / 12%);
+  --qc-shadow-md: 0 12px 30px rgb(4 120 87 / 10%);
+
+  /* Type */
+  --qc-font: Inter, system-ui, sans-serif;
+  --qc-font-display: "Plus Jakarta Sans", Inter, system-ui, sans-serif;
+}
+
+/* — Homepage: one card per resource category — */
+.qc-catgrid-section {
+  padding-top: clamp(44px, 6vw, 76px);
+}
+
+.qc-catgrid-head {
+  max-width: 46rem;
+}
+
+.qc-catgrid {
+  list-style: none;
+  margin: clamp(20px, 3vw, 30px) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+@media (min-width: 640px) {
+  .qc-catgrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .qc-catgrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.qc-catcard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 22px 20px;
+  background: var(--qc-surface);
+  border: 1px solid var(--qc-line);
+  border-radius: var(--qc-radius-lg);
+  color: var(--qc-ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.qc-catcard:hover {
+  border-color: var(--qc-green);
+  box-shadow: var(--qc-shadow-md);
+  transform: translateY(-2px);
+}
+
+.qc-catcard:focus-visible {
+  outline: 3px solid var(--qc-green);
+  outline-offset: 3px;
+}
+
+.qc-catcard__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 14px;
+  border-radius: 12px;
+  background: var(--qc-mint-2);
+  color: var(--qc-green);
+}
+
+.qc-catcard__icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.qc-catcard__title {
+  font-family: var(--qc-font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+
+.qc-catcard__desc {
+  flex: 1 1 auto;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--qc-body);
+}
+
+.qc-catcard__meta {
+  margin-top: 14px;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  color: var(--qc-muted);
+}
+
+.qc-catcard__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  margin-top: 10px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--qc-green);
+}
+
+.qc-catcard__cta svg {
+  width: 1em;
+  height: 1em;
+}
+
+.qc-catcard:hover .qc-catcard__cta {
+  color: var(--qc-green-dark);
+}
+
+/* — Main navigation: "Find Resources" category menu — */
+.qc-catmenu {
+  position: relative;
+}
+
+.qc-catmenu-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  min-height: 44px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.qc-catmenu-summary::-webkit-details-marker {
+  display: none;
+}
+
+.qc-catmenu-caret {
+  width: 1em;
+  height: 1em;
+  transition: transform 180ms ease;
+}
+
+.qc-catmenu[open] .qc-catmenu-caret {
+  transform: rotate(180deg);
+}
+
+.qc-catmenu-panel {
+  position: absolute;
+  z-index: 60;
+  top: calc(100% + 10px);
+  left: -12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 13.5rem;
+  padding: 8px;
+  background: var(--qc-surface);
+  border: 1px solid var(--qc-line-strong);
+  border-radius: 14px;
+  box-shadow: 0 18px 40px rgb(4 120 87 / 14%);
+}
+
+.qc-catmenu-title {
+  padding: 6px 10px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--qc-muted);
+}
+
+.qc-catmenu-panel button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 9px 10px;
+  border: 0;
+  border-radius: var(--qc-radius-sm);
+  background: none;
+  color: var(--qc-ink);
+  font: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.qc-catmenu-panel button:hover {
+  background: var(--qc-mint-2);
+  color: var(--qc-green-dark);
+}
+
+.qc-catmenu-panel button:focus-visible {
+  outline: 3px solid var(--qc-green);
+  outline-offset: 2px;
+}
+
+/* — Mobile navigation: category shortcuts — */
+.qc-m-cats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--qc-line);
+}
+
+.qc-m-cats-title {
+  flex-basis: 100%;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--qc-muted);
+}
+
+.qc-m-cat {
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid var(--qc-line-strong);
+  border-radius: 999px;
+  background: var(--qc-surface);
+  color: var(--qc-ink);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.qc-m-cat:hover {
+  border-color: var(--qc-green);
+  color: var(--qc-green-dark);
+}
+
+.qc-m-cat:focus-visible {
+  outline: 3px solid var(--qc-green);
+  outline-offset: 2px;
+}
+
+/* — Save confirmation — */
+.qc-save-toast {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: calc(5.25rem + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  max-width: min(28rem, calc(100vw - 2rem));
+  padding: 0.7rem 1rem;
+  border-radius: var(--qc-radius-md);
+  background: var(--qc-green-dark);
+  color: #fff;
+  font-family: var(--qc-font);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  box-shadow: 0 12px 30px rgb(4 67 49 / 28%);
+  pointer-events: none;
+}
+
+.qc-save-toast:empty {
+  display: none;
+}
+
+@media (min-width: 1080px) {
+  .qc-save-toast {
+    bottom: 1.5rem;
+  }
+}

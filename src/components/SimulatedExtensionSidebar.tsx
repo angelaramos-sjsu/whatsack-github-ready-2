@@ -16,21 +16,24 @@ import {
   Send,
   Minimize2,
   Maximize2,
-  Layers,
-  ChevronRight,
-  Info
+  PanelRightClose,
+  PanelRightOpen,
+  Layers
 } from 'lucide-react';
+import { DirectoryCategoryId, directoryCategoryLabels, directoryCategoryOrder } from './CategoryTabs';
 
 interface SimulatedExtensionSidebarProps {
   currentLanguage: Language;
   onClose: () => void;
   onNavigateHome: () => void;
+  onOpenCategory: (category: DirectoryCategoryId) => void;
 }
 
 export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps> = ({
   currentLanguage,
   onClose,
-  onNavigateHome
+  onNavigateHome,
+  onOpenCategory
 }) => {
   const t = translations[currentLanguage];
   const [selectedPortal, setSelectedPortal] = useState<'calfresh' | 'edd' | 'deanza'>('calfresh');
@@ -46,6 +49,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isCompanionCollapsed, setIsCompanionCollapsed] = useState(false);
 
   const portals = {
     calfresh: {
@@ -152,6 +156,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
   return (
     <div className={`extension-shell bg-slate-900 min-h-screen text-slate-100 flex flex-col ${isMinimized ? 'extension-minimized' : ''} ${isExpanded ? 'extension-expanded' : ''}`}>
+      <h1 className="sr-only">{t.extension.title}</h1>
       {/* Top Extension Demo Header */}
       <div className="extension-header bg-slate-950 border-b border-slate-800 px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -164,8 +169,8 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
           <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
             <Sparkles className="w-4 h-4 text-emerald-400" />
             <span>{t.extension.title}</span>
-            <span className="text-[0.625rem] bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full">
-              Chrome & Safari Prototype Extension
+            <span className="hidden sm:inline text-[0.625rem] bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full">
+              {currentLanguage === 'en' ? 'Chrome & Safari Prototype Extension' : 'Extensión prototipo para Chrome y Safari'}
             </span>
           </div>
         </div>
@@ -174,8 +179,12 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
           <button
             onClick={() => setIsMinimized((value) => !value)}
             className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
-            title={isMinimized ? 'Restore extension preview' : 'Minimize extension preview'}
-            aria-label={isMinimized ? 'Restore extension preview' : 'Minimize extension preview'}
+            title={isMinimized
+              ? (currentLanguage === 'en' ? 'Restore extension preview' : 'Restaurar la vista de la extensión')
+              : (currentLanguage === 'en' ? 'Minimize extension preview' : 'Minimizar la vista de la extensión')}
+            aria-label={isMinimized
+              ? (currentLanguage === 'en' ? 'Restore extension preview' : 'Restaurar la vista de la extensión')
+              : (currentLanguage === 'en' ? 'Minimize extension preview' : 'Minimizar la vista de la extensión')}
           >
             {isMinimized ? <Maximize2 className="w-4 h-4" /> : <Minimize2 className="w-4 h-4" />}
           </button>
@@ -247,7 +256,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
       {/* Dual Workspace View: Simulated Website (Left 65%) + WhatSack Extension Sidebar (Right 35%) */}
       <div className="extension-workspace flex-1 flex flex-col lg:flex-row overflow-hidden">
         {/* LEFT PANE: Simulated Government Webpage */}
-        <div className="flex-1 bg-white text-slate-900 p-6 sm:p-8 overflow-y-auto">
+        <div className="order-2 lg:order-1 flex-1 bg-white text-slate-900 p-6 sm:p-8 overflow-y-auto">
           {/* Simulated Browser Address Bar */}
           <div className="flex items-center gap-2 p-2 bg-slate-100 rounded-xl mb-6 text-xs text-slate-600 border border-slate-200">
             <span className="text-slate-400">🔒</span>
@@ -327,35 +336,74 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         </div>
 
         {/* RIGHT PANE: The Simulated WhatSack Extension Sidebar */}
-        <div className={`w-full ${isExpanded ? 'lg:w-[520px]' : 'lg:w-[420px]'} bg-slate-900 border-t lg:border-t-0 lg:border-l border-slate-800 flex flex-col h-full overflow-hidden transition-[width] duration-300`}>
-          {/* Extension Header */}
-          <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-xs">
+        <aside
+          aria-label={currentLanguage === 'en' ? 'WhatSack companion sidebar' : 'Barra lateral del compañero WhatSack'}
+          className={`order-1 lg:order-2 w-full ${isCompanionCollapsed ? 'lg:w-[6rem]' : isExpanded ? 'lg:w-[520px]' : 'lg:w-[420px]'} bg-slate-900 border-b lg:border-b-0 lg:border-t-0 lg:border-l border-slate-800 flex flex-col h-full overflow-hidden transition-[width] duration-300`}
+        >
+          {isCompanionCollapsed ? (
+            /* Minimized sidebar: still one click from the full controls. */
+            <div className="flex lg:flex-col items-center justify-between lg:justify-center gap-3 p-4 h-full">
+              <div className="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-lg shadow-xs" aria-hidden="true">
                 🌱
               </div>
-              <div>
-                <h3 className="font-extrabold text-sm text-white flex items-center gap-1.5">
-                  <span>WhatSack Extension</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                </h3>
-                <span className="text-[0.625rem] text-emerald-400 font-medium">
-                  {currentLanguage === 'en' ? 'Active Web Companion' : 'Acompañante Web Activo'}
-                </span>
-              </div>
+              <p className="text-xs font-bold text-emerald-300 text-center leading-snug">
+                {currentLanguage === 'en' ? 'Companion sidebar is minimized' : 'La barra del compañero está minimizada'}
+              </p>
+              <button
+                type="button"
+                onClick={() => setIsCompanionCollapsed(false)}
+                className="flex items-center gap-2 min-h-[44px] px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-emerald-300 text-xs font-bold hover:bg-slate-700 focus-visible:ring-2 focus-visible:ring-emerald-400"
+                aria-expanded={false}
+                aria-controls="extension-companion-body"
+              >
+                <PanelRightOpen className="w-4 h-4" aria-hidden="true" />
+                <span>{currentLanguage === 'en' ? 'Expand sidebar' : 'Expandir barra'}</span>
+              </button>
             </div>
+          ) : (
+            <>
+              {/* Extension Header */}
+              <div className="p-4 bg-slate-950 border-b border-slate-800 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white shadow-xs" aria-hidden="true">
+                    🌱
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-sm text-white flex items-center gap-1.5">
+                      <span>WhatSack Extension</span>
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                    </h3>
+                    <span className="text-[0.625rem] text-emerald-400 font-medium">
+                      {currentLanguage === 'en' ? 'Active Web Companion' : 'Acompañante Web Activo'}
+                    </span>
+                  </div>
+                </div>
 
-            <button
-              onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
-              title="Close extension preview"
-            >
-              <SidebarClose className="w-4 h-4" />
-            </button>
-          </div>
+                <div className="flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsCompanionCollapsed(true)}
+                    className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 focus-visible:ring-2 focus-visible:ring-emerald-400"
+                    title={currentLanguage === 'en' ? 'Minimize companion sidebar' : 'Minimizar la barra del compañero'}
+                    aria-label={currentLanguage === 'en' ? 'Minimize companion sidebar' : 'Minimizar la barra del compañero'}
+                    aria-controls="extension-companion-body"
+                  >
+                    <PanelRightClose className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 focus-visible:ring-2 focus-visible:ring-emerald-400"
+                    title={currentLanguage === 'en' ? 'Close extension preview' : 'Cerrar la vista de la extensión'}
+                    aria-label={currentLanguage === 'en' ? 'Close extension preview' : 'Cerrar la vista de la extensión'}
+                  >
+                    <SidebarClose className="w-4 h-4" aria-hidden="true" />
+                  </button>
+                </div>
+              </div>
 
-          {/* Extension Body */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+              {/* Extension Body */}
+              <div id="extension-companion-body" className="flex-1 overflow-y-auto p-4 space-y-4">
             {/* Status Card */}
             <div className="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs">
               <div className="flex items-center gap-2 text-emerald-300 font-bold mb-1">
@@ -365,6 +413,33 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               <p className="text-emerald-100 leading-relaxed font-medium">
                 {currentPortalData.decodedPlainEnglish}
               </p>
+            </div>
+
+            {/* Category shortcuts, so the sidebar reaches the whole site */}
+            <div className="p-3.5 rounded-2xl bg-slate-800/60 border border-slate-700 space-y-2">
+              <span className="text-[0.6875rem] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-emerald-400" aria-hidden="true" />
+                <span>{currentLanguage === 'en' ? 'Browse support categories' : 'Ver categorías de apoyo'}</span>
+              </span>
+              <div className="flex flex-wrap gap-2">
+                {directoryCategoryOrder.map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => onOpenCategory(category)}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-900 border border-slate-700 text-slate-200 hover:border-emerald-400 hover:text-emerald-300 min-h-[2.75rem] focus-visible:ring-2 focus-visible:ring-emerald-400"
+                  >
+                    {directoryCategoryLabels[category][currentLanguage]}
+                  </button>
+                ))}
+              </div>
+              <button
+                type="button"
+                onClick={() => onOpenCategory('all')}
+                className="text-[0.6875rem] text-emerald-400 font-bold hover:underline min-h-[2.75rem]"
+              >
+                {currentLanguage === 'en' ? 'Open the full resource directory →' : 'Abrir el directorio completo →'}
+              </button>
             </div>
 
             {/* Hidden Barriers & Myths Decoded */}
@@ -459,7 +534,9 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               {currentLanguage === 'en' ? 'Back to Full App' : 'Volver a la App'}
             </button>
           </div>
-        </div>
+            </>
+          )}
+        </aside>
       </div>
     </div>
   );
