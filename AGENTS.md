@@ -31,6 +31,8 @@ Symptom if this breaks: the preview shows `Blocked request. This host ("3000-…
 ## Categories, homepage and navigation
 
 - The four categories are `food`, `workforce`, `community`, `mental-health` (`CategoryId`); short labels and tab order live in `src/components/CategoryTabs.tsx`.
+- The homepage's three-step strip is `HomeHowItWorks` (`.qc-how*` in `design-system.css`); its buttons focus the hero search, scroll to the category grid, or open My Next Steps.
+- Filter empty states use the shared `.qc-empty` block (`design-system.css`) with a recovery button instead of plain text.
 - `openCategory()` in `App` is the single entry point: it clears intake needs, sets the category and opens the resources view. `HomeCategoryGrid` (homepage cards), the "Find Resources" menu in `Navbar`/`CategoryMenu`, the mobile menu chips and the extension sidebar all call it.
 - Category counts on the homepage come from `directoryEntries` (one count per category per entry) and `demonstrationResources`, so they always match the directory tabs.
 

@@ -16,6 +16,7 @@ import { Navbar } from './components/Navbar';
 import { DisclaimerBanner } from './components/DisclaimerBanner';
 import { HeroConversationalSearch } from './components/HeroConversationalSearch';
 import { HomeCategoryGrid } from './components/HomeCategoryGrid';
+import { HomeHowItWorks } from './components/HomeHowItWorks';
 import type { DirectoryCategoryId } from './components/CategoryTabs';
 import { IntroductionForm } from './components/IntroductionForm';
 import { ResourceCard } from './components/ResourceCard';
@@ -406,6 +407,18 @@ export function App() {
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}
           />
+          <HomeHowItWorks
+            currentLanguage={currentLanguage}
+            onFocusSearch={() => {
+              const input = document.getElementById('search-input') as HTMLInputElement | null;
+              input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              input?.focus({ preventScroll: true });
+            }}
+            onBrowseCategories={() => {
+              document.getElementById('home-categories-heading')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }}
+            onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)}
+          />
           <HomeCategoryGrid
             currentLanguage={currentLanguage}
             directoryCounts={categoryCounts.directoryCounts}
@@ -568,6 +581,7 @@ export function App() {
             searchQuery={searchQuery}
             freeOnly={freeOnly}
             onToggleFreeOnly={() => setFreeOnly(!freeOnly)}
+            onResetFilters={resetAllFilters}
             demonstrationCount={filteredResources.length}
             isEntrySaved={(entryId) => savedDirectoryIds.includes(entryId)}
             onToggleEntrySave={handleToggleDirectorySave}
@@ -584,22 +598,20 @@ export function App() {
                 : `${filteredResources.length} programas de ejemplo. No son servicios reales; no use los números ni las direcciones de ejemplo.`}
             </p>
             {filteredResources.length === 0 ? (
-              <div className="border-t border-[#f0eef8] py-16 text-center">
-                <h3 className="text-[1.125rem] font-medium text-[#1A1A24]">
+              <div className="qc-empty">
+                <h3 className="qc-empty-title">
                   {currentLanguage === 'en' ? 'No matching demonstration resources found' : 'No se encontraron recursos de demostración'}
                 </h3>
-                <p className="mt-2 text-[0.875rem] text-[#5a5870]">
+                <p className="qc-empty-text">
                   {currentLanguage === 'en'
                     ? 'Try broadening your search filters or resetting your inquiry.'
                     : 'Intente ampliar los filtros de búsqueda o restablecer la consulta.'}
                 </p>
-                <button
-                  type="button"
-                  onClick={resetAllFilters}
-                  className="qc-btn-sm mt-6"
-                >
-                  {t.filters.reset}
-                </button>
+                <div className="qc-empty-actions">
+                  <button type="button" onClick={resetAllFilters} className="qc-btn-sm">
+                    {t.filters.reset}
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -17,6 +17,8 @@ interface CommunityDirectoryProps {
   searchQuery: string;
   freeOnly: boolean;
   onToggleFreeOnly: () => void;
+  /** Clears the category, city and text filters in one step. */
+  onResetFilters: () => void;
   demonstrationCount: number;
   isEntrySaved: (entryId: string) => boolean;
   onToggleEntrySave: (entryId: string) => void;
@@ -45,6 +47,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   searchQuery,
   freeOnly,
   onToggleFreeOnly,
+  onResetFilters,
   demonstrationCount,
   isEntrySaved,
   onToggleEntrySave
@@ -216,11 +219,21 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         className="qc-dir-panel"
       >
         {matches.length === 0 ? (
-          <p className="py-10 text-[0.9375rem] text-[#5a5870]">
-            {currentLanguage === 'en'
-              ? 'No directory listings match these filters yet. Try All Resources or another city.'
-              : 'Ningún registro del directorio coincide con estos filtros. Pruebe Todos los recursos u otra ciudad.'}
-          </p>
+          <div className="qc-empty">
+            <h3 className="qc-empty-title">
+              {currentLanguage === 'en' ? 'No organizations match these filters' : 'Ninguna organización coincide con estos filtros'}
+            </h3>
+            <p className="qc-empty-text">
+              {currentLanguage === 'en'
+                ? 'The directory has listings in every category. Clear the filters to see them all again.'
+                : 'El directorio tiene registros en todas las categorías. Borre los filtros para verlos todos de nuevo.'}
+            </p>
+            <div className="qc-empty-actions">
+              <button type="button" className="qc-btn-sm" onClick={onResetFilters}>
+                {currentLanguage === 'en' ? 'Show all resources' : 'Ver todos los recursos'}
+              </button>
+            </div>
+          </div>
         ) : (
           <>
             {sections.map((section) => (
