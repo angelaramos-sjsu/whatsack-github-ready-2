@@ -5,6 +5,7 @@ import './index.css';
 import './styles/quiet-canvas.css';
 import './styles/read-aloud.css';
 import './styles/design-system.css';
+import './styles/companion.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

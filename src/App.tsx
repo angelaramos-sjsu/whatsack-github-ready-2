@@ -23,6 +23,8 @@ import { ResourceCard } from './components/ResourceCard';
 import { CommunityDirectory } from './components/CommunityDirectory';
 import { NextStepInsightsModal } from './components/NextStepInsightsModal';
 import { SimulatedExtensionSidebar } from './components/SimulatedExtensionSidebar';
+import { ExtensionSidebar } from './components/ExtensionSidebar';
+import type { CompanionState } from './components/ExtensionSidebar';
 import { VoiceAssistantModal } from './components/VoiceAssistantModal';
 import { SavedResourcesDrawer } from './components/SavedResourcesDrawer';
 import { AILLMConsole } from './components/AILLMConsole';
@@ -37,6 +39,10 @@ import { ReadAloudButton } from './speech/ReadAloudButton';
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
   const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community'>('home');
+  // The simulated browser-extension companion: a closed tab, an open panel or
+  // a floating pill. The app shell shifts left while the panel is open.
+  const [companionState, setCompanionState] = useState<CompanionState>('closed');
+  const [companionExpanded, setCompanionExpanded] = useState(false);
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [showSproutGreeting, setShowSproutGreeting] = useState(true);
@@ -299,7 +305,11 @@ export function App() {
 
   return (
     <SpeechProvider language={currentLanguage} resetKey={activeView}>
-    <div className="qc min-h-screen flex flex-col selection:bg-[#047857] selection:text-white">
+    <div
+      className={`qc min-h-screen flex flex-col selection:bg-[#047857] selection:text-white ${
+        companionState === 'open' ? 'qc-companion-open' : ''
+      } ${companionState === 'open' && companionExpanded ? 'qc-companion-expanded' : ''}`}
+    >
       {/* Navbar */}
       <Navbar
         currentLanguage={currentLanguage}
@@ -661,6 +671,33 @@ export function App() {
           onOpenExtension={() => setActiveView('extension')}
         />
       )}
+
+      {/* Simulated browser-extension companion, available on every view. */}
+      <ExtensionSidebar
+        currentLanguage={currentLanguage}
+        state={companionState}
+        expanded={companionExpanded}
+        onOpen={() => setCompanionState('open')}
+        onClose={() => setCompanionState('closed')}
+        onMinimize={() => setCompanionState('minimized')}
+        onRestore={() => setCompanionState('open')}
+        onToggleExpanded={() => setCompanionExpanded((value) => !value)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onSearchSubmit={() => setActiveView('resources')}
+        selectedCategory={selectedCategory}
+        onSelectCategory={openCategory}
+        counts={categoryCounts.directoryCounts}
+        totalCount={directoryEntries.length}
+        savedCount={savedResourceIds.length + savedDirectoryIds.length + savedScriptedSteps.length}
+        onOpenSaved={() => setIsSavedDrawerOpen(true)}
+        onOpenCopilot={() => setActiveView('copilot')}
+        onOpenExtensionDemo={() => setActiveView('extension')}
+        onNavigateHome={() => {
+          setActiveView('home');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
 
       {/* Find my support modal */}
       {isIntroductionFormOpen && (

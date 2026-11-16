@@ -41,6 +41,7 @@ Symptom if this breaks: the preview shows `Blocked request. This host ("3000-…
 - Reachable from the footer ("Browser extension demo") and the mobile menu; the view is `src/components/SimulatedExtensionSidebar.tsx`.
 - The companion pane can be minimized (narrow rail with an expand button), expanded (wider pane) or closed (returns home); on phones the pane stacks above the simulated portal. Its category chips open the same directory via `onOpenCategory`.
 - The header's read-aloud button stays in the navigation on every view, including the extension demo.
+- `src/components/ExtensionSidebar.tsx` is the separate "WhatSack Companion" overlay (styles in `src/styles/companion.css`): a right-edge tab when closed, a fixed 384px/500px sidebar on desktop (the `.qc` shell gets `qc-companion-open` / `qc-companion-expanded` so content shifts instead of being covered), and an 84dvh bottom sheet with a scrim below 1080px. It is UI only and drives the site's existing `searchQuery`, `openCategory()`, saved drawer and view switches; `src/components/categoryIcons.tsx` holds the category icons shared with the homepage cards.
 
 ## Text size (accessibility)
 
