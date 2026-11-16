@@ -490,6 +490,7 @@ export function App() {
             selectedCategory={selectedCategory}
             selectedNeeds={intakeSelectedNeeds}
             onSelectCategory={(category) => { setIntakeSelectedNeeds([]); setSelectedCategory(category); }}
+            onClearFilters={resetAllFilters}
             selectedCity={selectedCity}
             onSelectCity={setSelectedCity}
             availableCities={availableCities}
