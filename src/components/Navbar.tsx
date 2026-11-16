@@ -13,7 +13,8 @@ import {
   FileText,
   Type,
   Menu,
-  X
+  X,
+  HeartHandshake
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -32,8 +33,8 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension';
-  setActiveView: (view: 'home' | 'copilot' | 'extension') => void;
+  activeView: 'home' | 'copilot' | 'extension' | 'connector';
+  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'connector') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -155,6 +156,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveView('connector')}
+            className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
+              activeView === 'connector'
+                ? 'bg-emerald-700 text-white shadow-xs'
+                : 'text-slate-700 hover:text-emerald-800 hover:bg-slate-200/60'
+            }`}
+            aria-current={activeView === 'connector' ? 'page' : undefined}
+          >
+            <HeartHandshake className="w-4 h-4" aria-hidden="true" />
+            <span>{currentLanguage === 'en' ? 'Community' : 'Comunidad'}</span>
+          </button>
+
+          <button
             onClick={() => setActiveView('copilot')}
             className={`px-3.5 py-2 rounded-xl transition-all flex items-center gap-1.5 ${
               activeView === 'copilot'
@@ -194,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Action Controls & Accessibility Tools */}
-        <div className="flex items-center gap-2 sm:gap-2.5">
+        <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-2.5">
           <button
             type="button"
             onClick={() => setIsMenuOpen((open) => !open)}
@@ -309,6 +323,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div id="mobile-navigation" className="lg:hidden border-t border-slate-200 bg-white px-4 py-4 shadow-lg">
           <div className="grid grid-cols-2 gap-2 text-sm font-bold">
             <button onClick={goHome} className="rounded-xl bg-emerald-700 px-3 py-3 text-white text-left">Explore resources</button>
+            <button onClick={() => { setActiveView('connector'); setIsMenuOpen(false); }} className="rounded-xl bg-brand-700 px-3 py-3 text-white text-left">Community connector</button>
             <button onClick={() => { setActiveView('copilot'); setIsMenuOpen(false); }} className="rounded-xl bg-slate-900 px-3 py-3 text-white text-left">AI Copilot</button>
             <button onClick={() => goToSection('categories-heading')} className="rounded-xl bg-slate-100 px-3 py-3 text-slate-900 text-left">Categories</button>
             <button onClick={() => { onOpenIntroductionForm(); setIsMenuOpen(false); }} className="rounded-xl bg-slate-100 px-3 py-3 text-slate-900 text-left">My introduction</button>

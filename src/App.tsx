@@ -24,6 +24,7 @@ import { SavedResourcesDrawer } from './components/SavedResourcesDrawer';
 import { AILLMConsole } from './components/AILLMConsole';
 import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
+import { CommunityConnector } from './components/community/CommunityConnector';
 import { Footer } from './components/Footer';
 
 import { 
@@ -41,7 +42,7 @@ import {
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'connector'>('home');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<CategoryId | 'all'>('all');
   
@@ -235,7 +236,9 @@ export function App() {
       />
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
-      {activeView === 'copilot' ? (
+      {activeView === 'connector' ? (
+        <CommunityConnector currentLanguage={currentLanguage} />
+      ) : activeView === 'copilot' ? (
         <AILLMConsole
           currentLanguage={currentLanguage}
           userProfile={userProfile}
@@ -270,6 +273,7 @@ export function App() {
             onOpenCopilot={() => setActiveView('copilot')}
             onOpenArchitecture={() => setIsArchitectureModalOpen(true)}
             onOpenIntroductionForm={() => setIsIntroductionFormOpen(true)}
+            onOpenConnector={() => setActiveView('connector')}
             userProfile={userProfile}
             matchedCount={filteredResources.length}
             onClearSearch={() => setSearchQuery('')}

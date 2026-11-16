@@ -62,6 +62,28 @@
 
 ---
 
+## 🤝 Sprout Community Connector
+
+A community and social connection assistant available from the **Community** tab.
+It recognizes natural-language requests for social groups, senior activities,
+cultural and language-specific organizations, accessible events, volunteering,
+and contact questions; runs a seven-question intake with skip/back/edit/restart;
+and explains 3–5 matching records with cost, schedule, languages, accessibility,
+transportation, contact actions, official source and last-verified date.
+
+- Missing details are always shown as **"Not confirmed."**
+- Fictional sample records are clearly labeled and never presented as verified
+  real-world organizations; sample phone numbers are never dialable.
+- Rosa Martinez (72, Spanish-speaking, San Jose) is included as a one-click
+  validation flow that answers in Spanish with Spanish (Latin America) options.
+- No transcript is stored by default; saving to the device is opt-in.
+
+Full architecture, data-source rules, privacy, accessibility and the
+functional-vs-simulated breakdown: [`docs/community-connector.md`](docs/community-connector.md).
+Tests: `npm test` (Vitest).
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Framework**: React 18 + TypeScript

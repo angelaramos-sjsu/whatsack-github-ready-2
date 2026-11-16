@@ -13,7 +13,8 @@ import {
   Bot,
   Brain,
   ListChecks,
-  ArrowUpRight
+  ArrowUpRight,
+  HeartHandshake
 } from 'lucide-react';
 
 interface HeroConversationalSearchProps {
@@ -26,6 +27,7 @@ interface HeroConversationalSearchProps {
   onOpenCopilot: () => void;
   onOpenArchitecture: () => void;
   onOpenIntroductionForm: () => void;
+  onOpenConnector?: () => void;
   userProfile: IntakeProfile | null;
   matchedCount: number;
   onClearSearch: () => void;
@@ -41,6 +43,7 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   onOpenCopilot,
   onOpenArchitecture,
   onOpenIntroductionForm,
+  onOpenConnector,
   userProfile,
   matchedCount,
   onClearSearch
@@ -282,6 +285,16 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
 
         {/* Clean Tools Bar: AI LLM & Architecture */}
         <div className="flex items-center justify-center gap-3 pt-2 flex-wrap">
+          {onOpenConnector && (
+            <button
+              type="button"
+              onClick={onOpenConnector}
+              className="px-4 py-2 rounded-xl bg-brand-700 hover:bg-brand-800 text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-brand-500"
+            >
+              <HeartHandshake className="w-4 h-4" aria-hidden="true" />
+              <span>{currentLanguage === 'en' ? 'Find community & social groups' : 'Buscar grupos comunitarios y sociales'}</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={onOpenCopilot}
