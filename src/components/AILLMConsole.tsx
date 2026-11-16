@@ -18,6 +18,7 @@ import {
   routeGoalDetailQuestion,
   routeBilingualFoodQuestion,
   isSpanishBilingualFoodQuestion,
+  routeMentalHealthAccessQuestion,
   topicEntryAnswerIds
 } from '../data/answers';
 import { getRelevantFollowUpIds } from '../data/answers/relevantFollowUps';
@@ -255,6 +256,8 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const housingOnlyId = housingRequested && needs.length === 0 ? 'ans-food-housing-out-of-scope' : undefined;
     // Explicit crisis/consent routing takes precedence over all generic topic matches.
     const mateoAnswerId = routeMateoSupportQuestion(text);
+    // Reviewed Medi-Cal counseling access questions beat the broad "medi-cal" match in the script above.
+    const mentalAccessId = !isPersonaQuestion ? routeMentalHealthAccessQuestion(text) : undefined;
     // Explicitly refused needs must not leak back in through the older broad keyword router.
     const normalized = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     const excludesNeed = /\b(don.t need|dont need|do not need|don.t want|not looking for|no necesito|no quiero|no busco)\b/.test(normalized);
@@ -271,7 +274,11 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
     const saraStageId =
       topic === 'college' && !isPersonaQuestion ? routeSaraCollegeQuestion(lower) : undefined;
     const bilingualFoodId = !isPersonaQuestion ? routeBilingualFoodQuestion(text) : undefined;
-    const answer = mateoAnswerId
+    const answer = mateoAnswerId === 'ans-mental-crisis-support'
+      ? getScriptedAnswer(mateoAnswerId)
+      : mentalAccessId
+      ? getScriptedAnswer(mentalAccessId)
+      : mateoAnswerId
       ? getScriptedAnswer(mateoAnswerId)
       : enhancedId
       ? getScriptedAnswer(enhancedId)
