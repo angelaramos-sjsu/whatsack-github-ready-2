@@ -3,12 +3,15 @@ import { CategoryId, Language } from '../types';
 import { translations } from '../data/translations';
 import { directoryEntries } from '../data/directory';
 import { OhloneFinancialAidDialog } from './OhloneFinancialAidDialog';
+import { CommunityConnector } from './community/CommunityConnector';
+import { directoryCategoryLabels, directoryCategoryOrder } from './CategoryTabs';
 
 interface CommunityDirectoryProps {
   currentLanguage: Language;
   selectedCategory: CategoryId | 'all';
   selectedNeeds?: CategoryId[];
   onSelectCategory: (category: CategoryId | 'all') => void;
+  onClearFilters: () => void;
   selectedCity: string;
   onSelectCity: (city: string) => void;
   availableCities: string[];
@@ -37,6 +40,7 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
   selectedCategory,
   selectedNeeds = [],
   onSelectCategory,
+  onClearFilters,
   selectedCity,
   onSelectCity,
   availableCities,
@@ -93,24 +97,30 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
         {currentLanguage === 'en' ? 'Community Resource Directory' : 'Directorio de Recursos Comunitarios'}
       </h2>
 
-      {/* Filters */}
-      <div className="qc-fs">
+      {/* Four selectable resource categories remain in the directory, not as separate pages. */}
+      <div className="qc-fs" role="group" aria-label={currentLanguage === 'en' ? 'Filter resource categories' : 'Filtrar categorías de recursos'}>
         <span>{t.filters.filterBy}:</span>
-
-        <button
-          type="button"
-          onClick={() => {
-            onSelectCategory('all');
-            onSelectCity('all');
-          }}
-          aria-pressed={selectedCategory === 'all' && selectedCity === 'all'}
-          className={`qc-t min-h-0 ${selectedCategory === 'all' && selectedCity === 'all' ? 'on' : ''}`}
-        >
-          {t.filters.allCities}
-        </button>
-
+        {directoryCategoryOrder.map((category) => {
+          const active = selectedCategory === category && selectedNeeds.length === 0;
+          return (
+            <button
+              key={category}
+              type="button"
+              onClick={() => onSelectCategory(category)}
+              aria-pressed={active}
+              className={`qc-t min-h-[44px] ${active ? 'on' : ''}`}
+            >
+              {directoryCategoryLabels[category][currentLanguage]}
+            </button>
+          );
+        })}
         <span className="qc-cnt">{matches.length} {organizationsLabel}</span>
       </div>
+      {(selectedNeeds.length > 0 || selectedCategory !== 'all' || selectedCity !== 'all' || searchQuery.trim()) && (
+        <button type="button" onClick={onClearFilters} className="qc-t mt-3 min-h-[44px]">
+          {currentLanguage === 'en' ? 'Clear filters' : 'Borrar filtros'}
+        </button>
+      )}
 
       <p className="qc-filter-note">
         {currentLanguage === 'en'
@@ -142,6 +152,25 @@ export const CommunityDirectory: React.FC<CommunityDirectoryProps> = ({
           ))}
         </select>
       </div>
+
+      {/* The optional conversational Community Guide lives inside the Community resource filter. */}
+      {(selectedCategory === 'community' || (selectedCategory === 'all' && selectedNeeds.includes('community'))) && (
+        <details className="mt-5 rounded-2xl border border-[#cdeedd] bg-[#f7fdfa] p-4 sm:p-5">
+          <summary className="cursor-pointer text-base font-semibold text-[#03543b] focus-visible:outline-2 focus-visible:outline-offset-4">
+            {currentLanguage === 'en'
+              ? 'Explore community activities with the Community Guide'
+              : 'Explore actividades comunitarias con la guía comunitaria'}
+          </summary>
+          <p className="mt-3 text-sm text-[#414155]">
+            {currentLanguage === 'en'
+              ? 'Optional guided questions can help you explore social activities, language preferences, transportation and accessibility. Directory listings remain available below.'
+              : 'Las preguntas opcionales le ayudan a explorar actividades sociales, idiomas, transporte y accesibilidad. Los recursos del directorio siguen disponibles abajo.'}
+          </p>
+          <div className="mt-4 overflow-hidden rounded-xl">
+            <CommunityConnector currentLanguage={currentLanguage} />
+          </div>
+        </details>
+      )}
 
       {/* Listings */}
       {matches.length === 0 ? (
