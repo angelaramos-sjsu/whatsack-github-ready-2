@@ -14,8 +14,8 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about';
-  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about') => void;
+  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community';
+  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
-  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about') => {
+  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about' | 'community') => {
     setActiveView(view);
     setIsMenuOpen(false);
   };
@@ -59,6 +59,11 @@ export const Navbar: React.FC<NavbarProps> = ({
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
       onClick: () => navigate('resources'),
       active: activeView === 'resources'
+    },
+    {
+      label: currentLanguage === 'en' ? 'Community' : 'Comunidad',
+      onClick: () => navigate('community'),
+      active: activeView === 'community'
     },
     {
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',

@@ -26,10 +26,11 @@ import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
+import { CommunityConnector } from './community/components/CommunityConnector';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community'>('home');
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [showSproutGreeting, setShowSproutGreeting] = useState(true);
@@ -287,6 +288,11 @@ export function App() {
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
         />
+      ) : activeView === 'community' ? (
+        <CommunityConnector
+          currentLanguage={currentLanguage}
+          onBackToHome={() => setActiveView('home')}
+        />
       ) : activeView === 'about' ? (
         <main id="main-content" tabIndex={-1} className="flex-1 qc-shell qc-page" aria-labelledby="about-heading">
           <div className="qc-eyebrow">{currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}</div>
@@ -363,6 +369,31 @@ export function App() {
                   onClick={() => openIntroductionForm('start-here')}
                 >
                   <span>{currentLanguage === 'en' ? 'Find my support' : 'Encuentra mi apoyo'}</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="qc-home-start-card">
+              <div className="qc-home-start-copy">
+                <p className="qc-home-start-eyebrow">
+                  {currentLanguage === 'en' ? 'Community & social connection' : 'Comunidad y conexión social'}
+                </p>
+                <h2 id="community-connections-heading" className="qc-home-start-title">
+                  {currentLanguage === 'en' ? 'Meet people nearby' : 'Conozca gente cerca de usted'}
+                </h2>
+                <p className="qc-home-start-text">
+                  {currentLanguage === 'en'
+                    ? 'Clubs, classes, senior programs, volunteering and cultural groups.'
+                    : 'Clubes, clases, programas para mayores, voluntariado y grupos culturales.'}
+                </p>
+              </div>
+              <div className="qc-home-start-actions">
+                <button
+                  type="button"
+                  className="qc-home-start-button qc-home-start-button-outline"
+                  onClick={() => setActiveView('community')}
+                >
+                  <span>{currentLanguage === 'en' ? 'Open community connections' : 'Abrir conexiones comunitarias'}</span>
                 </button>
               </div>
             </div>

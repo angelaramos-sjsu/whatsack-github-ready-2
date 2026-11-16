@@ -60,6 +60,14 @@
 - **Touch-Friendly**: $\ge 44 \times 44$px touch targets and visible focus indicators (`3px solid #047857`).
 - **Screen Reader Announcements**: `aria-live="polite"` regions for dynamic search and filter updates.
 
+### 8. Community & Social Connection Guide
+- A separate, self-contained guide for finding clubs, classes, senior programs, volunteer teams and cultural groups.
+- Conversational intent recognition (EN/ES/PT phrasings), adaptive follow-ups (“I feel lonely”, “I don’t drive”, “I can’t afford activities”), and a seven-question intake with skip, back, edit and restart.
+- Language and regional-variety preferences (Spanish: Mexico / Spain / Latin America; Portuguese: Brazil / Portugal) that are always chosen, never guessed.
+- Result cards with days, times, cost, languages, accessibility, transportation, verified contact, official source and last-checked date — showing “Not confirmed.” where a source does not say.
+- Optional transcript saving (off by default) and reset controls.
+- **All listings are clearly labelled mock records.** See [docs/COMMUNITY_CONNECTOR.md](docs/COMMUNITY_CONNECTOR.md).
+
 ---
 
 ## 🛠️ Tech Stack
