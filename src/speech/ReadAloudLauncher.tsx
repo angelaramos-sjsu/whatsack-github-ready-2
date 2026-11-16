@@ -8,13 +8,15 @@ interface ReadAloudLauncherProps {
   language: Language;
   /** Changing this (for example a page change) closes the panel and stops speech. */
   resetKey?: string;
+  /** `header` keeps the button inline inside the site header tools row. */
+  variant?: 'floating' | 'header';
 }
 
 /**
  * One always-visible "Read aloud" button that opens the compact read-aloud
  * panel, so the top of the page stays free of controls and instructions.
  */
-export const ReadAloudLauncher: React.FC<ReadAloudLauncherProps> = ({ language, resetKey }) => {
+export const ReadAloudLauncher: React.FC<ReadAloudLauncherProps> = ({ language, resetKey, variant = 'floating' }) => {
   const { stop } = useSpeech();
   const [isOpen, setIsOpen] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -70,7 +72,7 @@ export const ReadAloudLauncher: React.FC<ReadAloudLauncherProps> = ({ language, 
       <button
         ref={launcherRef}
         type="button"
-        className="qc-ral"
+        className={`qc-ral ${variant === 'header' ? 'qc-ral--header' : ''}`.trim()}
         onClick={toggle}
         aria-expanded={isOpen}
         aria-controls="read-aloud-panel"
@@ -80,7 +82,14 @@ export const ReadAloudLauncher: React.FC<ReadAloudLauncherProps> = ({ language, 
         <span className="qc-ral__label">{label}</span>
       </button>
 
-      {isOpen && <ReadAloudPanel language={language} panelRef={panelRef} onClose={() => close()} />}
+      {isOpen && (
+        <ReadAloudPanel
+          language={language}
+          panelRef={panelRef}
+          onClose={() => close()}
+          className={variant === 'header' ? 'qc-ral-panel--header' : ''}
+        />
+      )}
     </>
   );
 };

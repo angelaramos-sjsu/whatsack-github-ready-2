@@ -8,6 +8,8 @@ interface ReadAloudPanelProps {
   language: Language;
   onClose: () => void;
   panelRef: React.RefObject<HTMLElement>;
+  /** Extra placement class, e.g. when the launcher sits inside the header. */
+  className?: string;
 }
 
 const kindOrder: SpeechKind[] = ['heading', 'instructions', 'chat', 'resource', 'navigation'];
@@ -22,7 +24,7 @@ const CONTROLS = (language: Language) =>
  * stop or restart it. The spoken text is repeated here as a visible text
  * alternative for people who cannot or do not want audio.
  */
-export const ReadAloudPanel: React.FC<ReadAloudPanelProps> = ({ language, onClose, panelRef }) => {
+export const ReadAloudPanel: React.FC<ReadAloudPanelProps> = ({ language, onClose, panelRef, className = '' }) => {
   const { supported, status, current, items, problem, play, pause, resume, stop, restart, speakItem } = useSpeech();
   const copy = CONTROLS(language);
   const isSpanish = language === 'es';
@@ -46,7 +48,7 @@ export const ReadAloudPanel: React.FC<ReadAloudPanelProps> = ({ language, onClos
       tabIndex={-1}
       role="region"
       aria-labelledby="read-aloud-panel-title"
-      className="qc-ral-panel"
+      className={`qc-ral-panel ${className}`.trim()}
     >
       <div className="qc-ral-panel__head">
         <Volume2 className="qc-ral-panel__icon" aria-hidden="true" />

@@ -31,7 +31,6 @@ import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
 import { CommunityConnector } from './community/components/CommunityConnector';
 import { SpeechProvider } from './speech/SpeechProvider';
-import { ReadAloudLauncher } from './speech/ReadAloudLauncher';
 import { ReadAloudButton } from './speech/ReadAloudButton';
 
 export function App() {
@@ -316,12 +315,6 @@ export function App() {
         onOpenCategory={openCategory}
         onOpenExtension={() => setActiveView('extension')}
       />
-
-      {/* One side "Read aloud" button opens the reading controls on every page
-          except the extension demo, whose sidebar sits in that same corner. */}
-      {activeView !== 'extension' && (
-        <ReadAloudLauncher language={currentLanguage} resetKey={activeView} />
-      )}
 
       {/* Main View Switching: Home Platform vs AI LLM Copilot vs Browser Extension */}
       {activeView === 'copilot' ? (

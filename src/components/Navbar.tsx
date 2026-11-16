@@ -4,6 +4,7 @@ import { Language, TextSize } from '../types';
 import { translations } from '../data/translations';
 import { Menu, X } from 'lucide-react';
 import { ReadAloudButton } from '../speech/ReadAloudButton';
+import { ReadAloudLauncher } from '../speech/ReadAloudLauncher';
 import { CategoryMenu } from './CategoryMenu';
 import { DirectoryCategoryId, directoryCategoryLabels, directoryCategoryOrder } from './CategoryTabs';
 
@@ -103,8 +104,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const navigationSpeech = currentLanguage === 'en'
-    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Find Resources opens the four resource categories. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls open from the Read aloud button at the side of the page.`
-    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Buscar Recursos abre las cuatro categorías de recursos. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta se abren con el botón Leer en voz alta al lado de la página.`;
+    ? `Main menu: ${navLinks.map((link) => link.label).join(', ')}. Find Resources opens the four resource categories. Website language: English or Español. Accessibility menu: text size, high contrast, saved items. Read aloud controls open from the Read aloud button in this header, next to the language buttons.`
+    : `Menú principal: ${navLinks.map((link) => link.label).join(', ')}. Buscar Recursos abre las cuatro categorías de recursos. Idioma del sitio: English o Español. Menú de accesibilidad: tamaño de letra, alto contraste, guardados. Los controles de lectura en voz alta se abren con el botón Leer en voz alta en este encabezado, junto a los botones de idioma.`;
 
   return (
     <header className="relative z-40 bg-white">
@@ -180,6 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button type="button" lang="en" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}>EN</button>
               <button type="button" lang="es" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}>Español</button>
             </div>
+            <ReadAloudLauncher language={currentLanguage} resetKey={activeView} variant="header" />
             <details
               className="qc-acc"
               open={isAccOpen}
