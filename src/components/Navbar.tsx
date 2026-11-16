@@ -18,8 +18,8 @@ interface NavbarProps {
   onToggleHighContrast: () => void;
   textSize: 'normal' | 'large' | 'xlarge';
   onCycleTextSize: () => void;
-  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community';
-  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community') => void;
+  activeView: 'home' | 'copilot' | 'extension' | 'resources' | 'about';
+  setActiveView: (view: 'home' | 'copilot' | 'extension' | 'resources' | 'about') => void;
   onOpenCategory: (category: DirectoryCategoryId) => void;
 }
 
@@ -48,7 +48,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 0);
   };
 
-  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about' | 'community') => {
+  const navigate = (view: 'home' | 'copilot' | 'resources' | 'about') => {
     setActiveView(view);
     setIsMenuOpen(false);
   };
@@ -66,11 +66,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       label: currentLanguage === 'en' ? 'Find Resources' : 'Buscar Recursos',
       onClick: () => navigate('resources'),
       active: activeView === 'resources'
-    },
-    {
-      label: currentLanguage === 'en' ? 'Community' : 'Comunidad',
-      onClick: () => navigate('community'),
-      active: activeView === 'community'
     },
     {
       label: currentLanguage === 'en' ? 'My Next Steps' : 'Mis Próximos Pasos',
@@ -156,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
-                <ReadAloudButton id="read-navigation" kind="navigation" language={currentLanguage} label={currentLanguage === 'en' ? 'Navigation instructions' : 'Instrucciones de navegación'} text={currentLanguage === 'en' ? 'Use Ask Sackie to ask questions, Find Resources to browse programs, Community to find activities, and My Next Steps to review saved items.' : 'Use Preguntar a Sackie para hacer preguntas, Buscar Recursos para explorar programas, Comunidad para actividades y Mis Próximos Pasos para elementos guardados.'} />
+                <ReadAloudButton id="read-navigation" kind="navigation" language={currentLanguage} label={currentLanguage === 'en' ? 'Navigation instructions' : 'Instrucciones de navegación'} text={currentLanguage === 'en' ? 'Use Ask Sackie to ask questions, find Food, Education, Mental Health and Community programs under Find Resources, and review saved items in My Next Steps.' : 'Use Preguntar a Sackie para hacer preguntas, Buscar Recursos para explorar programas de comida, educación, salud mental y comunidad, y Mis Próximos Pasos para elementos guardados.'} />
                 <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
                   {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
                 </button>
