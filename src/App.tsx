@@ -25,7 +25,6 @@ import { AIEngineInspectorModal } from './components/AIEngineInspectorModal';
 import { AIDocumentDecoderModal } from './components/AIDocumentDecoderModal';
 import { Footer } from './components/Footer';
 import { SproutAssistant } from './components/SproutAssistant';
-import { CommunityConnector } from './components/community/CommunityConnector';
 import { SpeechProvider } from './speech/SpeechProvider';
 import { ReadAloudButton } from './speech/ReadAloudButton';
 import { HomeCategoryGrid } from './components/HomeCategoryGrid';
@@ -35,7 +34,7 @@ import type { CompanionState } from './components/ExtensionSidebar';
 
 export function App() {
   const [currentLanguage, setCurrentLanguage] = useState<Language>('en');
-  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about' | 'community'>('home');
+  const [activeView, setActiveView] = useState<'home' | 'copilot' | 'extension' | 'resources' | 'about'>('home');
   // A question submitted from the homepage opens the copilot already answered.
   const [copilotQuestion, setCopilotQuestion] = useState<{ text: string; key: number } | null>(null);
   const [showSproutGreeting, setShowSproutGreeting] = useState(true);
@@ -309,10 +308,6 @@ export function App() {
           onClose={() => setActiveView('home')}
           onNavigateHome={() => setActiveView('home')}
         />
-      ) : activeView === 'community' ? (
-        <main id="main-content" tabIndex={-1} className="flex-1">
-          <CommunityConnector currentLanguage={currentLanguage} />
-        </main>
       ) : activeView === 'about' ? (
         <main id="main-content" tabIndex={-1} className="flex-1 qc-shell qc-page" aria-labelledby="about-heading">
           <div className="qc-eyebrow">{currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}</div>
@@ -343,7 +338,7 @@ export function App() {
         </main>
       ) : (
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-hidden">
-          {/* Home presents one search question and four category paths. */}
+          {/* Home offers quick entry points; all four categories remain in Find Resources. */}
           {activeView === 'home' && (<>
           <HeroConversationalSearch
             currentLanguage={currentLanguage}
@@ -525,7 +520,7 @@ export function App() {
         />
       )}
 
-      {['home', 'resources', 'community', 'about'].includes(activeView) && (
+      {['home', 'resources', 'about'].includes(activeView) && (
         <ExtensionSidebar
           currentLanguage={currentLanguage}
           state={companionState}
