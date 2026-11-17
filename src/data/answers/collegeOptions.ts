@@ -291,9 +291,9 @@ export const routeCollegeOptionsQuestion = (input: string): string | undefined =
 
   const broadAsk = /(?:^| )(?:i|we) (?:also |really )?(?:want|would like|hope|plan|am planning|plan on|am thinking about) to (?:go|get|attend|apply|start|study)/.test(q)
     || /(?:^| )(?:quiero|me gustaria|planeo|pienso) (?:ir|asistir|estudiar|aplicar|empezar)/.test(q);
-  const collegeMention = /(?:college|university|universidad|colegio)/.test(q);
-  // Cost, transfer and financial-aid concerns keep their own reviewed answers.
-  const specificFocus = /(?:money|afford|tuition|cost|expensive|pay for|dinero|pagar|costo|colegiatura|matricula|scholarship|beca|financial aid|fafsa|cadaa|transfer|first generation|primera generacion)/.test(q);
+  const collegeMention = /(?:college|university|school|universidad|colegio|escuela)/.test(q);
+  // Cost, transfer, career-training and financial-aid concerns keep their own reviewed answers.
+  const specificFocus = /(?:money|afford|tuition|cost|expensive|pay for|dinero|pagar|costo|colegiatura|matricula|scholarship|beca|financial aid|fafsa|cadaa|transfer|first generation|primera generacion|certificate|trade school|apprentice|training|job|work|career)/.test(q);
 
   return broadAsk && collegeMention && !specificFocus ? collegeOptionIds.start : undefined;
 };
