@@ -763,17 +763,6 @@ export const educationGoalPathwayAnswers: ScriptedAnswer[] = [
           "es": "U.S. Bureau of Labor Statistics"
         },
         "url": "https://www.bls.gov/emp/tables/education-and-training-by-occupation.htm"
-      },
-      {
-        "label": {
-          "en": "Quality control inspectors",
-          "es": "Quality control inspectors"
-        },
-        "source": {
-          "en": "U.S. Bureau of Labor Statistics",
-          "es": "U.S. Bureau of Labor Statistics"
-        },
-        "url": "https://www.bls.gov/ooh/Production/Quality-control-inspectors.htm"
       }
     ],
     "nextStep": {
