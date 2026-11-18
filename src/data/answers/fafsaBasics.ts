@@ -1326,7 +1326,7 @@ export const routeFafsaBasicsQuestion = (input: string): string | undefined => {
     [/(?:after|what happens|next|submitted|process).*(?:california dream act|cadaa)|(?:cadaa).*(?:after|submitted|confirmation|dream id)/, 'ans-fafsa-cadaa-after'],
     [/(?:how|start|begin|submit|fill out|apply for|complete).*(?:california dream act|cadaa)|(?:cadaa).*(?:how to apply|how to start|fill out|apply)/, 'ans-fafsa-cadaa-apply'],
     [/(?:incorrect|incomplete|mistake|error|fix|correction|missing signature).*(?:fafsa|cadaa|financial aid)|(?:fafsa|cadaa).*(?:incomplete|error|mistake|correct|fix)/, 'ans-fafsa-ca-problem'],
-    [/(?:mixed status|mixed status famil|undocumented parent).*(?:aid|fafsa|cadaa|college)|(?:fafsa|cadaa).*(?:mixed status|undocumented parent)/, 'ans-fafsa-mixedstatus'],
+    [/(?:mixed status|mixed status famil|undocumented parent).*(?:aid|fafsa|cadaa|college)|(?:financial aid|aid|fafsa|cadaa).*(?:mixed status|undocumented parent)/, 'ans-fafsa-mixedstatus'],
     [/(?:que es webgrants|como.*(?:webgrants|wg4s))/, 'ans-fafsa-wg4s'],
     [/(?:como.*(?:gpa|promedio).*(?:cal grant)|(?:cal grant).*(?:gpa|promedio))/, 'ans-fafsa-calgrant-gpa'],
     [/(?:taller.*(?:fafsa|cadaa)|ayuda gratuita.*(?:fafsa|cadaa)|cash for college)/, 'ans-fafsa-cash4college'],
