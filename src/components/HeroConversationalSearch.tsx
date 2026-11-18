@@ -63,7 +63,8 @@ export const HeroConversationalSearch: React.FC<HeroConversationalSearchProps> =
   const categories: { id: CategoryId; label: string }[] = [
     { id: 'workforce', label: t.categories.workforce },
     { id: 'food', label: t.categories.food },
-    { id: 'mental-health', label: t.categories.mentalHealth }
+    { id: 'mental-health', label: t.categories.mentalHealth },
+    { id: 'community', label: t.categories.community }
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
