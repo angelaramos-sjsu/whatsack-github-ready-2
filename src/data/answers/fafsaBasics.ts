@@ -511,8 +511,8 @@ export const fafsaBasicsAnswers: ScriptedAnswer[] = [
     },
     "followUpIds": [
       "ans-fafsa-grants-v-scholarships",
-      "ans-fafsa-pell-cal",
-      "ans-fafsa-workstudy"
+      "ans-fafsa-workstudy",
+      "ans-fafsa-loans"
     ]
   },
   {
@@ -581,7 +581,7 @@ export const fafsaBasicsAnswers: ScriptedAnswer[] = [
     },
     "answer": {
       "en": "**Federal Pell Grant:** federal grant mainly for eligible undergraduate students with financial need. **Federal Supplemental Educational Opportunity Grant (FSEOG):** additional federal grant for students with exceptional financial need at participating schools; funds are limited. **Cal Grants:** California state grants with different award types and eligibility requirements. California also has programs such as **Chafee Grants** for eligible current or former foster youth. The **FAFSA or CADAA**, as applicable, helps schools and agencies assess eligibility, but **filing alone does not guarantee an award**.",
-      "es": "**Pell Grant federal:** apoyo federal principalmente para estudiantes de licenciatura elegibles con necesidad económica. **FSEOG:** subvención federal adicional para estudiantes con necesidad económica excepcional en instituciones participantes; los fondos son limitados. **Cal Grants:** subvenciones estatales de California con distintos tipos y requisitos. California también ofrece **Chafee Grants** a jóvenes elegibles que están o estuvieron en cuidado de crianza. La **FAFSA o CADAA**, según corresponda, ayuda a evaluar requisitos, pero **presentar la solicitud no garantiza ayuda**."
+      "es": "**Pell Grant federal:** apoyo federal principalmente para estudiantes de pregrado elegibles con necesidad económica. **FSEOG:** subvención federal adicional para estudiantes con necesidad económica excepcional en instituciones participantes; los fondos son limitados. **Cal Grants:** subvenciones estatales de California con distintos tipos y requisitos. California también ofrece **Chafee Grants** a jóvenes elegibles que están o estuvieron en cuidado de crianza. La **FAFSA o CADAA**, según corresponda, ayuda a evaluar requisitos, pero **presentar la solicitud no garantiza ayuda**."
     },
     "context": [
       {
