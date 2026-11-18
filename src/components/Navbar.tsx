@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
 import { Menu, X } from 'lucide-react';
-import { ReadAloudButton } from '../speech/ReadAloudButton';
 import { ReadAloudLauncher } from '../speech/ReadAloudLauncher';
 import { CategoryMenu } from './CategoryMenu';
 import type { DirectoryCategoryId } from './CategoryTabs';
@@ -151,7 +150,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <summary>{currentLanguage === 'en' ? 'Accessibility' : 'Accesibilidad'}</summary>
               <div className="qc-accp">
-                <ReadAloudButton id="read-navigation" kind="navigation" language={currentLanguage} label={currentLanguage === 'en' ? 'Navigation instructions' : 'Instrucciones de navegación'} text={currentLanguage === 'en' ? 'Use Ask Sackie to ask questions, find Food, Education, Mental Health and Community programs under Find Resources, and review saved items in My Next Steps.' : 'Use Preguntar a Sackie para hacer preguntas, Buscar Recursos para explorar programas de comida, educación, salud mental y comunidad, y Mis Próximos Pasos para elementos guardados.'} />
                 <button type="button" onClick={onCycleTextSize} title={t.a11y.textSize}>
                   {currentLanguage === 'en' ? 'Text Size' : 'Tamaño de Letra'} · {textSizeLabel}
                 </button>
