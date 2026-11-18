@@ -1,4 +1,5 @@
 import { entryAnswers } from './entry';
+import { fafsaBasicsAnswers } from './fafsaBasics';
 import { collegeOptionAnswers, routeCollegeOptionsQuestion } from './collegeOptions';
 import { crossCategoryDiscoveryAnswers } from './crossCategoryDiscovery';
 import { educationGoalPathwayAnswers, routeGoalExplorationQuestion, routeGoalDetailQuestion } from './educationGoalPathways';
@@ -23,6 +24,7 @@ export const scriptedAnswers: ScriptedAnswer[] = attachSourcedNextSteps([
   ...entryAnswers,
   ...crossCategoryDiscoveryAnswers,
   ...educationWorkforceAnswers,
+  ...fafsaBasicsAnswers,
   ...educationGoalPathwayAnswers,
   ...programFollowUpAnswers,
   ...bilingualFoodAnswers,
