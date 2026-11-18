@@ -18,9 +18,9 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-pathway-sofia-s5"
   ],
   "ans-pathway-sofia-s3": [
-    "ans-college-fafsa-vs-cadaa",
-    "ans-ew-s3",
-    "ans-pathway-sofia-s6"
+    "ans-fafsa-intro",
+    "ans-fafsa-aid-types",
+    "ans-ew-s3"
   ],
   "ans-pathway-sofia-s4": [
     "ans-sara-majors",
@@ -63,14 +63,14 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-ew-support-transfer"
   ],
   "ans-ew-s2": [
-    "ans-college-fafsa-vs-cadaa",
-    "ans-ew-s3",
-    "ans-ew-support-supplies"
+    "ans-fafsa-intro",
+    "ans-fafsa-aid-types",
+    "ans-fafsa-apply"
   ],
   "ans-ew-s3": [
-    "ans-college-fafsa-vs-cadaa",
-    "ans-ew-support-firstgen-scholar",
-    "ans-ew-support-highschool-scholar"
+    "ans-fafsa-grants-v-scholarships",
+    "ans-fafsa-pell-cal",
+    "ans-fafsa-apply"
   ],
   "ans-ew-s4": [
     "ans-ew-support-classes",
@@ -118,9 +118,9 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-ew-s6"
   ],
   "ans-ew-support-parttime": [
+    "ans-fafsa-aid-types",
     "ans-ew-s6",
-    "ans-ew-support-workstudy",
-    "ans-ew-s2"
+    "ans-college-fafsa-vs-cadaa"
   ],
   "ans-ew-support-workstudy": [
     "ans-ew-s6",
@@ -153,9 +153,9 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-ew-s3"
   ],
   "ans-sara-fafsa-cadaa": [
-    "ans-sara-family-income",
-    "ans-college-campus-help",
-    "ans-sara-next-steps"
+    "ans-fafsa-apply",
+    "ans-fafsa-prepare",
+    "ans-sara-family-income"
   ],
   "ans-sara-family-income": [
     "ans-sara-fafsa-cadaa",
@@ -178,14 +178,14 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-sara-fafsa-cadaa"
   ],
   "ans-college-tuition-free": [
-    "ans-college-fafsa-vs-cadaa",
-    "ans-college-promise-requirements",
-    "ans-ew-s3"
+    "ans-fafsa-aid-types",
+    "ans-fafsa-promise",
+    "ans-college-fafsa-vs-cadaa"
   ],
   "ans-college-fafsa-vs-cadaa": [
-    "ans-ew-s2",
-    "ans-sara-family-income",
-    "ans-college-campus-help"
+    "ans-fafsa-fafsa",
+    "ans-fafsa-apply",
+    "ans-fafsa-prepare"
   ],
   "ans-college-campus-help": [
     "ans-college-fafsa-vs-cadaa",
