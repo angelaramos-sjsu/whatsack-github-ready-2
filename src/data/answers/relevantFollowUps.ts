@@ -20,7 +20,7 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
   "ans-pathway-sofia-s3": [
     "ans-fafsa-intro",
     "ans-fafsa-aid-types",
-    "ans-ew-s3"
+    "ans-fafsa-ca-after"
   ],
   "ans-pathway-sofia-s4": [
     "ans-sara-majors",
@@ -63,9 +63,9 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-ew-support-transfer"
   ],
   "ans-ew-s2": [
-    "ans-fafsa-intro",
     "ans-fafsa-aid-types",
-    "ans-fafsa-apply"
+    "ans-fafsa-apply",
+    "ans-fafsa-cash4college"
   ],
   "ans-ew-s3": [
     "ans-fafsa-grants-v-scholarships",
@@ -154,8 +154,8 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
   ],
   "ans-sara-fafsa-cadaa": [
     "ans-fafsa-apply",
-    "ans-fafsa-prepare",
-    "ans-sara-family-income"
+    "ans-fafsa-cadaa-apply",
+    "ans-fafsa-cash4college"
   ],
   "ans-sara-family-income": [
     "ans-sara-fafsa-cadaa",
@@ -183,9 +183,9 @@ const educationWorkforceFollowUps: Record<string, string[]> = {
     "ans-college-fafsa-vs-cadaa"
   ],
   "ans-college-fafsa-vs-cadaa": [
-    "ans-fafsa-fafsa",
     "ans-fafsa-apply",
-    "ans-fafsa-prepare"
+    "ans-fafsa-cadaa-apply",
+    "ans-fafsa-mixedstatus"
   ],
   "ans-college-campus-help": [
     "ans-college-fafsa-vs-cadaa",
