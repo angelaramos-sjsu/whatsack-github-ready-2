@@ -1,3 +1,4 @@
+import { routeFafsaBasicsQuestion } from './fafsaBasics';
 import type { ScriptedAnswer } from './types';
 
 /** Research-informed California-wide Sofia / Daniel question pathways (2026 working paper).
@@ -2293,6 +2294,8 @@ export const educationWorkforceAnswers: ScriptedAnswer[] = [
 
 /** Conservative routing for common variations, after exact-match resolution. */
 export const routeEducationWorkforceQuestion = (input: string): string | undefined => {
+  const aidBasicsId = routeFafsaBasicsQuestion(input);
+  if (aidBasicsId) return aidBasicsId;
   const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const rules: Array<[RegExp,string]> = [
     [/(first (person|one) in my family|first generation).*(college|school|support|help)/, 'ans-ew-s1'],
