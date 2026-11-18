@@ -856,6 +856,462 @@ export const fafsaBasicsAnswers: ScriptedAnswer[] = [
       "ans-fafsa-loans",
       "ans-fafsa-after"
     ]
+  },
+  {
+    "id": "ans-fafsa-ca-after",
+    "topic": "college",
+    "question": {
+      "en": "What should I do after submitting FAFSA or CADAA in California?",
+      "es": "¿Qué debo hacer después de enviar la FAFSA o CADAA en California?"
+    },
+    "answer": {
+      "en": "**Submitting is only the beginning.** (1) Check your email and the original application portal for confirmation and processing updates. (2) Set up or access **WebGrants 4 Students (WG4S)** to check your California grant status and any to-do items. (3) Verify that the GPA information required for Cal Grant consideration was received, if it applies to you. (4) Monitor each college's financial aid portal and respond to requests for documents. **WG4S, StudentAid.gov/CADAA, and your college portal are separate accounts.**",
+      "es": "**Enviar la solicitud es solo el comienzo.** (1) Revisa el correo y la solicitud original para confirmar el envío y procesamiento. (2) Entra a **WebGrants 4 Students (WG4S)** para revisar ayudas estatales y tareas pendientes. (3) Confirma que se haya recibido tu GPA para Cal Grant, si corresponde. (4) Revisa el portal de ayuda financiera de cada institución y responde a solicitudes de documentos. **WG4S, StudentAid.gov/CADAA y el portal de la institución son cuentas separadas.**"
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "CSAC — How to apply and what happens next",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://www.csac.ca.gov/apply"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Check your application status, California aid status, and college aid portal separately.",
+        "es": "Verifica por separado tu solicitud, ayuda estatal y portal institucional."
+      },
+      "actions": [
+        {
+          "id": "fafsa-ca-after-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://www.csac.ca.gov/apply"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-wg4s",
+      "ans-fafsa-calgrant-gpa",
+      "ans-fafsa-ca-problem"
+    ]
+  },
+  {
+    "id": "ans-fafsa-wg4s",
+    "topic": "college",
+    "question": {
+      "en": "What is WebGrants 4 Students, and how do I create an account?",
+      "es": "¿Qué es WebGrants 4 Students y cómo creo una cuenta?"
+    },
+    "answer": {
+      "en": "**WebGrants 4 Students (WG4S)** is California's official portal for managing Cal Grant and some other state aid information. **FAFSA filers** should normally wait **7–10 days after submitting FAFSA** before creating a WG4S account. **CADAA filers** can sign in using the username and password associated with their CADAA account. After accessing WG4S, review your application status and to-do list. This portal does **not** replace StudentAid.gov or your college's financial aid account. Do not enter passwords or identity documents into WhatSack.",
+      "es": "**WebGrants 4 Students (WG4S)** es el portal oficial de California para consultar Cal Grant y otras ayudas estatales. Quienes enviaron la **FAFSA** normalmente deben esperar **7–10 días** para crear la cuenta WG4S. Quienes enviaron la **CADAA** pueden iniciar sesión con los datos de su cuenta CADAA. Revisa el estado y las tareas pendientes. Este portal **no sustituye** StudentAid.gov ni el portal de ayuda financiera de tu institución. No compartas contraseñas ni documentos de identidad con WhatSack."
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "WebGrants 4 Students — official portal",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://mygrantinfo.csac.ca.gov/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Open WG4S on its official site and review your account status.",
+        "es": "Abre WG4S en el sitio oficial y revisa el estado de tu cuenta."
+      },
+      "actions": [
+        {
+          "id": "fafsa-wg4s-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://mygrantinfo.csac.ca.gov/"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-calgrant-gpa",
+      "ans-fafsa-ca-after",
+      "ans-fafsa-ca-problem"
+    ]
+  },
+  {
+    "id": "ans-fafsa-calgrant-gpa",
+    "topic": "college",
+    "question": {
+      "en": "How do I check if my GPA was submitted for a Cal Grant?",
+      "es": "¿Cómo verifico si enviaron mi promedio de calificaciones (GPA) para Cal Grant?"
+    },
+    "answer": {
+      "en": "Some **Cal Grant** applications require a verified grade point average (**GPA**) in addition to the FAFSA or CADAA. Schools often submit GPA information electronically, but **do not assume yours was received**. Log in to **WebGrants 4 Students**, review your GPA/Cal Grant status and any outstanding requirements, and contact your high school, college, or financial aid office if your GPA is missing or incorrect. GPA requirements and verification pathways vary by program and applicant.",
+      "es": "Algunas solicitudes de **Cal Grant** requieren un promedio de calificaciones (**GPA**) verificado además de la FAFSA o CADAA. Muchas instituciones envían el GPA electrónicamente, pero **no supongas que recibieron el tuyo**. Entra a **WebGrants 4 Students**, verifica el estado de tu GPA/Cal Grant y consulta con tu preparatoria o institución si falta información o es incorrecta. Los requisitos varían según el programa y solicitante."
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "WebGrants 4 Students — GPA and grant status",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://mygrantinfo.csac.ca.gov/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Confirm your Cal Grant GPA record and ask your school to correct or submit it if needed.",
+        "es": "Confirma el registro de GPA y pide a tu escuela que lo envíe o corrija si hace falta."
+      },
+      "actions": [
+        {
+          "id": "fafsa-calgrant-gpa-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://mygrantinfo.csac.ca.gov/"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-wg4s",
+      "ans-fafsa-ca-after",
+      "ans-fafsa-ca-problem"
+    ]
+  },
+  {
+    "id": "ans-fafsa-cash4college",
+    "topic": "college",
+    "question": {
+      "en": "Where can I get free help completing FAFSA or CADAA?",
+      "es": "¿Dónde puedo recibir ayuda gratuita para completar FAFSA o CADAA?"
+    },
+    "answer": {
+      "en": "California's **Cash for College** program offers **free application workshops**, and some schools and community groups also provide financial aid assistance. Use the official workshop locator to check current in-person or virtual options; locations, dates, and availability change. A high school counselor or a college financial aid office may also help. You do not need to pay a third party to submit FAFSA or CADAA. **WhatSack provides general information, not live application assistance.**",
+      "es": "El programa **Cash for College** de California ofrece **talleres gratuitos** para completar solicitudes; algunas escuelas y organizaciones también brindan orientación. Usa el localizador oficial para consultar talleres presenciales o virtuales, ya que fechas y lugares cambian. Un consejero escolar o la oficina de ayuda financiera también puede ayudarte. No necesitas pagar a terceros para enviar la FAFSA o CADAA. **WhatSack ofrece información general, no ayuda en vivo.**"
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "Cash for College — free workshop finder",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://cash4college.csac.ca.gov/"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Look up a current workshop or contact a college financial aid office.",
+        "es": "Busca un taller actual o comunícate con una oficina de ayuda financiera."
+      },
+      "actions": [
+        {
+          "id": "fafsa-cash4college-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://cash4college.csac.ca.gov/"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-apply",
+      "ans-fafsa-cadaa-apply",
+      "ans-fafsa-ca-after"
+    ]
+  },
+  {
+    "id": "ans-fafsa-cadaa-apply",
+    "topic": "college",
+    "question": {
+      "en": "How do I start the California Dream Act Application (CADAA)?",
+      "es": "¿Cómo comienzo la solicitud California Dream Act (CADAA)?"
+    },
+    "answer": {
+      "en": "**CADAA** is the free California application for certain students who may qualify for **state or institutional aid** but are not applying through FAFSA. First review CSAC's guidance to confirm which form fits your circumstances; **WhatSack cannot decide for you**. At **dream.csac.ca.gov**, create an account, complete the requested student and parent/spouse information when applicable, review the form, and provide required electronic signatures. After submitting, review the confirmation and watch for CSAC updates and instructions to use **WebGrants 4 Students**. **CADAA does not apply for federal student aid.**",
+      "es": "**CADAA** es la solicitud gratuita de California para ciertos estudiantes que pueden calificar para **ayuda estatal o institucional**. Primero revisa la guía de CSAC para confirmar qué formulario corresponde; **WhatSack no puede decidirlo por ti**. En **dream.csac.ca.gov**, crea una cuenta, completa tus datos y la información de padre, madre o cónyuge si corresponde, revisa la solicitud y firma electrónicamente. Después del envío, revisa la confirmación y los avisos de CSAC para usar **WebGrants 4 Students**. **CADAA no solicita ayuda federal.**"
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "CSAC — California Dream Act Application FAQs",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://csac.ca.gov/cadaa-faq"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Read CSAC's eligibility guidance and open the official CADAA form if appropriate.",
+        "es": "Lee los requisitos de CSAC y abre la solicitud oficial CADAA si corresponde."
+      },
+      "actions": [
+        {
+          "id": "fafsa-cadaa-apply-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://csac.ca.gov/cadaa-faq"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-college-fafsa-vs-cadaa",
+      "ans-fafsa-cadaa-after",
+      "ans-fafsa-cash4college"
+    ]
+  },
+  {
+    "id": "ans-fafsa-cadaa-after",
+    "topic": "college",
+    "question": {
+      "en": "What happens after I submit the California Dream Act Application?",
+      "es": "¿Qué pasa después de enviar la solicitud California Dream Act?"
+    },
+    "answer": {
+      "en": "After submitting **CADAA**, review the **confirmation page** for errors or missing details. CSAC explains that you will receive a **nine-digit Dream ID** by email; follow its instructions to access **WebGrants 4 Students** and review eligibility updates, California aid status, and pending tasks. The colleges listed on CADAA receive your application information and may request additional documents. Check your college portal too—submission **does not guarantee an award**.",
+      "es": "Después de enviar la **CADAA**, revisa la **página de confirmación** para detectar errores. CSAC indica que recibirás por correo un **Dream ID de nueve dígitos**; sigue sus instrucciones para entrar a **WebGrants 4 Students** y revisar el estado de la ayuda y tareas pendientes. Las instituciones incluidas reciben información de tu solicitud y pueden pedir documentos. Revisa también el portal de la institución: el envío **no garantiza ayuda**."
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "CSAC — next steps after CADAA",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://csac.ca.gov/cadaa-faq"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Check your confirmation, Dream ID email, WG4S status, and college aid portal.",
+        "es": "Revisa la confirmación, correo de Dream ID, WG4S y el portal institucional."
+      },
+      "actions": [
+        {
+          "id": "fafsa-cadaa-after-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://csac.ca.gov/cadaa-faq"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-wg4s",
+      "ans-fafsa-calgrant-gpa",
+      "ans-fafsa-ca-problem"
+    ]
+  },
+  {
+    "id": "ans-fafsa-ca-problem",
+    "topic": "college",
+    "question": {
+      "en": "What if my FAFSA or CADAA has an error or shows as incomplete?",
+      "es": "¿Qué hago si mi FAFSA o CADAA tiene un error o aparece incompleta?"
+    },
+    "answer": {
+      "en": "First check the **official application account** (StudentAid.gov for FAFSA or the California Dream Act portal for CADAA) for processing status, missing signatures, and messages. If corrections are needed, follow that application's official correction instructions. Also check **WebGrants 4 Students** for California-specific outstanding tasks and your college financial aid portal for document requests. Ask the relevant agency or school financial aid office if you're unsure. **Never upload your tax documents or identity information to WhatSack.**",
+      "es": "Primero revisa la **cuenta oficial de tu solicitud** (StudentAid.gov para FAFSA o el portal de California Dream Act para CADAA) por mensajes, firmas faltantes y estado del trámite. Si hace falta corregir datos, sigue las instrucciones oficiales. Consulta también **WebGrants 4 Students** por tareas estatales y el portal de tu institución por documentos solicitados. Si tienes dudas, comunícate con la agencia o la oficina de ayuda financiera. **No subas datos fiscales o documentos de identidad a WhatSack.**"
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "CSAC — application and follow-up instructions",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://www.csac.ca.gov/apply"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Find the exact error or missing task in the official portal and contact the responsible office.",
+        "es": "Identifica el error o tarea en el portal oficial y consulta con la oficina responsable."
+      },
+      "actions": [
+        {
+          "id": "fafsa-ca-problem-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://www.csac.ca.gov/apply"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-fafsa-ca-after",
+      "ans-fafsa-wg4s",
+      "ans-fafsa-cash4college"
+    ]
+  },
+  {
+    "id": "ans-fafsa-mixedstatus",
+    "topic": "college",
+    "question": {
+      "en": "What financial aid options do students from mixed-status families have in California?",
+      "es": "¿Qué opciones de ayuda tienen estudiantes de familias con estatus migratorio mixto en California?"
+    },
+    "answer": {
+      "en": "Students in **mixed-status families** may have more than one application pathway depending on their circumstances. CSAC states that **California colleges and universities must allow students from mixed-status families to use CADAA for state and institutional aid if they prefer**. However, **CADAA does not apply for federal aid**, so students who may qualify for federal aid should review the difference carefully. Check CSAC's published guidance or speak privately with a financial aid counselor; **do not share anyone's immigration status with WhatSack**.",
+      "es": "Los estudiantes de **familias con estatus migratorio mixto** pueden tener distintas opciones según su situación. CSAC indica que **las instituciones de California deben permitir presentar CADAA para ayuda estatal e institucional si la familia lo prefiere**. Sin embargo, **CADAA no solicita ayuda federal**; quien pudiera ser elegible para ayuda federal debe revisar las diferencias. Consulta la guía de CSAC o habla en privado con un asesor; **no compartas el estatus migratorio de nadie con WhatSack**."
+    },
+    "context": [
+      {
+        "en": "California financial aid",
+        "es": "Ayuda financiera de California"
+      }
+    ],
+    "links": [
+      {
+        "label": {
+          "en": "CSAC — student disclosures and mixed-status families",
+          "es": "Guía oficial de California"
+        },
+        "source": {
+          "en": "California Student Aid Commission",
+          "es": "Comisión de Ayuda Estudiantil de California"
+        },
+        "url": "https://csac.ca.gov/student-disclosures"
+      }
+    ],
+    "nextStep": {
+      "title": {
+        "en": "Your next step",
+        "es": "Tu siguiente paso"
+      },
+      "detail": {
+        "en": "Compare FAFSA and CADAA through CSAC's official guidance before choosing an application.",
+        "es": "Compara FAFSA y CADAA con la guía oficial de CSAC antes de elegir."
+      },
+      "actions": [
+        {
+          "id": "fafsa-mixedstatus-open",
+          "kind": "open-link",
+          "label": {
+            "en": "Open official instructions",
+            "es": "Abrir instrucciones oficiales"
+          },
+          "url": "https://csac.ca.gov/student-disclosures"
+        }
+      ]
+    },
+    "followUpIds": [
+      "ans-college-fafsa-vs-cadaa",
+      "ans-fafsa-cadaa-apply",
+      "ans-fafsa-cash4college"
+    ]
   }
 ];
 
@@ -863,6 +1319,21 @@ export const fafsaBasicsAnswers: ScriptedAnswer[] = [
 export const routeFafsaBasicsQuestion = (input: string): string | undefined => {
   const q = input.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
   const rules: Array<[RegExp, string]> = [
+    [/(?:webgrants|web grants|wg4s|mygrantinfo).*(?:account|create|login|sign|what|status)|(?:how do i|what is).*(?:webgrants|wg4s)|(?:create.*webgrants|webgrants.*create)/, 'ans-fafsa-wg4s'],
+    [/(?:cal grant|calgrant|gpa).*(?:gpa|submitted|verify|verification|received|missing|check)|(?:was|is).*(?:gpa).*(?:submitted|received)|(?:check|verify).*(?:gpa)/, 'ans-fafsa-calgrant-gpa'],
+    [/(?:where|how|free|workshop|cash for college).*(?:help|assist|workshop|cash for college).*(?:fafsa|cadaa|financial aid)?|(?:fafsa|cadaa).*(?:free help|workshop|cash for college)/, 'ans-fafsa-cash4college'],
+    [/(?:how|start|begin|submit|fill out|apply for|complete).*(?:california dream act|cadaa)|(?:cadaa).*(?:how to apply|how to start|fill out|apply)/, 'ans-fafsa-cadaa-apply'],
+    [/(?:after|what happens|next|submitted|process).*(?:california dream act|cadaa)|(?:cadaa).*(?:after|submitted|confirmation|dream id)/, 'ans-fafsa-cadaa-after'],
+    [/(?:after|next steps|submitted|completed).*(?:fafsa or cadaa|financial aid).*(?:california)?|(?:fafsa or cadaa).*(?:after|submit|next)/, 'ans-fafsa-ca-after'],
+    [/(?:incorrect|incomplete|mistake|error|fix|correction|missing signature).*(?:fafsa|cadaa|financial aid)|(?:fafsa|cadaa).*(?:incomplete|error|mistake|correct|fix)/, 'ans-fafsa-ca-problem'],
+    [/(?:mixed status|mixed status famil|undocumented parent).*(?:aid|fafsa|cadaa|college)|(?:fafsa|cadaa).*(?:mixed status|undocumented parent)/, 'ans-fafsa-mixedstatus'],
+    [/(?:que es webgrants|como.*(?:webgrants|wg4s))/, 'ans-fafsa-wg4s'],
+    [/(?:como.*(?:gpa|promedio).*(?:cal grant)|(?:cal grant).*(?:gpa|promedio))/, 'ans-fafsa-calgrant-gpa'],
+    [/(?:taller.*(?:fafsa|cadaa)|ayuda gratuita.*(?:fafsa|cadaa)|cash for college)/, 'ans-fafsa-cash4college'],
+    [/(?:como.*(?:solicitud california dream act|cadaa)|(?:cadaa).*(?:como se|como la))/, 'ans-fafsa-cadaa-apply'],
+    [/(?:despues.*(?:cadaa|dream act)|(?:cadaa).*(?:despues|enviarla))/, 'ans-fafsa-cadaa-after'],
+    [/(?:error|incompleta|corregir|correccion).*(?:fafsa|cadaa)/, 'ans-fafsa-ca-problem'],
+    [/(?:familia.*estatus.*mixto|familia.*estatus migratorio mixto)/, 'ans-fafsa-mixedstatus'],
     [/(?:what (?:happens|do i do)|next steps?|after submitting|after i submit|after i file|submission summary).*(?:fafsa|financial aid)|(?:fafsa).*(?:submitted|processed|submission summary|after i submit|after i file)/, 'ans-fafsa-after'],
     [/(?:what (?:documents|information|records)|what do i need|have ready|prepare|checklist).*(?:fafsa|financial aid)|(?:fafsa).*(?:documents|checklist|prepare|what do i need)/, 'ans-fafsa-prepare'],
     [/(?:parents?|mother|father|mom|dad|contributor).*(?:fafsa|financial aid)|(?:fafsa).*(?:parent|contributor)/, 'ans-fafsa-parents'],
