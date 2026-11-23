@@ -39,7 +39,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         { label: currentLanguage === 'en' ? "Reporting changes" : "Reportar cambios", desc: currentLanguage === 'en' ? "Reporting requirements differ by case. Ask your county CalFresh office which changes to report and when." : "Los requisitos para reportar dependen del caso. Pregunte a su oficina de CalFresh qué cambios debe reportar y cuándo." },
         { label: currentLanguage === 'en' ? "Expedited benefits" : "Beneficios acelerados", desc: currentLanguage === 'en' ? "Some applicants may qualify for expedited processing. The county determines eligibility; a cash balance alone does not guarantee approval." : "Algunas personas pueden recibir un trámite acelerado. El condado determina la elegibilidad; la cantidad de dinero por sí sola no garantiza la aprobación." }
       ],
-      requiredDocsSummary: currentLanguage === 'en' ? ["Review your own county notice","Ask which documents, if any, are required","Confirm deadlines and reporting rules with the county"] : ["Revise el aviso de su condado","Pregunte qué documentos necesita, si corresponde","Confirme los plazos y reglas para reportar"],
+      questionsToAsk: currentLanguage === 'en' ? ["Review your own county notice","Ask which documents, if any, are required","Confirm deadlines and reporting rules with the county"] : ["Revise el aviso de su condado","Pregunte qué documentos necesita, si corresponde","Confirme los plazos y reglas para reportar"],
       chatGuidance: currentLanguage === 'en' ? "Ask your county CalFresh office about your notice and case requirements." : "Consulte con su oficina de CalFresh sobre su aviso y los requisitos de su caso."
     },
     edd: {
@@ -52,7 +52,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         { label: currentLanguage === 'en' ? "Training and benefits" : "Capacitación y beneficios", desc: currentLanguage === 'en' ? "Training does not automatically guarantee continued unemployment benefits or exemption from work-search requirements. Confirm your circumstances with EDD." : "La capacitación no garantiza que continúen los beneficios ni una exención de búsqueda de empleo. Consulte con EDD sobre su caso." },
         { label: currentLanguage === 'en' ? "Workforce training funding" : "Fondos para capacitación", desc: currentLanguage === 'en' ? "Tuition, books, and other costs may or may not be funded. Check availability and eligibility directly with a workforce provider; there is no guaranteed grant amount." : "La matrícula, los libros y otros gastos podrían o no contar con fondos. Confirme la disponibilidad y los requisitos con un proveedor; no hay un monto garantizado." }
       ],
-      requiredDocsSummary: currentLanguage === 'en' ? ["Ask EDD how to report school or training","Check whether your training qualifies for CTB","Ask the training provider about available funding"] : ["Pregunte a EDD cómo reportar sus estudios","Consulte si su capacitación cumple los requisitos de CTB","Pregunte al proveedor sobre los fondos disponibles"],
+      questionsToAsk: currentLanguage === 'en' ? ["Ask EDD how to report school or training","Check whether your training qualifies for CTB","Ask the training provider about available funding"] : ["Pregunte a EDD cómo reportar sus estudios","Consulte si su capacitación cumple los requisitos de CTB","Pregunte al proveedor sobre los fondos disponibles"],
       chatGuidance: currentLanguage === 'en' ? "Read the EDD California Training Benefits page and contact EDD about your own claim." : "Consulte la página de California Training Benefits y comuníquese con EDD sobre su caso."
     },
     deanza: {
@@ -65,7 +65,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         { label: currentLanguage === 'en' ? "Promise versus fee waivers" : "Promise y exenciones", desc: currentLanguage === 'en' ? "Promise and enrollment-fee waivers are not interchangeable. Ask which one applies and what it covers." : "Promise y las exenciones de cuotas son distintos. Pregunte cuál corresponde y qué gastos cubre." },
         { label: currentLanguage === 'en' ? "Books and other expenses" : "Libros y otros gastos", desc: currentLanguage === 'en' ? "Book vouchers and other aid are not guaranteed. Verify current program rules and funding with the college." : "Los vales de libros y otras ayudas no están garantizados. Confirme los requisitos y fondos con el colegio." }
       ],
-      requiredDocsSummary: currentLanguage === 'en' ? ["Check current Promise eligibility","Ask which expenses are covered","Confirm application and enrollment steps"] : ["Revise los requisitos actuales de Promise","Pregunte qué gastos se cubren","Confirme los pasos de solicitud e inscripción"],
+      questionsToAsk: currentLanguage === 'en' ? ["Check current Promise eligibility","Ask which expenses are covered","Confirm application and enrollment steps"] : ["Revise los requisitos actuales de Promise","Pregunte qué gastos se cubren","Confirme los pasos de solicitud e inscripción"],
       chatGuidance: currentLanguage === 'en' ? "Review the official De Anza College Promise page and ask its financial-aid office about current requirements." : "Revise la página oficial de De Anza College Promise y pregunte a su oficina de ayuda financiera sobre los requisitos actuales."
     }
   };
@@ -171,7 +171,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
-            🎓 {currentLanguage === 'en' ? 'De Anza College Promise' : 'De Anza Matrícula Gratuita'}
+            🎓 {currentLanguage === 'en' ? 'De Anza College Promise' : 'De Anza College Promise'}
           </button>
         </div>
 
@@ -188,12 +188,12 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
       {/* Dual Workspace View: Simulated Website (Left 65%) + WhatSack Extension Sidebar (Right 35%) */}
       <div className="extension-workspace flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* LEFT PANE: Simulated Government Webpage */}
+        {/* LEFT PANE: Fictional, non-interactive example */}
         <div className="flex-1 bg-white text-slate-900 p-6 sm:p-8 overflow-y-auto">
-          {/* Simulated Browser Address Bar */}
+          {/* Link to the real agency; the example below is fictional */}
           <div className="flex items-center gap-2 p-2 bg-slate-100 rounded-xl mb-6 text-xs text-slate-600 border border-slate-200">
             <Info className="w-4 h-4 text-slate-500 shrink-0" aria-hidden="true" />
-            <span className="font-mono text-slate-700 truncate">{currentPortalData.url}</span>
+            <span className="text-slate-700 truncate">{currentLanguage === 'en' ? 'Official reference (not the page shown):' : 'Referencia oficial (no es la página mostrada):'} {currentPortalData.url}</span>
             <span className="ml-auto text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold uppercase">
               {currentLanguage === 'en' ? 'Illustrative example' : 'Ejemplo ilustrativo'}
             </span>
@@ -209,7 +209,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               </h1>
             </div>
 
-            {/* Bureaucratic Jargon Box */}
+            {/* Fictional explanatory example, not an official legal quotation */}
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
               <div className="flex items-center gap-1.5 text-slate-500 font-bold mb-1.5">
                 <FileText className="w-4 h-4 text-slate-400" />
@@ -220,7 +220,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               </p>
             </div>
 
-            {/* Simulated Complex Form Inputs */}
+            {/* Disabled sample form fields: no personal data is collected here */}
             <div className="space-y-4 p-5 rounded-2xl border border-slate-200 bg-slate-50/50">
               <h3 className="font-bold text-sm text-slate-800">
                 {currentLanguage === 'en' ? 'Example of a complicated form' : 'Ejemplo de un formulario complicado'}
@@ -328,14 +328,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               ))}
             </div>
 
-            {/* What You Actually Need Today Checklist */}
+            {/* Questions to verify with an actual agency */}
             <div className="p-3.5 rounded-2xl bg-slate-800 border border-slate-700">
               <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
                 <Info className="w-4 h-4 text-emerald-400" />
                 <span>{currentLanguage === 'en' ? 'Questions to ask the organization:' : 'Preguntas para la organización:'}</span>
               </h4>
               <ul className="space-y-1.5 text-xs text-slate-300">
-                {currentPortalData.requiredDocsSummary.map((item, idx) => (
+                {currentPortalData.questionsToAsk.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
                     <span>{item}</span>
@@ -344,7 +344,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               </ul>
             </div>
 
-            {/* Interactive Extension Chat */}
+            {/* Scripted sample chat: not a live assistant */}
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
