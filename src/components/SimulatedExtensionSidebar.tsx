@@ -1,25 +1,7 @@
 import React, { useState } from 'react';
 import { Language } from '../types';
 import { translations } from '../data/translations';
-import { 
-  SidebarClose, 
-  Sparkles, 
-  CheckCircle2, 
-  AlertTriangle, 
-  FileText, 
-  Search, 
-  ArrowRight, 
-  ExternalLink, 
-  HelpCircle, 
-  ShieldCheck, 
-  RefreshCw,
-  Send,
-  Minimize2,
-  Maximize2,
-  Layers,
-  ChevronRight,
-  Info
-} from 'lucide-react';
+import { SidebarClose, Sparkles, AlertTriangle, FileText, ArrowRight, ExternalLink, Info, Send, Minimize2, Maximize2 } from 'lucide-react';
 
 interface SimulatedExtensionSidebarProps {
   currentLanguage: Language;
@@ -39,86 +21,52 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
     {
       sender: 'assistant',
       text: currentLanguage === 'en'
-        ? 'Hi! I am WhatSack Companion. I am scanning this county portal for you. Notice section 3 asks for SAR 7 reporting? You only need to report if your income changed by more than $100.'
-        : '¡Hola! Soy el Compañero WhatSack. Estoy analizando este portal para usted. ¿Ve que la sección 3 pide informe SAR 7? Solo debe reportar si sus ingresos cambiaron más de $100.'
+        ? 'This classroom demonstration uses fictional pages. I cannot scan a website, confirm eligibility, or determine reporting rules. Please check the official source.'
+        : 'Esta demostración académica usa páginas ficticias. No puedo analizar sitios web, confirmar elegibilidad ni determinar reglas para reportar. Consulte la fuente oficial.'
     }
   ]);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
 
   const portals = {
     calfresh: {
-      url: 'https://benefits.sccgov.org/calfresh-intake/application-v4',
-      name: currentLanguage === 'en' ? 'Santa Clara County CalFresh & General Assistance' : 'Portal de CalFresh y Asistencia del Condado de Santa Clara',
-      headline: currentLanguage === 'en' ? 'Application for CalFresh Food Benefits (Form CF 285 / SAR 7)' : 'Solicitud de Beneficios de Alimentos CalFresh (Formato CF 285 / SAR 7)',
-      jargonSnippet: currentLanguage === 'en'
-        ? 'Pursuant to Welfare and Institutions Code § 18901.3, gross income determinations require verification of all non-exempt earned income, dependent care deductions, and utility standard allowances (SUA).'
-        : 'Conforme al Código de Bienestar § 18901.3, las determinaciones de ingreso bruto exigen verificación de ingresos ganados no exentos y deducciones de servicios públicos (SUA).',
-      decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: You just need to show one recent pay stub or written statement of how much you earned this month. Utilities like phone or electric bills actually lower your income on paper so you get MORE food assistance!'
-        : 'En palabras sencillas: Solo necesita mostrar un talón de cheque reciente o una carta simple de lo que ganó este mes. ¡Sus recibos de luz o teléfono ayudan a que le den MÁS dinero de despensa!',
+      url: "https://www.cdss.ca.gov/inforesources/calfresh/rights-and-responsibilities",
+      name: currentLanguage === 'en' ? "California CalFresh" : "CalFresh de California",
+      headline: currentLanguage === 'en' ? "Example: Understanding CalFresh notices" : "Ejemplo: Comprender los avisos de CalFresh",
+      jargonSnippet: currentLanguage === 'en' ? "A county notice may ask for updated income or household information. The specific reporting rules and documents vary by case." : "Un aviso del condado puede solicitar información actualizada sobre ingresos o el hogar. Las reglas y los documentos dependen del caso.",
+      decodedPlainEnglish: currentLanguage === 'en' ? "Check your own county notice for the reporting rules, documents, and deadlines that apply to you. This demo cannot determine eligibility or benefit amounts." : "Revise el aviso de su condado para confirmar los requisitos, documentos y plazos de su caso. Esta demostración no determina la elegibilidad ni los beneficios.",
       hiddenBarriers: [
-        {
-          label: currentLanguage === 'en' ? 'Public Charge Rumor' : 'Mito de Carga Pública',
-          desc: currentLanguage === 'en'
-            ? 'Safe to apply: CalFresh benefits for citizen children do NOT count toward immigration public charge tests.'
-            : 'Seguro de solicitar: Los beneficios de CalFresh para hijos ciudadanos NO afectan el historial migratorio.'
-        },
-        {
-          label: currentLanguage === 'en' ? 'Expedited 3-Day Service' : 'Servicio Urgente de 3 Días',
-          desc: currentLanguage === 'en'
-            ? 'If your household has less than $100 on hand, you qualify for emergency benefits within 3 days instead of 30 days.'
-            : 'Si su familia tiene menos de $100 disponibles, califica para recibir despensa urgente en 3 días en vez de 30.'
-        }
+        { label: currentLanguage === 'en' ? "Reporting changes" : "Reportar cambios", desc: currentLanguage === 'en' ? "Reporting requirements differ by case. Ask your county CalFresh office which changes to report and when." : "Los requisitos para reportar dependen del caso. Pregunte a su oficina de CalFresh qué cambios debe reportar y cuándo." },
+        { label: currentLanguage === 'en' ? "Expedited benefits" : "Beneficios acelerados", desc: currentLanguage === 'en' ? "Some applicants may qualify for expedited processing. The county determines eligibility; a cash balance alone does not guarantee approval." : "Algunas personas pueden recibir un trámite acelerado. El condado determina la elegibilidad; la cantidad de dinero por sí sola no garantiza la aprobación." }
       ],
-      requiredDocsSummary: currentLanguage === 'en'
-        ? ['Any ID with your photo or name', '1 pay stub or employer letter', 'Utility bill (PG&E or phone)']
-        : ['Cualquier identificación con su foto o nombre', '1 talón de cheque o carta de trabajo', 'Recibo de servicios (PG&E o teléfono)']
+      questionsToAsk: currentLanguage === 'en' ? ["Review your own county notice","Ask which documents, if any, are required","Confirm deadlines and reporting rules with the county"] : ["Revise el aviso de su condado","Pregunte qué documentos necesita, si corresponde","Confirme los plazos y reglas para reportar"],
+      chatGuidance: currentLanguage === 'en' ? "Ask your county CalFresh office about your notice and case requirements." : "Consulte con su oficina de CalFresh sobre su aviso y los requisitos de su caso."
     },
     edd: {
-      url: 'https://edd.ca.gov/unemployment-benefits/dislocated-worker-retraining',
-      name: currentLanguage === 'en' ? 'California EDD Unemployment & Retraining Portal' : 'Portal de Desempleo y Reentrenamiento EDD de California',
-      headline: currentLanguage === 'en' ? 'California Training Benefits (CTB) & WIOA Dislocated Worker Program' : 'Beneficios de Capacitación de California (CTB) y Programa WIOA',
-      jargonSnippet: currentLanguage === 'en'
-        ? 'Claimants electing Title I-B training must establish eligibility under Section 1269 before exhausting 16th week of standard UI entitlement.'
-        : 'Los solicitantes de capacitación Título I-B deben acreditar elegibilidad bajo la Sección 1269 antes de la semana 16 de beneficios UI.',
-      decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: If you apply for tech or manufacturing retraining before your 16th week of unemployment, California EDD lets you collect your full weekly check while going to school, without having to search for other jobs!'
-        : 'En palabras sencillas: Si solicita cursos de tecnología antes de su semana 16 de desempleo, el estado le sigue pagando su cheque semanal mientras estudia, ¡sin obligarlo a buscar otro trabajo!',
+      url: "https://edd.ca.gov/ctb",
+      name: currentLanguage === 'en' ? "California EDD" : "EDD de California",
+      headline: currentLanguage === 'en' ? "Example: Training while receiving unemployment" : "Ejemplo: Capacitación durante el desempleo",
+      jargonSnippet: currentLanguage === 'en' ? "Someone receiving unemployment may need to report school or training and ask EDD about California Training Benefits (CTB)." : "Una persona que recibe beneficios de desempleo podría necesitar reportar sus estudios o capacitación y consultar con EDD sobre CTB.",
+      decodedPlainEnglish: currentLanguage === 'en' ? "California Training Benefits may allow eligible claimants to attend approved training while receiving unemployment benefits. EDD determines eligibility, reporting, and extension requirements." : "California Training Benefits puede permitir que ciertas personas asistan a capacitación mientras reciben desempleo. EDD determina la elegibilidad y los requisitos de reporte o extensión.",
       hiddenBarriers: [
-        {
-          label: currentLanguage === 'en' ? 'NOVAworks Grant Voucher' : 'Vales de Beca NOVAworks',
-          desc: currentLanguage === 'en'
-            ? 'You do not pay for books or tuition. The workforce grant pays up to $8,000 directly to approved schools.'
-            : 'Usted no paga libros ni colegiatura. La beca cubre hasta $8,000 directo a las escuelas aprobadas.'
-        }
+        { label: currentLanguage === 'en' ? "Training and benefits" : "Capacitación y beneficios", desc: currentLanguage === 'en' ? "Training does not automatically guarantee continued unemployment benefits or exemption from work-search requirements. Confirm your circumstances with EDD." : "La capacitación no garantiza que continúen los beneficios ni una exención de búsqueda de empleo. Consulte con EDD sobre su caso." },
+        { label: currentLanguage === 'en' ? "Workforce training funding" : "Fondos para capacitación", desc: currentLanguage === 'en' ? "Tuition, books, and other costs may or may not be funded. Check availability and eligibility directly with a workforce provider; there is no guaranteed grant amount." : "La matrícula, los libros y otros gastos podrían o no contar con fondos. Confirme la disponibilidad y los requisitos con un proveedor; no hay un monto garantizado." }
       ],
-      requiredDocsSummary: currentLanguage === 'en'
-        ? ['EDD Notice of Unemployment Award', 'CA Driver License or State ID', 'Resume draft']
-        : ['Carta de Concesión de Desempleo EDD', 'Licencia de CA o ID Estatal', 'Borrador de currículum']
+      questionsToAsk: currentLanguage === 'en' ? ["Ask EDD how to report school or training","Check whether your training qualifies for CTB","Ask the training provider about available funding"] : ["Pregunte a EDD cómo reportar sus estudios","Consulte si su capacitación cumple los requisitos de CTB","Pregunte al proveedor sobre los fondos disponibles"],
+      chatGuidance: currentLanguage === 'en' ? "Read the EDD California Training Benefits page and contact EDD about your own claim." : "Consulte la página de California Training Benefits y comuníquese con EDD sobre su caso."
     },
     deanza: {
-      url: 'https://fhda.edu/admissions/college-promise-ab19',
-      name: currentLanguage === 'en' ? 'Foothill-De Anza College District Enrollment Portal' : 'Portal de Inscripción del Distrito Colegial Foothill-De Anza',
-      headline: currentLanguage === 'en' ? 'AB 19 College Promise Tuition Waiver & AB 540 Nonresident Exemption' : 'Exención de Matrícula AB 19 College Promise y Ley AB 540',
-      jargonSnippet: currentLanguage === 'en'
-        ? 'Statutory compliance requires student certification of full-time quarter standing (>= 12.0 institutional units) and submission of FAFSA/CADAA prior to census date.'
-        : 'El cumplimiento legal requiere acreditación de tiempo completo (>= 12 unidades) y envío de FAFSA/CADAA antes de la fecha de censo.',
-      decodedPlainEnglish: currentLanguage === 'en'
-        ? 'In plain terms: High school graduates who take 4 classes get 2 full years of college 100% free! Undocumented students submit CADAA instead of FAFSA with complete legal privacy.'
-        : 'En palabras sencillas: ¡Los graduados de preparatoria que toman 4 clases tienen 2 años completos de universidad 100% gratis! Estudiantes indocumentados envían CADAA con privacidad absoluta protegida por la ley.',
+      url: "https://www.deanza.edu/promise/",
+      name: currentLanguage === 'en' ? "De Anza College Promise" : "De Anza College Promise",
+      headline: currentLanguage === 'en' ? "Example: Understanding Promise assistance" : "Ejemplo: Comprender la ayuda Promise",
+      jargonSnippet: currentLanguage === 'en' ? "Promise programs, enrollment-fee waivers, and other financial aid have different eligibility and enrollment requirements." : "Los programas Promise, las exenciones de cuotas y otras ayudas tienen distintos requisitos de elegibilidad e inscripción.",
+      decodedPlainEnglish: currentLanguage === 'en' ? "De Anza College Promise has program-specific rules and covered costs. Check the official page and financial-aid office; taking a certain number of classes does not make every college cost free." : "De Anza College Promise tiene requisitos y gastos cubiertos específicos. Confirme la información en la página oficial y la oficina de ayuda financiera; tomar cierto número de clases no hace que todos los gastos sean gratuitos.",
       hiddenBarriers: [
-        {
-          label: currentLanguage === 'en' ? 'Textbook Voucher Available' : 'Vales para Libros de Texto',
-          desc: currentLanguage === 'en'
-            ? 'Ask the First-Gen desk for the $500 quarterly campus bookstore voucher.'
-            : 'Solicite en el módulo de Primera Generación el vale de $500 por trimestre para libros.'
-        }
+        { label: currentLanguage === 'en' ? "Promise versus fee waivers" : "Promise y exenciones", desc: currentLanguage === 'en' ? "Promise and enrollment-fee waivers are not interchangeable. Ask which one applies and what it covers." : "Promise y las exenciones de cuotas son distintos. Pregunte cuál corresponde y qué gastos cubre." },
+        { label: currentLanguage === 'en' ? "Books and other expenses" : "Libros y otros gastos", desc: currentLanguage === 'en' ? "Book vouchers and other aid are not guaranteed. Verify current program rules and funding with the college." : "Los vales de libros y otras ayudas no están garantizados. Confirme los requisitos y fondos con el colegio." }
       ],
-      requiredDocsSummary: currentLanguage === 'en'
-        ? ['High school diploma / transcript', 'CADAA or FAFSA confirmation number', 'Class schedule showing 12 units']
-        : ['Certificado de preparatoria', 'Número de confirmación CADAA o FAFSA', 'Horario con 12 unidades']
+      questionsToAsk: currentLanguage === 'en' ? ["Check current Promise eligibility","Ask which expenses are covered","Confirm application and enrollment steps"] : ["Revise los requisitos actuales de Promise","Pregunte qué gastos se cubren","Confirme los pasos de solicitud e inscripción"],
+      chatGuidance: currentLanguage === 'en' ? "Review the official De Anza College Promise page and ask its financial-aid office about current requirements." : "Revise la página oficial de De Anza College Promise y pregunte a su oficina de ayuda financiera sobre los requisitos actuales."
     }
   };
 
@@ -126,28 +74,13 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
   const handleSendExtensionChat = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!extensionChatInput.trim()) return;
-
-    const userText = extensionChatInput;
-    setExtensionMessages((prev) => [...prev, { sender: 'user', text: userText }]);
+    const question = extensionChatInput.trim();
+    if (!question) return;
     setExtensionChatInput('');
-
-    setTimeout(() => {
-      let response = '';
-      if (currentLanguage === 'en') {
-        response = `Regarding "${userText}": On this ${selectedPortal.toUpperCase()} portal, WhatSack confirms you only need basic proof of residency and no credit checks are performed. Look at the highlighted section on the right for your immediate next step.`;
-      } else {
-        response = `Respecto a "${userText}": En este portal de ${selectedPortal.toUpperCase()}, WhatSack confirma que solo se requiere comprobante de domicilio básico y no se revisa crédito. Revise la sección resaltada a la derecha para su siguiente paso inmediato.`;
-      }
-      setExtensionMessages((prev) => [...prev, { sender: 'assistant', text: response }]);
-    }, 600);
-  };
-
-  const triggerAnalyze = () => {
-    setIsAnalyzing(true);
-    setTimeout(() => {
-      setIsAnalyzing(false);
-    }, 800);
+    const response = currentLanguage === 'en'
+      ? `This is a scripted demonstration, not a live answer to "${question}". ${currentPortalData.chatGuidance} Use the official source linked here to check current requirements.`
+      : `Esta es una demostración con respuestas preparadas, no una respuesta en vivo a "${question}". ${currentPortalData.chatGuidance} Use la fuente oficial enlazada aquí para confirmar los requisitos actuales.`;
+    setExtensionMessages((prev) => [...prev, { sender: 'user', text: question }, { sender: 'assistant', text: response }]);
   };
 
   return (
@@ -165,7 +98,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             <Sparkles className="w-4 h-4 text-emerald-400" />
             <span>{t.extension.title}</span>
             <span className="text-[10px] bg-indigo-900/60 text-indigo-300 border border-indigo-700/50 px-2 py-0.5 rounded-full">
-              Chrome & Safari Prototype Extension
+              Illustrative layout — not installed
             </span>
           </div>
         </div>
@@ -197,7 +130,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
         </div>
       </div>
 
-      {/* Portal Selection Tabs (Demonstrating WhatSack scanning different government pages) */}
+      <div role="note" className="px-4 sm:px-6 py-3 bg-amber-950 text-amber-100 border-b border-amber-700 flex items-start gap-2 text-sm">
+        <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" aria-hidden="true" />
+        <span>{currentLanguage === 'en'
+          ? 'CLASSROOM DEMO — These are fictional sample pages. WhatSack does not scan live websites or determine eligibility. Check official sources and contact the relevant agency.'
+          : 'DEMOSTRACIÓN ACADÉMICA — Estas páginas son ejemplos ficticios. WhatSack no analiza sitios web en vivo ni determina elegibilidad. Consulte las fuentes oficiales y la agencia correspondiente.'}</span>
+      </div>
+
+      {/* Three fictional sample scenarios: no page scraping or live analysis */}
       <div className="extension-portalbar bg-slate-900 border-b border-slate-800 px-4 sm:px-6 py-2 flex items-center justify-between gap-2 overflow-x-auto">
         <div className="flex items-center gap-2 shrink-0">
           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2">
@@ -231,29 +171,31 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
             }`}
           >
-            🎓 {currentLanguage === 'en' ? 'De Anza College Promise' : 'De Anza Matrícula Gratuita'}
+            🎓 {currentLanguage === 'en' ? 'De Anza College Promise' : 'De Anza College Promise'}
           </button>
         </div>
 
-        <button
-          onClick={triggerAnalyze}
-          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0"
+        <a
+          href={currentPortalData.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shrink-0"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isAnalyzing ? 'animate-spin text-emerald-400' : ''}`} />
-          <span>{currentLanguage === 'en' ? 'Re-scan Page' : 'Reescanear Página'}</span>
-        </button>
+          <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+          <span>{currentLanguage === 'en' ? 'Official source' : 'Fuente oficial'}</span>
+        </a>
       </div>
 
       {/* Dual Workspace View: Simulated Website (Left 65%) + WhatSack Extension Sidebar (Right 35%) */}
       <div className="extension-workspace flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* LEFT PANE: Simulated Government Webpage */}
+        {/* LEFT PANE: Fictional, non-interactive example */}
         <div className="flex-1 bg-white text-slate-900 p-6 sm:p-8 overflow-y-auto">
-          {/* Simulated Browser Address Bar */}
+          {/* Link to the real agency; the example below is fictional */}
           <div className="flex items-center gap-2 p-2 bg-slate-100 rounded-xl mb-6 text-xs text-slate-600 border border-slate-200">
-            <span className="text-slate-400">🔒</span>
-            <span className="font-mono text-slate-700 truncate">{currentPortalData.url}</span>
+            <Info className="w-4 h-4 text-slate-500 shrink-0" aria-hidden="true" />
+            <span className="text-slate-700 truncate">{currentLanguage === 'en' ? 'Official reference (not the page shown):' : 'Referencia oficial (no es la página mostrada):'} {currentPortalData.url}</span>
             <span className="ml-auto text-[10px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded font-bold uppercase">
-              {currentLanguage === 'en' ? 'Simulated Portal' : 'Portal Simulado'}
+              {currentLanguage === 'en' ? 'Illustrative example' : 'Ejemplo ilustrativo'}
             </span>
           </div>
 
@@ -267,43 +209,43 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               </h1>
             </div>
 
-            {/* Bureaucratic Jargon Box */}
+            {/* Fictional explanatory example, not an official legal quotation */}
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-700 leading-relaxed">
               <div className="flex items-center gap-1.5 text-slate-500 font-bold mb-1.5">
                 <FileText className="w-4 h-4 text-slate-400" />
-                <span>{currentLanguage === 'en' ? 'Official Regulatory Language:' : 'Lenguaje Normativo Oficial:'}</span>
+                <span>{currentLanguage === 'en' ? 'Illustrative wording (not an official quotation):' : 'Texto ilustrativo (no es una cita oficial):'}</span>
               </div>
               <p className="font-serif italic text-slate-600">
-                "{currentPortalData.jargonSnippet}"
+                {currentPortalData.jargonSnippet}
               </p>
             </div>
 
-            {/* Simulated Complex Form Inputs */}
+            {/* Disabled sample form fields: no personal data is collected here */}
             <div className="space-y-4 p-5 rounded-2xl border border-slate-200 bg-slate-50/50">
               <h3 className="font-bold text-sm text-slate-800">
-                {currentLanguage === 'en' ? 'Section 2: Verification Disclosures' : 'Sección 2: Declaraciones de Verificación'}
+                {currentLanguage === 'en' ? 'Example of a complicated form' : 'Ejemplo de un formulario complicado'}
               </h3>
               
               <div className="space-y-2">
                 <label className="block text-xs font-medium text-slate-600">
-                  {currentLanguage === 'en' ? 'Household Earned Gross Income Verification Method:' : 'Método de Verificación de Ingresos Brutos:'}
+                  {currentLanguage === 'en' ? 'Example question: What should I report?' : 'Pregunta de ejemplo: ¿Qué debo reportar?'}
                 </label>
                 <input
                   type="text"
                   disabled
-                  value={currentLanguage === 'en' ? 'Form SAR 7 / Paystub Schedule 2B' : 'Formato SAR 7 / Talón de Cheque'}
+                  value={currentLanguage === 'en' ? 'Check your own agency notice' : 'Consulte el aviso de su agencia'}
                   className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white text-slate-500"
                 />
               </div>
 
               <div className="space-y-2">
                 <label className="block text-xs font-medium text-slate-600">
-                  {currentLanguage === 'en' ? 'Dependent Deductions Standard Utility Schedule:' : 'Deducciones de Dependientes y Servicios Básicos:'}
+                  {currentLanguage === 'en' ? 'Example question: What documents should I provide?' : 'Pregunta de ejemplo: ¿Qué documentos debo presentar?'}
                 </label>
                 <input
                   type="text"
                   disabled
-                  value={currentLanguage === 'en' ? 'SUA Determination (Non-Shelter Utility Standard)' : 'Determinación SUA de Servicios Básicos'}
+                  value={currentLanguage === 'en' ? 'Ask the organization about requirements' : 'Consulte los requisitos con la agencia'}
                   className="w-full text-xs p-2.5 rounded-lg border border-slate-300 bg-white text-slate-500"
                 />
               </div>
@@ -312,16 +254,16 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                 <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <span>
                   {currentLanguage === 'en'
-                    ? 'Failure to attach mandatory supporting verification schedules within 10 business days may cause automatic denial of entitlement.'
-                    : 'La omisión de comprobantes requeridos dentro de 10 días hábiles puede causar la denegación automática.'}
+                    ? 'This is not an official form. Do not upload documents or enter sensitive information. Check your own agency notice for actual requirements and deadlines.'
+                    : 'Este no es un formulario oficial. No suba documentos ni introduzca datos confidenciales. Consulte su aviso para conocer los requisitos y plazos.'}
                 </span>
               </div>
             </div>
 
             <p className="text-xs text-slate-400 text-center italic">
               {currentLanguage === 'en'
-                ? 'Notice how confusing and stressful official government language can feel? Look at the WhatSack companion sidebar to the right to see how we decode it in real time.'
-                : '¿Nota lo confuso y estresante que resulta el lenguaje oficial? Mire la barra lateral de WhatSack a la derecha para ver cómo lo traducimos en tiempo real.'}
+                ? 'This fictional form illustrates how a guide could simplify complex information. No real webpage is being analyzed.'
+                : 'Este formulario ficticio ilustra cómo una guía podría simplificar información. No se analiza ninguna página real.'}
             </p>
           </div>
         </div>
@@ -337,10 +279,10 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               <div>
                 <h3 className="font-extrabold text-sm text-white flex items-center gap-1.5">
                   <span>WhatSack Extension</span>
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                  <span className="text-[10px] font-semibold text-amber-300 border border-amber-700 px-1.5 py-0.5 rounded">DEMO</span>
                 </h3>
                 <span className="text-[10px] text-emerald-400 font-medium">
-                  {currentLanguage === 'en' ? 'Active Web Companion' : 'Acompañante Web Activo'}
+                  {currentLanguage === 'en' ? 'Not a live browser extension' : 'No es una extensión activa'}
                 </span>
               </div>
             </div>
@@ -360,7 +302,7 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             <div className="p-3.5 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-xs">
               <div className="flex items-center gap-2 text-emerald-300 font-bold mb-1">
                 <Sparkles className="w-4 h-4 text-emerald-400" />
-                <span>{t.extension.simplifiedSummary}</span>
+                <span>{currentLanguage === 'en' ? 'Illustrative guidance (not live advice)' : 'Orientación ilustrativa, no asesoría en vivo'}</span>
               </div>
               <p className="text-emerald-100 leading-relaxed font-medium">
                 {currentPortalData.decodedPlainEnglish}
@@ -370,8 +312,8 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
             {/* Hidden Barriers & Myths Decoded */}
             <div className="space-y-2">
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{t.extension.identifiedBarriers}</span>
+                <Info className="w-3.5 h-3.5 text-emerald-400" />
+                <span>{currentLanguage === 'en' ? 'Questions to confirm with the agency' : 'Preguntas para confirmar con la agencia'}</span>
               </span>
 
               {currentPortalData.hiddenBarriers.map((barrier, idx) => (
@@ -386,14 +328,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               ))}
             </div>
 
-            {/* What You Actually Need Today Checklist */}
+            {/* Questions to verify with an actual agency */}
             <div className="p-3.5 rounded-2xl bg-slate-800 border border-slate-700">
               <h4 className="text-xs font-bold text-white mb-2 flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>{currentLanguage === 'en' ? 'What You Actually Need to Upload:' : 'Lo que Realmente Debe Subir Hoy:'}</span>
+                <Info className="w-4 h-4 text-emerald-400" />
+                <span>{currentLanguage === 'en' ? 'Questions to ask the organization:' : 'Preguntas para la organización:'}</span>
               </h4>
               <ul className="space-y-1.5 text-xs text-slate-300">
-                {currentPortalData.requiredDocsSummary.map((item, idx) => (
+                {currentPortalData.questionsToAsk.map((item, idx) => (
                   <li key={idx} className="flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 mt-1.5 shrink-0" />
                     <span>{item}</span>
@@ -402,13 +344,13 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
               </ul>
             </div>
 
-            {/* Interactive Extension Chat */}
+            {/* Scripted sample chat: not a live assistant */}
             <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
-                  {currentLanguage === 'en' ? 'Ask Extension About This Page' : 'Preguntar a la Extensión'}
+                  {currentLanguage === 'en' ? 'Ask about this example (scripted)' : 'Preguntar sobre este ejemplo (guionizado)'}
                 </span>
-                <span className="text-[10px] text-emerald-400 font-mono">AI v2.6</span>
+                <span className="text-[10px] text-amber-300 font-mono">DEMO</span>
               </div>
 
               <div className="space-y-2 max-h-40 overflow-y-auto pr-1">
@@ -428,14 +370,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
 
               <form onSubmit={handleSendExtensionChat} className="flex gap-2">
                 <label htmlFor="extension-chat-input" className="sr-only">
-                  {currentLanguage === 'en' ? 'Ask extension about this form' : 'Pregunte a la extensión sobre este formulario'}
+                  {currentLanguage === 'en' ? 'Ask a general question about the example' : 'Haga una pregunta general sobre el ejemplo'}
                 </label>
                 <input
                   id="extension-chat-input"
                   type="text"
                   value={extensionChatInput}
                   onChange={(e) => setExtensionChatInput(e.target.value)}
-                  placeholder={currentLanguage === 'en' ? 'Ask a question about this form...' : 'Pregunte sobre este formulario...'}
+                  placeholder={currentLanguage === 'en' ? 'Ask generally; no personal details...' : 'Pregunte sin datos personales...'}
                   className="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-400 focus:outline-hidden focus:border-emerald-500 min-h-[42px]"
                 />
                 <button
@@ -446,12 +388,14 @@ export const SimulatedExtensionSidebar: React.FC<SimulatedExtensionSidebarProps>
                   <Send className="w-4 h-4" aria-hidden="true" />
                 </button>
               </form>
+              <p className="text-[11px] text-slate-400">{currentLanguage === 'en' ? 'Do not enter personal, financial, or case information.' : 'No introduzca información personal, financiera ni de su caso.'}</p>
+              <a href={currentPortalData.url} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-emerald-300 underline underline-offset-2 inline-flex items-center gap-1.5"><ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />{currentLanguage === 'en' ? 'Read the official source' : 'Consultar la fuente oficial'}</a>
             </div>
           </div>
 
           {/* Extension Footer */}
           <div className="extension-footer p-3 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
-            <span className="text-[11px]">WhatSack Browser Companion</span>
+            <span className="text-[11px]">{currentLanguage === 'en' ? 'WhatSack classroom demo' : 'Demostración académica de WhatSack'}</span>
             <button
               onClick={onNavigateHome}
               className="text-emerald-400 font-bold hover:underline text-[11px]"
