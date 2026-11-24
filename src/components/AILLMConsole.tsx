@@ -532,6 +532,16 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     : msg.text}
                 </div>
 
+                {isLlm && msg.scriptedAnswer?.topic === 'fallback' && onOpenIntroductionForm && (
+                  <div className="mt-4 space-y-3">
+                    <button type="button" onClick={() => onOpenIntroductionForm('assistant-chip')}
+                      className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">
+                      {(msg.language ?? currentLanguage) === 'en' ? 'Find My Support' : 'Encuentra mi apoyo'}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                )}
+
                 {/* Goal-first, non-sensitive exploration choices for Sofia and Daniel. */}
                 {isLlm && !!msg.scriptedAnswer?.pathwayChoices?.length && (
                   <PathwayChoiceList
@@ -600,7 +610,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
-                {isLlm && (recommendedFollowUpIds.length > 0 || (isLatestReply && recommendedFollowUpIds.length === 0 && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text))) && (
+                {isLlm && msg.scriptedAnswer?.topic !== 'fallback' && (recommendedFollowUpIds.length > 0 || (isLatestReply && recommendedFollowUpIds.length === 0 && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text))) && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-sm font-bold tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'You may also want to ask' : 'También puedes preguntar'}
@@ -630,7 +640,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Optional, non-presumptive discovery across the OTHER WhatSack categories. */}
-                {isLlm && isLatestReply && msg.scriptedAnswer && canExploreOtherSupport(msg.scriptedAnswer) && (
+                {isLlm && isLatestReply && msg.scriptedAnswer && msg.scriptedAnswer.topic !== 'fallback' && canExploreOtherSupport(msg.scriptedAnswer) && (
                   <ExploreOtherSupport
                     areas={getOtherSupportAreas(msg.scriptedAnswer)}
                     currentLanguage={msg.language ?? currentLanguage}
