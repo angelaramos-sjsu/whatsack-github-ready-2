@@ -142,7 +142,9 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button type="button" lang="en" onClick={() => onLanguageChange('en')} aria-pressed={currentLanguage === 'en'}>EN</button>
               <button type="button" lang="es" onClick={() => onLanguageChange('es')} aria-pressed={currentLanguage === 'es'}>Español</button>
             </div>
-            <ReadAloudLauncher language={currentLanguage} resetKey={activeView} variant="header" />
+            {(activeView === 'home' || activeView === 'about') && (
+              <ReadAloudLauncher language={currentLanguage} resetKey={activeView} variant="header" />
+            )}
             <details
               className="qc-acc"
               open={isAccOpen}
