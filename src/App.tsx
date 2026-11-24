@@ -314,7 +314,7 @@ export function App() {
           <h1 id="about-heading" tabIndex={-1} className="qc-h2 qc-page-title">
             {currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'}
           </h1>
-          <ReadAloudButton id="about-intro" language={currentLanguage} kind="instructions" label={currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'} text={currentLanguage === 'en' ? 'WhatSack helps people explore education, employment, food, mental health, and community resources.' : 'WhatSack ayuda a explorar recursos de educación, empleo, alimentos, salud mental y comunidad.'} />
+          <ReadAloudButton id="about-intro" language={currentLanguage} kind="instructions" label={currentLanguage === 'en' ? 'About WhatSack' : 'Acerca de WhatSack'} text={currentLanguage === 'en' ? 'WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley.' : 'WhatSack es un sitio creado por estudiantes para explorar ayuda con estudios, trabajo, comida, salud mental y servicios comunitarios en Silicon Valley.'} />
           <p className="qc-dsub">
             {currentLanguage === 'en'
               ? 'WhatSack is a student-made website that helps people explore support for school, work, food, mental health, and community life in Silicon Valley.'
