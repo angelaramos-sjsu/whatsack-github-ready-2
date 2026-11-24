@@ -79,18 +79,9 @@ export const buildUnscriptedFallback = (question: BilingualText): ScriptedAnswer
   topic: 'fallback',
   question,
   answer: {
-    en: `I don't have an approved scripted answer for that exact question yet, so I won't guess.
-
-This prototype only replies with reviewed answers. Here is what I can answer reliably right now — choose one of the questions below.`,
-    es: `Todavía no tengo una respuesta guionizada aprobada para esa pregunta exacta, así que no voy a adivinar.
-
-Este prototipo solo responde con respuestas revisadas. Esto es lo que sí puedo responder con certeza ahora: elige una de las preguntas de abajo.`
+    en: "I don't have an answer to that question just yet, but I can still help you explore your options!\n\nTell me a little about what you need using our Find My Support form. We'll help you explore available resources.",
+    es: "Todavía no tengo una respuesta a esa pregunta, ¡pero puedo ayudarte a explorar tus opciones!\n\nCuéntame un poco sobre lo que necesitas mediante nuestro formulario Encuentra mi apoyo. Te ayudaremos a explorar los recursos disponibles."
   },
   context: [],
-  followUpIds: [
-    topicEntryAnswerIds.food,
-    topicEntryAnswerIds.work,
-    topicEntryAnswerIds.college,
-    topicEntryAnswerIds.mental
-  ]
+  followUpIds: []
 });

@@ -532,6 +532,17 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                     : msg.text}
                 </div>
 
+                {isLlm && msg.scriptedAnswer?.topic === 'fallback' && onOpenIntroductionForm && (
+                  <div className="mt-4 space-y-3">
+                    <img src="data:image/webp;base64,UklGRlQFAABXRUJQVlA4IEgFAACQJgCdASqKAJYAPtViqk4oJaQiKrK7eQAaiWUA1FXGMf9f6h9Mh8HVQLr6JFhJGdsX6q/0Ob18SJRM0yoDK2A9+PAyWNywcC1vAt0N0Z8ADQ3xafvPrzOYGgpfWWRMvgnUsC6GQJ6rKfzRXmtfnKOGAMLp2tEbaBlI0ttfi+7G+GTUoLY0nIq1CHG5utD/NW/VjZT2U19+NNSs0u0Ji4t2epBr41dITznYYmXa1+0rD0PvGWQcjFz47Gbn1SQzQumNm57Nd7JyKN6KfKZY/3ZRH1hDXbrm/3Xd8//U7lwQVW9Fy/rA9HABPJtNQFYSFlePljhFDNqymEfEdzU1592PR26MBwxTq6IeA5OnuXOizeXY1s3jMbgP7EzRoJw78DYkm68sbewl5Pzjqu2dIx4fqAvSLTYWURN+IR3sAAD+9lCEMcYmVHomZG+uOvzAc+KKd4gmqp9Xlqhk1i/k7gzcJkOhMtOln3xetAX7NtAljVGL34G/qhlLCvLXDwwOatAA1sY86UKLu+WzHUqtZ6krXqCUXUeAVQ0NsszIDHxVQk6XLLhiYaRMoFoD+ok5XDWa8xxJLs22RjvHcxWcRNtjI45OJrhkbSu9VWpUgQnOOrje76M8kwJwr9F+AbXGrTH/BXfk4ue3ceoWmXgmVjVK1qrY7/eGdS9Ae8iudhQlQhYpVhmSzxbJhRZjeICiSxM8chmB9bwBP530duyGbs+pGNB4vOy/ZMgJMp1WVds6TD3aQm1fZidfPRLjqZErUbgLSvv2zhhxSnjyXaB9J26p2ZifDnONBDgVIZQmoSpJ3wpltpDXzLmP5wO2KbT5yzc80iVeGJ2oW0X6SEcPy+J7ncHTBNofo2MZn9dZG4ndoesfQNw8crShW1N2W0XniQ9NT9jp6s5UGZWsaa6BCbPyvhDMQwNldItrznwD7vISgaadFIElbNJajZjeQO9Srg/VDUFnJPoLbPxe82AYUg2zmuipxR+U1P48HMIAO+NihXQC0GnABhsDmwx0NEd44bh1BpX+j6oO0RbU85eFMsjry7NAyEnZAkWI/TFMb3UGjvBM9nKfl9ZljY6J+WHXJEkCDexK3RkdD+FJaasQXQbkOoYRTTYhVYPoOT3gwHZYfUdLXUmLqrViXR84x6TvYLiYzFl5H/jdPRwWun43uq0q/2lyRcN5dOLUXCMb+UDqgAmbtzGe9Cmy1SJFpZUI8jMQzYZ5RnXyKLqa9bxFUR6ZYAt4+/RqLRhI7pqi3duo0uRqnljJWsHiJuBpzzbPfkOZh9TxGuZcHrl2qzygbXVp7B9Ih5/OMlPfKKehn/I/MVMDKlfit/YLpIT4vNVigHxZqfczSQm/ez+Kw/Q1NTvR5m0xRrPCiMp4vvaMuPjuZNBMSYVI9KGim2ttbnU3SGdJifEs0UmDem1CPhIV4wTKexypzdpE+y9l4wa5CAxlAGlwTRCcl5VSCrJTNWVfMlIOP1hKfMuSctO2nLQ1es0sXN+tv/L3/SxpAUTAbhQMWUSBkANX4Lqlh/VTSVHrYNrRGeixiPOAQVSMcU4ecbZlRJki2qcpuTrM81JM5pMx/CbRc85EIaqKwKF7fO7TQRSE1k+xxVd/z09oY8VHweZe05+PbKAlGg9+4WN7AMW9kMjXDAsMo1CjWP9lwAIWLaPmHgrr/TrWckjzj3QoUhKNYD5LHkv0bsa/ypbBTnKUzQvzjWWEQ+wqjJzNJjDDigT+/dp9+JcPuP+paiuSz2Tbjg5JTzi8MfuZjqaQ2NLgcrsZ1CHdceXIWUzZGBnnoSMrodcwAAAAAA==" alt="" width={138} height={150} className="block max-w-full rounded-lg object-contain" />
+                    <button type="button" onClick={() => onOpenIntroductionForm('assistant-chip')}
+                      className="inline-flex min-h-[44px] items-center gap-2 rounded-xl bg-emerald-700 px-4 py-3 font-bold text-white hover:bg-emerald-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300">
+                      {(msg.language ?? currentLanguage) === 'en' ? 'Find My Support' : 'Encuentra mi apoyo'}
+                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  </div>
+                )}
+
                 {/* Goal-first, non-sensitive exploration choices for Sofia and Daniel. */}
                 {isLlm && !!msg.scriptedAnswer?.pathwayChoices?.length && (
                   <PathwayChoiceList
@@ -600,7 +611,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Suggested follow-ups — only answers that actually exist are shown */}
-                {isLlm && (recommendedFollowUpIds.length > 0 || (isLatestReply && recommendedFollowUpIds.length === 0 && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text))) && (
+                {isLlm && msg.scriptedAnswer?.topic !== 'fallback' && (recommendedFollowUpIds.length > 0 || (isLatestReply && recommendedFollowUpIds.length === 0 && !msg.scriptedAnswer?.pathwayChoices?.length && shouldOfferQuickQuestions(messages.filter((message) => message.sender === 'user').slice(-1)[0]?.text))) && (
                   <div className="mt-4 pt-3 border-t border-slate-700/60">
                     <span className="text-sm font-bold tracking-wider text-slate-400 block mb-1.5">
                       {currentLanguage === 'en' ? 'You may also want to ask' : 'También puedes preguntar'}
@@ -630,7 +641,7 @@ export const AILLMConsole: React.FC<AILLMConsoleProps> = ({
                 )}
 
                 {/* Optional, non-presumptive discovery across the OTHER WhatSack categories. */}
-                {isLlm && isLatestReply && msg.scriptedAnswer && canExploreOtherSupport(msg.scriptedAnswer) && (
+                {isLlm && isLatestReply && msg.scriptedAnswer && msg.scriptedAnswer.topic !== 'fallback' && canExploreOtherSupport(msg.scriptedAnswer) && (
                   <ExploreOtherSupport
                     areas={getOtherSupportAreas(msg.scriptedAnswer)}
                     currentLanguage={msg.language ?? currentLanguage}
